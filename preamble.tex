@@ -1,0 +1,185 @@
+\documentclass[12pt]{article}
+
+% Packages
+% ========
+\usepackage[letterpaper, portrait, margin=1in]{geometry}
+\usepackage{graphicx}			% So we can load figures with "." in their filename
+\usepackage{float}				% So we can use "[H]"
+\usepackage[dvipsnames]{xcolor}	% For custom colors
+\usepackage{xparse}				% For \DeclareDocumentCommand
+\usepackage{caption}			% For \captionof command
+\usepackage{mathtools}			% For \DeclarePairedDelimeter
+\usepackage{ifthen}				% For \ifthenelse{}{}{}
+\usepackage{soul}				% For underlining with \ul
+\setuldepth{x}					%	""
+\usepackage{multicol}			% For multiple columns via \begin{multicols}{2}
+\usepackage[most]{tcolorbox}	% For the tl; dr environment
+
+% Bibliography
+% ============
+\usepackage[american]{babel}
+\usepackage{csquotes}
+\usepackage[style=ieee, backend=biber]{biblatex}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, allcolors=black, urlcolor=blue}
+\addbibresource{../sources.bib}
+
+% Simple custom commands
+% ======================
+\makeatletter
+\def\maxwidth#1{\ifdim\Gin@nat@width>#1 #1\else\Gin@nat@width\fi} 
+\makeatother
+\def\todo#1{\selectfont{\color{red}\texttt{\textbf{TODO:} #1}}}
+\definecolor{sectColor}{rgb}{0, 0.5, 0.0}
+\def\sect#1{\textcolor{sectColor}{\section*{#1}}}
+\definecolor{subsectColor}{rgb}{0, 0.5, 0.5}
+\def\subsect#1{\vspace*{12pt}\noindent\textbf{\textcolor{subsectColor}{\selectfont{\fontsize{12pt}{14pt}\noindent #1\\\vspace*{0pt}}}}}
+
+% TL; DR section
+% ==============
+\newenvironment{tldr}{\begin{tcolorbox}[colback=gray!20!white,colframe=blue!75!black,title=TL; DR]}{\end{tcolorbox}\vspace*{12pt}}
+
+% Custom math commands
+% ====================
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% ======================
+% \graphic{filename=...}
+% ======================
+% Keyword arguments
+\makeatletter
+\define@key{graphicKeys}{filename}{\def\graphic@filename{#1}}
+\define@key{graphicKeys}{scale}{\def\graphic@scale{#1}}
+\define@key{graphicKeys}{width}{\def\graphic@width{#1}}
+\define@key{graphicKeys}{caption}{\def\graphic@caption{#1}}
+\define@key{graphicKeys}{captionType}{\def\graphic@captionType{#1}}
+\define@key{graphicKeys}{label}{\def\graphic@label{#1}}
+
+% Kwargs
+\DeclareDocumentCommand{\graphic}{m}{
+
+	\begingroup
+	
+	% Set default kwargs
+	\setkeys{graphicKeys}{filename={0}, #1}
+	\setkeys{graphicKeys}{scale={0}, #1}
+	\setkeys{graphicKeys}{width={0}, #1}
+	\setkeys{graphicKeys}{caption={}, #1}
+	\setkeys{graphicKeys}{captionType={figure}, #1}
+	\setkeys{graphicKeys}{label={}, #1}
+	
+	% Assign width
+	\let\graphicWidth\relax % let \mytmplen to \relax
+	\newlength{\graphicWidth}
+	\setlength{\graphicWidth}{\columnwidth}
+	
+	\if \graphic@scale 0
+		
+		\if \graphic@width 0
+			
+			\setlength{\graphicWidth}{0.5\columnwidth}
+		
+		\else
+	
+			\setlength{\graphicWidth}{\graphic@width}
+			
+		\fi
+
+	\else
+		
+		\setlength{\graphicWidth}{\columnwidth * \graphic@scale}
+
+	\fi	
+	
+	% Do figure
+	\begin{minipage}{\columnwidth}
+		\vspace*{12pt}
+		\begin{center}
+		
+			\includegraphics[width = \graphicWidth]{\graphic@filename}
+			
+			\ifthenelse{\equal{\graphic@caption}{}}{}{
+				\captionof{\graphic@captionType}{\graphic@caption}
+			}
+			
+			\ifthenelse{\equal{\graphic@label}{}}{
+				\label{fig: \graphic@filename}
+			}{
+				\label{\graphic@label}
+			}
+		\end{center}
+		\vspace*{12pt}
+	\end{minipage}
+	
+	\endgroup
+}
+\makeatother
+
+% ==============
+% Base Pair Page
+% ==============
+% Keyword arguments
+\makeatletter
+\define@key{bpPageKeys}{baseFilename}{\def\bpPage@baseFilename{#1}}
+\define@key{bpPageKeys}{scale}{\def\bpPage@scale{#1}}
+\define@key{bpPageKeys}{width}{\def\bpPage@width{#1}}
+\define@key{bpPageKeys}{caption}{\def\bpPage@caption{#1}}
+\define@key{bpPageKeys}{captionType}{\def\bpPage@captionType{#1}}
+\define@key{bpPageKeys}{label}{\def\bpPage@label{#1}}
+
+% Kwargs
+\DeclareDocumentCommand{\BPPage}{m}{
+
+	\begingroup
+	
+	% Set default kwargs
+	\setkeys{bpPageKeys}{baseFilename={0}, #1}
+	\setkeys{bpPageKeys}{caption={}, #1}
+	\setkeys{bpPageKeys}{label={}, #1}
+	
+	\newpage
+
+	\begin{center}
+		\ul{\mbox{\bpPage@baseFilename{}: 1 Base Pair [min]}}
+	\end{center}
+	\vspace*{-36pt}
+	\begin{minipage}[b]{0.5\textwidth}
+		\graphic{filename=\bpPage@baseFilename-overview-1-table}
+	\end{minipage}
+	\begin{minipage}[b]{0.5\textwidth}
+		\graphic{filename=\bpPage@baseFilename-overview-1-plot}
+	\end{minipage}
+
+	\begin{center}
+		\ul{\mbox{\bpPage@baseFilename{}: 50 Base Pairs [average]}}
+	\end{center}
+	\vspace*{-36pt}
+	\begin{minipage}[b]{0.5\textwidth}
+		\graphic{filename=\bpPage@baseFilename-overview-50-table}
+	\end{minipage}
+	\begin{minipage}[b]{0.5\textwidth}
+		\graphic{filename=\bpPage@baseFilename-overview-50-plot}
+	\end{minipage}
+	
+	\begin{center}
+		\ul{\mbox{\bpPage@baseFilename{}: 100 Base Pairs [max]}}
+	\end{center}
+	\vspace*{-36pt}
+	\begin{minipage}[b]{0.5\textwidth}
+		\graphic{filename=\bpPage@baseFilename-overview-100-table}
+	\end{minipage}
+	\begin{minipage}[b]{0.5\textwidth}
+		\graphic{filename=\bpPage@baseFilename-overview-100-plot}
+	\end{minipage}
+
+	\vspace*{-24pt}
+	\captionof{figure}{\bpPage@caption}\label{\bpPage@label}	
+	
+	\endgroup
+}
+\makeatother
+
+
+
+\begin{document}
