@@ -1,3 +1,17 @@
+# LaTeX files
+*\.aux
+*\.log
+*\.nav
+*\.out
+*\.snm
+*\.synctex.gz
+*\.toc
+
+# Annoying/temporary generated files
+~$*
+*\.DS_Store
+*\.swp
+
 # Visual Studio 2015 user specific files
 .vs/
 

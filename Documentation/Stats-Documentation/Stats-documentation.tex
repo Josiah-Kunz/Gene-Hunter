@@ -1,0 +1,311 @@
+\input{../preamble}
+\def\tableWidth{0.5\textwidth}
+
+\sect{TL; DR}
+``Stats'' are numbers used to determine outcomes in battles. There are seven types of stats listed in Table~\ref{tab: stat-key}. They depend on:
+
+\begin{itemize}
+	\item{Base stat (Table~\ref{tab: color-key})}
+	\item{DNA base pair count (Figure~\ref{fig: base-pairs-plot})}
+	\item{Genetic mutations (Table~\ref{tab: mutations})}
+	\item{Level (Figures~\ref{fig: standard-stat}, \ref{fig: hp-overview}, \ref{fig: haste-overview}, and~\ref{fig: crit-overview})}
+\end{itemize}
+
+
+
+
+\sect{Keys}
+
+This chapter contains a bit of basic (Algebra-II--level) math. Most mathematical symbols will not be explained in detail, but two useful definitions are below:
+\begin{align*}
+	\ceil{x} &\rightarrow \text{The \texttt{ceil} function} & \text{[Round ``x'' up]}\\
+	\floor{x} &\rightarrow \text{The \texttt{floor} function} & \text{[Round ``x'' down]}\\
+\end{align*}
+
+There are seven types of stats that affect combat. These may be seen in Table~\ref{tab: stat-key} below. 
+
+\graphic{filename=stat-key,
+			captionType=table, 
+			caption={The stat types used throughout this document.},
+			label={tab: stat-key},
+			width=0.5\textwidth
+		}
+		
+\noindent These closely resemble the Pok\'{e}mon stats \cite{pkmn-stats}, with the ``physical'' attack and defense being explicitly named. However, there are a couple of exceptions:
+
+\begin{itemize}
+	\item{Since this is not a turn-based game, there is no Speed stat.}
+	\item{Instead, there is a Haste stat, which affects cooldown timers and cast times. The Haste equation can be seen in Eq.~\eqref{eqn: haste-cdr} on page~\pageref{eqn: haste-cdr}. Moreover, an example table may be seen in Table~\ref{tab: haste-cd-reduction} on page~\pageref{tab: haste-cd-reduction}.}
+	\item{While Pok\'{e}mon have an implicit Crit stat, the value is the same for all Pok\'{e}mon. This is not true for Monsters, who have an explicit Critical Hit stat.}
+\end{itemize}
+
+Table~\ref{tab: color-key} displays the color scheme used throughout this document in regards to stat \textit{quality} rather than type. The quality is also loosely based on Pok\'{e}mon stats \cite{pkmn-stats}.
+
+\graphic{filename=color-key,
+			captionType=table, 
+			caption={The color key used throughout this document. Each color corresponds to a different level of ``goodness''.},
+			label={tab: color-key},
+			width=0.5\textwidth
+		}
+
+\noindent Table~\ref{tab: color-key} comes with the following design notes:
+\begin{itemize}
+	\item{No Monster's base stat will be below zero at any time.}
+	\item{``Average'' will ideally be just that: nearly the average of all Monsters' base stats in that category. For example, all (obtainable) Monsters combined will have an average HP close to 100.}
+	\item{A ``Specialist'' will usually be required to give up another stat. For example, if a Monster has a base HP of 150, they should have a base PhD of 50 to preserve the average.
+		\begin{itemize}
+			\item{This may not be true if the typing, movepool, or aura of the Monster is bad. In that case, the Monster needs good stats in order to be viable.}
+			\item{The same is true for Monsters that have \textit{too} good of a movepool or aura; their stats may be justified in being low across the board.}
+		\end{itemize}
+	}
+	\item{A ``Boss'' base stat certainly may exceed 200. However, by design no obtainable Monster should regularly have a base stat of 200.}
+\end{itemize}
+
+
+
+
+
+\newpage
+\sect{Base Pairs}
+
+\graphic{filename=base-pairs-mockup,
+		caption={Mockup of the idea that the stats are linked to genes and that the strength of each stat comes from how many base pairs make up the gene.},
+		label={fig: base-pairs-mockup},
+		width=0.3\textwidth
+}
+
+In addition to the base stat, there are also ``base pairs,'' which augment the base stat. Each stat type has a different base pair count (think DNA), and the number of base pairs can vary from 1--100 (inclusive). Base stats are similar to ``IVs'' from the Pok\'{e}mon series \cite{pkmn-stats}. See, e.g., Eq.~\eqref{eqn: standard-stat}. Specifically, the base pairs contribution to the base stats has the form in Eq.~\eqref{eqn: base-pair-contribution}.
+
+\begin{equation}\label{eqn: base-pair-contribution}
+		\left(\frac{\texttt{pairs}}{100}\right)^{0.25}
+\end{equation}
+
+
+An example plot of base pairs vs.\ Physical Attack may be seen below in Figure~\ref{fig: base-pairs-plot}. 
+
+\graphic{filename=base-pairs-vs-attack-plot,
+		caption={Base pair count vs.\ the Physical Attack stat for a Monster at level 100 with an average base Physical Attack (100).},
+		label={fig: base-pairs-plot}
+}
+
+In Figure~\ref{fig: base-pairs-plot}, one may observe that the minimum is fairly forgiving, still yielding 1/3 of the full effect. The returns saturate at around 90 base pairs, which yield 97\% of the full effect. Therefore, if one desires a Monster with ``almost perfect'' (within 3\% of perfect) base pairs in 5 out of the 7 stat types, there is a $0.10^5 = 0.00001\% = 1/100,000$ chance. Is that too much grinding? Well, those numbers can be changed by talents and other methods mentioned in the ``grinding and difficulty'' section in another chapter.
+
+Base pairs are generated uniformly by default. That is, every randomly-generated Monster has an \ul{equal chance} of having a base pair count of 100 or a base pair count of 1 for each stat type. However, the distributions of individual Monster GameObjects may be altered to increase the likelihood of base pairs (such as a gift Monster, the starter Monsters, or a promotional Monster) or to decrease the likelihood of base pairs (I'm not sure why you would want to do that).
+
+
+
+
+\newpage
+\sect{Mutations}
+Similar to a Pok\'{e}mon's Nature \cite{pkmn-stats}, a Monster may have genetic mutations in its stats genome. It may be thought of as additional base pairs in a particular stat or a separate entity altogether; the concept is still in its infancy and will likely grow and change. However, the idea is that there should be another randomizer that may be pseudo-controlled by talents that makes a Monster unique. Below is a table of the current ideas.
+
+\graphic{filename=mutations-table,
+		caption={List of current mutations},
+		label={tab: mutations},
+		width=0.5\textwidth
+}
+
+Currently, they are somewhat boring. However, they should not be too wild---that is what talents are for. For the remainder of the document, assume that there is no mutation.
+
+
+
+
+\sect{The Standard Stat}
+
+The ``standard'' stat refers to the common set of stats that all follow the same rule. Explicitly, these are: 
+
+\begin{itemize}
+	\item{PhA}
+	\item{PhD}
+	\item{SpA}
+	\item{SpD}
+\end{itemize}
+
+The equation for the caclulation of standard stats is based on Pok\'{e}mon stats \cite{pkmn-stats}, but with key differences.
+
+\begin{equation}\label{eqn: standard-stat}
+	\texttt{stat} = \left\lfloor 2\cdot\texttt{base}\cdot\left(\frac{\texttt{pairs}}{100}\right)^{0.25} \cdot\frac{\texttt{level}}{100} + 5 \right\rfloor \times 3^{\left\lfloor\frac{\texttt{level}}{10}\right\rfloor}
+\end{equation}
+
+\noindent One may immediately notice a few differences between Eq.~\eqref{eqn: standard-stat} and the stat equation in \cite{pkmn-stats}:
+
+	\begin{itemize}
+		\item{The lack of EVs and IVs:
+			\begin{itemize}
+				\item{EVs were customizations that the player could choose, and are replaced by talents.}
+				\item{IVs were radomly generated and served to make each Pok\`{e}mon unique. These have been replaced by base pairs.}
+			\end{itemize}
+		}
+		\item{The factor of $3^{\left\lfloor\frac{\texttt{level}}{10}\right\rfloor}$. This is referred to as the ``stat jump'' that occurs every ten levels. There are a few reasons for this factor, but two are immediately clear:
+		\begin{itemize}
+			\item{Pacing control for the developer}
+			\item{Something for the player to look forward to every ten levels}
+		\end{itemize}
+		}
+	\end{itemize}
+	
+Effectively, the stats nearly triple every ten levels. Therefore, a level~20 Monster has roughly a 3x advantage over a level~19 Monster, as seen below in Figure~\ref{fig: standard-early-game} and Table~\ref{tab: standard-early-game}. 
+
+The range of level 1--20 are especially important, as it is hoped that the player is ``hooked'' during this delicate time.
+
+Data for all levels and selected base pairs may be seen in Figure~\ref{fig: standard-stat}, which is also below. In this figure, it is important to note that a good (base stat 120) Monster with the maximum number of base pairs (100 base pairs) is similar to a specialst (base stat 150) with an average number of base pairs (50 base pairs). In practice, this may put an over-emphasis on getting good base pairs, but that data will only come with playtesting. For now, it is assumed that an informed player (i.e., level 30+) will understand this importance and grind accordingly as difficulty dictates.
+
+\graphic{filename=Standard-stat-low-levels-100-plot, 
+			caption={The early game plot of a standard stat by level for a base pair value of 100.},
+			label={fig: standard-early-game}}
+			
+\graphic{filename=Standard-stat-low-levels-100-table, 
+			caption={The early game table of a standard stat by level for a base pair value of 100.},
+			captionType=table,
+			label={tab: standard-early-game},
+			width=\textwidth
+		}
+
+\BPPage{baseFilename=Standard-stat, 
+		caption={An overview of the so-called ``standard'' stat for base pair values of 1, 50, and 100.},
+		label={fig: standard-stat}
+}
+		
+
+
+
+
+\newpage
+\sect{HP}
+
+The HP stat is quite close to the standard stat, being calculated as shown in Eq.~\eqref{eqn: hp} below.
+
+\begin{equation}\label{eqn: hp}
+	\texttt{HP} = \left\lfloor 2\cdot\texttt{base}\cdot\left(\frac{\texttt{pairs}}{100}\right)^{0.25}\cdot\frac{\texttt{level}}{100} + 10 \right\rfloor \times 3^{\left\lfloor\frac{\texttt{level}}{10}\right\rfloor}
+\end{equation}
+
+\noindent Even though the only difference between Eqs.~\eqref{eqn: standard-stat} and~\eqref{eqn: hp} is $(+10)$ instead of $(+5)$, it makes a large difference in raw values, as seen by Figure~\ref{fig: hp-overview}.
+
+\BPPage{baseFilename=HP, 
+		caption={An overview of the HP stat for base pair values of 1, 50, and 100.},
+		label={fig: hp-overview}
+}
+
+
+
+
+
+
+\newpage
+\sect{Haste}
+
+Haste reduces both cooldown and cast time via
+\begin{equation}\label{eqn: haste-cdr}
+	\texttt{Time} = \frac{\texttt{Base Time}}{1 + \texttt{Haste}/100}
+\end{equation}
+
+\noindent Haste is calculated by
+
+\begin{equation}\label{eqn: haste-calculation}
+	\texttt{Haste} = \texttt{level} \cdot \left( \texttt{A} \cdot \texttt{base}^2 \cdot \left(\frac{\texttt{pairs}}{100}\right)^{0.25} + \texttt{B} \cdot \left\lfloor \frac{\texttt{level}}{10} \right\rfloor \right)	
+\end{equation}
+\noindent where
+\begin{align*}
+	\texttt{A} &= 0.00002 	& \text{[Base stat scaling factor]}\\
+	\texttt{B} &= 0.017		& \text{[Level scaling factor]}
+\end{align*}
+
+\noindent A similar overview for all levels and a selection of base pairs can be seen in Figure~\ref{fig: haste-overview}. The selection for these particular values for \texttt{A} and \texttt{B} require observing the 100 base pairs case of Figure~\ref{fig: haste-overview}. Here, the targets were:
+
+\begin{itemize}
+	\item{``Average'' at level 100 should have around 33\% Haste}
+	\item{``Good'' at level 100 should have around 50\% Haste}
+	\item{A ``specialist'' at level 100 should have around 66\% Haste}
+	\item{A ``specialist'' at level 20 should start to see the advantage of having high Haste}
+	\item{A ``boss'' at level 100 should have a ``large'' amount of Haste compared to the other categories}
+\end{itemize}
+
+With these criteria in mind, the form of Eq.~\eqref{eqn: haste-calculation} was chosen, along with \texttt{A} and \texttt{B}. A player's point-of-view example can be seen in Table~\ref{tab: haste-cd-reduction}.
+
+\BPPage{baseFilename=Haste, 
+		caption={The Haste stat for base pair values of 1, 50, and 100.},
+		label={fig: haste-overview}
+}
+
+\graphic{filename=Haste-CD-reduction-table,
+		caption={The new cooldowns (CDs) for an ability that usually has a cooldown of 10~s. The calculation assume that the Monster is at level~100 and has 100~base pairs.},
+		label={tab: haste-cd-reduction},
+		width=\tableWidth
+}
+
+
+
+
+
+
+
+\sect{Critical Hit}
+Like Haste, the Critical Hit stat is displayed as a percentage-based stat, and so the scaling of the standard stat does not apply. However, while Haste represents a catch-all ``fun'' or ``quality of life'' mechanic (only making matches faster for equal opponents), the Critical Hit stat is more niche:
+
+\begin{itemize}
+	\item{The Critical Hit stat represents the chance that an attack will be ``critical''.}
+	\item{``Critical'' damage is normally increased by 1.5x. However, that value may change with talents, auras, buffs, or on a Monster-by-Monster basis.}
+	\item{``Critical'' damage ignores defensive buffs. Therefore, Monsters who specialize in the Critical Hit stat are wallbreakers who must have some drawback against non-walls.}
+	\item{If the Critical Hit stat is above 100\%, the critical damage is increased instead by that amount. For example, if a Monster has 120\% Critical Hit, the ``critical'' damage is guaranteed and it deals 1.7x instead of 1.5x. This is so that players have a route to be heavy-handed on stacking the Critical Hit stat should they so choose.}
+\end{itemize}
+
+The Critical Hit forumla is the most complicated of all, and hence may be the most difficult to balance. It can be seen below by Eq.~\eqref{eqn: crit-final}:
+
+\begin{equation}\label{eqn: crit-final}
+\texttt{Critical Hit} =  
+		0.8 \cdot 
+		\left(\texttt{C}_{\ceil{10}} - \texttt{C}_{\floor{10}}\right) \cdot
+		\frac{\texttt{level} - \texttt{L}_{\floor{10}}}{10} +
+		\texttt{C}_{\floor{10}}
+\end{equation}
+
+\noindent where
+
+\begin{align*}
+	\texttt{L}_{\floor{10}} &= 10\cdot \left\lfloor \frac{\texttt{level}+0.1}{10} \right\rfloor & \text{[The previous decalevel]} \\ 
+	\texttt{L}_{\ceil{10}} &= 10\cdot \left\lceil \frac{\texttt{level}+0.1}{10} \right\rceil & \text{[The next decalevel]}\\
+	\texttt{C}_{\floor{10}} &= \texttt{Sub-Crit} \text{ evaluated at } (\texttt{level} = \texttt{L}_{\floor{10}})\\
+	\texttt{C}_{\ceil{10}} &= \texttt{Sub-Crit} \text{ evaluated at } (\texttt{level} = \texttt{L}_{\ceil{10}})
+\end{align*}
+
+\noindent The \texttt{Sub-Crit} function is defined as ``the Critical Hit every ten levels'', which is shown by Eq.~\eqref{eqn: sub-crit}:
+
+\begin{equation}\label{eqn: sub-crit}
+	\texttt{Sub-Crit} = 	\texttt{A} \cdot \texttt{base}^\texttt{B} 
+						\cdot \left\lceil \frac{\texttt{level}}{10} \right\rceil
+						\cdot \left(\frac{\texttt{pairs}}{100}\right)^{0.25}
+						+ \texttt{C} \left\lfloor \frac{\texttt{level}}{10} \right\rfloor						
+\end{equation}
+
+\noindent where
+
+\begin{align*}
+	\texttt{A} &= 0.0000000036 	& \text{[Base stat scaling factor]}\\
+	\texttt{B} &= 4.2			& \text{[Base stat exponential factor]}\\
+	\texttt{C} &= 0.625			& \text{[Level scaling factor]}\\
+\end{align*}
+
+\noindent Of course, if the Critical Hit stat would ever be negative, it would instead be zero.
+
+True Pok\'{e}fans will be able to deduce the significance of the constant $\texttt{C} = 0.625$: at the minimal base stat of zero, the Critical Hit is 6.25\%---the very value of the hidden stat in the main series games. The other two constants, \texttt{A} and \texttt{B}, were chosen with the 100 base pairs case of Figure~\ref{fig: crit-overview} in mind:
+\begin{itemize}
+	\item{The ``average'' at level 100 is not over 20\% (although it could stand to be much lower)}
+	\item{``Good'' at level 100 is considered a 1 in 4 chance to crit}
+	\item{A ``specialist'' at level 100, who no doubt relies heavily on critical hits, has at least a 50\% chance to crit}
+	\item{A ``specialist'' at level 20 who is still considered ``early game'' should start to see the advantage of crits coming once every 10 hits}
+\end{itemize}
+
+\BPPage{baseFilename=Crit, 
+		caption={The Critical Hit stat for base pair values of 1, 50, and 100.},
+		label={fig: crit-overview}
+}
+
+
+
+
+
+\newpage
+
+\printbibliography
+
+\input{../postamble}
