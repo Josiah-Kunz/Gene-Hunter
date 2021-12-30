@@ -1,0 +1,10 @@
+tl;dr
+	- UE5 is neat
+	- Blueprints graphs suck
+	- I'm frustrated I'm learning too slowly
+
+Coming from Unity 2020, UE5 is the way I would design a game engine (collapsable panels, etc.). The whole flow resonates with me pretty well. All except for Blueprints. They seem the most backward at first glance. Their existence is to make coding easier for non-coders, but as an experienced coder in multiple languages, I find it significantly harder. Why can't I just get the object reference and do what I want with its properties? 
+
+That may be the single thing Unity did better than Unreal---object references. I feel so sluggish trying to create this type advantage chart ("Widget", I guess is the right name? "Editor Utility Widget", to be precise?). It should be quick: access all types, create a table, and done. 
+
+My thoughts are consumed with learning UE5, except at work where I face other challenges to occupy me. I get so discouraged and frustrated with getting widget (sub-widget?) references (I learned I have to check "Is Variable?" to see it in the Graph). Now my biggest block is instantiating/cloning/copying/duplicating/spawning/whatever a widget (sub-widget? What's the difference?).
