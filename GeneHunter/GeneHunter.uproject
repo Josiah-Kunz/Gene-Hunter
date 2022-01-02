@@ -8,5 +8,8 @@
 			"Name": "DataRegistry",
 			"Enabled": true
 		}
+	],
+	"TargetPlatforms": [
+		"Windows"
 	]
 }

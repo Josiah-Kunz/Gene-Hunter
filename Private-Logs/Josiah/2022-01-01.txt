@@ -1,0 +1,5 @@
+Boy, I didn't expect this much work just to be able to write code in UE5. Unity just "worked out of the box", but UE5 needs C++ toolchains, etc. Moreover, since my editor of choice is Rider, I have to first download and install Visual Studio even though I won't be using it. It is all very discouraging; I just want to make a simple class!
+
+Anyway, the Data Registry architecture seems way better than Unity, which had a "GL HF" attitude and (to my knowledge) had no official way of storing runtime-static, read-only data like Pokemon Types. I guess Unity really wanted you to be in charge of memory management (they didn't officially support a saving architecture either; I'm hoping UE5 does).
+
+I shouldn't be so surprised (or discouraged). Most other high-efficiency softwares are like this. As a matter of fact, it's probably a good sign that there is a lot of manual setup.
