@@ -1,6 +1,12 @@
 {
 	"SourceFiles": [
 		"E:\\GitHub\\Gene-Hunter\\GeneHunter\\Source\\GeneHunter\\GeneHunter.Build.cs",
+		"E:\\GitHub\\Gene-Hunter\\GeneHunter\\Plugins\\Developer\\RiderLink\\Source\\RD\\RD.Build.cs",
+		"E:\\GitHub\\Gene-Hunter\\GeneHunter\\Plugins\\Developer\\RiderLink\\Source\\RiderBlueprintExtension\\RiderBlueprintExtension.Build.cs",
+		"E:\\GitHub\\Gene-Hunter\\GeneHunter\\Plugins\\Developer\\RiderLink\\Source\\RiderGameControlExtension\\RiderGameControlExtension.Build.cs",
+		"E:\\GitHub\\Gene-Hunter\\GeneHunter\\Plugins\\Developer\\RiderLink\\Source\\RiderLink\\RiderLink.Build.cs",
+		"E:\\GitHub\\Gene-Hunter\\GeneHunter\\Plugins\\Developer\\RiderLink\\Source\\RiderLoggingExtension\\RiderLoggingExtension.Build.cs",
+		"E:\\GitHub\\Gene-Hunter\\GeneHunter\\Plugins\\Developer\\RiderLink\\Source\\RiderShaderInfoDump\\RiderShaderInfoDump.Build.cs",
 		"E:\\GitHub\\Gene-Hunter\\GeneHunter\\Source\\GeneHunter.Target.cs",
 		"E:\\GitHub\\Gene-Hunter\\GeneHunter\\Source\\GeneHunterEditor.Target.cs"
 	],
