@@ -1,5 +1,6 @@
 E:\GitHub\Gene-Hunter\GeneHunter\Source\GeneHunter\MyClass.cpp
 /I .
+/I E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Inc\GeneHunter
 /I E:\GitHub\Gene-Hunter\GeneHunter\Source
 /I Runtime
 /I Runtime\TraceLog\Public
@@ -249,10 +250,7 @@ E:\GitHub\Gene-Hunter\GeneHunter\Source\GeneHunter\MyClass.cpp
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
-/FI"E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\GeneHunterEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
-/FI"E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Development\GeneHunter\Definitions.GeneHunter.h"
-/Yu"E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\GeneHunterEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
-/Fp"E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\GeneHunterEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.pch"
+/FI"E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Development\GeneHunter\Definitions.h"
 /Fo"E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Development\GeneHunter\MyClass.cpp.obj"
 /Zc:inline
 /nologo
