@@ -1,0 +1,1 @@
+This folder is dedicated to poorly-thought out ideas, the majority of which will never see the light of day. May they go through rigorous edits by a diversity of people in order to improve.
