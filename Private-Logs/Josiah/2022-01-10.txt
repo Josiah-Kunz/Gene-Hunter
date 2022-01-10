@@ -1,0 +1,5 @@
+Okay, so Blueprints aren't so bad. I still think they're just as much work as coding, but they have an added benefit: they also serve as a flowchart documentation. Sort of. 
+
+I've come to a crossroads with the Type Advantage widget. If I use a DataTable as the source data (which sounds like a good idea), I can't modify it with Widgets. Legend says I can modify it with C++, though. My plan is to create my own widget in C++. Then I can modify the DataTable... right?
+
+I've also done the C++ tutorial. It wasn't that good of one (a few typos), but I got the gist. Jist? Whatever. It's a little cumbersome at first glance, but not any more than C# was with Unity when I first started. I have high hopes.
