@@ -18,6 +18,12 @@ class GENEHUNTER_API UType : public UPrimaryDataAsset
 public:
 
 	/**
+	 * The name as it is displayed in game.
+	 **/
+	UPROPERTY( EditAnywhere, BlueprintReadWrite )
+	FText DisplayName;
+	
+	/**
 	 * A map of modifiers that this Type gets when attacking other Types.
 	 **/
 	UPROPERTY( EditAnywhere, BlueprintReadWrite )
