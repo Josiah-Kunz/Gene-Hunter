@@ -8,7 +8,6 @@
 #include "UObject/ScriptMacros.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
-class UDataTable;
 #ifdef GENEHUNTER_GeneHunterBPLibrary_generated_h
 #error "GeneHunterBPLibrary.generated.h already included, missing '#pragma once' in GeneHunterBPLibrary.h"
 #endif
@@ -17,13 +16,11 @@ class UDataTable;
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_SPARSE_DATA
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_RPC_WRAPPERS \
  \
-	DECLARE_FUNCTION(execWriteToDataTableZZZ); \
 	DECLARE_FUNCTION(execSquareNumber);
 
 
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_RPC_WRAPPERS_NO_PURE_DECLS \
  \
-	DECLARE_FUNCTION(execWriteToDataTableZZZ); \
 	DECLARE_FUNCTION(execSquareNumber);
 
 

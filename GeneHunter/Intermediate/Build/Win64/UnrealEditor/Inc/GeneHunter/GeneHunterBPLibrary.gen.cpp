@@ -17,17 +17,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 	GENEHUNTER_API UClass* Z_Construct_UClass_UGeneHunterBPLibrary();
 	ENGINE_API UClass* Z_Construct_UClass_UBlueprintFunctionLibrary();
 	UPackage* Z_Construct_UPackage__Script_GeneHunter();
-	ENGINE_API UClass* Z_Construct_UClass_UDataTable_NoRegister();
 // End Cross Module References
-	DEFINE_FUNCTION(UGeneHunterBPLibrary::execWriteToDataTableZZZ)
-	{
-		P_GET_OBJECT(UDataTable,Z_Param_DataTable);
-		P_GET_PROPERTY(FStrProperty,Z_Param_RowName);
-		P_FINISH;
-		P_NATIVE_BEGIN;
-		UGeneHunterBPLibrary::WriteToDataTableZZZ(Z_Param_DataTable,Z_Param_RowName);
-		P_NATIVE_END;
-	}
 	DEFINE_FUNCTION(UGeneHunterBPLibrary::execSquareNumber)
 	{
 		P_GET_PROPERTY(FFloatProperty,Z_Param_In);
@@ -41,7 +31,6 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		UClass* Class = UGeneHunterBPLibrary::StaticClass();
 		static const FNameNativePtrPair Funcs[] = {
 			{ "SquareNumber", &UGeneHunterBPLibrary::execSquareNumber },
-			{ "WriteToDataTableZZZ", &UGeneHunterBPLibrary::execWriteToDataTableZZZ },
 		};
 		FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 	}
@@ -89,58 +78,6 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		}
 		return ReturnFunction;
 	}
-	struct Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics
-	{
-		struct GeneHunterBPLibrary_eventWriteToDataTableZZZ_Parms
-		{
-			const UDataTable* DataTable;
-			FString RowName;
-		};
-#if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam NewProp_DataTable_MetaData[];
-#endif
-		static const UECodeGen_Private::FObjectPropertyParams NewProp_DataTable;
-#if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam NewProp_RowName_MetaData[];
-#endif
-		static const UECodeGen_Private::FStrPropertyParams NewProp_RowName;
-		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
-#if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
-#endif
-		static const UECodeGen_Private::FFunctionParams FuncParams;
-	};
-#if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::NewProp_DataTable_MetaData[] = {
-		{ "NativeConst", "" },
-	};
-#endif
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::NewProp_DataTable = { "DataTable", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(GeneHunterBPLibrary_eventWriteToDataTableZZZ_Parms, DataTable), Z_Construct_UClass_UDataTable_NoRegister, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::NewProp_DataTable_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::NewProp_DataTable_MetaData)) };
-#if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::NewProp_RowName_MetaData[] = {
-		{ "NativeConst", "" },
-	};
-#endif
-	const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::NewProp_RowName = { "RowName", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(GeneHunterBPLibrary_eventWriteToDataTableZZZ_Parms, RowName), METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::NewProp_RowName_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::NewProp_RowName_MetaData)) };
-	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::PropPointers[] = {
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::NewProp_DataTable,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::NewProp_RowName,
-	};
-#if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "GeneHunterBPLibrary.h" },
-	};
-#endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "WriteToDataTableZZZ", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventWriteToDataTableZZZ_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04042401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::Function_MetaDataParams)) };
-	UFunction* Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ()
-	{
-		static UFunction* ReturnFunction = nullptr;
-		if (!ReturnFunction)
-		{
-			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ_Statics::FuncParams);
-		}
-		return ReturnFunction;
-	}
 	UClass* Z_Construct_UClass_UGeneHunterBPLibrary_NoRegister()
 	{
 		return UGeneHunterBPLibrary::StaticClass();
@@ -161,7 +98,6 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 	};
 	const FClassFunctionLinkInfo Z_Construct_UClass_UGeneHunterBPLibrary_Statics::FuncInfo[] = {
 		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber, "SquareNumber" }, // 2429659646
-		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_WriteToDataTableZZZ, "WriteToDataTableZZZ" }, // 2551715153
 	};
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UGeneHunterBPLibrary_Statics::Class_MetaDataParams[] = {
@@ -197,7 +133,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UGeneHunterBPLibrary, 3149586475);
+	IMPLEMENT_CLASS(UGeneHunterBPLibrary, 984635862);
 	template<> GENEHUNTER_API UClass* StaticClass<UGeneHunterBPLibrary>()
 	{
 		return UGeneHunterBPLibrary::StaticClass();

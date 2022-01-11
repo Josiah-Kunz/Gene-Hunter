@@ -20,7 +20,4 @@ class GENEHUNTER_API UGeneHunterBPLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable)
 	static float SquareNumber(const float In);
-
-	UFUNCTION(BlueprintCallable)
-	static void WriteToDataTableZZZ(const UDataTable* DataTable, const FString RowName);
 };
