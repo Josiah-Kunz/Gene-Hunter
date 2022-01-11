@@ -1,0 +1,54 @@
+E:\GitHub\Gene-Hunter\GeneHunter\Plugins\Developer\RiderLink\Source\RiderShaderInfoDump\RiderShaderInfoDump.cpp
+/I .
+/I Runtime
+/I Runtime\TraceLog\Public
+/I Runtime\Core\Public
+/I Runtime\Projects\Public
+/I Runtime\Json\Public
+/I Runtime\RenderCore\Public
+/I Runtime\RHI\Public
+/I E:\GitHub\Gene-Hunter\GeneHunter\Plugins\Developer\RiderLink\Source
+/I "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE"
+/I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
+/FI"E:\GitHub\Gene-Hunter\GeneHunter\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderShaderInfoDump\Definitions.h"
+/Fo"E:\GitHub\Gene-Hunter\GeneHunter\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderShaderInfoDump\RiderShaderInfoDump.cpp.obj"
+/Zc:inline
+/nologo
+/Oi
+/c
+/Gw
+/Gy
+/Zm1000
+/wd4819
+/D_CRT_STDIO_LEGACY_WIDE_SPECIFIERS=1
+/D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS=1
+/D_WINDLL
+/D_DISABLE_EXTENDED_ALIGNED_STORAGE
+/source-charset:utf-8
+/execution-charset:utf-8
+/Ob2
+/Ox
+/Ot
+/GF
+/errorReport:prompt
+/EHsc
+/Z7
+/MD
+/bigobj
+/fp:fast
+/Zo
+/Zp8
+/we4456
+/we4458
+/we4459
+/wd4463
+/we4668
+/wd4244
+/wd4838
+/TP
+/GR-
+/W4
