@@ -21,7 +21,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunter_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000000,
-				0x1957A4F2,
+				0x28195391,
 				0xBDCC30F3,
 				METADATA_PARAMS(nullptr, 0)
 			};

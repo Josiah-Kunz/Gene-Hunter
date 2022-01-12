@@ -33,10 +33,6 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[];
 #endif
-#if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam NewProp_DisplayName_MetaData[];
-#endif
-		static const UECodeGen_Private::FTextPropertyParams NewProp_DisplayName;
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_AttackModifiers_ValueProp;
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_AttackModifiers_Key_KeyProp;
 #if WITH_METADATA
@@ -71,15 +67,6 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		{ "ModuleRelativePath", "Type.h" },
 	};
 #endif
-#if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UType_Statics::NewProp_DisplayName_MetaData[] = {
-		{ "Category", "Type" },
-		{ "Comment", "/**\n\x09 * The name as it is displayed in game.\n\x09 **/" },
-		{ "ModuleRelativePath", "Type.h" },
-		{ "ToolTip", "The name as it is displayed in game." },
-	};
-#endif
-	const UECodeGen_Private::FTextPropertyParams Z_Construct_UClass_UType_Statics::NewProp_DisplayName = { "DisplayName", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Text, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UType, DisplayName), METADATA_PARAMS(Z_Construct_UClass_UType_Statics::NewProp_DisplayName_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UType_Statics::NewProp_DisplayName_MetaData)) };
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UType_Statics::NewProp_AttackModifiers_ValueProp = { "AttackModifiers", nullptr, (EPropertyFlags)0x0000000000000001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 1, Z_Construct_UClass_UAttackModifier_NoRegister, METADATA_PARAMS(nullptr, 0) };
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UType_Statics::NewProp_AttackModifiers_Key_KeyProp = { "AttackModifiers_Key", nullptr, (EPropertyFlags)0x0000000000000001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
 #if WITH_METADATA
@@ -114,7 +101,6 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 #endif
 	const UECodeGen_Private::FTextPropertyParams Z_Construct_UClass_UType_Statics::NewProp_FlavorText = { "FlavorText", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Text, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UType, FlavorText), METADATA_PARAMS(Z_Construct_UClass_UType_Statics::NewProp_FlavorText_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UType_Statics::NewProp_FlavorText_MetaData)) };
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UType_Statics::PropPointers[] = {
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UType_Statics::NewProp_DisplayName,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UType_Statics::NewProp_AttackModifiers_ValueProp,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UType_Statics::NewProp_AttackModifiers_Key_KeyProp,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UType_Statics::NewProp_AttackModifiers,
@@ -150,7 +136,7 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UType, 1871893132);
+	IMPLEMENT_CLASS(UType, 2954205837);
 	template<> GENEHUNTER_API UClass* StaticClass<UType>()
 	{
 		return UType::StaticClass();
