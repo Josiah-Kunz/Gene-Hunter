@@ -12,6 +12,11 @@
 *\.DS_Store
 *\.swp
 
+# Unreal debug files
+#UnrealEditor-GeneHunter-*.pdb
+#UnrealEditor-GeneHunter-*.exp
+#UnrealEditor-GeneHunter-*.response
+
 # Visual Studio 2015 user specific files
 .vs/
 

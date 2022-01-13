@@ -4,8 +4,18 @@
 #include "GeneHunterBPLibrary.h"
 
 
-float UGeneHunterBPLibrary::SquareNumber(const float In)
+FString UGeneHunterBPLibrary::EnsureValidAssetName(const FString Filename)
 {
-	return FMath::Pow(In, 2);
+	FString Ret = "";
+
+	// Only alpha characters allowed!
+	for (char c : Filename)
+	{
+		if (std::isalpha(c))
+			Ret += c;
+	}
+
+	return Ret;
+	
 }
 

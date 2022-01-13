@@ -19,5 +19,5 @@ class GENEHUNTER_API UGeneHunterBPLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 	UFUNCTION(BlueprintCallable)
-	static float SquareNumber(const float In);
+	static FString EnsureValidAssetName(const FString Filename);
 };

@@ -16,12 +16,12 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_SPARSE_DATA
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_RPC_WRAPPERS \
  \
-	DECLARE_FUNCTION(execSquareNumber);
+	DECLARE_FUNCTION(execEnsureValidAssetName);
 
 
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_RPC_WRAPPERS_NO_PURE_DECLS \
  \
-	DECLARE_FUNCTION(execSquareNumber);
+	DECLARE_FUNCTION(execEnsureValidAssetName);
 
 
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_INCLASS_NO_PURE_DECLS \

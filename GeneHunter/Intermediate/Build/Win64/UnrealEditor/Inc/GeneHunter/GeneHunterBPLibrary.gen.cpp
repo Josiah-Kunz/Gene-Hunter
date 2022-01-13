@@ -18,34 +18,34 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 	ENGINE_API UClass* Z_Construct_UClass_UBlueprintFunctionLibrary();
 	UPackage* Z_Construct_UPackage__Script_GeneHunter();
 // End Cross Module References
-	DEFINE_FUNCTION(UGeneHunterBPLibrary::execSquareNumber)
+	DEFINE_FUNCTION(UGeneHunterBPLibrary::execEnsureValidAssetName)
 	{
-		P_GET_PROPERTY(FFloatProperty,Z_Param_In);
+		P_GET_PROPERTY(FStrProperty,Z_Param_Filename);
 		P_FINISH;
 		P_NATIVE_BEGIN;
-		*(float*)Z_Param__Result=UGeneHunterBPLibrary::SquareNumber(Z_Param_In);
+		*(FString*)Z_Param__Result=UGeneHunterBPLibrary::EnsureValidAssetName(Z_Param_Filename);
 		P_NATIVE_END;
 	}
 	void UGeneHunterBPLibrary::StaticRegisterNativesUGeneHunterBPLibrary()
 	{
 		UClass* Class = UGeneHunterBPLibrary::StaticClass();
 		static const FNameNativePtrPair Funcs[] = {
-			{ "SquareNumber", &UGeneHunterBPLibrary::execSquareNumber },
+			{ "EnsureValidAssetName", &UGeneHunterBPLibrary::execEnsureValidAssetName },
 		};
 		FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 	}
-	struct Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics
+	struct Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics
 	{
-		struct GeneHunterBPLibrary_eventSquareNumber_Parms
+		struct GeneHunterBPLibrary_eventEnsureValidAssetName_Parms
 		{
-			float In;
-			float ReturnValue;
+			FString Filename;
+			FString ReturnValue;
 		};
 #if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam NewProp_In_MetaData[];
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_Filename_MetaData[];
 #endif
-		static const UECodeGen_Private::FFloatPropertyParams NewProp_In;
-		static const UECodeGen_Private::FFloatPropertyParams NewProp_ReturnValue;
+		static const UECodeGen_Private::FStrPropertyParams NewProp_Filename;
+		static const UECodeGen_Private::FStrPropertyParams NewProp_ReturnValue;
 		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
@@ -53,28 +53,28 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		static const UECodeGen_Private::FFunctionParams FuncParams;
 	};
 #if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::NewProp_In_MetaData[] = {
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::NewProp_Filename_MetaData[] = {
 		{ "NativeConst", "" },
 	};
 #endif
-	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::NewProp_In = { "In", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(GeneHunterBPLibrary_eventSquareNumber_Parms, In), METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::NewProp_In_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::NewProp_In_MetaData)) };
-	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(GeneHunterBPLibrary_eventSquareNumber_Parms, ReturnValue), METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::PropPointers[] = {
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::NewProp_In,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::NewProp_ReturnValue,
+	const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::NewProp_Filename = { "Filename", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(GeneHunterBPLibrary_eventEnsureValidAssetName_Parms, Filename), METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::NewProp_Filename_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::NewProp_Filename_MetaData)) };
+	const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(GeneHunterBPLibrary_eventEnsureValidAssetName_Parms, ReturnValue), METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::NewProp_Filename,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::NewProp_ReturnValue,
 	};
 #if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::Function_MetaDataParams[] = {
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::Function_MetaDataParams[] = {
 		{ "ModuleRelativePath", "GeneHunterBPLibrary.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "SquareNumber", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventSquareNumber_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04042401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::Function_MetaDataParams)) };
-	UFunction* Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber()
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "EnsureValidAssetName", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventEnsureValidAssetName_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04042401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName()
 	{
 		static UFunction* ReturnFunction = nullptr;
 		if (!ReturnFunction)
 		{
-			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber_Statics::FuncParams);
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::FuncParams);
 		}
 		return ReturnFunction;
 	}
@@ -97,7 +97,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		(UObject* (*)())Z_Construct_UPackage__Script_GeneHunter,
 	};
 	const FClassFunctionLinkInfo Z_Construct_UClass_UGeneHunterBPLibrary_Statics::FuncInfo[] = {
-		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_SquareNumber, "SquareNumber" }, // 2429659646
+		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName, "EnsureValidAssetName" }, // 3145599045
 	};
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UGeneHunterBPLibrary_Statics::Class_MetaDataParams[] = {
@@ -133,7 +133,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UGeneHunterBPLibrary, 984635862);
+	IMPLEMENT_CLASS(UGeneHunterBPLibrary, 2456486520);
 	template<> GENEHUNTER_API UClass* StaticClass<UGeneHunterBPLibrary>()
 	{
 		return UGeneHunterBPLibrary::StaticClass();
