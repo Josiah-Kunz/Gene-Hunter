@@ -8,6 +8,7 @@
 #include "UObject/ScriptMacros.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
+struct FAssetData;
 #ifdef GENEHUNTER_GeneHunterBPLibrary_generated_h
 #error "GeneHunterBPLibrary.generated.h already included, missing '#pragma once' in GeneHunterBPLibrary.h"
 #endif
@@ -16,11 +17,13 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_SPARSE_DATA
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_RPC_WRAPPERS \
  \
+	DECLARE_FUNCTION(execSortAssetsAlphabetically); \
 	DECLARE_FUNCTION(execEnsureValidAssetName);
 
 
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_RPC_WRAPPERS_NO_PURE_DECLS \
  \
+	DECLARE_FUNCTION(execSortAssetsAlphabetically); \
 	DECLARE_FUNCTION(execEnsureValidAssetName);
 
 

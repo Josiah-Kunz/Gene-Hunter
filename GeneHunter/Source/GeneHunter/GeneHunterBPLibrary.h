@@ -19,5 +19,11 @@ class GENEHUNTER_API UGeneHunterBPLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 	UFUNCTION(BlueprintCallable)
-	static FString EnsureValidAssetName(const FString Filename);
+	static void EnsureValidAssetName(const FString Filename, const FString Path, FString& SafeFilename, FString& AbsolutePath, const FString Ext = "uasset", const FString OldFilename = "");
+
+	UFUNCTION(BlueprintCallable)
+	static void SortAssetsAlphabetically(const TArray<FAssetData> Assets, TArray<FAssetData>& Sorted);
+	
+public:
+	static const int MAX_ITERATIONS = 10000;
 };
