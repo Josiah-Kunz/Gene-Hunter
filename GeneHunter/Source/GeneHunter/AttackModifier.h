@@ -3,15 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/UserDefinedStruct.h"
+#include "SupportingText.h"
 #include "AttackModifier.generated.h"
 
 /**
  * 
  */
-UCLASS()
-class GENEHUNTER_API UAttackModifier : public UUserDefinedStruct
+USTRUCT(Blueprintable)
+struct FAttackModifier
 {
 	GENERATED_BODY()
+public:
+	
+	UPROPERTY( EditAnywhere, BlueprintReadWrite )
+	float Modifier = 1;
+
+	UPROPERTY( EditAnywhere, BlueprintReadWrite )
+	FSupportingText SupportingText;
 	
 };

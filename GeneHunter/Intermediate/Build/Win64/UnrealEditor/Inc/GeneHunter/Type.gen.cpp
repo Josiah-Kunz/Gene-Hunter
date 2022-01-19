@@ -17,7 +17,7 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 	GENEHUNTER_API UClass* Z_Construct_UClass_UType();
 	ENGINE_API UClass* Z_Construct_UClass_UPrimaryDataAsset();
 	UPackage* Z_Construct_UPackage__Script_GeneHunter();
-	GENEHUNTER_API UClass* Z_Construct_UClass_UAttackModifier_NoRegister();
+	GENEHUNTER_API UScriptStruct* Z_Construct_UScriptStruct_FAttackModifier();
 	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FLinearColor();
 // End Cross Module References
 	void UType::StaticRegisterNativesUType()
@@ -33,7 +33,7 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[];
 #endif
-		static const UECodeGen_Private::FObjectPropertyParams NewProp_AttackModifiers_ValueProp;
+		static const UECodeGen_Private::FStructPropertyParams NewProp_AttackModifiers_ValueProp;
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_AttackModifiers_Key_KeyProp;
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_AttackModifiers_MetaData[];
@@ -67,7 +67,7 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		{ "ModuleRelativePath", "Type.h" },
 	};
 #endif
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UType_Statics::NewProp_AttackModifiers_ValueProp = { "AttackModifiers", nullptr, (EPropertyFlags)0x0000000000000001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 1, Z_Construct_UClass_UAttackModifier_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UType_Statics::NewProp_AttackModifiers_ValueProp = { "AttackModifiers", nullptr, (EPropertyFlags)0x0000000000000001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, 1, Z_Construct_UScriptStruct_FAttackModifier, METADATA_PARAMS(nullptr, 0) };
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UType_Statics::NewProp_AttackModifiers_Key_KeyProp = { "AttackModifiers_Key", nullptr, (EPropertyFlags)0x0000000000000001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UType_Statics::NewProp_AttackModifiers_MetaData[] = {
@@ -136,7 +136,7 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UType, 2954205837);
+	IMPLEMENT_CLASS(UType, 926167164);
 	template<> GENEHUNTER_API UClass* StaticClass<UType>()
 	{
 		return UType::StaticClass();

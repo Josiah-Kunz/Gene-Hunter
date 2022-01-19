@@ -13,72 +13,108 @@
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeAttackModifier() {}
 // Cross Module References
-	GENEHUNTER_API UClass* Z_Construct_UClass_UAttackModifier_NoRegister();
-	GENEHUNTER_API UClass* Z_Construct_UClass_UAttackModifier();
-	ENGINE_API UClass* Z_Construct_UClass_UUserDefinedStruct();
+	GENEHUNTER_API UScriptStruct* Z_Construct_UScriptStruct_FAttackModifier();
 	UPackage* Z_Construct_UPackage__Script_GeneHunter();
+	GENEHUNTER_API UScriptStruct* Z_Construct_UScriptStruct_FSupportingText();
 // End Cross Module References
-	void UAttackModifier::StaticRegisterNativesUAttackModifier()
+class UScriptStruct* FAttackModifier::StaticStruct()
+{
+	static class UScriptStruct* Singleton = NULL;
+	if (!Singleton)
 	{
+		extern GENEHUNTER_API uint32 Get_Z_Construct_UScriptStruct_FAttackModifier_Hash();
+		Singleton = GetStaticStruct(Z_Construct_UScriptStruct_FAttackModifier, Z_Construct_UPackage__Script_GeneHunter(), TEXT("AttackModifier"), sizeof(FAttackModifier), Get_Z_Construct_UScriptStruct_FAttackModifier_Hash());
 	}
-	UClass* Z_Construct_UClass_UAttackModifier_NoRegister()
+	return Singleton;
+}
+template<> GENEHUNTER_API UScriptStruct* StaticStruct<FAttackModifier>()
+{
+	return FAttackModifier::StaticStruct();
+}
+static FCompiledInDeferStruct Z_CompiledInDeferStruct_UScriptStruct_FAttackModifier(FAttackModifier::StaticStruct, TEXT("/Script/GeneHunter"), TEXT("AttackModifier"), false, nullptr, nullptr);
+static struct FScriptStruct_GeneHunter_StaticRegisterNativesFAttackModifier
+{
+	FScriptStruct_GeneHunter_StaticRegisterNativesFAttackModifier()
 	{
-		return UAttackModifier::StaticClass();
+		UScriptStruct::DeferCppStructOps(FName(TEXT("AttackModifier")),new UScriptStruct::TCppStructOps<FAttackModifier>);
 	}
-	struct Z_Construct_UClass_UAttackModifier_Statics
+} ScriptStruct_GeneHunter_StaticRegisterNativesFAttackModifier;
+	struct Z_Construct_UScriptStruct_FAttackModifier_Statics
 	{
-		static UObject* (*const DependentSingletons[])();
 #if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[];
+		static const UECodeGen_Private::FMetaDataPairParam Struct_MetaDataParams[];
 #endif
-		static const FCppClassTypeInfoStatic StaticCppClassTypeInfo;
-		static const UECodeGen_Private::FClassParams ClassParams;
-	};
-	UObject* (*const Z_Construct_UClass_UAttackModifier_Statics::DependentSingletons[])() = {
-		(UObject* (*)())Z_Construct_UClass_UUserDefinedStruct,
-		(UObject* (*)())Z_Construct_UPackage__Script_GeneHunter,
+		static void* NewStructOps();
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_Modifier_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_Modifier;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_SupportingText_MetaData[];
+#endif
+		static const UECodeGen_Private::FStructPropertyParams NewProp_SupportingText;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+		static const UECodeGen_Private::FStructParams ReturnStructParams;
 	};
 #if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UAttackModifier_Statics::Class_MetaDataParams[] = {
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FAttackModifier_Statics::Struct_MetaDataParams[] = {
+		{ "BlueprintType", "true" },
 		{ "Comment", "/**\n * \n */" },
-		{ "IncludePath", "AttackModifier.h" },
+		{ "IsBlueprintBase", "true" },
 		{ "ModuleRelativePath", "AttackModifier.h" },
 	};
 #endif
-	const FCppClassTypeInfoStatic Z_Construct_UClass_UAttackModifier_Statics::StaticCppClassTypeInfo = {
-		TCppClassTypeTraits<UAttackModifier>::IsAbstract,
-	};
-	const UECodeGen_Private::FClassParams Z_Construct_UClass_UAttackModifier_Statics::ClassParams = {
-		&UAttackModifier::StaticClass,
-		nullptr,
-		&StaticCppClassTypeInfo,
-		DependentSingletons,
-		nullptr,
-		nullptr,
-		nullptr,
-		UE_ARRAY_COUNT(DependentSingletons),
-		0,
-		0,
-		0,
-		0x001000A0u,
-		METADATA_PARAMS(Z_Construct_UClass_UAttackModifier_Statics::Class_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UClass_UAttackModifier_Statics::Class_MetaDataParams))
-	};
-	UClass* Z_Construct_UClass_UAttackModifier()
+	void* Z_Construct_UScriptStruct_FAttackModifier_Statics::NewStructOps()
 	{
-		static UClass* OuterClass = nullptr;
-		if (!OuterClass)
+		return (UScriptStruct::ICppStructOps*)new UScriptStruct::TCppStructOps<FAttackModifier>();
+	}
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FAttackModifier_Statics::NewProp_Modifier_MetaData[] = {
+		{ "Category", "AttackModifier" },
+		{ "ModuleRelativePath", "AttackModifier.h" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FAttackModifier_Statics::NewProp_Modifier = { "Modifier", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(FAttackModifier, Modifier), METADATA_PARAMS(Z_Construct_UScriptStruct_FAttackModifier_Statics::NewProp_Modifier_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FAttackModifier_Statics::NewProp_Modifier_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FAttackModifier_Statics::NewProp_SupportingText_MetaData[] = {
+		{ "Category", "AttackModifier" },
+		{ "ModuleRelativePath", "AttackModifier.h" },
+	};
+#endif
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FAttackModifier_Statics::NewProp_SupportingText = { "SupportingText", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(FAttackModifier, SupportingText), Z_Construct_UScriptStruct_FSupportingText, METADATA_PARAMS(Z_Construct_UScriptStruct_FAttackModifier_Statics::NewProp_SupportingText_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FAttackModifier_Statics::NewProp_SupportingText_MetaData)) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FAttackModifier_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAttackModifier_Statics::NewProp_Modifier,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAttackModifier_Statics::NewProp_SupportingText,
+	};
+	const UECodeGen_Private::FStructParams Z_Construct_UScriptStruct_FAttackModifier_Statics::ReturnStructParams = {
+		(UObject* (*)())Z_Construct_UPackage__Script_GeneHunter,
+		nullptr,
+		&NewStructOps,
+		"AttackModifier",
+		sizeof(FAttackModifier),
+		alignof(FAttackModifier),
+		Z_Construct_UScriptStruct_FAttackModifier_Statics::PropPointers,
+		UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FAttackModifier_Statics::PropPointers),
+		RF_Public|RF_Transient|RF_MarkAsNative,
+		EStructFlags(0x00000001),
+		METADATA_PARAMS(Z_Construct_UScriptStruct_FAttackModifier_Statics::Struct_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FAttackModifier_Statics::Struct_MetaDataParams))
+	};
+	UScriptStruct* Z_Construct_UScriptStruct_FAttackModifier()
+	{
+#if WITH_HOT_RELOAD
+		extern uint32 Get_Z_Construct_UScriptStruct_FAttackModifier_Hash();
+		UPackage* Outer = Z_Construct_UPackage__Script_GeneHunter();
+		static UScriptStruct* ReturnStruct = FindExistingStructIfHotReloadOrDynamic(Outer, TEXT("AttackModifier"), sizeof(FAttackModifier), Get_Z_Construct_UScriptStruct_FAttackModifier_Hash(), false);
+#else
+		static UScriptStruct* ReturnStruct = nullptr;
+#endif
+		if (!ReturnStruct)
 		{
-			UECodeGen_Private::ConstructUClass(OuterClass, Z_Construct_UClass_UAttackModifier_Statics::ClassParams);
+			UECodeGen_Private::ConstructUScriptStruct(ReturnStruct, Z_Construct_UScriptStruct_FAttackModifier_Statics::ReturnStructParams);
 		}
-		return OuterClass;
+		return ReturnStruct;
 	}
-	IMPLEMENT_CLASS(UAttackModifier, 3018319012);
-	template<> GENEHUNTER_API UClass* StaticClass<UAttackModifier>()
-	{
-		return UAttackModifier::StaticClass();
-	}
-	static FCompiledInDefer Z_CompiledInDefer_UClass_UAttackModifier(Z_Construct_UClass_UAttackModifier, &UAttackModifier::StaticClass, TEXT("/Script/GeneHunter"), TEXT("UAttackModifier"), false, nullptr, nullptr, nullptr);
-	DEFINE_VTABLE_PTR_HELPER_CTOR(UAttackModifier);
+	uint32 Get_Z_Construct_UScriptStruct_FAttackModifier_Hash() { return 3633297239U; }
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 #ifdef _MSC_VER
 #pragma warning (pop)

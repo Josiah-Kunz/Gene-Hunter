@@ -21,7 +21,7 @@ public:
 	 * A map of modifiers that this Type gets when attacking other Types.
 	 **/
 	UPROPERTY( EditAnywhere, BlueprintReadWrite )
-	TMap<UType*, UAttackModifier*> AttackModifiers;
+	TMap<UType*, FAttackModifier> AttackModifiers;
 
 	UPROPERTY( EditAnywhere, BlueprintReadWrite )
 	TArray<FLinearColor> Colors;
