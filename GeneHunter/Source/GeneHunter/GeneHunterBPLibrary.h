@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "K2Node_GetDataTableRow.h"
+#include "Components/EditableText.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 
 #include "Engine/DataTable.h"

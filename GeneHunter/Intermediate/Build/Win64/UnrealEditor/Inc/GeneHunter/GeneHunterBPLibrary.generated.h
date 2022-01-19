@@ -14,20 +14,20 @@ struct FAssetData;
 #endif
 #define GENEHUNTER_GeneHunterBPLibrary_generated_h
 
-#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_SPARSE_DATA
-#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_RPC_WRAPPERS \
+#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_SPARSE_DATA
+#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_RPC_WRAPPERS \
  \
 	DECLARE_FUNCTION(execSortAssetsAlphabetically); \
 	DECLARE_FUNCTION(execEnsureValidAssetName);
 
 
-#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_RPC_WRAPPERS_NO_PURE_DECLS \
+#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_RPC_WRAPPERS_NO_PURE_DECLS \
  \
 	DECLARE_FUNCTION(execSortAssetsAlphabetically); \
 	DECLARE_FUNCTION(execEnsureValidAssetName);
 
 
-#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_INCLASS_NO_PURE_DECLS \
+#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUGeneHunterBPLibrary(); \
 	friend struct Z_Construct_UClass_UGeneHunterBPLibrary_Statics; \
@@ -36,7 +36,7 @@ public: \
 	DECLARE_SERIALIZER(UGeneHunterBPLibrary)
 
 
-#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_INCLASS \
+#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_INCLASS \
 private: \
 	static void StaticRegisterNativesUGeneHunterBPLibrary(); \
 	friend struct Z_Construct_UClass_UGeneHunterBPLibrary_Statics; \
@@ -45,7 +45,7 @@ public: \
 	DECLARE_SERIALIZER(UGeneHunterBPLibrary)
 
 
-#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_STANDARD_CONSTRUCTORS \
+#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_STANDARD_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UGeneHunterBPLibrary(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UGeneHunterBPLibrary) \
@@ -58,7 +58,7 @@ private: \
 public:
 
 
-#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_ENHANCED_CONSTRUCTORS \
+#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UGeneHunterBPLibrary(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) : Super(ObjectInitializer) { }; \
 private: \
@@ -71,28 +71,28 @@ public: \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UGeneHunterBPLibrary)
 
 
-#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_PRIVATE_PROPERTY_OFFSET
-#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_16_PROLOG
-#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_GENERATED_BODY_LEGACY \
+#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_PRIVATE_PROPERTY_OFFSET
+#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_17_PROLOG
+#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_GENERATED_BODY_LEGACY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_PRIVATE_PROPERTY_OFFSET \
-	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_SPARSE_DATA \
-	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_RPC_WRAPPERS \
-	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_INCLASS \
-	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_STANDARD_CONSTRUCTORS \
+	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_PRIVATE_PROPERTY_OFFSET \
+	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_SPARSE_DATA \
+	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_RPC_WRAPPERS \
+	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_INCLASS \
+	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_STANDARD_CONSTRUCTORS \
 public: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
-#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_GENERATED_BODY \
+#define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_PRIVATE_PROPERTY_OFFSET \
-	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_SPARSE_DATA \
-	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_RPC_WRAPPERS_NO_PURE_DECLS \
-	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_INCLASS_NO_PURE_DECLS \
-	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_ENHANCED_CONSTRUCTORS \
+	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_PRIVATE_PROPERTY_OFFSET \
+	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_SPARSE_DATA \
+	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_RPC_WRAPPERS_NO_PURE_DECLS \
+	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_INCLASS_NO_PURE_DECLS \
+	GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_20_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
