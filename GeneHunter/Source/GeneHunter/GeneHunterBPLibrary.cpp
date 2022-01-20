@@ -6,10 +6,10 @@ void UGeneHunterBPLibrary::EnsureValidAssetName(const FString Filename, const FS
 {
 	SafeFilename = "";
 
-	// Only alpha characters allowed!
+	// Only alphanumeric characters allowed!
 	for (char c : Filename)
 	{
-		if (std::isalpha(c))
+		if (std::isalnum(c))
 			SafeFilename += c;
 	}
 

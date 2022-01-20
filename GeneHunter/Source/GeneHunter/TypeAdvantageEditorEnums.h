@@ -17,5 +17,6 @@ UENUM(BlueprintType)
 enum class TAText : uint8
 {
 	DevNote		UMETA(DisplayName = "DevNote"),
+	Description	UMETA(DisplayName = "Description"),
 	FlavorText	UMETA(DisplayName = "FlavorText"),
 };

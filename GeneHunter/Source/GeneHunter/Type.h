@@ -27,9 +27,6 @@ public:
 	TArray<FLinearColor> Colors;
 	
 	UPROPERTY( EditAnywhere, BlueprintReadWrite )
-	FText DevNote;
-
-	UPROPERTY( EditAnywhere, BlueprintReadWrite )
-	FText FlavorText;
+	FSupportingText SupportingText;
 	
 };

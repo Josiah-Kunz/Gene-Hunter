@@ -31,7 +31,7 @@ void EmptyLinkFunctionForGeneratedCodeTypeAdvantageEditorEnums() {}
 		return TAText_StaticEnum();
 	}
 	static FCompiledInDeferEnum Z_CompiledInDeferEnum_UEnum_TAText(TAText_StaticEnum, TEXT("/Script/GeneHunter"), TEXT("TAText"), false, nullptr, nullptr);
-	uint32 Get_Z_Construct_UEnum_GeneHunter_TAText_Hash() { return 3239919573U; }
+	uint32 Get_Z_Construct_UEnum_GeneHunter_TAText_Hash() { return 4150020647U; }
 	UEnum* Z_Construct_UEnum_GeneHunter_TAText()
 	{
 #if WITH_HOT_RELOAD
@@ -44,11 +44,14 @@ void EmptyLinkFunctionForGeneratedCodeTypeAdvantageEditorEnums() {}
 		{
 			static const UECodeGen_Private::FEnumeratorParam Enumerators[] = {
 				{ "TAText::DevNote", (int64)TAText::DevNote },
+				{ "TAText::Description", (int64)TAText::Description },
 				{ "TAText::FlavorText", (int64)TAText::FlavorText },
 			};
 #if WITH_METADATA
 			const UECodeGen_Private::FMetaDataPairParam Enum_MetaDataParams[] = {
 				{ "BlueprintType", "true" },
+				{ "Description.DisplayName", "Description" },
+				{ "Description.Name", "TAText::Description" },
 				{ "DevNote.DisplayName", "DevNote" },
 				{ "DevNote.Name", "TAText::DevNote" },
 				{ "FlavorText.DisplayName", "FlavorText" },

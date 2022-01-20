@@ -19,6 +19,7 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 	UPackage* Z_Construct_UPackage__Script_GeneHunter();
 	GENEHUNTER_API UScriptStruct* Z_Construct_UScriptStruct_FAttackModifier();
 	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FLinearColor();
+	GENEHUNTER_API UScriptStruct* Z_Construct_UScriptStruct_FSupportingText();
 // End Cross Module References
 	void UType::StaticRegisterNativesUType()
 	{
@@ -45,13 +46,9 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 #endif
 		static const UECodeGen_Private::FArrayPropertyParams NewProp_Colors;
 #if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam NewProp_DevNote_MetaData[];
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_SupportingText_MetaData[];
 #endif
-		static const UECodeGen_Private::FTextPropertyParams NewProp_DevNote;
-#if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam NewProp_FlavorText_MetaData[];
-#endif
-		static const UECodeGen_Private::FTextPropertyParams NewProp_FlavorText;
+		static const UECodeGen_Private::FStructPropertyParams NewProp_SupportingText;
 		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 		static const FCppClassTypeInfoStatic StaticCppClassTypeInfo;
 		static const UECodeGen_Private::FClassParams ClassParams;
@@ -87,27 +84,19 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 #endif
 	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_UType_Statics::NewProp_Colors = { "Colors", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UType, Colors), EArrayPropertyFlags::None, METADATA_PARAMS(Z_Construct_UClass_UType_Statics::NewProp_Colors_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UType_Statics::NewProp_Colors_MetaData)) };
 #if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UType_Statics::NewProp_DevNote_MetaData[] = {
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UType_Statics::NewProp_SupportingText_MetaData[] = {
 		{ "Category", "Type" },
 		{ "ModuleRelativePath", "Type.h" },
 	};
 #endif
-	const UECodeGen_Private::FTextPropertyParams Z_Construct_UClass_UType_Statics::NewProp_DevNote = { "DevNote", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Text, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UType, DevNote), METADATA_PARAMS(Z_Construct_UClass_UType_Statics::NewProp_DevNote_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UType_Statics::NewProp_DevNote_MetaData)) };
-#if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UType_Statics::NewProp_FlavorText_MetaData[] = {
-		{ "Category", "Type" },
-		{ "ModuleRelativePath", "Type.h" },
-	};
-#endif
-	const UECodeGen_Private::FTextPropertyParams Z_Construct_UClass_UType_Statics::NewProp_FlavorText = { "FlavorText", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Text, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UType, FlavorText), METADATA_PARAMS(Z_Construct_UClass_UType_Statics::NewProp_FlavorText_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UType_Statics::NewProp_FlavorText_MetaData)) };
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UType_Statics::NewProp_SupportingText = { "SupportingText", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UType, SupportingText), Z_Construct_UScriptStruct_FSupportingText, METADATA_PARAMS(Z_Construct_UClass_UType_Statics::NewProp_SupportingText_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UType_Statics::NewProp_SupportingText_MetaData)) };
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UType_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UType_Statics::NewProp_AttackModifiers_ValueProp,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UType_Statics::NewProp_AttackModifiers_Key_KeyProp,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UType_Statics::NewProp_AttackModifiers,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UType_Statics::NewProp_Colors_Inner,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UType_Statics::NewProp_Colors,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UType_Statics::NewProp_DevNote,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UType_Statics::NewProp_FlavorText,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UType_Statics::NewProp_SupportingText,
 	};
 	const FCppClassTypeInfoStatic Z_Construct_UClass_UType_Statics::StaticCppClassTypeInfo = {
 		TCppClassTypeTraits<UType>::IsAbstract,
@@ -136,7 +125,7 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UType, 926167164);
+	IMPLEMENT_CLASS(UType, 4111829168);
 	template<> GENEHUNTER_API UClass* StaticClass<UType>()
 	{
 		return UType::StaticClass();

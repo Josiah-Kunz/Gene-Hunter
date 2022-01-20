@@ -19,6 +19,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
 #define FOREACH_ENUM_TATEXT(op) \
 	op(TAText::DevNote) \
+	op(TAText::Description) \
 	op(TAText::FlavorText) 
 
 enum class TAText : uint8;
