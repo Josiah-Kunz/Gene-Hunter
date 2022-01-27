@@ -1,4 +1,5 @@
 
+#include "EditorScriptingUtilities/Public/EditorAssetLibrary.h"
 #include "GeneHunterBPLibrary.h"
 
 
@@ -40,5 +41,12 @@ void UGeneHunterBPLibrary::SortAssetsAlphabetically(const TArray<FAssetData> Ass
 		return A.AssetName.LexicalLess(B.AssetName);
 	});
 }
+
+bool UGeneHunterBPLibrary::SaveLoadedAssetFromAnywhere(UObject* Asset, const bool bOnlyIfDirty)
+{
+	return UEditorAssetLibrary::SaveLoadedAsset(Asset, bOnlyIfDirty);
+	
+}
+
 
 

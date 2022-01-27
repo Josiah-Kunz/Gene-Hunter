@@ -3,11 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "K2Node_GetDataTableRow.h"
-#include "Components/EditableText.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 
-#include "Engine/DataTable.h"
+#include "EditorScriptingUtilities/Public/EditorAssetLibrary.h"
 #include "GeneHunterBPLibrary.generated.h"
 
 
@@ -24,6 +22,9 @@ class GENEHUNTER_API UGeneHunterBPLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable)
 	static void SortAssetsAlphabetically(const TArray<FAssetData> Assets, TArray<FAssetData>& Sorted);
+
+	UFUNCTION(BlueprintCallable)
+	static bool SaveLoadedAssetFromAnywhere(UObject* Asset, const bool bOnlyIfDirty = true);
 	
 public:
 	static const int MAX_ITERATIONS = 10000;

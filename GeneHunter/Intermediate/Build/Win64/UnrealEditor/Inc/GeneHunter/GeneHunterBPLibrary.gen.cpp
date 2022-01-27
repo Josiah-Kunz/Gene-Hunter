@@ -17,8 +17,18 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 	GENEHUNTER_API UClass* Z_Construct_UClass_UGeneHunterBPLibrary();
 	ENGINE_API UClass* Z_Construct_UClass_UBlueprintFunctionLibrary();
 	UPackage* Z_Construct_UPackage__Script_GeneHunter();
+	COREUOBJECT_API UClass* Z_Construct_UClass_UObject_NoRegister();
 	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FAssetData();
 // End Cross Module References
+	DEFINE_FUNCTION(UGeneHunterBPLibrary::execSaveLoadedAssetFromAnywhere)
+	{
+		P_GET_OBJECT(UObject,Z_Param_Asset);
+		P_GET_UBOOL(Z_Param_bOnlyIfDirty);
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		*(bool*)Z_Param__Result=UGeneHunterBPLibrary::SaveLoadedAssetFromAnywhere(Z_Param_Asset,Z_Param_bOnlyIfDirty);
+		P_NATIVE_END;
+	}
 	DEFINE_FUNCTION(UGeneHunterBPLibrary::execSortAssetsAlphabetically)
 	{
 		P_GET_TARRAY(FAssetData,Z_Param_Assets);
@@ -46,6 +56,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		UClass* Class = UGeneHunterBPLibrary::StaticClass();
 		static const FNameNativePtrPair Funcs[] = {
 			{ "EnsureValidAssetName", &UGeneHunterBPLibrary::execEnsureValidAssetName },
+			{ "SaveLoadedAssetFromAnywhere", &UGeneHunterBPLibrary::execSaveLoadedAssetFromAnywhere },
 			{ "SortAssetsAlphabetically", &UGeneHunterBPLibrary::execSortAssetsAlphabetically },
 		};
 		FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
@@ -136,6 +147,65 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		}
 		return ReturnFunction;
 	}
+	struct Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics
+	{
+		struct GeneHunterBPLibrary_eventSaveLoadedAssetFromAnywhere_Parms
+		{
+			UObject* Asset;
+			bool bOnlyIfDirty;
+			bool ReturnValue;
+		};
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_Asset;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_bOnlyIfDirty_MetaData[];
+#endif
+		static void NewProp_bOnlyIfDirty_SetBit(void* Obj);
+		static const UECodeGen_Private::FBoolPropertyParams NewProp_bOnlyIfDirty;
+		static void NewProp_ReturnValue_SetBit(void* Obj);
+		static const UECodeGen_Private::FBoolPropertyParams NewProp_ReturnValue;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::NewProp_Asset = { "Asset", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(GeneHunterBPLibrary_eventSaveLoadedAssetFromAnywhere_Parms, Asset), Z_Construct_UClass_UObject_NoRegister, METADATA_PARAMS(nullptr, 0) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::NewProp_bOnlyIfDirty_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif
+	void Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::NewProp_bOnlyIfDirty_SetBit(void* Obj)
+	{
+		((GeneHunterBPLibrary_eventSaveLoadedAssetFromAnywhere_Parms*)Obj)->bOnlyIfDirty = 1;
+	}
+	const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::NewProp_bOnlyIfDirty = { "bOnlyIfDirty", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(GeneHunterBPLibrary_eventSaveLoadedAssetFromAnywhere_Parms), &Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::NewProp_bOnlyIfDirty_SetBit, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::NewProp_bOnlyIfDirty_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::NewProp_bOnlyIfDirty_MetaData)) };
+	void Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::NewProp_ReturnValue_SetBit(void* Obj)
+	{
+		((GeneHunterBPLibrary_eventSaveLoadedAssetFromAnywhere_Parms*)Obj)->ReturnValue = 1;
+	}
+	const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(GeneHunterBPLibrary_eventSaveLoadedAssetFromAnywhere_Parms), &Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::NewProp_ReturnValue_SetBit, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::NewProp_Asset,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::NewProp_bOnlyIfDirty,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::NewProp_ReturnValue,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::Function_MetaDataParams[] = {
+		{ "CPP_Default_bOnlyIfDirty", "true" },
+		{ "ModuleRelativePath", "GeneHunterBPLibrary.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "SaveLoadedAssetFromAnywhere", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventSaveLoadedAssetFromAnywhere_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04042401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
 	struct Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically_Statics
 	{
 		struct GeneHunterBPLibrary_eventSortAssetsAlphabetically_Parms
@@ -206,6 +276,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 	};
 	const FClassFunctionLinkInfo Z_Construct_UClass_UGeneHunterBPLibrary_Statics::FuncInfo[] = {
 		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName, "EnsureValidAssetName" }, // 1396083631
+		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere, "SaveLoadedAssetFromAnywhere" }, // 2606620303
 		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically, "SortAssetsAlphabetically" }, // 3125384306
 	};
 #if WITH_METADATA
@@ -242,7 +313,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UGeneHunterBPLibrary, 1089400617);
+	IMPLEMENT_CLASS(UGeneHunterBPLibrary, 1653327776);
 	template<> GENEHUNTER_API UClass* StaticClass<UGeneHunterBPLibrary>()
 	{
 		return UGeneHunterBPLibrary::StaticClass();
