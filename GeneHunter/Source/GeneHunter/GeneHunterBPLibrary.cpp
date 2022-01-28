@@ -1,6 +1,6 @@
 
-#include "EditorScriptingUtilities/Public/EditorAssetLibrary.h"
 #include "GeneHunterBPLibrary.h"
+#include "EditorScriptingUtilities/Public/EditorAssetLibrary.h"
 
 
 void UGeneHunterBPLibrary::EnsureValidAssetName(const FString Filename, const FString Path, FString& SafeFilename, FString& AbsolutePath, const FString Ext, const FString OldFilename)
@@ -47,6 +47,25 @@ bool UGeneHunterBPLibrary::SaveLoadedAssetFromAnywhere(UObject* Asset, const boo
 	return UEditorAssetLibrary::SaveLoadedAsset(Asset, bOnlyIfDirty);
 	
 }
+
+/*
+ *	Deletes "None" entries in Type->AttackModifiers. This cannot be done by Blueprint methods (afaik).
+ */
+void UGeneHunterBPLibrary::PruneTypeAttackMods(UType* Type)
+{
+
+	// Vars
+	TMap<UType*, FAttackModifier> OldMap(Type->AttackModifiers);
+
+	// Clear and refill map
+	Type->AttackModifiers.Empty();
+	for(const TPair<UType*, FAttackModifier>& pair : OldMap)
+	{
+		if (pair.Key != nullptr)
+			Type->AttackModifiers.Add(pair.Key, pair.Value);
+	}
+}
+
 
 
 

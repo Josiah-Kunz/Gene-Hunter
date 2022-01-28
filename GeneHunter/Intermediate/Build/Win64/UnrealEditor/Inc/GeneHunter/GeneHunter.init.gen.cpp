@@ -21,8 +21,8 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunter_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000000,
-				0xC25823A0,
-				0x2F5C0FF9,
+				0xA089E282,
+				0x3264BF56,
 				METADATA_PARAMS(nullptr, 0)
 			};
 			UECodeGen_Private::ConstructUPackage(ReturnPackage, PackageParams);

@@ -8,6 +8,7 @@
 #include "UObject/ScriptMacros.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
+class UType;
 class UObject;
 struct FAssetData;
 #ifdef GENEHUNTER_GeneHunterBPLibrary_generated_h
@@ -18,6 +19,7 @@ struct FAssetData;
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_18_SPARSE_DATA
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_18_RPC_WRAPPERS \
  \
+	DECLARE_FUNCTION(execPruneTypeAttackMods); \
 	DECLARE_FUNCTION(execSaveLoadedAssetFromAnywhere); \
 	DECLARE_FUNCTION(execSortAssetsAlphabetically); \
 	DECLARE_FUNCTION(execEnsureValidAssetName);
@@ -25,6 +27,7 @@ struct FAssetData;
 
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_18_RPC_WRAPPERS_NO_PURE_DECLS \
  \
+	DECLARE_FUNCTION(execPruneTypeAttackMods); \
 	DECLARE_FUNCTION(execSaveLoadedAssetFromAnywhere); \
 	DECLARE_FUNCTION(execSortAssetsAlphabetically); \
 	DECLARE_FUNCTION(execEnsureValidAssetName);

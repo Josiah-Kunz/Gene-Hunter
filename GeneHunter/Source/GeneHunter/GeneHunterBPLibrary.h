@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 
-#include "EditorScriptingUtilities/Public/EditorAssetLibrary.h"
+#include "Type.h"
 #include "GeneHunterBPLibrary.generated.h"
 
 
@@ -25,6 +25,9 @@ class GENEHUNTER_API UGeneHunterBPLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable)
 	static bool SaveLoadedAssetFromAnywhere(UObject* Asset, const bool bOnlyIfDirty = true);
+
+	UFUNCTION(BlueprintCallable)
+	static void PruneTypeAttackMods(UType* Type);
 	
 public:
 	static const int MAX_ITERATIONS = 10000;
