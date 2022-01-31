@@ -8,79 +8,44 @@
 #include "UObject/ScriptMacros.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
+class UWidget;
 #ifdef GENEHUNTER_EditableTextPlus_generated_h
 #error "EditableTextPlus.generated.h already included, missing '#pragma once' in EditableTextPlus.h"
 #endif
 #define GENEHUNTER_EditableTextPlus_generated_h
 
-#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_31_DELEGATE \
-struct EditableTextPlus_eventOnEditableTextCommittedEvent_Parms \
-{ \
-	FText Text; \
-	TEnumAsByte<ETextCommit::Type> CommitMethod; \
-}; \
-static inline void FOnEditableTextCommittedEvent_DelegateWrapper(const FMulticastScriptDelegate& OnEditableTextCommittedEvent, FText const& Text, ETextCommit::Type CommitMethod) \
-{ \
-	EditableTextPlus_eventOnEditableTextCommittedEvent_Parms Parms; \
-	Parms.Text=Text; \
-	Parms.CommitMethod=CommitMethod; \
-	OnEditableTextCommittedEvent.ProcessMulticastDelegate<UObject>(&Parms); \
-}
-
-
-#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_30_DELEGATE \
-struct EditableTextPlus_eventOnEditableTextChangedEvent_Parms \
-{ \
-	FText Text; \
-}; \
-static inline void FOnEditableTextChangedEvent_DelegateWrapper(const FMulticastScriptDelegate& OnEditableTextChangedEvent, FText const& Text) \
-{ \
-	EditableTextPlus_eventOnEditableTextChangedEvent_Parms Parms; \
-	Parms.Text=Text; \
-	OnEditableTextChangedEvent.ProcessMulticastDelegate<UObject>(&Parms); \
-}
-
-
-#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_SPARSE_DATA
-#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_RPC_WRAPPERS \
+#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_SPARSE_DATA
+#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_RPC_WRAPPERS \
  \
-	DECLARE_FUNCTION(execSetJustification); \
-	DECLARE_FUNCTION(execSetIsReadOnly); \
-	DECLARE_FUNCTION(execSetHintText); \
-	DECLARE_FUNCTION(execSetIsPassword); \
-	DECLARE_FUNCTION(execSetText); \
-	DECLARE_FUNCTION(execGetText);
+	DECLARE_FUNCTION(execSynchronizeProperty);
 
 
-#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_RPC_WRAPPERS_NO_PURE_DECLS \
+#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
  \
-	DECLARE_FUNCTION(execSetJustification); \
-	DECLARE_FUNCTION(execSetIsReadOnly); \
-	DECLARE_FUNCTION(execSetHintText); \
-	DECLARE_FUNCTION(execSetIsPassword); \
-	DECLARE_FUNCTION(execSetText); \
-	DECLARE_FUNCTION(execGetText);
+	DECLARE_FUNCTION(execSynchronizeProperty);
 
 
-#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_INCLASS_NO_PURE_DECLS \
+#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_EVENT_PARMS
+#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_CALLBACK_WRAPPERS
+#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEditableTextPlus(); \
 	friend struct Z_Construct_UClass_UEditableTextPlus_Statics; \
 public: \
-	DECLARE_CLASS(UEditableTextPlus, UWidget, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/GeneHunter"), NO_API) \
+	DECLARE_CLASS(UEditableTextPlus, UUserWidget, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/GeneHunter"), NO_API) \
 	DECLARE_SERIALIZER(UEditableTextPlus)
 
 
-#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_INCLASS \
+#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_INCLASS \
 private: \
 	static void StaticRegisterNativesUEditableTextPlus(); \
 	friend struct Z_Construct_UClass_UEditableTextPlus_Statics; \
 public: \
-	DECLARE_CLASS(UEditableTextPlus, UWidget, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/GeneHunter"), NO_API) \
+	DECLARE_CLASS(UEditableTextPlus, UUserWidget, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/GeneHunter"), NO_API) \
 	DECLARE_SERIALIZER(UEditableTextPlus)
 
 
-#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_STANDARD_CONSTRUCTORS \
+#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_STANDARD_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UEditableTextPlus(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UEditableTextPlus) \
@@ -93,7 +58,7 @@ private: \
 public:
 
 
-#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_ENHANCED_CONSTRUCTORS \
+#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UEditableTextPlus(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) : Super(ObjectInitializer) { }; \
 private: \
@@ -106,29 +71,34 @@ public: \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UEditableTextPlus)
 
 
-#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_PRIVATE_PROPERTY_OFFSET
-#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_23_PROLOG
-#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_GENERATED_BODY_LEGACY \
+#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_PRIVATE_PROPERTY_OFFSET
+#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_12_PROLOG \
+	GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_EVENT_PARMS
+
+
+#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_GENERATED_BODY_LEGACY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_PRIVATE_PROPERTY_OFFSET \
-	GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_SPARSE_DATA \
-	GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_RPC_WRAPPERS \
-	GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_INCLASS \
-	GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_STANDARD_CONSTRUCTORS \
+	GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_PRIVATE_PROPERTY_OFFSET \
+	GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_SPARSE_DATA \
+	GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_RPC_WRAPPERS \
+	GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_CALLBACK_WRAPPERS \
+	GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_INCLASS \
+	GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_STANDARD_CONSTRUCTORS \
 public: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
-#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_GENERATED_BODY \
+#define GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_PRIVATE_PROPERTY_OFFSET \
-	GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_SPARSE_DATA \
-	GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_RPC_WRAPPERS_NO_PURE_DECLS \
-	GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_INCLASS_NO_PURE_DECLS \
-	GeneHunter_Source_GeneHunter_EditableTextPlus_h_26_ENHANCED_CONSTRUCTORS \
-static_assert(false, "Unknown access specifier for GENERATED_BODY() macro in class EditableTextPlus."); \
+	GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_PRIVATE_PROPERTY_OFFSET \
+	GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_SPARSE_DATA \
+	GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
+	GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_CALLBACK_WRAPPERS \
+	GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_INCLASS_NO_PURE_DECLS \
+	GeneHunter_Source_GeneHunter_EditableTextPlus_h_15_ENHANCED_CONSTRUCTORS \
+private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 

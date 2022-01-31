@@ -1,0 +1,5 @@
+The TypeChart is technically done, but only in that it works. There are still lots of other things to do: categorize functions and variables; decide and enforce naming conventions; comment function descriptions where possible; etc.
+
+Right now, I find myself going down a rabbit hole. I'd like an EditableText that distinguishes between OnTextChangedProgrammatic and OntextChangedInteractive. I feel like it's a good idea for the main source code, but I dare not modify it. Instead, I'll have to inherit from EditableText and call it something like "EditableText+". Naming stuff correctly is important!
+
+I feel like I'm going slowly, but I have to excuse myself. I'm learning, plus I'm making my BPs look right. Just looking at the source BP for ForLoop makes me shudder. It's too too messy.
