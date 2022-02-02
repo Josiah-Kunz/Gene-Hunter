@@ -1,0 +1,4 @@
+E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Development\GeneHunter\Definitions.GeneHunter.h
+E:\GitHub\Gene-Hunter\GeneHunter\Source\GeneHunter\SEditableTextPlus.h
+E:\UE_5.0EA\Engine\Source\Runtime\Slate\Public\Widgets/Input/SEditableText.h
+E:\UE_5.0EA\Engine\Source\Runtime\Slate\Public\Widgets/Text/ISlateEditableTextWidget.h

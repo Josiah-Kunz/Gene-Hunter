@@ -10,7 +10,7 @@ public class GeneHunter : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
-		PrivateDependencyModuleNames.AddRange(new string[]{ "EditorScriptingUtilities" });
+		PrivateDependencyModuleNames.AddRange(new string[]{ "EditorScriptingUtilities",  "Slate", "SlateCore" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

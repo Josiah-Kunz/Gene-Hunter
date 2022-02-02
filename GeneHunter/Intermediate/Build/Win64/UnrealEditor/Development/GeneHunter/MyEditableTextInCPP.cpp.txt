@@ -17,3 +17,4 @@ E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\UMG\TextWidgetTypes
 E:\UE_5.0EA\Engine\Source\Runtime\Slate\Public\Widgets/Text/ISlateEditableTextWidget.h
 E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\UMG\EditableText.generated.h
 E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Inc\GeneHunter\MyEditableTextInCPP.generated.h
+E:\UE_5.0EA\Engine\Source\Runtime\Slate\Public\Widgets/Input/SEditableText.h

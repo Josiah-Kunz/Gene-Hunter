@@ -11,18 +11,24 @@
 #endif
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeGeneHunter_init() {}
+	GENEHUNTER_API UFunction* Z_Construct_UDelegateFunction_GeneHunter_OnEditableTextChangedProgrammaticEvent__DelegateSignature();
+	GENEHUNTER_API UFunction* Z_Construct_UDelegateFunction_GeneHunter_OnEditableTextChangedInteractiveEvent__DelegateSignature();
 	UPackage* Z_Construct_UPackage__Script_GeneHunter()
 	{
 		static UPackage* ReturnPackage = nullptr;
 		if (!ReturnPackage)
 		{
+			static UObject* (*const SingletonFuncArray[])() = {
+				(UObject* (*)())Z_Construct_UDelegateFunction_GeneHunter_OnEditableTextChangedProgrammaticEvent__DelegateSignature,
+				(UObject* (*)())Z_Construct_UDelegateFunction_GeneHunter_OnEditableTextChangedInteractiveEvent__DelegateSignature,
+			};
 			static const UECodeGen_Private::FPackageParams PackageParams = {
 				"/Script/GeneHunter",
-				nullptr,
-				0,
+				SingletonFuncArray,
+				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0xD04858C2,
-				0x92B0AD45,
+				0x3581FEC7,
+				0xA8BD0BF6,
 				METADATA_PARAMS(nullptr, 0)
 			};
 			UECodeGen_Private::ConstructUPackage(ReturnPackage, PackageParams);
