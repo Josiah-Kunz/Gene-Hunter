@@ -41,8 +41,11 @@ void UEditableTextPlus::HandleOnTextChangedOverride(const FText& InText)
 
 void UEditableTextPlus::SetTextProgrammatic(const FText& NewText)
 {
-	bChangedProgrammatic = true;
-	SetText(NewText);
+	if (!NewText.EqualTo(GetText()))
+	{
+		bChangedProgrammatic = true;
+		SetText(NewText);
+	}
 }
 
 void UEditableTextPlus::SetFontColor(const FLinearColor& Color)
