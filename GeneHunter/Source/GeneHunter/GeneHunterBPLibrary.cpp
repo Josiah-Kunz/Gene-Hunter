@@ -9,6 +9,16 @@
  */
 void UGeneHunterBPLibrary::EnsureValidAssetName(const FString Filename, const FString Path, FString& SafeFilename, FString& AbsolutePath, const FString Ext, const FString OldFilename)
 {
+
+	// Debugging
+	const bool bDebug = false && GEngine;
+	const float DisplayTime = 15.0f;
+	if (bDebug)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, DisplayTime, FColor::Cyan, TEXT("[In] Filename: ") + Filename);
+		GEngine->AddOnScreenDebugMessage(-1, DisplayTime, FColor::Cyan, TEXT("[In] OldFilename: ") + OldFilename); 
+	}
+	
 	SafeFilename = "";
 
 	// Only alphanumeric characters allowed!
@@ -17,6 +27,11 @@ void UGeneHunterBPLibrary::EnsureValidAssetName(const FString Filename, const FS
 		if (std::isalnum(c) || c == '-' || c == '_')
 			SafeFilename += c;
 	}
+
+	// Debug
+	if (bDebug)
+		GEngine->AddOnScreenDebugMessage(-1, DisplayTime, FColor::Cyan, TEXT("AlphaNumeric+ SafeFilename: ") + SafeFilename);
+	
 
 	// If the old name was already safe, by all means, keep it!
 	if (SafeFilename != OldFilename)
@@ -28,15 +43,30 @@ void UGeneHunterBPLibrary::EnsureValidAssetName(const FString Filename, const FS
 				FPaths::ProjectContentDir() +
 				FPaths::ConvertRelativePathToFull(Path).Replace(TEXT("/Game/"), TEXT(""));
 		bool bFoundFile= FPaths::FileExists(AbsolutePath + "/" + NewFilename + "." + Ext);
+		if (bDebug)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, DisplayTime, FColor::Cyan, FString::FromInt(i) + TEXT("st iteration NewFileName: ") + NewFilename);
+			GEngine->AddOnScreenDebugMessage(-1, DisplayTime, FColor::Cyan, TEXT("Was it found at ")
+				+ (AbsolutePath + "/" + NewFilename + "." + Ext) + TEXT("? " + (bFoundFile ? "Yes" : "No")));
+		}
 		while (bFoundFile && i<MAX_ITERATIONS)
 		{
 			i += 1;
 			NewFilename = SafeFilename + "_" + FString::FromInt(i);
+			if (bDebug)
+				GEngine->AddOnScreenDebugMessage(-1, DisplayTime, FColor::Cyan, FString::FromInt(i) + TEXT("th iteration NewFileName: ") + NewFilename);
 			if (NewFilename == OldFilename)
 				break;
 			bFoundFile= FPaths::FileExists(AbsolutePath + "/" + NewFilename + "." + Ext);
 		}
 		SafeFilename = NewFilename;
+		if (bDebug)
+			GEngine->AddOnScreenDebugMessage(-1, DisplayTime, FColor::Cyan, TEXT("[Out] SafeFilename: ") + SafeFilename);
+	} else
+	{
+		// Debug
+		if (bDebug)
+			GEngine->AddOnScreenDebugMessage(-1, DisplayTime, FColor::Cyan, TEXT("[Out] SafeFilename is the same as OldFilename."));
 	}
 }
 
