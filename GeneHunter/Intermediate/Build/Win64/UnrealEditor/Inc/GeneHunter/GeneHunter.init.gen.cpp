@@ -13,6 +13,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeGeneHunter_init() {}
 	GENEHUNTER_API UFunction* Z_Construct_UDelegateFunction_GeneHunter_OnEditableTextChangedProgrammaticEvent__DelegateSignature();
 	GENEHUNTER_API UFunction* Z_Construct_UDelegateFunction_GeneHunter_OnEditableTextChangedInteractiveEvent__DelegateSignature();
+	GENEHUNTER_API UFunction* Z_Construct_UDelegateFunction_GeneHunter_OnJoyColorChangedEvent__DelegateSignature();
 	UPackage* Z_Construct_UPackage__Script_GeneHunter()
 	{
 		static UPackage* ReturnPackage = nullptr;
@@ -21,14 +22,15 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunter_init() {}
 			static UObject* (*const SingletonFuncArray[])() = {
 				(UObject* (*)())Z_Construct_UDelegateFunction_GeneHunter_OnEditableTextChangedProgrammaticEvent__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_GeneHunter_OnEditableTextChangedInteractiveEvent__DelegateSignature,
+				(UObject* (*)())Z_Construct_UDelegateFunction_GeneHunter_OnJoyColorChangedEvent__DelegateSignature,
 			};
 			static const UECodeGen_Private::FPackageParams PackageParams = {
 				"/Script/GeneHunter",
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0x3581FEC7,
-				0xA8BD0BF6,
+				0x4EA852E0,
+				0xFBBA05E5,
 				METADATA_PARAMS(nullptr, 0)
 			};
 			UECodeGen_Private::ConstructUPackage(ReturnPackage, PackageParams);

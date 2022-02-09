@@ -238,6 +238,7 @@ E:\GitHub\Gene-Hunter\GeneHunter\Source\GeneHunter\GeneHunterBPLibrary.cpp
 /I Editor\StaticMeshEditor\Public
 /I E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Inc\GeneHunter
 /I E:\GitHub\Gene-Hunter\GeneHunter\Source
+/I Runtime\AppFramework\Public
 /I ThirdParty\PhysX3\PxShared\include
 /I ThirdParty\PhysX3\PxShared\include\cudamanager
 /I ThirdParty\PhysX3\PxShared\include\filebuf

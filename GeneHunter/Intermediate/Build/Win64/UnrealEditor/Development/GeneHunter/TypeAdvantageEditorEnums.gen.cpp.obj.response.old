@@ -1,13 +1,18 @@
 E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Inc\GeneHunter\TypeAdvantageEditorEnums.gen.cpp
 /I .
-/I ..\Intermediate\Build\Win64\UnrealEditor\Inc\Engine
+/I ..\Plugins\Editor\EditorScriptingUtilities\Intermediate\Build\Win64\UnrealEditor\Inc\EditorScriptingUtilities
+/I ..\Plugins\Editor\EditorScriptingUtilities\Source
+/I ..\Plugins\Editor\EditorScriptingUtilities\Source\EditorScriptingUtilities\Public
+/I ..\Intermediate\Build\Win64\UnrealEditor\Inc\AssetRegistry
 /I Runtime
-/I Runtime\Engine\Classes
-/I Runtime\Engine\Public
+/I Runtime\AssetRegistry\Public
 /I Runtime\TraceLog\Public
 /I Runtime\Core\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject
 /I Runtime\CoreUObject\Public
+/I ..\Intermediate\Build\Win64\UnrealEditor\Inc\Engine
+/I Runtime\Engine\Classes
+/I Runtime\Engine\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\NetCore
 /I Runtime\Net
 /I Runtime\Net\Core\Classes
@@ -32,8 +37,6 @@ E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Inc\GeneH
 /I Runtime\Analytics\Analytics\Public
 /I Runtime\Sockets\Public
 /I Runtime\Net\Common\Public
-/I ..\Intermediate\Build\Win64\UnrealEditor\Inc\AssetRegistry
-/I Runtime\AssetRegistry\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\EngineMessages
 /I Runtime\EngineMessages\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\EngineSettings
@@ -231,6 +234,8 @@ E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Inc\GeneH
 /I Runtime\ClothingSystemRuntimeInterface\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\AnimationDataController
 /I Developer\AnimationDataController\Public
+/I ..\Intermediate\Build\Win64\UnrealEditor\Inc\StaticMeshEditor
+/I Editor\StaticMeshEditor\Public
 /I E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Inc\GeneHunter
 /I E:\GitHub\Gene-Hunter\GeneHunter\Source
 /I ThirdParty\PhysX3\PxShared\include

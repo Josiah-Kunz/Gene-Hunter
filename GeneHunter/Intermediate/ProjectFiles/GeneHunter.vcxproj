@@ -848,10 +848,14 @@
       <ForcedIncludeFiles>$(NMakeForcedIncludes);$(SolutionDir)Intermediate\Build\Win64\UnrealEditor\Development\GeneHunter\Definitions.GeneHunter.h;$(SolutionDir)Intermediate\Build\Win64\GeneHunterEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h</ForcedIncludeFiles>
     </ClCompile>
     <ClInclude Include="..\..\Source\GeneHunter\EditableTextPlus.h" />
+    <ClCompile Include="..\..\Source\GeneHunter\JoyColorPicker.cpp" />
+    <ClCompile Include="..\..\Source\GeneHunter\RamaColorPicker.cpp" />
     <ClCompile Include="..\..\Source\GeneHunter\SupportingText.cpp">
       <AdditionalIncludeDirectories>$(NMakeIncludeSearchPath);E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PxShared\include;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PxShared\include\cudamanager;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PxShared\include\filebuf;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PxShared\include\foundation;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PxShared\include\pvd;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PxShared\include\task;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PhysX_3.4\Include;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PhysX_3.4\Include\cooking;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PhysX_3.4\Include\common;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PhysX_3.4\Include\extensions;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PhysX_3.4\Include\geometry;</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>$(NMakeForcedIncludes);$(SolutionDir)Intermediate\Build\Win64\UnrealEditor\Development\GeneHunter\Definitions.GeneHunter.h;$(SolutionDir)Intermediate\Build\Win64\GeneHunterEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h</ForcedIncludeFiles>
     </ClCompile>
+    <ClInclude Include="..\..\Source\GeneHunter\JoyColorPicker.h" />
+    <ClInclude Include="..\..\Source\GeneHunter\RamaColorPicker.h" />
     <ClInclude Include="..\..\Source\GeneHunter\SupportingText.h" />
     <ClCompile Include="..\..\Source\GeneHunter\Type.cpp">
       <AdditionalIncludeDirectories>$(NMakeIncludeSearchPath);E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PxShared\include;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PxShared\include\cudamanager;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PxShared\include\filebuf;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PxShared\include\foundation;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PxShared\include\pvd;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PxShared\include\task;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PhysX_3.4\Include;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PhysX_3.4\Include\cooking;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PhysX_3.4\Include\common;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PhysX_3.4\Include\extensions;E:\UE_5.0EA\Engine\Source\ThirdParty\PhysX3\PhysX_3.4\Include\geometry;</AdditionalIncludeDirectories>
