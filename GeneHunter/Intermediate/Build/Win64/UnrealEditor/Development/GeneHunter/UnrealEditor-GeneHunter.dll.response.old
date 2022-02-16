@@ -60,6 +60,7 @@
 "E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\Core\UnrealEditor-Core.lib"
 "E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\CoreUObject\UnrealEditor-CoreUObject.lib"
 "E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\InputCore\UnrealEditor-InputCore.lib"
+"E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\AppFramework\UnrealEditor-AppFramework.lib"
 "delayimp.lib"
 "wininet.lib"
 "rpcrt4.lib"

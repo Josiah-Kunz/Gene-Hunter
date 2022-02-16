@@ -8,14 +8,33 @@
 #include "UObject/ScriptMacros.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
+class UType;
 #ifdef GENEHUNTER_Type_generated_h
 #error "Type.generated.h already included, missing '#pragma once' in Type.h"
 #endif
 #define GENEHUNTER_Type_generated_h
 
 #define GeneHunter_Source_GeneHunter_Type_h_16_SPARSE_DATA
-#define GeneHunter_Source_GeneHunter_Type_h_16_RPC_WRAPPERS
-#define GeneHunter_Source_GeneHunter_Type_h_16_RPC_WRAPPERS_NO_PURE_DECLS
+#define GeneHunter_Source_GeneHunter_Type_h_16_RPC_WRAPPERS \
+ \
+	DECLARE_FUNCTION(execGetDamageTypesBetween); \
+	DECLARE_FUNCTION(execGetNeutralDamageTypes); \
+	DECLARE_FUNCTION(execGetHealedDamageTypes); \
+	DECLARE_FUNCTION(execGetImmuneTypes); \
+	DECLARE_FUNCTION(execGetDecreasedDamageTypes); \
+	DECLARE_FUNCTION(execGetIncreasedDamageTypes);
+
+
+#define GeneHunter_Source_GeneHunter_Type_h_16_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execGetDamageTypesBetween); \
+	DECLARE_FUNCTION(execGetNeutralDamageTypes); \
+	DECLARE_FUNCTION(execGetHealedDamageTypes); \
+	DECLARE_FUNCTION(execGetImmuneTypes); \
+	DECLARE_FUNCTION(execGetDecreasedDamageTypes); \
+	DECLARE_FUNCTION(execGetIncreasedDamageTypes);
+
+
 #define GeneHunter_Source_GeneHunter_Type_h_16_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUType(); \
