@@ -3,7 +3,9 @@
 
 #include "Type.h"
 
-TArray<UType*> UType::GetDamageTypesBetween(const float Min, const float Max, const bool Inclusive)
+#pragma region Getting modifiers when attacking
+
+TArray<UType*> UType::GetAttackingTypesBetween(const float Min, const float Max, const bool Inclusive)
 {
 	TArray<UType*> Ret;
 	for(const auto& Pair : AttackModifiers)
@@ -21,28 +23,75 @@ TArray<UType*> UType::GetDamageTypesBetween(const float Min, const float Max, co
 	return Ret;
 }
 
-TArray<UType*> UType::GetIncreasedDamageTypes()
+TArray<UType*> UType::GetEffectiveAgainstTypes()
 {
-	return GetDamageTypesBetween(1, INFINITY, false);
+	return GetAttackingTypesBetween(1, INFINITY, false);
 }
 
-TArray<UType*> UType::GetDecreasedDamageTypes()
+TArray<UType*> UType::GetIneffectiveAgainstTypes()
 {
-	return GetDamageTypesBetween(0, 1, false);
+	return GetAttackingTypesBetween(0, 1, false);
 }
 
-TArray<UType*> UType::GetHealedDamageTypes()
+TArray<UType*> UType::GetHealsTypes()
 {
-	return GetDamageTypesBetween(-INFINITY, 0, false);
+	return GetAttackingTypesBetween(-INFINITY, 0, false);
 }
 
-TArray<UType*> UType::GetNeutralDamageTypes()
+TArray<UType*> UType::GetNeutralAttackTypes()
 {
-	return GetDamageTypesBetween(1, 1);
+	return GetAttackingTypesBetween(1, 1);
 }
 
-TArray<UType*> UType::GetImmuneTypes()
+TArray<UType*> UType::GetZeroDamageToTypes()
 {
-	return GetDamageTypesBetween(0, 0);
+	return GetAttackingTypesBetween(0, 0);
 }
 
+#pragma endregion
+
+#pragma region Getting modifiers when defending
+
+TArray<UType*> UType::GetDefendingTypesBetween(const float Min, const float Max, const bool Inclusive)
+{
+	TArray<UType*> Ret;
+	for(const auto& Pair : AttackModifiers)	// If the attacking matchup doesn't exist, we can't do the defending matchup either
+	{
+		if (Inclusive)
+		{
+			if (Min <= Pair.Key->AttackModifiers[this].Modifier && Pair.Key->AttackModifiers[this].Modifier <= Max)
+				Ret.Add(Pair.Key);
+		} else
+		{
+			if (Min < Pair.Key->AttackModifiers[this].Modifier && Pair.Key->AttackModifiers[this].Modifier < Max)
+				Ret.Add(Pair.Key);
+		}
+	}
+	return Ret;
+}
+
+TArray<UType*> UType::GetWeakToTypes()
+{
+	return GetDefendingTypesBetween(1, INFINITY, false);
+}
+
+TArray<UType*> UType::GetResistsTypes()
+{
+	return GetDefendingTypesBetween(0, 1, false);
+}
+
+TArray<UType*> UType::GetHealedByTypes()
+{
+	return GetDefendingTypesBetween(-INFINITY, 0, false);
+}
+
+TArray<UType*> UType::GetNeutralDefendTypes()
+{
+	return GetDefendingTypesBetween(1, 1);
+}
+
+TArray<UType*> UType::GetImmuneToTypes()
+{
+	return GetDefendingTypesBetween(0, 0);
+}
+#pragma endregion

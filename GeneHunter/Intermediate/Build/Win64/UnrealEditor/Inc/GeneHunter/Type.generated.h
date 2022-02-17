@@ -17,22 +17,34 @@ class UType;
 #define GeneHunter_Source_GeneHunter_Type_h_16_SPARSE_DATA
 #define GeneHunter_Source_GeneHunter_Type_h_16_RPC_WRAPPERS \
  \
-	DECLARE_FUNCTION(execGetDamageTypesBetween); \
-	DECLARE_FUNCTION(execGetNeutralDamageTypes); \
-	DECLARE_FUNCTION(execGetHealedDamageTypes); \
-	DECLARE_FUNCTION(execGetImmuneTypes); \
-	DECLARE_FUNCTION(execGetDecreasedDamageTypes); \
-	DECLARE_FUNCTION(execGetIncreasedDamageTypes);
+	DECLARE_FUNCTION(execGetDefendingTypesBetween); \
+	DECLARE_FUNCTION(execGetImmuneToTypes); \
+	DECLARE_FUNCTION(execGetNeutralDefendTypes); \
+	DECLARE_FUNCTION(execGetHealedByTypes); \
+	DECLARE_FUNCTION(execGetResistsTypes); \
+	DECLARE_FUNCTION(execGetWeakToTypes); \
+	DECLARE_FUNCTION(execGetAttackingTypesBetween); \
+	DECLARE_FUNCTION(execGetNeutralAttackTypes); \
+	DECLARE_FUNCTION(execGetHealsTypes); \
+	DECLARE_FUNCTION(execGetZeroDamageToTypes); \
+	DECLARE_FUNCTION(execGetIneffectiveAgainstTypes); \
+	DECLARE_FUNCTION(execGetEffectiveAgainstTypes);
 
 
 #define GeneHunter_Source_GeneHunter_Type_h_16_RPC_WRAPPERS_NO_PURE_DECLS \
  \
-	DECLARE_FUNCTION(execGetDamageTypesBetween); \
-	DECLARE_FUNCTION(execGetNeutralDamageTypes); \
-	DECLARE_FUNCTION(execGetHealedDamageTypes); \
-	DECLARE_FUNCTION(execGetImmuneTypes); \
-	DECLARE_FUNCTION(execGetDecreasedDamageTypes); \
-	DECLARE_FUNCTION(execGetIncreasedDamageTypes);
+	DECLARE_FUNCTION(execGetDefendingTypesBetween); \
+	DECLARE_FUNCTION(execGetImmuneToTypes); \
+	DECLARE_FUNCTION(execGetNeutralDefendTypes); \
+	DECLARE_FUNCTION(execGetHealedByTypes); \
+	DECLARE_FUNCTION(execGetResistsTypes); \
+	DECLARE_FUNCTION(execGetWeakToTypes); \
+	DECLARE_FUNCTION(execGetAttackingTypesBetween); \
+	DECLARE_FUNCTION(execGetNeutralAttackTypes); \
+	DECLARE_FUNCTION(execGetHealsTypes); \
+	DECLARE_FUNCTION(execGetZeroDamageToTypes); \
+	DECLARE_FUNCTION(execGetIneffectiveAgainstTypes); \
+	DECLARE_FUNCTION(execGetEffectiveAgainstTypes);
 
 
 #define GeneHunter_Source_GeneHunter_Type_h_16_INCLASS_NO_PURE_DECLS \

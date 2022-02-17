@@ -21,67 +21,118 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FLinearColor();
 	GENEHUNTER_API UScriptStruct* Z_Construct_UScriptStruct_FSupportingText();
 // End Cross Module References
-	DEFINE_FUNCTION(UType::execGetDamageTypesBetween)
+	DEFINE_FUNCTION(UType::execGetDefendingTypesBetween)
 	{
 		P_GET_PROPERTY(FFloatProperty,Z_Param_Min);
 		P_GET_PROPERTY(FFloatProperty,Z_Param_Max);
 		P_GET_UBOOL(Z_Param_Inclusive);
 		P_FINISH;
 		P_NATIVE_BEGIN;
-		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetDamageTypesBetween(Z_Param_Min,Z_Param_Max,Z_Param_Inclusive);
+		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetDefendingTypesBetween(Z_Param_Min,Z_Param_Max,Z_Param_Inclusive);
 		P_NATIVE_END;
 	}
-	DEFINE_FUNCTION(UType::execGetNeutralDamageTypes)
+	DEFINE_FUNCTION(UType::execGetImmuneToTypes)
 	{
 		P_FINISH;
 		P_NATIVE_BEGIN;
-		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetNeutralDamageTypes();
+		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetImmuneToTypes();
 		P_NATIVE_END;
 	}
-	DEFINE_FUNCTION(UType::execGetHealedDamageTypes)
+	DEFINE_FUNCTION(UType::execGetNeutralDefendTypes)
 	{
 		P_FINISH;
 		P_NATIVE_BEGIN;
-		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetHealedDamageTypes();
+		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetNeutralDefendTypes();
 		P_NATIVE_END;
 	}
-	DEFINE_FUNCTION(UType::execGetImmuneTypes)
+	DEFINE_FUNCTION(UType::execGetHealedByTypes)
 	{
 		P_FINISH;
 		P_NATIVE_BEGIN;
-		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetImmuneTypes();
+		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetHealedByTypes();
 		P_NATIVE_END;
 	}
-	DEFINE_FUNCTION(UType::execGetDecreasedDamageTypes)
+	DEFINE_FUNCTION(UType::execGetResistsTypes)
 	{
 		P_FINISH;
 		P_NATIVE_BEGIN;
-		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetDecreasedDamageTypes();
+		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetResistsTypes();
 		P_NATIVE_END;
 	}
-	DEFINE_FUNCTION(UType::execGetIncreasedDamageTypes)
+	DEFINE_FUNCTION(UType::execGetWeakToTypes)
 	{
 		P_FINISH;
 		P_NATIVE_BEGIN;
-		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetIncreasedDamageTypes();
+		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetWeakToTypes();
+		P_NATIVE_END;
+	}
+	DEFINE_FUNCTION(UType::execGetAttackingTypesBetween)
+	{
+		P_GET_PROPERTY(FFloatProperty,Z_Param_Min);
+		P_GET_PROPERTY(FFloatProperty,Z_Param_Max);
+		P_GET_UBOOL(Z_Param_Inclusive);
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetAttackingTypesBetween(Z_Param_Min,Z_Param_Max,Z_Param_Inclusive);
+		P_NATIVE_END;
+	}
+	DEFINE_FUNCTION(UType::execGetNeutralAttackTypes)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetNeutralAttackTypes();
+		P_NATIVE_END;
+	}
+	DEFINE_FUNCTION(UType::execGetHealsTypes)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetHealsTypes();
+		P_NATIVE_END;
+	}
+	DEFINE_FUNCTION(UType::execGetZeroDamageToTypes)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetZeroDamageToTypes();
+		P_NATIVE_END;
+	}
+	DEFINE_FUNCTION(UType::execGetIneffectiveAgainstTypes)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetIneffectiveAgainstTypes();
+		P_NATIVE_END;
+	}
+	DEFINE_FUNCTION(UType::execGetEffectiveAgainstTypes)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetEffectiveAgainstTypes();
 		P_NATIVE_END;
 	}
 	void UType::StaticRegisterNativesUType()
 	{
 		UClass* Class = UType::StaticClass();
 		static const FNameNativePtrPair Funcs[] = {
-			{ "GetDamageTypesBetween", &UType::execGetDamageTypesBetween },
-			{ "GetDecreasedDamageTypes", &UType::execGetDecreasedDamageTypes },
-			{ "GetHealedDamageTypes", &UType::execGetHealedDamageTypes },
-			{ "GetImmuneTypes", &UType::execGetImmuneTypes },
-			{ "GetIncreasedDamageTypes", &UType::execGetIncreasedDamageTypes },
-			{ "GetNeutralDamageTypes", &UType::execGetNeutralDamageTypes },
+			{ "GetAttackingTypesBetween", &UType::execGetAttackingTypesBetween },
+			{ "GetDefendingTypesBetween", &UType::execGetDefendingTypesBetween },
+			{ "GetEffectiveAgainstTypes", &UType::execGetEffectiveAgainstTypes },
+			{ "GetHealedByTypes", &UType::execGetHealedByTypes },
+			{ "GetHealsTypes", &UType::execGetHealsTypes },
+			{ "GetImmuneToTypes", &UType::execGetImmuneToTypes },
+			{ "GetIneffectiveAgainstTypes", &UType::execGetIneffectiveAgainstTypes },
+			{ "GetNeutralAttackTypes", &UType::execGetNeutralAttackTypes },
+			{ "GetNeutralDefendTypes", &UType::execGetNeutralDefendTypes },
+			{ "GetResistsTypes", &UType::execGetResistsTypes },
+			{ "GetWeakToTypes", &UType::execGetWeakToTypes },
+			{ "GetZeroDamageToTypes", &UType::execGetZeroDamageToTypes },
 		};
 		FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 	}
-	struct Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics
+	struct Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics
 	{
-		struct Type_eventGetDamageTypesBetween_Parms
+		struct Type_eventGetAttackingTypesBetween_Parms
 		{
 			float Min;
 			float Max;
@@ -110,60 +161,76 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		static const UECodeGen_Private::FFunctionParams FuncParams;
 	};
 #if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Min_MetaData[] = {
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Min_MetaData[] = {
 		{ "NativeConst", "" },
 	};
 #endif
-	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Min = { "Min", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetDamageTypesBetween_Parms, Min), METADATA_PARAMS(Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Min_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Min_MetaData)) };
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Min = { "Min", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetAttackingTypesBetween_Parms, Min), METADATA_PARAMS(Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Min_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Min_MetaData)) };
 #if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Max_MetaData[] = {
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Max_MetaData[] = {
 		{ "NativeConst", "" },
 	};
 #endif
-	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Max = { "Max", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetDamageTypesBetween_Parms, Max), METADATA_PARAMS(Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Max_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Max_MetaData)) };
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Max = { "Max", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetAttackingTypesBetween_Parms, Max), METADATA_PARAMS(Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Max_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Max_MetaData)) };
 #if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Inclusive_MetaData[] = {
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Inclusive_MetaData[] = {
 		{ "NativeConst", "" },
 	};
 #endif
-	void Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Inclusive_SetBit(void* Obj)
+	void Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Inclusive_SetBit(void* Obj)
 	{
-		((Type_eventGetDamageTypesBetween_Parms*)Obj)->Inclusive = 1;
+		((Type_eventGetAttackingTypesBetween_Parms*)Obj)->Inclusive = 1;
 	}
-	const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Inclusive = { "Inclusive", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(Type_eventGetDamageTypesBetween_Parms), &Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Inclusive_SetBit, METADATA_PARAMS(Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Inclusive_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Inclusive_MetaData)) };
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetDamageTypesBetween_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::PropPointers[] = {
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Min,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Max,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_Inclusive,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_ReturnValue_Inner,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::NewProp_ReturnValue,
+	const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Inclusive = { "Inclusive", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(Type_eventGetAttackingTypesBetween_Parms), &Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Inclusive_SetBit, METADATA_PARAMS(Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Inclusive_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Inclusive_MetaData)) };
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetAttackingTypesBetween_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Min,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Max,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_Inclusive,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_ReturnValue_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::NewProp_ReturnValue,
 	};
 #if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::Function_MetaDataParams[] = {
-		{ "Comment", "/*\n\x09 * Gets Types whose damage modifiers are between Min and Max for this Type.\n\x09 */" },
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::Function_MetaDataParams[] = {
+		{ "Comment", "/*\n\x09 * Gets Types whose damage modifiers defending this Type are between Min and Max.\n\x09 */" },
 		{ "CPP_Default_Inclusive", "true" },
 		{ "ModuleRelativePath", "Type.h" },
-		{ "ToolTip", "* Gets Types whose damage modifiers are between Min and Max for this Type." },
+		{ "ToolTip", "* Gets Types whose damage modifiers defending this Type are between Min and Max." },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetDamageTypesBetween", nullptr, nullptr, sizeof(Type_eventGetDamageTypesBetween_Parms), Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::Function_MetaDataParams)) };
-	UFunction* Z_Construct_UFunction_UType_GetDamageTypesBetween()
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetAttackingTypesBetween", nullptr, nullptr, sizeof(Type_eventGetAttackingTypesBetween_Parms), Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UType_GetAttackingTypesBetween()
 	{
 		static UFunction* ReturnFunction = nullptr;
 		if (!ReturnFunction)
 		{
-			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetDamageTypesBetween_Statics::FuncParams);
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetAttackingTypesBetween_Statics::FuncParams);
 		}
 		return ReturnFunction;
 	}
-	struct Z_Construct_UFunction_UType_GetDecreasedDamageTypes_Statics
+	struct Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics
 	{
-		struct Type_eventGetDecreasedDamageTypes_Parms
+		struct Type_eventGetDefendingTypesBetween_Parms
 		{
+			float Min;
+			float Max;
+			bool Inclusive;
 			TArray<UType*> ReturnValue;
 		};
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_Min_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_Min;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_Max_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_Max;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_Inclusive_MetaData[];
+#endif
+		static void NewProp_Inclusive_SetBit(void* Obj);
+		static const UECodeGen_Private::FBoolPropertyParams NewProp_Inclusive;
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
 		static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
 		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
@@ -172,32 +239,58 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 #endif
 		static const UECodeGen_Private::FFunctionParams FuncParams;
 	};
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetDecreasedDamageTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetDecreasedDamageTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetDecreasedDamageTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetDecreasedDamageTypes_Statics::PropPointers[] = {
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetDecreasedDamageTypes_Statics::NewProp_ReturnValue_Inner,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetDecreasedDamageTypes_Statics::NewProp_ReturnValue,
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Min_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Min = { "Min", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetDefendingTypesBetween_Parms, Min), METADATA_PARAMS(Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Min_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Min_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Max_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Max = { "Max", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetDefendingTypesBetween_Parms, Max), METADATA_PARAMS(Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Max_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Max_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Inclusive_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif
+	void Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Inclusive_SetBit(void* Obj)
+	{
+		((Type_eventGetDefendingTypesBetween_Parms*)Obj)->Inclusive = 1;
+	}
+	const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Inclusive = { "Inclusive", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(Type_eventGetDefendingTypesBetween_Parms), &Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Inclusive_SetBit, METADATA_PARAMS(Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Inclusive_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Inclusive_MetaData)) };
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetDefendingTypesBetween_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Min,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Max,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_Inclusive,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_ReturnValue_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::NewProp_ReturnValue,
 	};
 #if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetDecreasedDamageTypes_Statics::Function_MetaDataParams[] = {
-		{ "Comment", "/*\n\x09 * Gets Types that take decreased damage from this Type (not including immune or healed).\n\x09 */" },
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::Function_MetaDataParams[] = {
+		{ "Comment", "/*\n\x09 * Gets Types whose damage modifiers are between Min and Max when attacking this Type.\n\x09 */" },
+		{ "CPP_Default_Inclusive", "true" },
 		{ "ModuleRelativePath", "Type.h" },
-		{ "ToolTip", "* Gets Types that take decreased damage from this Type (not including immune or healed)." },
+		{ "ToolTip", "* Gets Types whose damage modifiers are between Min and Max when attacking this Type." },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetDecreasedDamageTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetDecreasedDamageTypes", nullptr, nullptr, sizeof(Type_eventGetDecreasedDamageTypes_Parms), Z_Construct_UFunction_UType_GetDecreasedDamageTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetDecreasedDamageTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetDecreasedDamageTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetDecreasedDamageTypes_Statics::Function_MetaDataParams)) };
-	UFunction* Z_Construct_UFunction_UType_GetDecreasedDamageTypes()
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetDefendingTypesBetween", nullptr, nullptr, sizeof(Type_eventGetDefendingTypesBetween_Parms), Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UType_GetDefendingTypesBetween()
 	{
 		static UFunction* ReturnFunction = nullptr;
 		if (!ReturnFunction)
 		{
-			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetDecreasedDamageTypes_Statics::FuncParams);
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetDefendingTypesBetween_Statics::FuncParams);
 		}
 		return ReturnFunction;
 	}
-	struct Z_Construct_UFunction_UType_GetHealedDamageTypes_Statics
+	struct Z_Construct_UFunction_UType_GetEffectiveAgainstTypes_Statics
 	{
-		struct Type_eventGetHealedDamageTypes_Parms
+		struct Type_eventGetEffectiveAgainstTypes_Parms
 		{
 			TArray<UType*> ReturnValue;
 		};
@@ -209,106 +302,32 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 #endif
 		static const UECodeGen_Private::FFunctionParams FuncParams;
 	};
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetHealedDamageTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetHealedDamageTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetHealedDamageTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetHealedDamageTypes_Statics::PropPointers[] = {
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetHealedDamageTypes_Statics::NewProp_ReturnValue_Inner,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetHealedDamageTypes_Statics::NewProp_ReturnValue,
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetEffectiveAgainstTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetEffectiveAgainstTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetEffectiveAgainstTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetEffectiveAgainstTypes_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetEffectiveAgainstTypes_Statics::NewProp_ReturnValue_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetEffectiveAgainstTypes_Statics::NewProp_ReturnValue,
 	};
 #if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetHealedDamageTypes_Statics::Function_MetaDataParams[] = {
-		{ "Comment", "/*\n\x09 * Gets Types that are healed instead of damaged when this Type attacks.\n\x09 */" },
-		{ "ModuleRelativePath", "Type.h" },
-		{ "ToolTip", "* Gets Types that are healed instead of damaged when this Type attacks." },
-	};
-#endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetHealedDamageTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetHealedDamageTypes", nullptr, nullptr, sizeof(Type_eventGetHealedDamageTypes_Parms), Z_Construct_UFunction_UType_GetHealedDamageTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetHealedDamageTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetHealedDamageTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetHealedDamageTypes_Statics::Function_MetaDataParams)) };
-	UFunction* Z_Construct_UFunction_UType_GetHealedDamageTypes()
-	{
-		static UFunction* ReturnFunction = nullptr;
-		if (!ReturnFunction)
-		{
-			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetHealedDamageTypes_Statics::FuncParams);
-		}
-		return ReturnFunction;
-	}
-	struct Z_Construct_UFunction_UType_GetImmuneTypes_Statics
-	{
-		struct Type_eventGetImmuneTypes_Parms
-		{
-			TArray<UType*> ReturnValue;
-		};
-		static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
-		static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
-		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
-#if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
-#endif
-		static const UECodeGen_Private::FFunctionParams FuncParams;
-	};
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetImmuneTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetImmuneTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetImmuneTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetImmuneTypes_Statics::PropPointers[] = {
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetImmuneTypes_Statics::NewProp_ReturnValue_Inner,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetImmuneTypes_Statics::NewProp_ReturnValue,
-	};
-#if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetImmuneTypes_Statics::Function_MetaDataParams[] = {
-		{ "Comment", "/*\n\x09 * Gets Types that are immune to this Type.\n\x09 */" },
-		{ "ModuleRelativePath", "Type.h" },
-		{ "ToolTip", "* Gets Types that are immune to this Type." },
-	};
-#endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetImmuneTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetImmuneTypes", nullptr, nullptr, sizeof(Type_eventGetImmuneTypes_Parms), Z_Construct_UFunction_UType_GetImmuneTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetImmuneTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetImmuneTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetImmuneTypes_Statics::Function_MetaDataParams)) };
-	UFunction* Z_Construct_UFunction_UType_GetImmuneTypes()
-	{
-		static UFunction* ReturnFunction = nullptr;
-		if (!ReturnFunction)
-		{
-			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetImmuneTypes_Statics::FuncParams);
-		}
-		return ReturnFunction;
-	}
-	struct Z_Construct_UFunction_UType_GetIncreasedDamageTypes_Statics
-	{
-		struct Type_eventGetIncreasedDamageTypes_Parms
-		{
-			TArray<UType*> ReturnValue;
-		};
-		static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
-		static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
-		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
-#if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
-#endif
-		static const UECodeGen_Private::FFunctionParams FuncParams;
-	};
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetIncreasedDamageTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetIncreasedDamageTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetIncreasedDamageTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetIncreasedDamageTypes_Statics::PropPointers[] = {
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetIncreasedDamageTypes_Statics::NewProp_ReturnValue_Inner,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetIncreasedDamageTypes_Statics::NewProp_ReturnValue,
-	};
-#if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetIncreasedDamageTypes_Statics::Function_MetaDataParams[] = {
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetEffectiveAgainstTypes_Statics::Function_MetaDataParams[] = {
 		{ "Comment", "/*\n\x09 * Gets Types that take increased damage from this Type.\n\x09 */" },
 		{ "ModuleRelativePath", "Type.h" },
 		{ "ToolTip", "* Gets Types that take increased damage from this Type." },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetIncreasedDamageTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetIncreasedDamageTypes", nullptr, nullptr, sizeof(Type_eventGetIncreasedDamageTypes_Parms), Z_Construct_UFunction_UType_GetIncreasedDamageTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetIncreasedDamageTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetIncreasedDamageTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetIncreasedDamageTypes_Statics::Function_MetaDataParams)) };
-	UFunction* Z_Construct_UFunction_UType_GetIncreasedDamageTypes()
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetEffectiveAgainstTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetEffectiveAgainstTypes", nullptr, nullptr, sizeof(Type_eventGetEffectiveAgainstTypes_Parms), Z_Construct_UFunction_UType_GetEffectiveAgainstTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetEffectiveAgainstTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetEffectiveAgainstTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetEffectiveAgainstTypes_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UType_GetEffectiveAgainstTypes()
 	{
 		static UFunction* ReturnFunction = nullptr;
 		if (!ReturnFunction)
 		{
-			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetIncreasedDamageTypes_Statics::FuncParams);
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetEffectiveAgainstTypes_Statics::FuncParams);
 		}
 		return ReturnFunction;
 	}
-	struct Z_Construct_UFunction_UType_GetNeutralDamageTypes_Statics
+	struct Z_Construct_UFunction_UType_GetHealedByTypes_Statics
 	{
-		struct Type_eventGetNeutralDamageTypes_Parms
+		struct Type_eventGetHealedByTypes_Parms
 		{
 			TArray<UType*> ReturnValue;
 		};
@@ -320,26 +339,322 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 #endif
 		static const UECodeGen_Private::FFunctionParams FuncParams;
 	};
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetNeutralDamageTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetNeutralDamageTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetNeutralDamageTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetNeutralDamageTypes_Statics::PropPointers[] = {
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetNeutralDamageTypes_Statics::NewProp_ReturnValue_Inner,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetNeutralDamageTypes_Statics::NewProp_ReturnValue,
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetHealedByTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetHealedByTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetHealedByTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetHealedByTypes_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetHealedByTypes_Statics::NewProp_ReturnValue_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetHealedByTypes_Statics::NewProp_ReturnValue,
 	};
 #if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetNeutralDamageTypes_Statics::Function_MetaDataParams[] = {
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetHealedByTypes_Statics::Function_MetaDataParams[] = {
+		{ "Comment", "/*\n\x09 *\x09Gets Types who heal this Type instead of hurting it when attacking.\n\x09 */" },
+		{ "ModuleRelativePath", "Type.h" },
+		{ "ToolTip", "*      Gets Types who heal this Type instead of hurting it when attacking." },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetHealedByTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetHealedByTypes", nullptr, nullptr, sizeof(Type_eventGetHealedByTypes_Parms), Z_Construct_UFunction_UType_GetHealedByTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetHealedByTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetHealedByTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetHealedByTypes_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UType_GetHealedByTypes()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetHealedByTypes_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_UType_GetHealsTypes_Statics
+	{
+		struct Type_eventGetHealsTypes_Parms
+		{
+			TArray<UType*> ReturnValue;
+		};
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetHealsTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetHealsTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetHealsTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetHealsTypes_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetHealsTypes_Statics::NewProp_ReturnValue_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetHealsTypes_Statics::NewProp_ReturnValue,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetHealsTypes_Statics::Function_MetaDataParams[] = {
+		{ "Comment", "/*\n\x09 * Gets Types that are healed instead of damaged when this Type attacks.\n\x09 */" },
+		{ "ModuleRelativePath", "Type.h" },
+		{ "ToolTip", "* Gets Types that are healed instead of damaged when this Type attacks." },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetHealsTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetHealsTypes", nullptr, nullptr, sizeof(Type_eventGetHealsTypes_Parms), Z_Construct_UFunction_UType_GetHealsTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetHealsTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetHealsTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetHealsTypes_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UType_GetHealsTypes()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetHealsTypes_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_UType_GetImmuneToTypes_Statics
+	{
+		struct Type_eventGetImmuneToTypes_Parms
+		{
+			TArray<UType*> ReturnValue;
+		};
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetImmuneToTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetImmuneToTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetImmuneToTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetImmuneToTypes_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetImmuneToTypes_Statics::NewProp_ReturnValue_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetImmuneToTypes_Statics::NewProp_ReturnValue,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetImmuneToTypes_Statics::Function_MetaDataParams[] = {
+		{ "Comment", "/*\n\x09 *\x09Gets Types who deal zero damage to this Type.\n\x09 */" },
+		{ "ModuleRelativePath", "Type.h" },
+		{ "ToolTip", "*      Gets Types who deal zero damage to this Type." },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetImmuneToTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetImmuneToTypes", nullptr, nullptr, sizeof(Type_eventGetImmuneToTypes_Parms), Z_Construct_UFunction_UType_GetImmuneToTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetImmuneToTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetImmuneToTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetImmuneToTypes_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UType_GetImmuneToTypes()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetImmuneToTypes_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes_Statics
+	{
+		struct Type_eventGetIneffectiveAgainstTypes_Parms
+		{
+			TArray<UType*> ReturnValue;
+		};
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetIneffectiveAgainstTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes_Statics::NewProp_ReturnValue_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes_Statics::NewProp_ReturnValue,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes_Statics::Function_MetaDataParams[] = {
+		{ "Comment", "/*\n\x09 * Gets Types that take decreased damage from this Type (not including immune or healed).\n\x09 */" },
+		{ "ModuleRelativePath", "Type.h" },
+		{ "ToolTip", "* Gets Types that take decreased damage from this Type (not including immune or healed)." },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetIneffectiveAgainstTypes", nullptr, nullptr, sizeof(Type_eventGetIneffectiveAgainstTypes_Parms), Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_UType_GetNeutralAttackTypes_Statics
+	{
+		struct Type_eventGetNeutralAttackTypes_Parms
+		{
+			TArray<UType*> ReturnValue;
+		};
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetNeutralAttackTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetNeutralAttackTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetNeutralAttackTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetNeutralAttackTypes_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetNeutralAttackTypes_Statics::NewProp_ReturnValue_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetNeutralAttackTypes_Statics::NewProp_ReturnValue,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetNeutralAttackTypes_Statics::Function_MetaDataParams[] = {
 		{ "Comment", "/*\n\x09 * Gets Types that are damaged normally by this Type.\n\x09 */" },
 		{ "ModuleRelativePath", "Type.h" },
 		{ "ToolTip", "* Gets Types that are damaged normally by this Type." },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetNeutralDamageTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetNeutralDamageTypes", nullptr, nullptr, sizeof(Type_eventGetNeutralDamageTypes_Parms), Z_Construct_UFunction_UType_GetNeutralDamageTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetNeutralDamageTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetNeutralDamageTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetNeutralDamageTypes_Statics::Function_MetaDataParams)) };
-	UFunction* Z_Construct_UFunction_UType_GetNeutralDamageTypes()
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetNeutralAttackTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetNeutralAttackTypes", nullptr, nullptr, sizeof(Type_eventGetNeutralAttackTypes_Parms), Z_Construct_UFunction_UType_GetNeutralAttackTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetNeutralAttackTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetNeutralAttackTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetNeutralAttackTypes_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UType_GetNeutralAttackTypes()
 	{
 		static UFunction* ReturnFunction = nullptr;
 		if (!ReturnFunction)
 		{
-			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetNeutralDamageTypes_Statics::FuncParams);
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetNeutralAttackTypes_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_UType_GetNeutralDefendTypes_Statics
+	{
+		struct Type_eventGetNeutralDefendTypes_Parms
+		{
+			TArray<UType*> ReturnValue;
+		};
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetNeutralDefendTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetNeutralDefendTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetNeutralDefendTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetNeutralDefendTypes_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetNeutralDefendTypes_Statics::NewProp_ReturnValue_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetNeutralDefendTypes_Statics::NewProp_ReturnValue,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetNeutralDefendTypes_Statics::Function_MetaDataParams[] = {
+		{ "Comment", "/*\n\x09 *\x09Gets Types who deal neutral damage to this Type.\n\x09 */" },
+		{ "ModuleRelativePath", "Type.h" },
+		{ "ToolTip", "*      Gets Types who deal neutral damage to this Type." },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetNeutralDefendTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetNeutralDefendTypes", nullptr, nullptr, sizeof(Type_eventGetNeutralDefendTypes_Parms), Z_Construct_UFunction_UType_GetNeutralDefendTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetNeutralDefendTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetNeutralDefendTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetNeutralDefendTypes_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UType_GetNeutralDefendTypes()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetNeutralDefendTypes_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_UType_GetResistsTypes_Statics
+	{
+		struct Type_eventGetResistsTypes_Parms
+		{
+			TArray<UType*> ReturnValue;
+		};
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetResistsTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetResistsTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetResistsTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetResistsTypes_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetResistsTypes_Statics::NewProp_ReturnValue_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetResistsTypes_Statics::NewProp_ReturnValue,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetResistsTypes_Statics::Function_MetaDataParams[] = {
+		{ "Comment", "/*\n\x09 *\x09Gets Types who deal reduced damage to this Type, not counting zero (immune) or negative (healed by) modifiers.\n\x09 */" },
+		{ "ModuleRelativePath", "Type.h" },
+		{ "ToolTip", "*      Gets Types who deal reduced damage to this Type, not counting zero (immune) or negative (healed by) modifiers." },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetResistsTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetResistsTypes", nullptr, nullptr, sizeof(Type_eventGetResistsTypes_Parms), Z_Construct_UFunction_UType_GetResistsTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetResistsTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetResistsTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetResistsTypes_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UType_GetResistsTypes()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetResistsTypes_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_UType_GetWeakToTypes_Statics
+	{
+		struct Type_eventGetWeakToTypes_Parms
+		{
+			TArray<UType*> ReturnValue;
+		};
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetWeakToTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetWeakToTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetWeakToTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetWeakToTypes_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetWeakToTypes_Statics::NewProp_ReturnValue_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetWeakToTypes_Statics::NewProp_ReturnValue,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetWeakToTypes_Statics::Function_MetaDataParams[] = {
+		{ "Comment", "/*\n\x09 *\x09Gets Types who deal extra damage to this Type.\n\x09 */" },
+		{ "ModuleRelativePath", "Type.h" },
+		{ "ToolTip", "*      Gets Types who deal extra damage to this Type." },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetWeakToTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetWeakToTypes", nullptr, nullptr, sizeof(Type_eventGetWeakToTypes_Parms), Z_Construct_UFunction_UType_GetWeakToTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetWeakToTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetWeakToTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetWeakToTypes_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UType_GetWeakToTypes()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetWeakToTypes_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_UType_GetZeroDamageToTypes_Statics
+	{
+		struct Type_eventGetZeroDamageToTypes_Parms
+		{
+			TArray<UType*> ReturnValue;
+		};
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetZeroDamageToTypes_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetZeroDamageToTypes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetZeroDamageToTypes_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_GetZeroDamageToTypes_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetZeroDamageToTypes_Statics::NewProp_ReturnValue_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetZeroDamageToTypes_Statics::NewProp_ReturnValue,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetZeroDamageToTypes_Statics::Function_MetaDataParams[] = {
+		{ "Comment", "/*\n\x09 * Gets Types that are immune to this Type.\n\x09 */" },
+		{ "ModuleRelativePath", "Type.h" },
+		{ "ToolTip", "* Gets Types that are immune to this Type." },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_GetZeroDamageToTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "GetZeroDamageToTypes", nullptr, nullptr, sizeof(Type_eventGetZeroDamageToTypes_Parms), Z_Construct_UFunction_UType_GetZeroDamageToTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetZeroDamageToTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_GetZeroDamageToTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetZeroDamageToTypes_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UType_GetZeroDamageToTypes()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_GetZeroDamageToTypes_Statics::FuncParams);
 		}
 		return ReturnFunction;
 	}
@@ -378,12 +693,18 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		(UObject* (*)())Z_Construct_UPackage__Script_GeneHunter,
 	};
 	const FClassFunctionLinkInfo Z_Construct_UClass_UType_Statics::FuncInfo[] = {
-		{ &Z_Construct_UFunction_UType_GetDamageTypesBetween, "GetDamageTypesBetween" }, // 3598934823
-		{ &Z_Construct_UFunction_UType_GetDecreasedDamageTypes, "GetDecreasedDamageTypes" }, // 2853787387
-		{ &Z_Construct_UFunction_UType_GetHealedDamageTypes, "GetHealedDamageTypes" }, // 2248207427
-		{ &Z_Construct_UFunction_UType_GetImmuneTypes, "GetImmuneTypes" }, // 595030097
-		{ &Z_Construct_UFunction_UType_GetIncreasedDamageTypes, "GetIncreasedDamageTypes" }, // 2035637466
-		{ &Z_Construct_UFunction_UType_GetNeutralDamageTypes, "GetNeutralDamageTypes" }, // 1688982370
+		{ &Z_Construct_UFunction_UType_GetAttackingTypesBetween, "GetAttackingTypesBetween" }, // 824106841
+		{ &Z_Construct_UFunction_UType_GetDefendingTypesBetween, "GetDefendingTypesBetween" }, // 3753111702
+		{ &Z_Construct_UFunction_UType_GetEffectiveAgainstTypes, "GetEffectiveAgainstTypes" }, // 3229038438
+		{ &Z_Construct_UFunction_UType_GetHealedByTypes, "GetHealedByTypes" }, // 2317098960
+		{ &Z_Construct_UFunction_UType_GetHealsTypes, "GetHealsTypes" }, // 241998324
+		{ &Z_Construct_UFunction_UType_GetImmuneToTypes, "GetImmuneToTypes" }, // 158402019
+		{ &Z_Construct_UFunction_UType_GetIneffectiveAgainstTypes, "GetIneffectiveAgainstTypes" }, // 378120126
+		{ &Z_Construct_UFunction_UType_GetNeutralAttackTypes, "GetNeutralAttackTypes" }, // 390245405
+		{ &Z_Construct_UFunction_UType_GetNeutralDefendTypes, "GetNeutralDefendTypes" }, // 3236279236
+		{ &Z_Construct_UFunction_UType_GetResistsTypes, "GetResistsTypes" }, // 4088717649
+		{ &Z_Construct_UFunction_UType_GetWeakToTypes, "GetWeakToTypes" }, // 843383500
+		{ &Z_Construct_UFunction_UType_GetZeroDamageToTypes, "GetZeroDamageToTypes" }, // 3199654397
 	};
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UType_Statics::Class_MetaDataParams[] = {
@@ -407,14 +728,18 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UType_Statics::NewProp_Colors_MetaData[] = {
 		{ "Category", "Type" },
+		{ "Comment", "/*\n\x09 * An array of LinearColors associated with this Type to do with as you please. For example, the zeroth color can be associated with a background color.\n\x09 */" },
 		{ "ModuleRelativePath", "Type.h" },
+		{ "ToolTip", "* An array of LinearColors associated with this Type to do with as you please. For example, the zeroth color can be associated with a background color." },
 	};
 #endif
 	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_UType_Statics::NewProp_Colors = { "Colors", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UType, Colors), EArrayPropertyFlags::None, METADATA_PARAMS(Z_Construct_UClass_UType_Statics::NewProp_Colors_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UType_Statics::NewProp_Colors_MetaData)) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UType_Statics::NewProp_SupportingText_MetaData[] = {
 		{ "Category", "Type" },
+		{ "Comment", "/*\n\x09 * The Text that describes this Type (e.g., dev note, flavor text, etc.).\n\x09 */" },
 		{ "ModuleRelativePath", "Type.h" },
+		{ "ToolTip", "* The Text that describes this Type (e.g., dev note, flavor text, etc.)." },
 	};
 #endif
 	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UType_Statics::NewProp_SupportingText = { "SupportingText", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UType, SupportingText), Z_Construct_UScriptStruct_FSupportingText, METADATA_PARAMS(Z_Construct_UClass_UType_Statics::NewProp_SupportingText_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UType_Statics::NewProp_SupportingText_MetaData)) };
@@ -453,7 +778,7 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UType, 3393077111);
+	IMPLEMENT_CLASS(UType, 1247651964);
 	template<> GENEHUNTER_API UClass* StaticClass<UType>()
 	{
 		return UType::StaticClass();
