@@ -21,6 +21,18 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FLinearColor();
 	GENEHUNTER_API UScriptStruct* Z_Construct_UScriptStruct_FSupportingText();
 // End Cross Module References
+	DEFINE_FUNCTION(UType::execSortTypesDefending)
+	{
+		P_GET_TARRAY(UType*,Z_Param_Types);
+		P_GET_TARRAY_REF(UType*,Z_Param_Out_Sorted);
+		P_GET_PROPERTY(FFloatProperty,Z_Param_Min);
+		P_GET_PROPERTY(FFloatProperty,Z_Param_Max);
+		P_GET_UBOOL(Z_Param_Inclusive);
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		UType::SortTypesDefending(Z_Param_Types,Z_Param_Out_Sorted,Z_Param_Min,Z_Param_Max,Z_Param_Inclusive);
+		P_NATIVE_END;
+	}
 	DEFINE_FUNCTION(UType::execGetDefendingTypesBetween)
 	{
 		P_GET_PROPERTY(FFloatProperty,Z_Param_Min);
@@ -64,6 +76,18 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		P_FINISH;
 		P_NATIVE_BEGIN;
 		*(TArray<UType*>*)Z_Param__Result=P_THIS->GetWeakToTypes();
+		P_NATIVE_END;
+	}
+	DEFINE_FUNCTION(UType::execSortTypesAttacking)
+	{
+		P_GET_TARRAY(UType*,Z_Param_Types);
+		P_GET_TARRAY_REF(UType*,Z_Param_Out_Sorted);
+		P_GET_PROPERTY(FFloatProperty,Z_Param_Min);
+		P_GET_PROPERTY(FFloatProperty,Z_Param_Max);
+		P_GET_UBOOL(Z_Param_Inclusive);
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		UType::SortTypesAttacking(Z_Param_Types,Z_Param_Out_Sorted,Z_Param_Min,Z_Param_Max,Z_Param_Inclusive);
 		P_NATIVE_END;
 	}
 	DEFINE_FUNCTION(UType::execGetAttackingTypesBetween)
@@ -127,6 +151,8 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 			{ "GetResistsTypes", &UType::execGetResistsTypes },
 			{ "GetWeakToTypes", &UType::execGetWeakToTypes },
 			{ "GetZeroDamageToTypes", &UType::execGetZeroDamageToTypes },
+			{ "SortTypesAttacking", &UType::execSortTypesAttacking },
+			{ "SortTypesDefending", &UType::execSortTypesDefending },
 		};
 		FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 	}
@@ -658,6 +684,192 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		}
 		return ReturnFunction;
 	}
+	struct Z_Construct_UFunction_UType_SortTypesAttacking_Statics
+	{
+		struct Type_eventSortTypesAttacking_Parms
+		{
+			TArray<UType*> Types;
+			TArray<UType*> Sorted;
+			float Min;
+			float Max;
+			bool Inclusive;
+		};
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_Types_Inner;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_Types_MetaData[];
+#endif
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_Types;
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_Sorted_Inner;
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_Sorted;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_Min_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_Min;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_Max_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_Max;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_Inclusive_MetaData[];
+#endif
+		static void NewProp_Inclusive_SetBit(void* Obj);
+		static const UECodeGen_Private::FBoolPropertyParams NewProp_Inclusive;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Types_Inner = { "Types", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Types_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Types = { "Types", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventSortTypesAttacking_Parms, Types), EArrayPropertyFlags::None, METADATA_PARAMS(Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Types_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Types_MetaData)) };
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Sorted_Inner = { "Sorted", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Sorted = { "Sorted", nullptr, (EPropertyFlags)0x0010000000000180, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventSortTypesAttacking_Parms, Sorted), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Min_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Min = { "Min", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventSortTypesAttacking_Parms, Min), METADATA_PARAMS(Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Min_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Min_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Max_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Max = { "Max", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventSortTypesAttacking_Parms, Max), METADATA_PARAMS(Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Max_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Max_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Inclusive_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif
+	void Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Inclusive_SetBit(void* Obj)
+	{
+		((Type_eventSortTypesAttacking_Parms*)Obj)->Inclusive = 1;
+	}
+	const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Inclusive = { "Inclusive", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(Type_eventSortTypesAttacking_Parms), &Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Inclusive_SetBit, METADATA_PARAMS(Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Inclusive_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Inclusive_MetaData)) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_SortTypesAttacking_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Types_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Types,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Sorted_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Sorted,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Min,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Max,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_SortTypesAttacking_Statics::NewProp_Inclusive,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_SortTypesAttacking_Statics::Function_MetaDataParams[] = {
+		{ "Comment", "/*\n\x09 * Sorts the given Types by the number of AttackModifiers within the specified range. For example, if Water is only good attacking against Fire, it would be near the end of the list.\n\x09 */" },
+		{ "ModuleRelativePath", "Type.h" },
+		{ "ToolTip", "* Sorts the given Types by the number of AttackModifiers within the specified range. For example, if Water is only good attacking against Fire, it would be near the end of the list." },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_SortTypesAttacking_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "SortTypesAttacking", nullptr, nullptr, sizeof(Type_eventSortTypesAttacking_Parms), Z_Construct_UFunction_UType_SortTypesAttacking_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_SortTypesAttacking_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04422401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_SortTypesAttacking_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_SortTypesAttacking_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UType_SortTypesAttacking()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_SortTypesAttacking_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_UType_SortTypesDefending_Statics
+	{
+		struct Type_eventSortTypesDefending_Parms
+		{
+			TArray<UType*> Types;
+			TArray<UType*> Sorted;
+			float Min;
+			float Max;
+			bool Inclusive;
+		};
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_Types_Inner;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_Types_MetaData[];
+#endif
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_Types;
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_Sorted_Inner;
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_Sorted;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_Min_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_Min;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_Max_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_Max;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_Inclusive_MetaData[];
+#endif
+		static void NewProp_Inclusive_SetBit(void* Obj);
+		static const UECodeGen_Private::FBoolPropertyParams NewProp_Inclusive;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Types_Inner = { "Types", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Types_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Types = { "Types", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventSortTypesDefending_Parms, Types), EArrayPropertyFlags::None, METADATA_PARAMS(Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Types_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Types_MetaData)) };
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Sorted_Inner = { "Sorted", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Sorted = { "Sorted", nullptr, (EPropertyFlags)0x0010000000000180, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventSortTypesDefending_Parms, Sorted), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Min_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Min = { "Min", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventSortTypesDefending_Parms, Min), METADATA_PARAMS(Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Min_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Min_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Max_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Max = { "Max", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventSortTypesDefending_Parms, Max), METADATA_PARAMS(Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Max_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Max_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Inclusive_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif
+	void Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Inclusive_SetBit(void* Obj)
+	{
+		((Type_eventSortTypesDefending_Parms*)Obj)->Inclusive = 1;
+	}
+	const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Inclusive = { "Inclusive", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(Type_eventSortTypesDefending_Parms), &Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Inclusive_SetBit, METADATA_PARAMS(Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Inclusive_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Inclusive_MetaData)) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UType_SortTypesDefending_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Types_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Types,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Sorted_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Sorted,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Min,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Max,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_SortTypesDefending_Statics::NewProp_Inclusive,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_SortTypesDefending_Statics::Function_MetaDataParams[] = {
+		{ "Comment", "/*\n\x09 * Sorts the given Types by the number of defensible Types within the specified range. For example, if Fire is only weak (defending) to Water, it would be near the end of the list.\n\x09 */" },
+		{ "ModuleRelativePath", "Type.h" },
+		{ "ToolTip", "* Sorts the given Types by the number of defensible Types within the specified range. For example, if Fire is only weak (defending) to Water, it would be near the end of the list." },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UType_SortTypesDefending_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UType, nullptr, "SortTypesDefending", nullptr, nullptr, sizeof(Type_eventSortTypesDefending_Parms), Z_Construct_UFunction_UType_SortTypesDefending_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_SortTypesDefending_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04422401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UType_SortTypesDefending_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_SortTypesDefending_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UType_SortTypesDefending()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UType_SortTypesDefending_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
 	UClass* Z_Construct_UClass_UType_NoRegister()
 	{
 		return UType::StaticClass();
@@ -705,6 +917,8 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		{ &Z_Construct_UFunction_UType_GetResistsTypes, "GetResistsTypes" }, // 4088717649
 		{ &Z_Construct_UFunction_UType_GetWeakToTypes, "GetWeakToTypes" }, // 843383500
 		{ &Z_Construct_UFunction_UType_GetZeroDamageToTypes, "GetZeroDamageToTypes" }, // 3199654397
+		{ &Z_Construct_UFunction_UType_SortTypesAttacking, "SortTypesAttacking" }, // 3168246668
+		{ &Z_Construct_UFunction_UType_SortTypesDefending, "SortTypesDefending" }, // 2727897269
 	};
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UType_Statics::Class_MetaDataParams[] = {
@@ -778,7 +992,7 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UType, 1247651964);
+	IMPLEMENT_CLASS(UType, 334238826);
 	template<> GENEHUNTER_API UClass* StaticClass<UType>()
 	{
 		return UType::StaticClass();

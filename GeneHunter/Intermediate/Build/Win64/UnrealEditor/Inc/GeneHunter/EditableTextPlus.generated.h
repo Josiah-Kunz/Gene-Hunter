@@ -43,6 +43,7 @@ static inline void FOnEditableTextChangedProgrammaticEvent_DelegateWrapper(const
 #define GeneHunter_Source_GeneHunter_EditableTextPlus_h_19_SPARSE_DATA
 #define GeneHunter_Source_GeneHunter_EditableTextPlus_h_19_RPC_WRAPPERS \
  \
+	DECLARE_FUNCTION(execTextAsFloat); \
 	DECLARE_FUNCTION(execSetFontColor); \
 	DECLARE_FUNCTION(execSetTextByUser); \
 	DECLARE_FUNCTION(execSetTextInteractive); \
@@ -52,6 +53,7 @@ static inline void FOnEditableTextChangedProgrammaticEvent_DelegateWrapper(const
 
 #define GeneHunter_Source_GeneHunter_EditableTextPlus_h_19_RPC_WRAPPERS_NO_PURE_DECLS \
  \
+	DECLARE_FUNCTION(execTextAsFloat); \
 	DECLARE_FUNCTION(execSetFontColor); \
 	DECLARE_FUNCTION(execSetTextByUser); \
 	DECLARE_FUNCTION(execSetTextInteractive); \

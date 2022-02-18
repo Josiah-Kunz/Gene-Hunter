@@ -48,6 +48,42 @@ TArray<UType*> UType::GetZeroDamageToTypes()
 	return GetAttackingTypesBetween(0, 0);
 }
 
+void UType::SortTypesAttacking(const TArray<UType*> Types, TArray<UType*>& Sorted, const float Min, const float Max, const bool Inclusive)
+{
+	Sorted = Types;
+	Sorted.Sort([Min, Max, Inclusive](const UType& A, const UType& B)
+	{
+		int CountA = 0;
+		for(const auto& Pair : A.AttackModifiers)
+		{
+			if (Inclusive)
+			{
+				if (Min <= Pair.Value.Modifier && Pair.Value.Modifier <= Max)
+					CountA++;
+			} else
+			{
+				if (Min < Pair.Value.Modifier && Pair.Value.Modifier < Max)
+					CountA++;
+			}
+		}
+		int CountB = 0;
+		for(const auto& Pair : B.AttackModifiers)
+		{
+			if (Inclusive)
+			{
+				if (Min <= Pair.Value.Modifier && Pair.Value.Modifier <= Max)
+					CountB++;
+			} else
+			{
+				if (Min < Pair.Value.Modifier && Pair.Value.Modifier < Max)
+					CountB++;
+			}
+		}
+		return CountA > CountB;
+	});
+}
+
+
 #pragma endregion
 
 #pragma region Getting modifiers when defending
@@ -94,4 +130,45 @@ TArray<UType*> UType::GetImmuneToTypes()
 {
 	return GetDefendingTypesBetween(0, 0);
 }
+
+void UType::SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorted, const float Min, const float Max, const bool Inclusive)
+{
+	Sorted = Types;
+	Sorted.Sort([Types, Min, Max, Inclusive](const UType& A, const UType& B)
+	{
+		float Modifier;
+		int CountA = 0;
+		for(const UType* Attacker : Types)
+		{
+			Modifier = Attacker->AttackModifiers.Find(std::addressof(A))->Modifier;
+			if (Inclusive)
+			{
+				if (Min <= Modifier && Modifier <= Max)
+					CountA++;
+			} else
+			{
+				if (Min < Modifier && Modifier < Max)
+					CountA++;
+			}
+		}
+
+		int CountB = 0;
+		for(const UType* Attacker : Types)
+		{
+			Modifier = Attacker->AttackModifiers.Find(std::addressof(A))->Modifier;
+			if (Inclusive)
+			{
+				if (Min <= Modifier && Modifier <= Max)
+					CountB++;
+			} else
+			{
+				if (Min < Modifier && Modifier < Max)
+					CountB++;
+			}
+		}
+		
+		return CountA > CountB;
+	});
+}
+
 #pragma endregion

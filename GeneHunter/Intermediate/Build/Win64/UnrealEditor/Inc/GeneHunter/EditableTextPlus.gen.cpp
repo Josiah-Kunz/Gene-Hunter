@@ -103,6 +103,14 @@ void EmptyLinkFunctionForGeneratedCodeEditableTextPlus() {}
 		}
 		return ReturnFunction;
 	}
+	DEFINE_FUNCTION(UEditableTextPlus::execTextAsFloat)
+	{
+		P_GET_PROPERTY_REF(FFloatProperty,Z_Param_Out_Float);
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		P_THIS->TextAsFloat(Z_Param_Out_Float);
+		P_NATIVE_END;
+	}
 	DEFINE_FUNCTION(UEditableTextPlus::execSetFontColor)
 	{
 		P_GET_STRUCT_REF(FLinearColor,Z_Param_Out_Color);
@@ -152,6 +160,7 @@ void EmptyLinkFunctionForGeneratedCodeEditableTextPlus() {}
 			{ "SetTextByUser", &UEditableTextPlus::execSetTextByUser },
 			{ "SetTextInteractive", &UEditableTextPlus::execSetTextInteractive },
 			{ "SetTextProgrammatic", &UEditableTextPlus::execSetTextProgrammatic },
+			{ "TextAsFloat", &UEditableTextPlus::execTextAsFloat },
 		};
 		FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 	}
@@ -365,6 +374,38 @@ void EmptyLinkFunctionForGeneratedCodeEditableTextPlus() {}
 		}
 		return ReturnFunction;
 	}
+	struct Z_Construct_UFunction_UEditableTextPlus_TextAsFloat_Statics
+	{
+		struct EditableTextPlus_eventTextAsFloat_Parms
+		{
+			float Float;
+		};
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_Float;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UEditableTextPlus_TextAsFloat_Statics::NewProp_Float = { "Float", nullptr, (EPropertyFlags)0x0010000000000180, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(EditableTextPlus_eventTextAsFloat_Parms, Float), METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEditableTextPlus_TextAsFloat_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEditableTextPlus_TextAsFloat_Statics::NewProp_Float,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UEditableTextPlus_TextAsFloat_Statics::Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "EditableTextPlus.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEditableTextPlus_TextAsFloat_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UEditableTextPlus, nullptr, "TextAsFloat", nullptr, nullptr, sizeof(EditableTextPlus_eventTextAsFloat_Parms), Z_Construct_UFunction_UEditableTextPlus_TextAsFloat_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEditableTextPlus_TextAsFloat_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x14420401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UEditableTextPlus_TextAsFloat_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UEditableTextPlus_TextAsFloat_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UEditableTextPlus_TextAsFloat()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UEditableTextPlus_TextAsFloat_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
 	UClass* Z_Construct_UClass_UEditableTextPlus_NoRegister()
 	{
 		return UEditableTextPlus::StaticClass();
@@ -398,6 +439,7 @@ void EmptyLinkFunctionForGeneratedCodeEditableTextPlus() {}
 		{ &Z_Construct_UFunction_UEditableTextPlus_SetTextByUser, "SetTextByUser" }, // 1406229487
 		{ &Z_Construct_UFunction_UEditableTextPlus_SetTextInteractive, "SetTextInteractive" }, // 3568542917
 		{ &Z_Construct_UFunction_UEditableTextPlus_SetTextProgrammatic, "SetTextProgrammatic" }, // 282733942
+		{ &Z_Construct_UFunction_UEditableTextPlus_TextAsFloat, "TextAsFloat" }, // 1154520771
 	};
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UEditableTextPlus_Statics::Class_MetaDataParams[] = {
@@ -459,7 +501,7 @@ void EmptyLinkFunctionForGeneratedCodeEditableTextPlus() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UEditableTextPlus, 3646865119);
+	IMPLEMENT_CLASS(UEditableTextPlus, 1810042151);
 	template<> GENEHUNTER_API UClass* StaticClass<UEditableTextPlus>()
 	{
 		return UEditableTextPlus::StaticClass();

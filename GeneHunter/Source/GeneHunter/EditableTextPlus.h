@@ -64,4 +64,7 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	void SetFontColor(const FLinearColor& Color);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure=true)
+	void TextAsFloat(float& Float);
 };

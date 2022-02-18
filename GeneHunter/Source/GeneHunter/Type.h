@@ -77,6 +77,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<UType*> GetAttackingTypesBetween(const float Min, const float Max, const bool Inclusive = true);
 
+	
+	
+	/*
+	 * Sorts the given Types by the number of AttackModifiers within the specified range. For example, if Water is only good attacking against Fire, it would be near the end of the list.
+	 */
+	UFUNCTION(BlueprintCallable)
+	static void SortTypesAttacking(const TArray<UType*> Types, TArray<UType*>& Sorted, const float Min, const float Max, const bool Inclusive);
+
 #pragma endregion
 
 #pragma region Defending type effectiveness
@@ -116,6 +124,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	TArray<UType*> GetDefendingTypesBetween(const float Min, const float Max, const bool Inclusive = true);
+
+	/*
+	 * Sorts the given Types by the number of defensible Types within the specified range. For example, if Fire is only weak (defending) to Water, it would be near the end of the list.
+	 */
+	UFUNCTION(BlueprintCallable)
+	static void SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorted, const float Min, const float Max, const bool Inclusive);
 
 #pragma endregion
 

@@ -17,12 +17,14 @@ class UType;
 #define GeneHunter_Source_GeneHunter_Type_h_16_SPARSE_DATA
 #define GeneHunter_Source_GeneHunter_Type_h_16_RPC_WRAPPERS \
  \
+	DECLARE_FUNCTION(execSortTypesDefending); \
 	DECLARE_FUNCTION(execGetDefendingTypesBetween); \
 	DECLARE_FUNCTION(execGetImmuneToTypes); \
 	DECLARE_FUNCTION(execGetNeutralDefendTypes); \
 	DECLARE_FUNCTION(execGetHealedByTypes); \
 	DECLARE_FUNCTION(execGetResistsTypes); \
 	DECLARE_FUNCTION(execGetWeakToTypes); \
+	DECLARE_FUNCTION(execSortTypesAttacking); \
 	DECLARE_FUNCTION(execGetAttackingTypesBetween); \
 	DECLARE_FUNCTION(execGetNeutralAttackTypes); \
 	DECLARE_FUNCTION(execGetHealsTypes); \
@@ -33,12 +35,14 @@ class UType;
 
 #define GeneHunter_Source_GeneHunter_Type_h_16_RPC_WRAPPERS_NO_PURE_DECLS \
  \
+	DECLARE_FUNCTION(execSortTypesDefending); \
 	DECLARE_FUNCTION(execGetDefendingTypesBetween); \
 	DECLARE_FUNCTION(execGetImmuneToTypes); \
 	DECLARE_FUNCTION(execGetNeutralDefendTypes); \
 	DECLARE_FUNCTION(execGetHealedByTypes); \
 	DECLARE_FUNCTION(execGetResistsTypes); \
 	DECLARE_FUNCTION(execGetWeakToTypes); \
+	DECLARE_FUNCTION(execSortTypesAttacking); \
 	DECLARE_FUNCTION(execGetAttackingTypesBetween); \
 	DECLARE_FUNCTION(execGetNeutralAttackTypes); \
 	DECLARE_FUNCTION(execGetHealsTypes); \

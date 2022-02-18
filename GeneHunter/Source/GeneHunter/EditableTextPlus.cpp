@@ -71,4 +71,8 @@ void UEditableTextPlus::SetTextInteractive(const FText& NewText)
 	SetTextByUser(NewText);
 }
 
+void UEditableTextPlus::TextAsFloat(float& Float)
+{
+	Float = FCString::Atof(*MyEditableText->GetText().ToString());
+}
 
