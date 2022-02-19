@@ -2,6 +2,7 @@
 
 
 #include "Type.h"
+#include "GeneHunterBPLibrary.h"
 
 #pragma region Getting modifiers when attacking
 
@@ -205,31 +206,74 @@ void UType::SortTypesDefendingRatio(const TArray<UType*> Types, TArray<UType*>& 
 
 void UType::GetNeutralCoverage(const TArray<UType*> Types, TArray<UType*>& NeutralCoverage, const int NumTypes)
 {
-	TArray<TArray<UType*>> TestedCombos;	// Reduces double-dipping (e.g., Fire/Water is the same as Water/Fire)
-	TArray<UType*> TypeCombos;				// Current combination to test
+
+	/*
+	 *	Visualization of algorithm
+	 *	==========================
+	 *
+	 *		- In this example, there are 10 Types A-J
+	 *		- In this example, NumTypes=4
+	 *		- The iteration count is boxed on the left
+	 *		- E.g., in the zeroth iteration, Types ABCD are tested
+	 *
+	 *	0 |
+	 *	--
+	 *		A B C D E F G H I J
+	 *		0 1 2 3
+	 *
+	 *	1 |
+	 *	--
+	 *		A B C D E F G H I J
+	 *		0 1 2   3
+	 *
+	 *	...
+	 *
+	 *	6 |
+	 *	--
+	 *		A B C D E F G H I J
+	 *		0 1 2             3
+	 *
+	 *	7 |
+	 *	--
+	 *		A B C D E F G H I J
+	 *		0 1   2 3
+	 *
+	 *	Penultimate |
+	 *	------------
+	 *		A B C D E F G H I J
+	 *		          0   1 2 3
+	 *
+	 *	Final |
+	 *	------
+	 *		A B C D E F G H I J
+	 *		            0 1 2 3
+	 *
+	 */
+
+	// User is being dumb
+	if (Types.Num() == 0 || NumTypes < 1 || NumTypes > Types.Num())
+		return;
+
+	// Vars
 	bool bSuccess;							// Determines if all Types were hit at least neutrally
-	for(UType* Type : Types)
+	TArray<int> Indices = {0};				// The indices of the Types in TypeCombos. E.g., if Fire/Water is being tested, this may be {4, 13} (or whatever).
+	TArray<UType*> TypeCombos;				// The combinations being tested
+	bool bIterate;							// When iterating in the while loop, this determines if we're still working on iteration
+	int i;									// Dummy int
+	
+	// Initialize Types being tested
+	for(i=1; i<NumTypes; i++)
+		Indices.Add(Indices[i-1]+1);	// {0, 1, 2, 3}
+
+	// Loop until all options are exhausted
+	int Failsafe = 0;
+	while (Failsafe < UGeneHunterBPLibrary::MAX_ITERATIONS && Indices[0] <= Types.Num() - NumTypes)
 	{
 
-		// Build this iteration of the Type combination
+		// Test this combination's effectiveness against all other Types
 		TypeCombos.Empty();
-		TypeCombos.Add(Type);
-		for(int i=1; i<NumTypes; i++)
-		{
-			for(int j=0; j<Types.Num(); j++)
-			{
-				if (TypeCombos.Contains(Types[j]))	// Don't add twice!
-					continue;
-				TypeCombos.Add(Types[j]);
-				break;
-			}
-		}
-
-		// Did we run out of Types?
-		if (TypeCombos.Num() < NumTypes)
-			break;
-
-		// Test its effectiveness against all other Types
+		for (i=0; i<NumTypes;i++)
+			TypeCombos.Add(Types[Indices[i]]);
 		bSuccess = true;
 		for(const UType* Defender : Types)
 		{
@@ -246,6 +290,29 @@ void UType::GetNeutralCoverage(const TArray<UType*> Types, TArray<UType*>& Neutr
 		if (bSuccess)
 			for (UType* SuccessfulType : TypeCombos)
 				NeutralCoverage.Add(SuccessfulType);
+		
+		
+		// Iterate
+		bIterate = true;
+		i=NumTypes-1;
+		while (bIterate && i>=0)
+		{
+			Indices[i]++;
+			if (Indices[i] >= Types.Num() - (NumTypes-i))	// i=4's cap is 9; i=3's cap is 8; etc.
+			{
+				i--;	// Go to the previous index
+			} else
+			{
+				bIterate = false;
+				for(int j=i+1; j<NumTypes;j++)	// This i works! Reset its following indices (e.g., if i=2 was validly set to 6, set i=3 to 7 and i=4 to 8)
+				{
+					Indices[j] = Indices[i]+(j-i);
+				}
+			}
+		}
+		if (bIterate)	// Never able to iterate; must be at the end of all possible Type combinations
+			break;
+		Failsafe++;
 	}
 }
 
