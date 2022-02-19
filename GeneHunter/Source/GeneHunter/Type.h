@@ -40,50 +40,50 @@ public:
 #pragma endregion
 	
 #pragma region Attacking type effectiveness
+
+	/*
+	 * Gets the net modifier (multiplicative) when an attack of the given Type(s) damages this Type.
+	 * For example, if a Toxic+Fire attack attempts to damage a Metal Type, this function will return zero (Metal is immune to Toxic, so 0*2=0).
+	 */
+	UFUNCTION(BlueprintCallable)
+	float GetModifierWhenAttacked(const TArray<UType*> AttackingTypes) const;
 	
 	/*
 	 * Gets Types that take increased damage from this Type.
 	 */
 	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetEffectiveAgainstTypes();
+	TArray<UType*> GetEffectiveAgainstTypes() const;
 
 	/*
 	 * Gets Types that take decreased damage from this Type (not including immune or healed).
 	 */
 	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetIneffectiveAgainstTypes();
+	TArray<UType*> GetIneffectiveAgainstTypes() const;
 
 	/*
 	 * Gets Types that are immune to this Type.
 	 */
 	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetZeroDamageToTypes();
+	TArray<UType*> GetZeroDamageToTypes() const;
 
 	/*
 	 * Gets Types that are healed instead of damaged when this Type attacks.
 	 */
 	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetHealsTypes();
+	TArray<UType*> GetHealsTypes() const;
 
 	/*
 	 * Gets Types that are damaged normally by this Type.
 	 */
 	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetNeutralAttackTypes();
+	TArray<UType*> GetNeutralAttackTypes() const;
 
 	/*
 	 * Gets Types whose damage modifiers defending this Type are between Min and Max.
+	 * For example, a range of (1, INFINITY) gets Types who are "weak to" this Type.
 	 */
 	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetAttackingTypesBetween(const float Min, const float Max, const bool Inclusive = true);
-
-	
-	
-	/*
-	 * Sorts the given Types by the number of AttackModifiers within the specified range. For example, if Water is only good attacking against Fire, it would be near the end of the list.
-	 */
-	UFUNCTION(BlueprintCallable)
-	static void SortTypesAttacking(const TArray<UType*> Types, TArray<UType*>& Sorted, const float Min, const float Max, const bool Inclusive);
+	TArray<UType*> GetAttackingTypesBetween(const float Min, const float Max, const bool Inclusive = true) const;
 
 #pragma endregion
 
@@ -93,46 +93,78 @@ public:
 	 *	Gets Types who deal extra damage to this Type.
 	 */
 	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetWeakToTypes();
+	TArray<UType*> GetWeakToTypes() const;
 
 	/*
 	 *	Gets Types who deal reduced damage to this Type, not counting zero (immune) or negative (healed by) modifiers.
 	 */
 	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetResistsTypes();
+	TArray<UType*> GetResistsTypes() const;
 
 	/*
 	 *	Gets Types who heal this Type instead of hurting it when attacking.
 	 */
 	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetHealedByTypes();
+	TArray<UType*> GetHealedByTypes() const;
 
 	/*
 	 *	Gets Types who deal neutral damage to this Type.
 	 */
 	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetNeutralDefendTypes();
+	TArray<UType*> GetNeutralDefendTypes() const;
 
 	/*
 	 *	Gets Types who deal zero damage to this Type.
 	 */
 	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetImmuneToTypes();
+	TArray<UType*> GetImmuneToTypes() const;
 	
 	/*
 	 * Gets Types whose damage modifiers are between Min and Max when attacking this Type.
+	 * For example, a range of (1, INFINITY) gets Types who are "good against" this Type.
 	 */
 	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetDefendingTypesBetween(const float Min, const float Max, const bool Inclusive = true);
+	TArray<UType*> GetDefendingTypesBetween(const float Min, const float Max, const bool Inclusive = true) const;
+
+#pragma endregion
+
+#pragma region Sorting for debug purposes
 
 	/*
-	 * Sorts the given Types by the number of defensible Types within the specified range. For example, if Fire is only weak (defending) to Water, it would be near the end of the list.
+	 * Sorts the given Types by the number of AttackModifiers within the specified range.
+	 * For example, if Water is only good attacking against Fire, it would be near the end of the list.
+	 */
+	UFUNCTION(BlueprintCallable)
+	static void SortTypesAttacking(const TArray<UType*> Types, TArray<UType*>& Sorted, const float Min, const float Max, const bool Inclusive);
+
+	/*
+	 * Sorts the given Types by the number of defensible Types within the specified range.
+	 * For example, if Fire is only weak (defending) to Water, it would be near the end of the list.
 	 */
 	UFUNCTION(BlueprintCallable)
 	static void SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorted, const float Min, const float Max, const bool Inclusive);
 
+	/*
+	 * Sorts the given Types by the ratio of [effective:ineffective] attack modifiers from high ratio to low ratio.
+	 * For example, if Fire is effective against Nature and resisted against Water, it would be a 1:1 ratio (and hence near the middle of the list).
+	 */
+	UFUNCTION(BlueprintCallable)
+	static void SortTypesAttackingRatio(const TArray<UType*> Types, TArray<UType*>& Sorted);
+
+	/*
+	 * Sorts the given Types by the ratio of [resists:weak to] from high ratio to low ratio.
+	 * For example, if Nature resists Water and is weak to Fire, it would be a 1:1 ratio (and hence near the middle of the list).
+	 */
+	UFUNCTION(BlueprintCallable)
+	static void SortTypesDefendingRatio(const TArray<UType*> Types, TArray<UType*>& Sorted);
+
+	/*
+	 * Gets all combinations of attackers who have neutral coverage.
+	 * For example, in Pokemon, if NumTypes=2, Ice/Electric would be in the returned array.
+	 */
+	UFUNCTION(BlueprintCallable)
+	static void GetNeutralCoverage(const TArray<UType*> Types, TArray<UType*>& NeutralCoverage, const int NumTypes=2);
+	
 #pragma endregion
-
-
 	
 };
