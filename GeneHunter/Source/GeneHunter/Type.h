@@ -7,6 +7,15 @@
 #include "AttackModifier.h"
 #include "Type.generated.h"
 
+UENUM(BlueprintType)
+enum class ModifierFetchMode : uint8
+{
+	Multiplicative	UMETA(DisplayName = "Multiplicative"),
+	Additive		UMETA(DisplayName = "Additive"),
+	Min				UMETA(DisplayName="Min"),
+	Max				UMETA(DisplayName="Max"),
+};
+
 /**
  * 
  */
@@ -43,10 +52,11 @@ public:
 
 	/*
 	 * Gets the net modifier (multiplicative) when an attack of the given Type(s) damages this Type.
-	 * For example, if a Toxic+Fire attack attempts to damage a Metal Type, this function will return zero (Metal is immune to Toxic, so 0*2=0).
+	 * For example, if a Toxic+Fire attack attempts to damage a Metal Type, this function will return zero if 
+	 * multiplicative (Metal is immune to Toxic, so 0*2=0) or 2 if max.
 	 */
 	UFUNCTION(BlueprintCallable)
-	float GetModifierWhenAttacked(const TArray<UType*> AttackingTypes) const;
+	float GetModifierWhenAttacked(const TArray<UType*> AttackingTypes, const ModifierFetchMode FetchMode = ModifierFetchMode::Multiplicative) const;
 	
 	/*
 	 * Gets Types that take increased damage from this Type.
@@ -162,8 +172,8 @@ public:
 	 * Gets all combinations of attackers who have neutral coverage.
 	 * For example, in Pokemon, if NumTypes=2, Ice/Electric would be in the returned array.
 	 */
-	UFUNCTION(BlueprintCallable)
-	static void GetNeutralCoverage(const TArray<UType*> Types, TArray<UType*>& NeutralCoverage, const int NumTypes=2);
+	UFUNCTION(BlueprintCallable,  meta = (AutoCreateRefTerm = "ExcludeTypes"))
+	static void GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, const TArray<UType*> ExcludeTypes, const int NumTypes=2);
 	
 #pragma endregion
 	

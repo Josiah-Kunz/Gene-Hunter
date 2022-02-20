@@ -9,15 +9,16 @@
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 class UType;
+enum class ModifierFetchMode : uint8;
 #ifdef GENEHUNTER_Type_generated_h
 #error "Type.generated.h already included, missing '#pragma once' in Type.h"
 #endif
 #define GENEHUNTER_Type_generated_h
 
-#define GeneHunter_Source_GeneHunter_Type_h_16_SPARSE_DATA
-#define GeneHunter_Source_GeneHunter_Type_h_16_RPC_WRAPPERS \
+#define GeneHunter_Source_GeneHunter_Type_h_25_SPARSE_DATA
+#define GeneHunter_Source_GeneHunter_Type_h_25_RPC_WRAPPERS \
  \
-	DECLARE_FUNCTION(execGetNeutralCoverage); \
+	DECLARE_FUNCTION(execGetCoverage); \
 	DECLARE_FUNCTION(execSortTypesDefendingRatio); \
 	DECLARE_FUNCTION(execSortTypesAttackingRatio); \
 	DECLARE_FUNCTION(execSortTypesDefending); \
@@ -37,9 +38,9 @@ class UType;
 	DECLARE_FUNCTION(execGetModifierWhenAttacked);
 
 
-#define GeneHunter_Source_GeneHunter_Type_h_16_RPC_WRAPPERS_NO_PURE_DECLS \
+#define GeneHunter_Source_GeneHunter_Type_h_25_RPC_WRAPPERS_NO_PURE_DECLS \
  \
-	DECLARE_FUNCTION(execGetNeutralCoverage); \
+	DECLARE_FUNCTION(execGetCoverage); \
 	DECLARE_FUNCTION(execSortTypesDefendingRatio); \
 	DECLARE_FUNCTION(execSortTypesAttackingRatio); \
 	DECLARE_FUNCTION(execSortTypesDefending); \
@@ -59,7 +60,7 @@ class UType;
 	DECLARE_FUNCTION(execGetModifierWhenAttacked);
 
 
-#define GeneHunter_Source_GeneHunter_Type_h_16_INCLASS_NO_PURE_DECLS \
+#define GeneHunter_Source_GeneHunter_Type_h_25_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUType(); \
 	friend struct Z_Construct_UClass_UType_Statics; \
@@ -68,7 +69,7 @@ public: \
 	DECLARE_SERIALIZER(UType)
 
 
-#define GeneHunter_Source_GeneHunter_Type_h_16_INCLASS \
+#define GeneHunter_Source_GeneHunter_Type_h_25_INCLASS \
 private: \
 	static void StaticRegisterNativesUType(); \
 	friend struct Z_Construct_UClass_UType_Statics; \
@@ -77,7 +78,7 @@ public: \
 	DECLARE_SERIALIZER(UType)
 
 
-#define GeneHunter_Source_GeneHunter_Type_h_16_STANDARD_CONSTRUCTORS \
+#define GeneHunter_Source_GeneHunter_Type_h_25_STANDARD_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UType(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UType) \
@@ -90,7 +91,7 @@ private: \
 public:
 
 
-#define GeneHunter_Source_GeneHunter_Type_h_16_ENHANCED_CONSTRUCTORS \
+#define GeneHunter_Source_GeneHunter_Type_h_25_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UType(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) : Super(ObjectInitializer) { }; \
 private: \
@@ -103,28 +104,28 @@ public: \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UType)
 
 
-#define GeneHunter_Source_GeneHunter_Type_h_16_PRIVATE_PROPERTY_OFFSET
-#define GeneHunter_Source_GeneHunter_Type_h_13_PROLOG
-#define GeneHunter_Source_GeneHunter_Type_h_16_GENERATED_BODY_LEGACY \
+#define GeneHunter_Source_GeneHunter_Type_h_25_PRIVATE_PROPERTY_OFFSET
+#define GeneHunter_Source_GeneHunter_Type_h_22_PROLOG
+#define GeneHunter_Source_GeneHunter_Type_h_25_GENERATED_BODY_LEGACY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	GeneHunter_Source_GeneHunter_Type_h_16_PRIVATE_PROPERTY_OFFSET \
-	GeneHunter_Source_GeneHunter_Type_h_16_SPARSE_DATA \
-	GeneHunter_Source_GeneHunter_Type_h_16_RPC_WRAPPERS \
-	GeneHunter_Source_GeneHunter_Type_h_16_INCLASS \
-	GeneHunter_Source_GeneHunter_Type_h_16_STANDARD_CONSTRUCTORS \
+	GeneHunter_Source_GeneHunter_Type_h_25_PRIVATE_PROPERTY_OFFSET \
+	GeneHunter_Source_GeneHunter_Type_h_25_SPARSE_DATA \
+	GeneHunter_Source_GeneHunter_Type_h_25_RPC_WRAPPERS \
+	GeneHunter_Source_GeneHunter_Type_h_25_INCLASS \
+	GeneHunter_Source_GeneHunter_Type_h_25_STANDARD_CONSTRUCTORS \
 public: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
-#define GeneHunter_Source_GeneHunter_Type_h_16_GENERATED_BODY \
+#define GeneHunter_Source_GeneHunter_Type_h_25_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	GeneHunter_Source_GeneHunter_Type_h_16_PRIVATE_PROPERTY_OFFSET \
-	GeneHunter_Source_GeneHunter_Type_h_16_SPARSE_DATA \
-	GeneHunter_Source_GeneHunter_Type_h_16_RPC_WRAPPERS_NO_PURE_DECLS \
-	GeneHunter_Source_GeneHunter_Type_h_16_INCLASS_NO_PURE_DECLS \
-	GeneHunter_Source_GeneHunter_Type_h_16_ENHANCED_CONSTRUCTORS \
+	GeneHunter_Source_GeneHunter_Type_h_25_PRIVATE_PROPERTY_OFFSET \
+	GeneHunter_Source_GeneHunter_Type_h_25_SPARSE_DATA \
+	GeneHunter_Source_GeneHunter_Type_h_25_RPC_WRAPPERS_NO_PURE_DECLS \
+	GeneHunter_Source_GeneHunter_Type_h_25_INCLASS_NO_PURE_DECLS \
+	GeneHunter_Source_GeneHunter_Type_h_25_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -134,5 +135,14 @@ template<> GENEHUNTER_API UClass* StaticClass<class UType>();
 #undef CURRENT_FILE_ID
 #define CURRENT_FILE_ID GeneHunter_Source_GeneHunter_Type_h
 
+
+#define FOREACH_ENUM_MODIFIERFETCHMODE(op) \
+	op(ModifierFetchMode::Multiplicative) \
+	op(ModifierFetchMode::Additive) \
+	op(ModifierFetchMode::Min) \
+	op(ModifierFetchMode::Max) 
+
+enum class ModifierFetchMode : uint8;
+template<> GENEHUNTER_API UEnum* StaticEnum<ModifierFetchMode>();
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

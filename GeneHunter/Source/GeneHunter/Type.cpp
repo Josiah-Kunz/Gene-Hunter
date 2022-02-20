@@ -6,11 +6,29 @@
 
 #pragma region Getting modifiers when attacking
 
-float UType::GetModifierWhenAttacked(const TArray<UType*> AttackingTypes) const
+float UType::GetModifierWhenAttacked(const TArray<UType*> AttackingTypes, ModifierFetchMode FetchMode) const
 {
 	float Ret = 1;
-	for(const UType* Attacker : AttackingTypes)
-		Ret *= Attacker->AttackModifiers[this].Modifier;
+	switch(FetchMode)
+	{
+	case ModifierFetchMode::Multiplicative:
+		for(const UType* Attacker : AttackingTypes)
+			Ret *= Attacker->AttackModifiers[this].Modifier;
+		break;
+	case ModifierFetchMode::Additive:
+		for(const UType* Attacker : AttackingTypes)
+			Ret += Attacker->AttackModifiers[this].Modifier;
+		break;
+	case ModifierFetchMode::Max:
+		for(const UType* Attacker : AttackingTypes)
+			Ret = FMath::Max(Ret, Attacker->AttackModifiers[this].Modifier);
+		break;
+	case ModifierFetchMode::Min:
+		for(const UType* Attacker : AttackingTypes)
+			Ret = FMath::Min(Ret, Attacker->AttackModifiers[this].Modifier);
+		break;
+	}
+	
 	return Ret;
 }
 
@@ -204,7 +222,7 @@ void UType::SortTypesDefendingRatio(const TArray<UType*> Types, TArray<UType*>& 
 	});
 }
 
-void UType::GetNeutralCoverage(const TArray<UType*> Types, TArray<UType*>& NeutralCoverage, const int NumTypes)
+void UType::GetCoverage(const TArray<UType*> Types, TArray<UType*>& NeutralCoverage, const TArray<UType*> ExcludeTypes, const int NumTypes)
 {
 
 	/*
@@ -259,11 +277,16 @@ void UType::GetNeutralCoverage(const TArray<UType*> Types, TArray<UType*>& Neutr
 	TArray<int> Indices = {0};				// The indices of the Types in TypeCombos. E.g., if Fire/Water is being tested, this may be {4, 13} (or whatever).
 	TArray<UType*> TypeCombos;				// The combinations being tested
 	bool bIterate;							// When iterating in the while loop, this determines if we're still working on iteration
-	int i;									// Dummy int
+	int i, j;								// Dummy ints
 	
 	// Initialize Types being tested
 	for(i=1; i<NumTypes; i++)
-		Indices.Add(Indices[i-1]+1);	// {0, 1, 2, 3}
+	{
+		j = 0;
+		while (ExcludeTypes.Contains(Types[Indices[i-1] + 1 + j]))
+			j++;
+		Indices.Add(Indices[i-1]+1 + j);	// {0, 1, 2, 3}
+	}
 
 	// Loop until all options are exhausted
 	int Failsafe = 0;
@@ -277,13 +300,9 @@ void UType::GetNeutralCoverage(const TArray<UType*> Types, TArray<UType*>& Neutr
 		bSuccess = true;
 		for(const UType* Defender : Types)
 		{
-			if (Defender->GetModifierWhenAttacked(TypeCombos)<1)
+			if (Defender->GetModifierWhenAttacked(TypeCombos, ModifierFetchMode::Max)<1)
 			{
 				bSuccess = false;
-				FString attackers;
-				for(const UType* Attacker : TypeCombos)
-					attackers += Attacker->GetName() + " ";
-				GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Cyan, TEXT("Defender " + Defender->GetName() + " resisted " + attackers));
 				break;
 			}
 		}
@@ -304,7 +323,7 @@ void UType::GetNeutralCoverage(const TArray<UType*> Types, TArray<UType*>& Neutr
 			} else
 			{
 				bIterate = false;
-				for(int j=i+1; j<NumTypes;j++)	// This i works! Reset its following indices (e.g., if i=2 was validly set to 6, set i=3 to 7 and i=4 to 8)
+				for(j=i+1; j<NumTypes;j++)	// This i works! Reset its following indices (e.g., if i=2 was validly set to 6, set i=3 to 7 and i=4 to 8)
 				{
 					Indices[j] = Indices[i]+(j-i);
 				}
