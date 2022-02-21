@@ -12,7 +12,8 @@
 *\.DS_Store
 *\.swp
 
-# Unreal debug files
+# Unreal non-essentials (like debug files)
+.idea/
 UnrealEditor-GeneHunter-*.pdb
 UnrealEditor-GeneHunter-*.exp
 UnrealEditor-GeneHunter-*.response
@@ -65,7 +66,7 @@ SourceArt/**/*.png
 SourceArt/**/*.tga
 
 # Binary Files
-Binaries/*
+Binaries/
 Plugins/*/Binaries/*
 
 # Builds
