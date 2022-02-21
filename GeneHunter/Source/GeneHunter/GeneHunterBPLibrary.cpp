@@ -1,5 +1,9 @@
 
 #include "GeneHunterBPLibrary.h"
+
+#include "Blueprint/UserWidget.h"
+#include "Blueprint/WidgetTree.h"
+#include "Components/Widget.h"
 #include "EditorScriptingUtilities/Public/EditorAssetLibrary.h"
 
 /*
@@ -102,6 +106,24 @@ void UGeneHunterBPLibrary::PruneTypeAttackMods(UType* Type)
 			Type->AttackModifiers.Add(pair.Key, pair.Value);
 	}
 }
+
+/*
+ *	Gets the first UWidget* of the specified class among the Parent's children.
+ *	Usage:
+ *		UButton* Button = Cast<UButton>(UGeneHunterBPLibrary::GetChildOfType(this, UButton::StaticClass()));
+ */
+UWidget* UGeneHunterBPLibrary::GetChildOfType(const UUserWidget* Parent, const TSubclassOf<UWidget> WidgetClass)
+{
+	TArray<UWidget*> Children;
+	Parent->WidgetTree->GetAllWidgets(Children);
+	for(UWidget* Child : Children)
+	{
+		if(Child->IsA(WidgetClass))
+			return Child;
+	}
+	return nullptr;
+}
+
 
 
 

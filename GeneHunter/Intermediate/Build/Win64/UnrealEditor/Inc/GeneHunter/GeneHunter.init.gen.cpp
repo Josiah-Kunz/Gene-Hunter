@@ -29,8 +29,8 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunter_init() {}
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0x2B4DD50F,
-				0xAB53F718,
+				0xBF49AABF,
+				0xC361A65D,
 				METADATA_PARAMS(nullptr, 0)
 			};
 			UECodeGen_Private::ConstructUPackage(ReturnPackage, PackageParams);

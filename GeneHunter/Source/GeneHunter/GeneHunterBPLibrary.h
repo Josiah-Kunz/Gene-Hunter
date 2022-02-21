@@ -9,6 +9,7 @@
 #include "GeneHunterBPLibrary.generated.h"
 
 
+class UWidget;
 /**
  * 
  */
@@ -29,6 +30,9 @@ class GENEHUNTER_API UGeneHunterBPLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable)
 	static void PruneTypeAttackMods(UType* Type);
 	
+	
 public:
 	static const int MAX_ITERATIONS = 10000;
+
+	static UWidget* GetChildOfType(const UUserWidget* Parent, const class TSubclassOf<class UWidget> WidgetClass);
 };
