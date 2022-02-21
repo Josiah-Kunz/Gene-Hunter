@@ -88,11 +88,10 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 	{
 		P_GET_TARRAY(UType*,Z_Param_Types);
 		P_GET_TARRAY_REF(UType*,Z_Param_Out_Coverage);
-		P_GET_TARRAY(UType*,Z_Param_ExcludeTypes);
 		P_GET_PROPERTY(FIntProperty,Z_Param_NumTypes);
 		P_FINISH;
 		P_NATIVE_BEGIN;
-		UType::GetCoverage(Z_Param_Types,Z_Param_Out_Coverage,Z_Param_ExcludeTypes,Z_Param_NumTypes);
+		UType::GetCoverage(Z_Param_Types,Z_Param_Out_Coverage,Z_Param_NumTypes);
 		P_NATIVE_END;
 	}
 	DEFINE_FUNCTION(UType::execSortTypesDefendingRatio)
@@ -346,7 +345,6 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		{
 			TArray<UType*> Types;
 			TArray<UType*> Coverage;
-			TArray<UType*> ExcludeTypes;
 			int32 NumTypes;
 		};
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_Types_Inner;
@@ -356,11 +354,6 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		static const UECodeGen_Private::FArrayPropertyParams NewProp_Types;
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_Coverage_Inner;
 		static const UECodeGen_Private::FArrayPropertyParams NewProp_Coverage;
-		static const UECodeGen_Private::FObjectPropertyParams NewProp_ExcludeTypes_Inner;
-#if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam NewProp_ExcludeTypes_MetaData[];
-#endif
-		static const UECodeGen_Private::FArrayPropertyParams NewProp_ExcludeTypes;
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_NumTypes_MetaData[];
 #endif
@@ -380,13 +373,6 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_Types = { "Types", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetCoverage_Parms, Types), EArrayPropertyFlags::None, METADATA_PARAMS(Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_Types_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_Types_MetaData)) };
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_Coverage_Inner = { "Coverage", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
 	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_Coverage = { "Coverage", nullptr, (EPropertyFlags)0x0010000000000180, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetCoverage_Parms, Coverage), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_ExcludeTypes_Inner = { "ExcludeTypes", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
-#if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_ExcludeTypes_MetaData[] = {
-		{ "NativeConst", "" },
-	};
-#endif
-	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_ExcludeTypes = { "ExcludeTypes", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(Type_eventGetCoverage_Parms, ExcludeTypes), EArrayPropertyFlags::None, METADATA_PARAMS(Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_ExcludeTypes_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_ExcludeTypes_MetaData)) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_NumTypes_MetaData[] = {
 		{ "NativeConst", "" },
@@ -398,13 +384,10 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_Types,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_Coverage_Inner,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_Coverage,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_ExcludeTypes_Inner,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_ExcludeTypes,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UType_GetCoverage_Statics::NewProp_NumTypes,
 	};
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UType_GetCoverage_Statics::Function_MetaDataParams[] = {
-		{ "AutoCreateRefTerm", "ExcludeTypes" },
 		{ "Comment", "/*\n\x09 * Gets all combinations of attackers who have neutral coverage.\n\x09 * For example, in Pokemon, if NumTypes=2, Ice/Electric would be in the returned array.\n\x09 */" },
 		{ "CPP_Default_NumTypes", "2" },
 		{ "ModuleRelativePath", "Type.h" },
@@ -1261,7 +1244,7 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 	};
 	const FClassFunctionLinkInfo Z_Construct_UClass_UType_Statics::FuncInfo[] = {
 		{ &Z_Construct_UFunction_UType_GetAttackingTypesBetween, "GetAttackingTypesBetween" }, // 2392182911
-		{ &Z_Construct_UFunction_UType_GetCoverage, "GetCoverage" }, // 1464479337
+		{ &Z_Construct_UFunction_UType_GetCoverage, "GetCoverage" }, // 1170667430
 		{ &Z_Construct_UFunction_UType_GetDefendingTypesBetween, "GetDefendingTypesBetween" }, // 1466961787
 		{ &Z_Construct_UFunction_UType_GetEffectiveAgainstTypes, "GetEffectiveAgainstTypes" }, // 1865114002
 		{ &Z_Construct_UFunction_UType_GetHealedByTypes, "GetHealedByTypes" }, // 2080745820
@@ -1351,7 +1334,7 @@ void EmptyLinkFunctionForGeneratedCodeType() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UType, 2583931517);
+	IMPLEMENT_CLASS(UType, 2592440830);
 	template<> GENEHUNTER_API UClass* StaticClass<UType>()
 	{
 		return UType::StaticClass();

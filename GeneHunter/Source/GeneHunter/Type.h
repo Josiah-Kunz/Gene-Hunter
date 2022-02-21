@@ -172,8 +172,8 @@ public:
 	 * Gets all combinations of attackers who have neutral coverage.
 	 * For example, in Pokemon, if NumTypes=2, Ice/Electric would be in the returned array.
 	 */
-	UFUNCTION(BlueprintCallable,  meta = (AutoCreateRefTerm = "ExcludeTypes"))
-	static void GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, const TArray<UType*> ExcludeTypes, const int NumTypes=2);
+	UFUNCTION(BlueprintCallable)
+	static void GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, const int NumTypes=2);
 	
 #pragma endregion
 	

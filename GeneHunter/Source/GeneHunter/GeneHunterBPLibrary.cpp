@@ -1,6 +1,7 @@
 
 #include "GeneHunterBPLibrary.h"
 
+#include "AssetRegistry/AssetRegistryModule.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/Widget.h"
@@ -122,6 +123,39 @@ UWidget* UGeneHunterBPLibrary::GetChildOfType(const UUserWidget* Parent, const T
 			return Child;
 	}
 	return nullptr;
+}
+
+/*
+ * Gets the Type Assets (not the Types themselves).
+ * @param SortABC If true, sorts the Types alphabetically. Make false to improve performance.
+ */
+void UGeneHunterBPLibrary::GetAllTypeAssets(TArray<FAssetData>& TypeAssets, bool SortABC)
+{
+	const FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	AssetRegistryModule.Get().GetAssetsByClass(TEXT("Type"), TypeAssets);
+	if (SortABC)
+		SortAssetsAlphabetically(TypeAssets, TypeAssets);
+}
+
+/*
+ * Gets all Types.
+ * @param Types The returned array filled with Types found in the assets (see GetAllTypeAssets).
+ * @param Exclude A list of Types to exclude from this list.
+ * @param SortABC If true, sorts the Types alphabetically. Make false to improve performance.
+ */
+void UGeneHunterBPLibrary::GetAllTypes(TArray<UType*>& Types, TArray<UType*> Exclude, bool SortABC)
+{
+	Types.Empty();
+	TArray<FAssetData> Assets;
+	GetAllTypeAssets(Assets, SortABC);
+	for(FAssetData& Asset : Assets)
+	{
+		if (UType* Type = Cast<UType>(Asset.GetAsset()))
+		{
+			if (!Exclude.Contains(Type))
+				Types.Add(Type);
+		}
+	}
 }
 
 

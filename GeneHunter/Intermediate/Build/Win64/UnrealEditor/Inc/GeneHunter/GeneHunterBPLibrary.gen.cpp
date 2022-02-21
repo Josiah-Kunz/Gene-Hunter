@@ -17,10 +17,29 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 	GENEHUNTER_API UClass* Z_Construct_UClass_UGeneHunterBPLibrary();
 	ENGINE_API UClass* Z_Construct_UClass_UBlueprintFunctionLibrary();
 	UPackage* Z_Construct_UPackage__Script_GeneHunter();
+	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FAssetData();
 	GENEHUNTER_API UClass* Z_Construct_UClass_UType_NoRegister();
 	COREUOBJECT_API UClass* Z_Construct_UClass_UObject_NoRegister();
-	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FAssetData();
 // End Cross Module References
+	DEFINE_FUNCTION(UGeneHunterBPLibrary::execGetAllTypes)
+	{
+		P_GET_TARRAY_REF(UType*,Z_Param_Out_Types);
+		P_GET_TARRAY(UType*,Z_Param_Exclude);
+		P_GET_UBOOL(Z_Param_SortABC);
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		UGeneHunterBPLibrary::GetAllTypes(Z_Param_Out_Types,Z_Param_Exclude,Z_Param_SortABC);
+		P_NATIVE_END;
+	}
+	DEFINE_FUNCTION(UGeneHunterBPLibrary::execGetAllTypeAssets)
+	{
+		P_GET_TARRAY_REF(FAssetData,Z_Param_Out_TypeAssets);
+		P_GET_UBOOL(Z_Param_SortABC);
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		UGeneHunterBPLibrary::GetAllTypeAssets(Z_Param_Out_TypeAssets,Z_Param_SortABC);
+		P_NATIVE_END;
+	}
 	DEFINE_FUNCTION(UGeneHunterBPLibrary::execPruneTypeAttackMods)
 	{
 		P_GET_OBJECT(UType,Z_Param_Type);
@@ -65,6 +84,8 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		UClass* Class = UGeneHunterBPLibrary::StaticClass();
 		static const FNameNativePtrPair Funcs[] = {
 			{ "EnsureValidAssetName", &UGeneHunterBPLibrary::execEnsureValidAssetName },
+			{ "GetAllTypeAssets", &UGeneHunterBPLibrary::execGetAllTypeAssets },
+			{ "GetAllTypes", &UGeneHunterBPLibrary::execGetAllTypes },
 			{ "PruneTypeAttackMods", &UGeneHunterBPLibrary::execPruneTypeAttackMods },
 			{ "SaveLoadedAssetFromAnywhere", &UGeneHunterBPLibrary::execSaveLoadedAssetFromAnywhere },
 			{ "SortAssetsAlphabetically", &UGeneHunterBPLibrary::execSortAssetsAlphabetically },
@@ -154,6 +175,104 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		if (!ReturnFunction)
 		{
 			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics
+	{
+		struct GeneHunterBPLibrary_eventGetAllTypeAssets_Parms
+		{
+			TArray<FAssetData> TypeAssets;
+			bool SortABC;
+		};
+		static const UECodeGen_Private::FStructPropertyParams NewProp_TypeAssets_Inner;
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_TypeAssets;
+		static void NewProp_SortABC_SetBit(void* Obj);
+		static const UECodeGen_Private::FBoolPropertyParams NewProp_SortABC;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::NewProp_TypeAssets_Inner = { "TypeAssets", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UScriptStruct_FAssetData, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::NewProp_TypeAssets = { "TypeAssets", nullptr, (EPropertyFlags)0x0010000000000180, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(GeneHunterBPLibrary_eventGetAllTypeAssets_Parms, TypeAssets), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	void Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::NewProp_SortABC_SetBit(void* Obj)
+	{
+		((GeneHunterBPLibrary_eventGetAllTypeAssets_Parms*)Obj)->SortABC = 1;
+	}
+	const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::NewProp_SortABC = { "SortABC", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(GeneHunterBPLibrary_eventGetAllTypeAssets_Parms), &Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::NewProp_SortABC_SetBit, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::NewProp_TypeAssets_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::NewProp_TypeAssets,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::NewProp_SortABC,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::Function_MetaDataParams[] = {
+		{ "CPP_Default_SortABC", "false" },
+		{ "ModuleRelativePath", "GeneHunterBPLibrary.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "GetAllTypeAssets", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventGetAllTypeAssets_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04442401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics
+	{
+		struct GeneHunterBPLibrary_eventGetAllTypes_Parms
+		{
+			TArray<UType*> Types;
+			TArray<UType*> Exclude;
+			bool SortABC;
+		};
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_Types_Inner;
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_Types;
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_Exclude_Inner;
+		static const UECodeGen_Private::FArrayPropertyParams NewProp_Exclude;
+		static void NewProp_SortABC_SetBit(void* Obj);
+		static const UECodeGen_Private::FBoolPropertyParams NewProp_SortABC;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::NewProp_Types_Inner = { "Types", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::NewProp_Types = { "Types", nullptr, (EPropertyFlags)0x0010000000000180, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(GeneHunterBPLibrary_eventGetAllTypes_Parms, Types), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::NewProp_Exclude_Inner = { "Exclude", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UType_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::NewProp_Exclude = { "Exclude", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(GeneHunterBPLibrary_eventGetAllTypes_Parms, Exclude), EArrayPropertyFlags::None, METADATA_PARAMS(nullptr, 0) };
+	void Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::NewProp_SortABC_SetBit(void* Obj)
+	{
+		((GeneHunterBPLibrary_eventGetAllTypes_Parms*)Obj)->SortABC = 1;
+	}
+	const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::NewProp_SortABC = { "SortABC", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(GeneHunterBPLibrary_eventGetAllTypes_Parms), &Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::NewProp_SortABC_SetBit, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::NewProp_Types_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::NewProp_Types,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::NewProp_Exclude_Inner,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::NewProp_Exclude,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::NewProp_SortABC,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::Function_MetaDataParams[] = {
+		{ "AutoCreateRefTerm", "Exclude" },
+		{ "CPP_Default_SortABC", "true" },
+		{ "ModuleRelativePath", "GeneHunterBPLibrary.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "GetAllTypes", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventGetAllTypes_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04442401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::FuncParams);
 		}
 		return ReturnFunction;
 	}
@@ -318,6 +437,8 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 	};
 	const FClassFunctionLinkInfo Z_Construct_UClass_UGeneHunterBPLibrary_Statics::FuncInfo[] = {
 		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName, "EnsureValidAssetName" }, // 1396083631
+		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets, "GetAllTypeAssets" }, // 3696337972
+		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes, "GetAllTypes" }, // 760130562
 		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_PruneTypeAttackMods, "PruneTypeAttackMods" }, // 2433913900
 		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere, "SaveLoadedAssetFromAnywhere" }, // 2606620303
 		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically, "SortAssetsAlphabetically" }, // 3125384306
@@ -356,7 +477,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UGeneHunterBPLibrary, 2606337974);
+	IMPLEMENT_CLASS(UGeneHunterBPLibrary, 406139645);
 	template<> GENEHUNTER_API UClass* StaticClass<UGeneHunterBPLibrary>()
 	{
 		return UGeneHunterBPLibrary::StaticClass();

@@ -50,9 +50,10 @@ void EmptyLinkFunctionForGeneratedCodeEditorBackgroundParent() {}
 	};
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UEditorBackgroundParent_Statics::Class_MetaDataParams[] = {
-		{ "Comment", "/**\n * \n */" },
+		{ "Comment", "/**\n * A class to augment the EditorBackground class. Mostly used to give the dev access to the width of the \"right menu\".\n */" },
 		{ "IncludePath", "EditorBackgroundParent.h" },
 		{ "ModuleRelativePath", "EditorBackgroundParent.h" },
+		{ "ToolTip", "A class to augment the EditorBackground class. Mostly used to give the dev access to the width of the \"right menu\"." },
 	};
 #endif
 #if WITH_METADATA
@@ -66,9 +67,9 @@ void EmptyLinkFunctionForGeneratedCodeEditorBackgroundParent() {}
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UEditorBackgroundParent_Statics::NewProp_Width_MetaData[] = {
 		{ "Category", "Right Menu" },
-		{ "Comment", "/** Width of the \"right menu\". (Also, screen width - Width is the width of the click off button). */" },
+		{ "Comment", "/** Width of the \"right menu\". Also, (screen width - Width) is the width of the \"click off\" button (dim area). */" },
 		{ "ModuleRelativePath", "EditorBackgroundParent.h" },
-		{ "ToolTip", "Width of the \"right menu\". (Also, screen width - Width is the width of the click off button)." },
+		{ "ToolTip", "Width of the \"right menu\". Also, (screen width - Width) is the width of the \"click off\" button (dim area)." },
 	};
 #endif
 	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEditorBackgroundParent_Statics::NewProp_Width = { "Width", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UEditorBackgroundParent, Width), METADATA_PARAMS(Z_Construct_UClass_UEditorBackgroundParent_Statics::NewProp_Width_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UEditorBackgroundParent_Statics::NewProp_Width_MetaData)) };
@@ -103,7 +104,7 @@ void EmptyLinkFunctionForGeneratedCodeEditorBackgroundParent() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UEditorBackgroundParent, 120946407);
+	IMPLEMENT_CLASS(UEditorBackgroundParent, 1320679229);
 	template<> GENEHUNTER_API UClass* StaticClass<UEditorBackgroundParent>()
 	{
 		return UEditorBackgroundParent::StaticClass();

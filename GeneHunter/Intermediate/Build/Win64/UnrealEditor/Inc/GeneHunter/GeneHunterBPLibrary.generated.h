@@ -9,8 +9,8 @@
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 class UType;
-class UObject;
 struct FAssetData;
+class UObject;
 #ifdef GENEHUNTER_GeneHunterBPLibrary_generated_h
 #error "GeneHunterBPLibrary.generated.h already included, missing '#pragma once' in GeneHunterBPLibrary.h"
 #endif
@@ -19,6 +19,8 @@ struct FAssetData;
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_SPARSE_DATA
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_RPC_WRAPPERS \
  \
+	DECLARE_FUNCTION(execGetAllTypes); \
+	DECLARE_FUNCTION(execGetAllTypeAssets); \
 	DECLARE_FUNCTION(execPruneTypeAttackMods); \
 	DECLARE_FUNCTION(execSaveLoadedAssetFromAnywhere); \
 	DECLARE_FUNCTION(execSortAssetsAlphabetically); \
@@ -27,6 +29,8 @@ struct FAssetData;
 
 #define GeneHunter_Source_GeneHunter_GeneHunterBPLibrary_h_19_RPC_WRAPPERS_NO_PURE_DECLS \
  \
+	DECLARE_FUNCTION(execGetAllTypes); \
+	DECLARE_FUNCTION(execGetAllTypeAssets); \
 	DECLARE_FUNCTION(execPruneTypeAttackMods); \
 	DECLARE_FUNCTION(execSaveLoadedAssetFromAnywhere); \
 	DECLARE_FUNCTION(execSortAssetsAlphabetically); \

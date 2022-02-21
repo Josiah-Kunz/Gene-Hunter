@@ -222,7 +222,7 @@ void UType::SortTypesDefendingRatio(const TArray<UType*> Types, TArray<UType*>& 
 	});
 }
 
-void UType::GetCoverage(const TArray<UType*> Types, TArray<UType*>& NeutralCoverage, const TArray<UType*> ExcludeTypes, const int NumTypes)
+void UType::GetCoverage(const TArray<UType*> Types, TArray<UType*>& NeutralCoverage, const int NumTypes)
 {
 
 	/*
@@ -281,12 +281,7 @@ void UType::GetCoverage(const TArray<UType*> Types, TArray<UType*>& NeutralCover
 	
 	// Initialize Types being tested
 	for(i=1; i<NumTypes; i++)
-	{
-		j = 0;
-		while (ExcludeTypes.Contains(Types[Indices[i-1] + 1 + j]))
-			j++;
-		Indices.Add(Indices[i-1]+1 + j);	// {0, 1, 2, 3}
-	}
+		Indices.Add(Indices[i-1] + 1);	// {0, 1, 2, 3}
 
 	// Loop until all options are exhausted
 	int Failsafe = 0;
@@ -324,9 +319,7 @@ void UType::GetCoverage(const TArray<UType*> Types, TArray<UType*>& NeutralCover
 			{
 				bIterate = false;
 				for(j=i+1; j<NumTypes;j++)	// This i works! Reset its following indices (e.g., if i=2 was validly set to 6, set i=3 to 7 and i=4 to 8)
-				{
 					Indices[j] = Indices[i]+(j-i);
-				}
 			}
 		}
 		if (bIterate)	// Never able to iterate; must be at the end of all possible Type combinations

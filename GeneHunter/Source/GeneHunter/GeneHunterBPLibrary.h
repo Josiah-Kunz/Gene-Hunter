@@ -29,6 +29,12 @@ class GENEHUNTER_API UGeneHunterBPLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable)
 	static void PruneTypeAttackMods(UType* Type);
+
+	UFUNCTION(BlueprintCallable)
+	static void GetAllTypeAssets(TArray<FAssetData>& TypeAssets, bool SortABC = false);
+
+	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
+	static void GetAllTypes(TArray<UType*>& Types, TArray<UType*> Exclude, bool SortABC = true);
 	
 	
 public:

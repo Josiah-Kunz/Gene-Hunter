@@ -113,3 +113,12 @@ E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\UMG\WidgetTree.gene
 E:\UE_5.0EA\Engine\Source\Runtime\UMG\Public\Components/CanvasPanelSlot.h
 E:\UE_5.0EA\Engine\Source\Runtime\Slate\Public\Widgets/Layout/SConstraintCanvas.h
 E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\UMG\CanvasPanelSlot.generated.h
+E:\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\Engine/Canvas.h
+E:\UE_5.0EA\Engine\Source\Runtime\Engine\Public\CanvasItem.h
+E:\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\Engine/Font.h
+E:\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\Engine/FontImportOptions.h
+E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\FontImportOptions.generated.h
+E:\UE_5.0EA\Engine\Source\Runtime\SlateCore\Public\Fonts/FontProviderInterface.h
+E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\SlateCore\FontProviderInterface.generated.h
+E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\Font.generated.h
+E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\Canvas.generated.h

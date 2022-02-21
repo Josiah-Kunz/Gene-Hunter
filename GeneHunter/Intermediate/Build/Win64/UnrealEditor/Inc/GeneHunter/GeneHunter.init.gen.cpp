@@ -29,7 +29,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunter_init() {}
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0xBF49AABF,
+				0x7E761AD8,
 				0xC361A65D,
 				METADATA_PARAMS(nullptr, 0)
 			};

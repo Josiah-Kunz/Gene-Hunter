@@ -7,6 +7,11 @@ E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Inc\GeneH
 E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Inc\GeneHunter\AttackModifier.generated.h
 E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Inc\GeneHunter\Type.generated.h
 E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Inc\GeneHunter\GeneHunterBPLibrary.generated.h
+E:\UE_5.0EA\Engine\Source\Runtime\AssetRegistry\Public\AssetRegistry/AssetRegistryModule.h
+E:\UE_5.0EA\Engine\Source\Runtime\AssetRegistry\Public\AssetRegistry/IAssetRegistry.h
+E:\UE_5.0EA\Engine\Source\Runtime\CoreUObject\Public\Misc/AssetRegistryInterface.h
+E:\UE_5.0EA\Engine\Source\Runtime\CoreUObject\Public\AssetRegistry/ARFilter.h
+E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\AssetRegistry\IAssetRegistry.generated.h
 E:\UE_5.0EA\Engine\Source\Runtime\UMG\Public\Blueprint/UserWidget.h
 E:\UE_5.0EA\Engine\Source\Runtime\UMG\Public\Components/SlateWrapperTypes.h
 E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\UMG\SlateWrapperTypes.generated.h
