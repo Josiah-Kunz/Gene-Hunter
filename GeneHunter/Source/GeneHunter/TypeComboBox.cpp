@@ -6,14 +6,18 @@
 TSharedRef<SWidget> UTypeComboBox::RebuildWidget()
 {
 	TSharedRef<SWidget> Ret = Super::RebuildWidget();
-	TArray<UType*> Types;
 	UGeneHunterBPLibrary::GetAllTypes(Types, {});
 	Options = {MakeShared<FString>(TEXT("<None>"))};
-	for(const UType* Type : Types)
-		Options.Add(MakeShared<FString>(Type->GetName()));
+	for(int i=0; i<Types.Num(); i++)
+		Options.Add(MakeShared<FString>(Types[i]->GetName()));
 	SetSelectedIndex(0);
-	//ForegroundColor = FLinearColor(1, 1, 1);
 	return Ret;
 }
 
+UType* UTypeComboBox::GetType(int index)
+{
+	if (index <= 0 || Types.Num() < index)
+		return nullptr;
+	return Types[index - 1];
+}
 

@@ -18,4 +18,12 @@ class GENEHUNTER_API UTypeComboBox : public UComboBoxString
 	
 	/** Overrides */
 	virtual TSharedRef<SWidget> RebuildWidget() override;
+
+private:
+	TArray<UType*> Types;
+	
+public:
+
+	UFUNCTION(BlueprintCallable)
+	UType* GetType(int index);
 };
