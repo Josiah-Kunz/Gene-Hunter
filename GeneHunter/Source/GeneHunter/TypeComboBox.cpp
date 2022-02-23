@@ -12,8 +12,7 @@ TSharedRef<SWidget> UTypeComboBox::RebuildWidget()
 	for(const UType* Type : Types)
 		Options.Add(MakeShared<FString>(Type->GetName()));
 	SetSelectedIndex(0);
-	ForegroundColor = FLinearColor(1, 1, 1);
-	SynchronizeProperties();
+	//ForegroundColor = FLinearColor(1, 1, 1);
 	return Ret;
 }
 

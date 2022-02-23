@@ -1,3 +1,0 @@
-E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Development\GeneHunter\Definitions.GeneHunter.h
-E:\GitHub\Gene-Hunter\GeneHunter\Source\GeneHunter\CustomBlueprintFunctionLibrary.h
-E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Inc\GeneHunter\CustomBlueprintFunctionLibrary.generated.h

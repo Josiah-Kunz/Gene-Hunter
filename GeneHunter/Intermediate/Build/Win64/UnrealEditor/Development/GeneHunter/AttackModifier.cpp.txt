@@ -1,5 +1,0 @@
-E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Development\GeneHunter\Definitions.GeneHunter.h
-E:\GitHub\Gene-Hunter\GeneHunter\Source\GeneHunter\AttackModifier.h
-E:\GitHub\Gene-Hunter\GeneHunter\Source\GeneHunter\SupportingText.h
-E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Inc\GeneHunter\SupportingText.generated.h
-E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\Build\Win64\UnrealEditor\Inc\GeneHunter\AttackModifier.generated.h
