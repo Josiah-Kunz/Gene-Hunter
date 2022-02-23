@@ -18,6 +18,8 @@ class GENEHUNTER_API UGeneHunterBPLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 
+public:
+
 	UFUNCTION(BlueprintCallable)
 	static void EnsureValidAssetName(const FString Filename, const FString Path, FString& SafeFilename, FString& AbsolutePath, const FString Ext = "uasset", const FString OldFilename = "");
 
@@ -36,8 +38,6 @@ class GENEHUNTER_API UGeneHunterBPLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
 	static void GetAllTypes(TArray<UType*>& Types, TArray<UType*> Exclude, bool SortABC = true);
 	
-	
-public:
 	static const int MAX_ITERATIONS = 10000;
 
 	static UWidget* GetChildOfType(const UUserWidget* Parent, const class TSubclassOf<class UWidget> WidgetClass);

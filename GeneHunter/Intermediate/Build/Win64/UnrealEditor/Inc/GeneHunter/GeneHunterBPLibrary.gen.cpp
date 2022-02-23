@@ -168,7 +168,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		{ "ModuleRelativePath", "GeneHunterBPLibrary.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "EnsureValidAssetName", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventEnsureValidAssetName_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04442401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::Function_MetaDataParams)) };
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "EnsureValidAssetName", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventEnsureValidAssetName_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04422401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName_Statics::Function_MetaDataParams)) };
 	UFunction* Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -213,7 +213,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		{ "ModuleRelativePath", "GeneHunterBPLibrary.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "GetAllTypeAssets", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventGetAllTypeAssets_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04442401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::Function_MetaDataParams)) };
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "GetAllTypeAssets", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventGetAllTypeAssets_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04422401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets_Statics::Function_MetaDataParams)) };
 	UFunction* Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -266,7 +266,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		{ "ModuleRelativePath", "GeneHunterBPLibrary.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "GetAllTypes", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventGetAllTypes_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04442401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::Function_MetaDataParams)) };
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "GetAllTypes", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventGetAllTypes_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04422401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes_Statics::Function_MetaDataParams)) };
 	UFunction* Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -298,7 +298,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		{ "ModuleRelativePath", "GeneHunterBPLibrary.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_PruneTypeAttackMods_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "PruneTypeAttackMods", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventPruneTypeAttackMods_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_PruneTypeAttackMods_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_PruneTypeAttackMods_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04042401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_PruneTypeAttackMods_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_PruneTypeAttackMods_Statics::Function_MetaDataParams)) };
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_PruneTypeAttackMods_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "PruneTypeAttackMods", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventPruneTypeAttackMods_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_PruneTypeAttackMods_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_PruneTypeAttackMods_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04022401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_PruneTypeAttackMods_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_PruneTypeAttackMods_Statics::Function_MetaDataParams)) };
 	UFunction* Z_Construct_UFunction_UGeneHunterBPLibrary_PruneTypeAttackMods()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -357,7 +357,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		{ "ModuleRelativePath", "GeneHunterBPLibrary.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "SaveLoadedAssetFromAnywhere", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventSaveLoadedAssetFromAnywhere_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04042401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::Function_MetaDataParams)) };
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "SaveLoadedAssetFromAnywhere", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventSaveLoadedAssetFromAnywhere_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04022401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere_Statics::Function_MetaDataParams)) };
 	UFunction* Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -407,7 +407,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		{ "ModuleRelativePath", "GeneHunterBPLibrary.h" },
 	};
 #endif
-	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "SortAssetsAlphabetically", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventSortAssetsAlphabetically_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04442401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically_Statics::Function_MetaDataParams)) };
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UGeneHunterBPLibrary, nullptr, "SortAssetsAlphabetically", nullptr, nullptr, sizeof(GeneHunterBPLibrary_eventSortAssetsAlphabetically_Parms), Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04422401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically_Statics::Function_MetaDataParams)) };
 	UFunction* Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -436,12 +436,12 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		(UObject* (*)())Z_Construct_UPackage__Script_GeneHunter,
 	};
 	const FClassFunctionLinkInfo Z_Construct_UClass_UGeneHunterBPLibrary_Statics::FuncInfo[] = {
-		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName, "EnsureValidAssetName" }, // 1396083631
-		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets, "GetAllTypeAssets" }, // 3696337972
-		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes, "GetAllTypes" }, // 760130562
-		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_PruneTypeAttackMods, "PruneTypeAttackMods" }, // 2433913900
-		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere, "SaveLoadedAssetFromAnywhere" }, // 2606620303
-		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically, "SortAssetsAlphabetically" }, // 3125384306
+		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_EnsureValidAssetName, "EnsureValidAssetName" }, // 4103629323
+		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypeAssets, "GetAllTypeAssets" }, // 552978710
+		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_GetAllTypes, "GetAllTypes" }, // 2222285161
+		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_PruneTypeAttackMods, "PruneTypeAttackMods" }, // 3611881996
+		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_SaveLoadedAssetFromAnywhere, "SaveLoadedAssetFromAnywhere" }, // 209667129
+		{ &Z_Construct_UFunction_UGeneHunterBPLibrary_SortAssetsAlphabetically, "SortAssetsAlphabetically" }, // 1001658864
 	};
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UGeneHunterBPLibrary_Statics::Class_MetaDataParams[] = {
@@ -477,7 +477,7 @@ void EmptyLinkFunctionForGeneratedCodeGeneHunterBPLibrary() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UGeneHunterBPLibrary, 406139645);
+	IMPLEMENT_CLASS(UGeneHunterBPLibrary, 56377424);
 	template<> GENEHUNTER_API UClass* StaticClass<UGeneHunterBPLibrary>()
 	{
 		return UGeneHunterBPLibrary::StaticClass();

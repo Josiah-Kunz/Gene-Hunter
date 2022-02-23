@@ -10,6 +10,7 @@
 UENUM(BlueprintType)
 enum class ModifierFetchMode : uint8
 {
+	Default			UMETA(DisplayName = "Default", Tooltip="Pokemon rules, except with healing:\n" + " (-1 & 2)   = -0.5\n" + " (-1 & 1)   = -1\n" + " (-1 & 0.5) = -1\n" + " (-1 & 0)   = -1\n" + " (-1 & -1/2)  = -1"),
 	Multiplicative	UMETA(DisplayName = "Multiplicative"),
 	Additive		UMETA(DisplayName = "Additive"),
 	Min				UMETA(DisplayName="Min"),
@@ -47,16 +48,31 @@ public:
 	FSupportingText SupportingText;
 
 #pragma endregion
-	
-#pragma region Attacking type effectiveness
 
 	/*
-	 * Gets the net modifier (multiplicative) when an attack of the given Type(s) damages this Type.
+	 * Gets the net modifier when an attack of the given Type(s) damages the other Type(s).
 	 * For example, if a Toxic+Fire attack attempts to damage a Metal Type, this function will return zero if 
 	 * multiplicative (Metal is immune to Toxic, so 0*2=0) or 2 if max.
 	 */
 	UFUNCTION(BlueprintCallable)
-	float GetModifierWhenAttacked(const TArray<UType*> AttackingTypes, const ModifierFetchMode FetchMode = ModifierFetchMode::Multiplicative) const;
+	static float GetNetModifier(const TArray<UType*> AttackingTypes, const TArray<UType*> DefendingTypes, const ModifierFetchMode FetchMode = ModifierFetchMode::Default);
+
+	/*
+	 * Gets the net modifier when using default rules for combining modifiers. For example:
+	 * 
+	 *	(-1 & 2)	-> (-1/2)
+	 *	(-1 & 1)	-> (-1)
+	 *	(-1 & 1/2)	-> (-1)
+	 *	(-1 & 0)	-> (-1)
+	 *	(-1 & -1)	-> (-1)
+	 *
+	 *	(0 & 1)		-> (0)
+	 *	(2 & 1/2)	-> (1)
+	 */
+	UFUNCTION(BlueprintCallable)
+	static float CombineModifiers(const float A, const float B);
+	
+#pragma region Attacking type effectiveness
 	
 	/*
 	 * Gets Types that take increased damage from this Type.
@@ -173,7 +189,10 @@ public:
 	 * For example, in Pokemon, if NumTypes=2, Ice/Electric would be in the returned array.
 	 */
 	UFUNCTION(BlueprintCallable)
-	static void GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, const int NumTypes=2);
+	static void GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, const int NumAtkTypes=2, const int NumDefTypes=2);
+
+private:
+	static bool IncrementIndices(const TArray<UType*> Types, TArray<int>& Indices);
 	
 #pragma endregion
 	
