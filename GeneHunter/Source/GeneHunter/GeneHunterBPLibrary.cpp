@@ -158,6 +158,18 @@ void UGeneHunterBPLibrary::GetAllTypes(TArray<UType*>& Types, TArray<UType*> Exc
 	}
 }
 
+/*
+ * Works exactly like ClearChildren, but gives the option to exclude certain children.
+ */
+void UGeneHunterBPLibrary::ClearChildrenExcept(UPanelWidget* Widget, const TArray<UWidget*> Exclude)
+{
+	for(int i=Widget->GetChildrenCount() - 1; i>=0; i--)
+	{
+		if (!Exclude.Contains(Widget->GetChildAt(i)))
+			Widget->RemoveChildAt(i);
+	}
+		
+}
 
 
 

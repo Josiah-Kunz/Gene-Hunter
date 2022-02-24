@@ -6,6 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 
 #include "Type.h"
+#include "Components/PanelWidget.h"
 #include "GeneHunterBPLibrary.generated.h"
 
 
@@ -37,6 +38,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
 	static void GetAllTypes(TArray<UType*>& Types, TArray<UType*> Exclude, bool SortABC = true);
+
+	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
+	static void ClearChildrenExcept(UPanelWidget* Widget, const TArray<UWidget*> Exclude);
 	
 	static const int MAX_ITERATIONS = 10000;
 

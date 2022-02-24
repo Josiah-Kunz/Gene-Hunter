@@ -21,3 +21,16 @@ UType* UTypeComboBox::GetType(int index)
 	return Types[index - 1];
 }
 
+void UTypeComboBox::SetForegroundColor(FLinearColor Color)
+{
+	ForegroundColor = Color;
+}
+
+void UTypeComboBox::SetBackgroundColor(const FLinearColor NormalForeground, const FLinearColor HoveredForeground, const FLinearColor PressedForeground)
+{
+	FButtonStyle ButtonStyle = this->WidgetStyle.ComboButtonStyle.ButtonStyle;
+	ButtonStyle.NormalForeground = NormalForeground;
+	ButtonStyle.HoveredForeground = HoveredForeground;
+	ButtonStyle.PressedForeground = PressedForeground;
+	this->WidgetStyle.ComboButtonStyle.SetButtonStyle(ButtonStyle);
+}
