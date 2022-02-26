@@ -25,12 +25,9 @@ private:
 public:
 
 	UFUNCTION(BlueprintCallable)
+	UType* GetSelectedType();
+	
+	UFUNCTION(BlueprintCallable)
 	UType* GetType(int index);
-
-	UFUNCTION(BlueprintCallable)
-	void SetForegroundColor(FLinearColor Color);
-
-	UFUNCTION(BlueprintCallable)
-	void SetBackgroundColor(const FLinearColor NormalForeground, const FLinearColor HoveredForeground, const FLinearColor PressedForeground);
 	
 };

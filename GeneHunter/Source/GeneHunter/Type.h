@@ -111,6 +111,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<UType*> GetAttackingTypesBetween(const float Min, const float Max, const bool Inclusive = true) const;
 
+	/*
+	 * Gets Types whose combined defending modifiers are between Min and Max for the given attacking Types.
+	 * For example, a range of (1, INFINITY) gets Types who are "weak to" the given multi-Type attack.
+	 * Pokemon example:
+	 *		GetMultiAtkTypes({Ground, Flying}, {[ALL]}, 1, INFINITY)  --> {Fighting, Fire, Poison}
+	 *		GetMultiAtkTypes({Ground, Flying}, {[ALL]}, -INFINITY, 1) --> {Flying}
+	 *		
+	 */
+	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "DefTypes"))
+	static TArray<UType*> GetMultiAtkTypes(const TArray<UType*> AtkTypes, TArray<UType*> DefTypes, const float Min, const float Max, const bool Inclusive = true);
+
 #pragma endregion
 
 #pragma region Defending type effectiveness

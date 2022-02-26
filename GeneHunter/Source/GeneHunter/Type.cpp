@@ -77,6 +77,47 @@ float UType::GetNetModifier(const TArray<UType*> AttackingTypes, const TArray<UT
 	return Ret;
 }
 
+TArray<UType*> UType::GetMultiAtkTypes(const TArray<UType*> AtkTypes, TArray<UType*> DefTypes, const float Min, const float Max, const bool Inclusive)
+{
+
+	// If DefTypes is not given, assume AtkTypes contains the correct AtkModifiers
+	if (DefTypes.Num() == 0)
+	{
+		for(UType* Atk : AtkTypes)
+		{
+			if (Atk)
+			{
+				Atk->AttackModifiers.GetKeys(DefTypes);
+				break;
+			}
+		}
+	}
+	
+	TArray<UType*> Ret;
+	float Modifier;
+	for(UType* Defender : DefTypes)
+	{
+		if (Defender)
+		{
+			Modifier = 1;
+			for(UType* Attacker : AtkTypes)
+			{
+				if (Attacker)
+					Modifier = CombineModifiers(Modifier, Attacker->AttackModifiers[Defender].Modifier);
+			}
+			if (Inclusive)
+			{
+				if (Min <= Modifier && Modifier <= Max)
+					Ret.Add(Defender);
+			} else
+			{
+				if (Min < Modifier && Modifier < Max)
+					Ret.Add(Defender);
+			}
+		}
+	}
+	return Ret;
+}
 
 TArray<UType*> UType::GetAttackingTypesBetween(const float Min, const float Max, const bool Inclusive) const
 {

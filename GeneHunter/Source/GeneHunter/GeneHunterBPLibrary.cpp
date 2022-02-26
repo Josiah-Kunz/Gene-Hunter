@@ -171,6 +171,12 @@ void UGeneHunterBPLibrary::ClearChildrenExcept(UPanelWidget* Widget, const TArra
 		
 }
 
-
+/*
+ * Calls DuplicateObject with Outer as Original->GetOuter() (see official docs for further explanation).
+ */
+UWidget* UGeneHunterBPLibrary::Duplicate(const UWidget* Original)
+{
+	return DuplicateObject(Original, Original->GetOuter());
+}
 
 

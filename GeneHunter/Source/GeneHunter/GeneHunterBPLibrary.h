@@ -41,6 +41,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
 	static void ClearChildrenExcept(UPanelWidget* Widget, const TArray<UWidget*> Exclude);
+
+	UFUNCTION(BlueprintCallable)
+	static UWidget* Duplicate(const UWidget* Original);
 	
 	static const int MAX_ITERATIONS = 10000;
 
