@@ -4,8 +4,6 @@
 #include "Type.h"
 #include "GeneHunterBPLibrary.h"
 
-#pragma region Getting modifiers when attacking
-
 float UType::CombineModifiers(const float A, const float B)
 {
 	// Order doesn't matter
@@ -33,50 +31,16 @@ float UType::CombineModifiers(const float A, const float B)
 	
 }
 
-float UType::GetNetModifier(const TArray<UType*> AttackingTypes, const TArray<UType*> DefendingTypes, ModifierFetchMode FetchMode)
+TArray<UType*> UType::AnalyzeAtk(const TArray<UType*> AtkTypes, const float Min, const float Max, const bool Inclusive, const AttackModifierMode Mode)
 {
-	float Ret = 1;
-	switch(FetchMode)
-	{
-	// All attackers hit all defenders (e.g., dual Type attack hits a dual Type Monster)
-	case ModifierFetchMode::Default:
-		{
-			for (const UType* Defender : DefendingTypes)
-				for(const UType* Attacker : AttackingTypes)
-					Ret = CombineModifiers(Ret, Attacker->AttackModifiers[Defender].Modifier);
-		}
-		break;
-	case ModifierFetchMode::Multiplicative:
-		for (const UType* Defender : DefendingTypes)
-			for(const UType* Attacker : AttackingTypes)
-				Ret *= Attacker->AttackModifiers[Defender].Modifier;
-		break;
-	case ModifierFetchMode::Additive:
-		for (const UType* Defender : DefendingTypes)
-			for(const UType* Attacker : AttackingTypes)
-				Ret += Attacker->AttackModifiers[Defender].Modifier;
-		break;
-	case ModifierFetchMode::Max:
-		{
-			Ret = -INFINITY;
-			for (const UType* Defender : DefendingTypes)
-				for(const UType* Attacker : AttackingTypes)
-					Ret = FMath::Max(Ret, Attacker->AttackModifiers[Defender].Modifier);
-		}
-		break;
-	case ModifierFetchMode::Min:
-		{
-			Ret = INFINITY;
-			for (const UType* Defender : DefendingTypes)
-				for(const UType* Attacker : AttackingTypes)
-					Ret = FMath::Min(Ret, Attacker->AttackModifiers[Defender].Modifier);
-		}
-		break;
-	}
-	
-	return Ret;
+	return AtkTypes;
 }
 
+
+
+#pragma region Getting modifiers when attacking
+
+/*
 TArray<UType*> UType::GetMultiAtkTypes(const TArray<UType*> AtkTypes, TArray<UType*> DefTypes, const float Min, const float Max, const bool Inclusive)
 {
 
@@ -135,82 +99,8 @@ TArray<UType*> UType::GetAttackingTypesBetween(const float Min, const float Max,
 		}
 	}
 	return Ret;
-}
+}*/
 
-TArray<UType*> UType::GetEffectiveAgainstTypes() const
-{
-	return GetAttackingTypesBetween(1, INFINITY, false);
-}
-
-TArray<UType*> UType::GetIneffectiveAgainstTypes() const
-{
-	return GetAttackingTypesBetween(0, 1, false);
-}
-
-TArray<UType*> UType::GetHealsTypes() const
-{
-	return GetAttackingTypesBetween(-INFINITY, 0, false);
-}
-
-TArray<UType*> UType::GetNeutralAttackTypes() const
-{
-	return GetAttackingTypesBetween(1, 1);
-}
-
-TArray<UType*> UType::GetZeroDamageToTypes() const
-{
-	return GetAttackingTypesBetween(0, 0);
-}
-
-
-
-
-#pragma endregion
-
-#pragma region Getting modifiers when defending
-
-TArray<UType*> UType::GetDefendingTypesBetween(const float Min, const float Max, const bool Inclusive) const
-{
-	TArray<UType*> Ret;
-	for(const auto& Pair : AttackModifiers)	// If the attacking matchup doesn't exist, we can't do the defending matchup either
-	{
-		if (Inclusive)
-		{
-			if (Min <= Pair.Key->AttackModifiers[this].Modifier && Pair.Key->AttackModifiers[this].Modifier <= Max)
-				Ret.Add(Pair.Key);
-		} else
-		{
-			if (Min < Pair.Key->AttackModifiers[this].Modifier && Pair.Key->AttackModifiers[this].Modifier < Max)
-				Ret.Add(Pair.Key);
-		}
-	}
-	return Ret;
-}
-
-TArray<UType*> UType::GetWeakToTypes() const
-{
-	return GetDefendingTypesBetween(1, INFINITY, false);
-}
-
-TArray<UType*> UType::GetResistsTypes() const
-{
-	return GetDefendingTypesBetween(0, 1, false);
-}
-
-TArray<UType*> UType::GetHealedByTypes() const
-{
-	return GetDefendingTypesBetween(-INFINITY, 0, false);
-}
-
-TArray<UType*> UType::GetNeutralDefendTypes() const
-{
-	return GetDefendingTypesBetween(1, 1);
-}
-
-TArray<UType*> UType::GetImmuneToTypes() const
-{
-	return GetDefendingTypesBetween(0, 0);
-}
 
 #pragma endregion
 
@@ -219,7 +109,7 @@ TArray<UType*> UType::GetImmuneToTypes() const
 void UType::SortTypesAttacking(const TArray<UType*> Types, TArray<UType*>& Sorted, const float Min, const float Max, const bool Inclusive)
 {
 	Sorted = Types;
-	Sorted.Sort([Min, Max, Inclusive](const UType& A, const UType& B)
+	/*Sorted.Sort([Min, Max, Inclusive](const UType& A, const UType& B)
 	{
 		const int NumA = A.GetAttackingTypesBetween(Min, Max, Inclusive).Num();
 		const int NumB = B.GetAttackingTypesBetween(Min, Max, Inclusive).Num();
@@ -233,13 +123,13 @@ void UType::SortTypesAttacking(const TArray<UType*> Types, TArray<UType*>& Sorte
 			return A.GetAttackingTypesBetween(-INFINITY, Min, false).Num() < B.GetAttackingTypesBetween(-INFINITY, Min, false).Num();
 		}
 		return NumA > NumB;
-	});
+	});*/
 }
 
 void UType::SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorted, const float Min, const float Max, const bool Inclusive)
 {
 	Sorted = Types;
-	Sorted.Sort([Min, Max, Inclusive](const UType& A, const UType& B)
+	/*Sorted.Sort([Min, Max, Inclusive](const UType& A, const UType& B)
 	{
 		const int NumA = A.GetDefendingTypesBetween(Min, Max, Inclusive).Num();
 		const int NumB = B.GetDefendingTypesBetween(Min, Max, Inclusive).Num();
@@ -253,13 +143,13 @@ void UType::SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorte
 			return A.GetDefendingTypesBetween(-INFINITY, Min, false).Num() < B.GetDefendingTypesBetween(-INFINITY, Min, false).Num();
 		}
 		return NumA > NumB;
-	});
+	});*/
 }
 
 void UType::SortTypesAttackingRatio(const TArray<UType*> Types, TArray<UType*>& Sorted)
 {
 	Sorted = Types;
-	Sorted.Sort([](const UType&A, const UType& B)
+	/*Sorted.Sort([](const UType&A, const UType& B)
 	{
 		// Get ratios for A and B
 		const int EffectiveA = A.GetAttackingTypesBetween(1, INFINITY, false).Num();
@@ -279,13 +169,13 @@ void UType::SortTypesAttackingRatio(const TArray<UType*> Types, TArray<UType*>& 
 
 		// Judge accordingly
 		return  RatioA > RatioB ;
-	});
+	});*/
 }
 
 void UType::SortTypesDefendingRatio(const TArray<UType*> Types, TArray<UType*>& Sorted)
 {
 	Sorted = Types;
-	Sorted.Sort([](const UType&A, const UType& B)
+	/*Sorted.Sort([](const UType&A, const UType& B)
 	{
 		// Get ratios for A and B
 		const int ResistedA = A.GetDefendingTypesBetween(-INFINITY, 1, false).Num();
@@ -305,7 +195,7 @@ void UType::SortTypesDefendingRatio(const TArray<UType*> Types, TArray<UType*>& 
 
 		// Judge accordingly
 		return  RatioA > RatioB ;
-	});
+	});*/
 }
 
 void UType::GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, const int NumAtkTypes, const int NumDefTypes)
@@ -398,7 +288,8 @@ void UType::GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, co
 			DefTypes.Empty();
 			for (i=0; i<NumDefTypes;i++)
 				DefTypes.Add(Types[DefIndices[i]]);
-			Modifier = GetNetModifier(AtkTypes, DefTypes, ModifierFetchMode::Max);
+			//Modifier = GetNetModifier(AtkTypes, DefTypes, ModifierFetchMode::Max);
+			Modifier = 1;
 			
 			FString attackers, defenders;
 			for(auto& Atks :AtkTypes)
@@ -416,26 +307,6 @@ void UType::GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, co
 			}
 			
 			// Iterate
-			/*
-			bIterate = true;
-			i=NumDefTypes-1;
-			while (bIterate && i>=0)
-			{
-				DefIndices[i]++;
-				if (DefIndices[i] >= Types.Num() - (NumDefTypes-i))	// i=4's cap is 9; i=3's cap is 8; etc.
-					{
-					i--;	// Go to the previous index
-					} else
-					{
-						bIterate = false;
-						for(j=i+1; j<NumDefTypes;j++)	// This i works! Reset its following DefIndices (e.g., if i=2 was validly set to 6, set i=3 to 7 and i=4 to 8)
-							DefIndices[j] = DefIndices[i]+(j-i);
-					}
-			}
-			
-			if (bIterate)	// Never able to iterate; must be at the end of all possible Type combinations
-				break;
-				*/
 			if (IncrementIndices(Types, DefIndices)) // Never able to iterate; must be at the end of all possible Type combinations
 				break;
 			Failsafe2++;
@@ -446,25 +317,6 @@ void UType::GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, co
 		
 		
 		// Iterate
-		/*
-		bIterate = true;
-		i=NumAtkTypes-1;
-		while (bIterate && i>=0)
-		{
-			AtkIndices[i]++;
-			if (AtkIndices[i] >= Types.Num() - (NumAtkTypes-i))	// i=4's cap is 9; i=3's cap is 8; etc.
-			{
-				i--;	// Go to the previous index
-			} else
-			{
-				bIterate = false;
-				for(j=i+1; j<NumAtkTypes;j++)	// This i works! Reset its following AtkIndices (e.g., if i=2 was validly set to 6, set i=3 to 7 and i=4 to 8)
-					AtkIndices[j] = AtkIndices[i]+(j-i);
-			}
-		}
-		if (bIterate)	// Never able to iterate; must be at the end of all possible Type combinations
-			break;
-			*/
 		if (IncrementIndices(Types, AtkIndices)) // Never able to iterate; must be at the end of all possible Type combinations
 			break;
 		Failsafe1++;

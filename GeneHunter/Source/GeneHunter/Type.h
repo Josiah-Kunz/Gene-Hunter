@@ -8,13 +8,10 @@
 #include "Type.generated.h"
 
 UENUM(BlueprintType)
-enum class ModifierFetchMode : uint8
+enum class AttackModifierMode : uint8
 {
-	Default			UMETA(DisplayName = "Default", Tooltip="Pokemon rules, except with healing:\n" + " (-1 & 2)   = -0.5\n" + " (-1 & 1)   = -1\n" + " (-1 & 0.5) = -1\n" + " (-1 & 0)   = -1\n" + " (-1 & -1/2)  = -1"),
-	Multiplicative	UMETA(DisplayName = "Multiplicative"),
-	Additive		UMETA(DisplayName = "Additive"),
-	Min				UMETA(DisplayName="Min"),
-	Max				UMETA(DisplayName="Max"),
+	MultiType		UMETA(DisplayName = "Multi-Type", Tooltip="Takes the Types in the array as a single, multi-Typed attack."),
+	Coverage		UMETA(DisplayName = "Coverage", Tooltip="Takes the Types in the array as separate, singly-Typed attacks."),
 };
 
 /**
@@ -50,14 +47,6 @@ public:
 #pragma endregion
 
 	/*
-	 * Gets the net modifier when an attack of the given Type(s) damages the other Type(s).
-	 * For example, if a Toxic+Fire attack attempts to damage a Metal Type, this function will return zero if 
-	 * multiplicative (Metal is immune to Toxic, so 0*2=0) or 2 if max.
-	 */
-	UFUNCTION(BlueprintCallable)
-	static float GetNetModifier(const TArray<UType*> AttackingTypes, const TArray<UType*> DefendingTypes, const ModifierFetchMode FetchMode = ModifierFetchMode::Default);
-
-	/*
 	 * Gets the net modifier when using default rules for combining modifiers. For example:
 	 * 
 	 *	(-1 & 2)	-> (-1/2)
@@ -71,99 +60,26 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	static float CombineModifiers(const float A, const float B);
-	
-#pragma region Attacking type effectiveness
-	
-	/*
-	 * Gets Types that take increased damage from this Type.
-	 */
-	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetEffectiveAgainstTypes() const;
 
 	/*
-	 * Gets Types that take decreased damage from this Type (not including immune or healed).
-	 */
-	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetIneffectiveAgainstTypes() const;
-
-	/*
-	 * Gets Types that are immune to this Type.
-	 */
-	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetZeroDamageToTypes() const;
-
-	/*
-	 * Gets Types that are healed instead of damaged when this Type attacks.
-	 */
-	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetHealsTypes() const;
-
-	/*
-	 * Gets Types that are damaged normally by this Type.
-	 */
-	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetNeutralAttackTypes() const;
-
-	/*
-	 * Gets Types whose damage modifiers defending this Type are between Min and Max.
-	 * For example, a range of (1, INFINITY) gets Types who are "weak to" this Type.
-	 */
-	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetAttackingTypesBetween(const float Min, const float Max, const bool Inclusive = true) const;
-
-	/*
-	 * Gets Types whose combined defending modifiers are between Min and Max for the given attacking Types.
-	 * For example, a range of (1, INFINITY) gets Types who are "weak to" the given multi-Type attack.
+	 * Gets Types whose defense modifiers are between Min and Max when attacked by the given AtkTypes.
+	 * For example, a range of (1, INFINITY) gets Types who are "bad against" these AtkTypes (since they receive more damage).
 	 * Pokemon example:
-	 *		GetMultiAtkTypes({Ground, Flying}, {[ALL]}, 1, INFINITY)  --> {Fighting, Fire, Poison}
-	 *		GetMultiAtkTypes({Ground, Flying}, {[ALL]}, -INFINITY, 1) --> {Flying}
-	 *		
-	 */
-	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "DefTypes"))
-	static TArray<UType*> GetMultiAtkTypes(const TArray<UType*> AtkTypes, TArray<UType*> DefTypes, const float Min, const float Max, const bool Inclusive = true);
-
-#pragma endregion
-
-#pragma region Defending type effectiveness
-
-	/*
-	 *	Gets Types who deal extra damage to this Type.
+	 *		- AnalyzeAtk({Flying, Ground}, 1, INFINITY, false, MultiType) ==> {Fire, Poison, Fighting}
+	 *		- AnalyzeAtk({Flying, Ground}, 1, INFINITY, false, Coverage) ==> {Electric, Fire, Poison, Rock, Steel, B.ug, Fighting, Grass}
+	 * @param AtkTypes The Types doing the attacking.
+	 * @param Min The minimum AttackModifier to consider.
+	 * @param Max The maximum AttackModifier to consider.
+	 * @param Inclusive If true, include results that are Min <= result <= Max.
+	 * @param Mode Determines whether the analysis is being done for a single multi-Typed attack or for coverage of several attacks.
 	 */
 	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetWeakToTypes() const;
+	static TArray<UType*> AnalyzeAtk(
+		const TArray<UType*> AtkTypes,
+		const float Min = -10000, const float Max = 10000,
+		const bool Inclusive = false,
+		const AttackModifierMode Mode = AttackModifierMode::MultiType);
 
-	/*
-	 *	Gets Types who deal reduced damage to this Type, not counting zero (immune) or negative (healed by) modifiers.
-	 */
-	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetResistsTypes() const;
-
-	/*
-	 *	Gets Types who heal this Type instead of hurting it when attacking.
-	 */
-	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetHealedByTypes() const;
-
-	/*
-	 *	Gets Types who deal neutral damage to this Type.
-	 */
-	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetNeutralDefendTypes() const;
-
-	/*
-	 *	Gets Types who deal zero damage to this Type.
-	 */
-	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetImmuneToTypes() const;
-	
-	/*
-	 * Gets Types whose damage modifiers are between Min and Max when attacking this Type.
-	 * For example, a range of (1, INFINITY) gets Types who are "good against" this Type.
-	 */
-	UFUNCTION(BlueprintCallable)
-	TArray<UType*> GetDefendingTypesBetween(const float Min, const float Max, const bool Inclusive = true) const;
-
-#pragma endregion
 
 #pragma region Sorting for debug purposes
 
