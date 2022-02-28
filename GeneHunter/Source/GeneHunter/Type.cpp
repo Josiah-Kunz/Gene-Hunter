@@ -31,11 +31,60 @@ float UType::CombineModifiers(const float A, const float B)
 	
 }
 
-TArray<UType*> UType::AnalyzeAtk(const TArray<UType*> AtkTypes, const float Min, const float Max, const bool Inclusive, const AttackModifierMode Mode)
+TArray<UType*> UType::AnalyzeAtk(const TArray<UType*> AtkTypes, const float Min, const float Max, const bool Inclusive, const EAttackModifierMode Mode)
 {
-	return AtkTypes;
+	TArray<UType*> Ret;
+	TArray<UType*> DefTypes = GetAllTypes(AtkTypes);
+	float Modifier;
+	for(UType* Def : DefTypes)
+	{
+		switch (Mode)
+		{
+		case EAttackModifierMode::MultiType:
+			Modifier = 1;
+			break;
+		case EAttackModifierMode::Coverage:
+			Modifier = -INFINITY;
+			break;
+		}
+		for(UType* Atk : AtkTypes)
+		{
+			switch (Mode)
+			{
+			case EAttackModifierMode::MultiType:
+				Modifier = CombineModifiers(Modifier, Atk->AttackModifiers[Def].Modifier);
+				break;
+			case EAttackModifierMode::Coverage:
+				Modifier = FMath::Max(Modifier, Atk->AttackModifiers[Def].Modifier);
+				break;
+			}
+		}
+		if (InRange(Modifier, Min, Max, Inclusive))
+			Ret.Add(Def);
+	}
+	return Ret;
 }
 
+bool UType::InRange(const float Float, const float Min, const float Max, const bool Inclusive)
+{
+	return Inclusive && Min <= Float && Float <= Max || !Inclusive && Min<Float && Float<Max;
+}
+
+
+TArray<UType*> UType::GetAllTypes(TArray<UType*> PossibleTypes)
+{
+	TArray<UType*> Ret;
+	for(UType* Type : PossibleTypes)
+	{
+		if (Type)
+		{
+			for(TTuple<UType*, FAttackModifier>& Kvp : Type->AttackModifiers)
+				Ret.Add(Kvp.Key);
+			break;
+		}
+	}
+	return Ret;
+}
 
 
 #pragma region Getting modifiers when attacking

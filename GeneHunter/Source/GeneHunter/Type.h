@@ -8,7 +8,7 @@
 #include "Type.generated.h"
 
 UENUM(BlueprintType)
-enum class AttackModifierMode : uint8
+enum class EAttackModifierMode : uint8
 {
 	MultiType		UMETA(DisplayName = "Multi-Type", Tooltip="Takes the Types in the array as a single, multi-Typed attack."),
 	Coverage		UMETA(DisplayName = "Coverage", Tooltip="Takes the Types in the array as separate, singly-Typed attacks."),
@@ -76,10 +76,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static TArray<UType*> AnalyzeAtk(
 		const TArray<UType*> AtkTypes,
-		const float Min = -10000, const float Max = 10000,
-		const bool Inclusive = false,
-		const AttackModifierMode Mode = AttackModifierMode::MultiType);
+		const float Min=1, const float Max=2, const bool Inclusive = true,
+		const EAttackModifierMode Mode = EAttackModifierMode::MultiType);
 
+private:
+    static TArray<UType*> GetAllTypes(TArray<UType*> PossibleTypes);
+
+	static bool InRange(const float Float, const float Min, const float Max, const bool Inclusive);
 
 #pragma region Sorting for debug purposes
 
