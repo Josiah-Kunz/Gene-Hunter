@@ -179,4 +179,3 @@ UWidget* UGeneHunterBPLibrary::Duplicate(const UWidget* Original)
 	return DuplicateObject(Original, Original->GetOuter());
 }
 
-

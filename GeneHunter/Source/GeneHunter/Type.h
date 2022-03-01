@@ -76,13 +76,23 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static TArray<UType*> AnalyzeAtk(
 		const TArray<UType*> AtkTypes,
-		const float Min=1, const float Max=2, const bool Inclusive = true,
+		const FFloatRange Range,
 		const EAttackModifierMode Mode = EAttackModifierMode::MultiType);
 
-private:
-    static TArray<UType*> GetAllTypes(TArray<UType*> PossibleTypes);
+	/*
+	 * Gets the net interaction between a (multi-Type) attack and a (multi-Type) defense.
+	 */
+	UFUNCTION(BlueprintCallable)
+	static float GetNetModifier(const TArray<UType*> AtkTypes, const TArray<UType*> DefTypes);
+	
+	/*
+	 * 
+	 */
+	UFUNCTION(BlueprintCallable)
+	static TArray<UType*> AnalyzeAllAtk(TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes, const FFloatRange Range, const EAttackModifierMode Mode = EAttackModifierMode::Coverage);
 
-	static bool InRange(const float Float, const float Min, const float Max, const bool Inclusive);
+private:
+    static TArray<UType*> GetAllTypes(TArray<UType*> TypesSeeds);
 
 #pragma region Sorting for debug purposes
 
