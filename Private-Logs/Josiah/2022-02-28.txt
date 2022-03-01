@@ -1,0 +1,5 @@
+Okay, okay. I've learned the value of having sub-widgets in my blueprints. You can be really organized, but at the end of the day, it's much more compact to have, say, a single RightMenu widget than it is to have a bunch of random button event calls.
+
+Things are going well. I'm much deeper into the analysis and I'm intentionally making things harder for the experience. I've also done my first unit test. Good idea if it's simple.
+
+I'm thinking the Types should have characteristics. For example, the Toxic Type has two immunities (Metal and Toxic), so to keep it from being weak, we'll give it an attribute. Maybe that all its attacks have a chance of incurring a DoT.
