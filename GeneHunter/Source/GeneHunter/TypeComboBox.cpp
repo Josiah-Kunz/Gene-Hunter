@@ -22,9 +22,9 @@ UType* UTypeComboBox::GetSelectedType()
 }
 
 
-UType* UTypeComboBox::GetType(int index)
+UType* UTypeComboBox::GetType(const int Index)
 {
-	if (index <= 0 || Types.Num() < index)
+	if (Index <= 0 || Types.Num() < Index)
 		return nullptr;
-	return Types[index - 1];
+	return Types[Index - 1];
 }

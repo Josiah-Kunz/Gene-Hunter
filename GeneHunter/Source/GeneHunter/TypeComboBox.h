@@ -28,6 +28,6 @@ public:
 	UType* GetSelectedType();
 	
 	UFUNCTION(BlueprintCallable)
-	UType* GetType(int index);
+	UType* GetType(const int Index);
 	
 };

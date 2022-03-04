@@ -73,9 +73,24 @@ public:
 	 * @param Inclusive If true, include results that are Min <= result <= Max.
 	 * @param Mode Determines whether the analysis is being done for a single multi-Typed attack or for coverage of several attacks.
 	 */
+	 UFUNCTION(BlueprintCallable)
+	static TArray<UType*> Analyze(
+			const TArray<UType*> TypesToAnalyze,
+			const FFloatRange Range,
+			const EAttackModifierMode Mode = EAttackModifierMode::MultiType,
+			const bool bAtk = true
+			);
+
+	
 	UFUNCTION(BlueprintCallable)
 	static TArray<UType*> AnalyzeAtk(
 		const TArray<UType*> AtkTypes,
+		const FFloatRange Range,
+		const EAttackModifierMode Mode = EAttackModifierMode::MultiType);
+
+	UFUNCTION(BlueprintCallable)
+	static TArray<UType*> AnalyzeDef(
+		const TArray<UType*> DefTypes,
 		const FFloatRange Range,
 		const EAttackModifierMode Mode = EAttackModifierMode::MultiType);
 
@@ -86,10 +101,12 @@ public:
 	static float GetNetModifier(const TArray<UType*> AtkTypes, const TArray<UType*> DefTypes);
 	
 	/*
-	 * 
+	 * Performs an analysis on the given Types.
+	 *		- If AnalyzeAtk, the "tested" Types are the attackers and the "untested" Types are the defenders.
+	 *		- Ex: AnalyzeAll([all], 1, 1, [1, open), true) ==> all attacks that are 1v1 never resisted (e.g., Typeless would be in that result).
 	 */
 	UFUNCTION(BlueprintCallable)
-	static TArray<UType*> AnalyzeAllAtk(TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes, const FFloatRange Range, const EAttackModifierMode Mode = EAttackModifierMode::Coverage);
+	static TArray<UType*> AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes, const int NumUntestedTypes, const FFloatRange Range, const bool bAnalyzeAtk);
 
 private:
     static TArray<UType*> GetAllTypes(TArray<UType*> TypesSeeds);
