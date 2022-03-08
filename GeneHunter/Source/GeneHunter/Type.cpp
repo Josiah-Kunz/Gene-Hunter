@@ -3,6 +3,8 @@
 
 #include "Type.h"
 #include "GeneHunterBPLibrary.h"
+#include "AssetRegistry/AssetRegistryModule.h"
+
 
 float UType::CombineModifiers(const float A, const float B)
 {
@@ -96,7 +98,8 @@ float UType::GetNetModifier(const TArray<UType*> AtkTypes, const TArray<UType*> 
 		{
 			if (!Def)
 				continue;
-			Modifier = CombineModifiers(Modifier, Atk->AttackModifiers[Def].Modifier);
+			if (Atk->AttackModifiers.Contains(Def))
+				Modifier = CombineModifiers(Modifier, Atk->AttackModifiers[Def].Modifier);
 		}
 	}
 	return Modifier;
@@ -637,5 +640,61 @@ bool UType::IncrementIndices(const TArray<UType*> Types, TArray<int>& Indices)
 }
 
 
+
+#pragma endregion
+
+#pragma region Getting Types
+
+
+/*
+ * Gets the Type Assets (not the Types themselves).
+ * @param SortABC If true, sorts the Types alphabetically. Make false to improve performance.
+ */
+void UType::GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC)
+{
+	const FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	AssetRegistryModule.Get().GetAssetsByClass(TEXT("Type"), TypeAssets, false);
+	if (bSortABC)
+		UGeneHunterBPLibrary::SortAssetsAlphabetically(TypeAssets, TypeAssets);
+}
+
+/*
+ * Gets all Types.
+ * @param Types The returned array filled with Types found in the assets (see GetAllTypeAssets).
+ * @param Exclude A list of Types to exclude from this list.
+ * @param SortABC If true, sorts the Types alphabetically. Make false to improve performance.
+ */
+void UType::GetAllTypes(TArray<UType*>& Types, const TArray<UType*> Exclude, const bool bSortABC)
+{
+	Types.Empty();
+	TArray<FAssetData> Assets;
+	GetAllTypeAssets(Assets, bSortABC);
+	for(FAssetData& Asset : Assets)
+	{
+		if (UType* Type = Cast<UType>(Asset.GetAsset()))
+		{
+			if (!Exclude.Contains(Type))
+				Types.Add(Type);
+		}
+	}
+}
+
+/*
+ *	Deletes "None" entries in Type->AttackModifiers. This cannot be done by Blueprint methods (afaik).
+ */
+void UType::PruneTypeAttackMods(UType* Type)
+{
+
+	// Vars
+	TMap<UType*, FAttackModifier> OldMap(Type->AttackModifiers);
+
+	// Clear and refill map
+	Type->AttackModifiers.Empty();
+	for(const TPair<UType*, FAttackModifier>& pair : OldMap)
+	{
+		if (pair.Key != nullptr)
+			Type->AttackModifiers.Add(pair.Key, pair.Value);
+	}
+}
 
 #pragma endregion

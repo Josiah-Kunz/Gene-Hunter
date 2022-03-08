@@ -152,5 +152,19 @@ private:
 	static bool IncrementIndices(const TArray<UType*> Types, TArray<int>& Indices);
 	
 #pragma endregion
+
+#pragma region Getting Types
+	
+public:
+	
+	UFUNCTION(BlueprintCallable)
+	static void PruneTypeAttackMods(UType* Type);
+
+	UFUNCTION(BlueprintCallable)
+	static void GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC = false);
+
+	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
+	static void GetAllTypes(TArray<UType*>& Types, const TArray<UType*> Exclude, const bool bSortABC = true);
+#pragma endregion
 	
 };

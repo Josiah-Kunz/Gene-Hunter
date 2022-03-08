@@ -8,7 +8,7 @@
 TSharedRef<SWidget> UTypeComboBox::RebuildWidget()
 {
 	TSharedRef<SWidget> Ret = Super::RebuildWidget();
-	UGeneHunterBPLibrary::GetAllTypes(Types, {});
+	UType::GetAllTypes(Types, {});
 	Options = {MakeShared<FString>(TEXT("<None>"))};
 	for(int i=0; i<Types.Num(); i++)
 		Options.Add(MakeShared<FString>(Types[i]->GetName()));

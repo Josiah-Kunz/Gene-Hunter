@@ -30,15 +30,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static bool SaveLoadedAssetFromAnywhere(UObject* Asset, const bool bOnlyIfDirty = true);
 
-	UFUNCTION(BlueprintCallable)
-	static void PruneTypeAttackMods(UType* Type);
-
-	UFUNCTION(BlueprintCallable)
-	static void GetAllTypeAssets(TArray<FAssetData>& TypeAssets, bool SortABC = false);
-
-	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
-	static void GetAllTypes(TArray<UType*>& Types, TArray<UType*> Exclude, bool SortABC = true);
-
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
 	static void ClearChildrenExcept(UPanelWidget* Widget, const TArray<UWidget*> Exclude);
 
