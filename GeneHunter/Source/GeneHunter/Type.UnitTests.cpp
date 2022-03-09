@@ -55,9 +55,15 @@ bool UType_CombineModifiers::RunTest(const FString& Parameters)
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UType_Analysis, "UType.MatchupAnalysis", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
+/*
+ * Tests:
+ *		- UType::GetNetModifier
+ *		- UType::Analyze
+ * This is done as one big test so we don't have to load and assign all the dummy Types several times.
+ */
 bool UType_Analysis::RunTest(const FString& Parameters)
 {
-	// Get dummy Types
+#pragma region Get dummy Types
 	TArray<UType_UnitTest*> AllDummyTypes;
 	UType_UnitTest::GetAllUTTypes(AllDummyTypes);
 	UType_UnitTest* Flying = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Flying")));
@@ -67,125 +73,95 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 	UType_UnitTest* Electric = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Electric")));
 	UType_UnitTest* Fire = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Fire")));
 	UType_UnitTest* Fighting = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Fighting")));
+	UType_UnitTest* Poison = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Poison")));
+	UType_UnitTest* Rock = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Rock")));
+	UType_UnitTest* Steel = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Steel")));
+#pragma endregion
+	
+#pragma region GetNetModifier tests
+	if (Ground)
+	{
+		TestEqual(
+			"GetNetModifier (ineffective single attack vs dual defender)",
+			UType::GetNetModifier({Ground}, {Fighting, Bug}),
+			0.5F, FType_UnitTests::TOLERANCE);
+		TestEqual(
+			"GetNetModifier (neutral single attack vs dual defender)",
+			UType::GetNetModifier({Ground}, {Bug, Electric}),
+			1, FType_UnitTests::TOLERANCE);
+		TestEqual(
+			"GetNetModifier (effective single attack vs dual defender)",
+			UType::GetNetModifier({Ground}, {Fighting, Electric}),
+			2, FType_UnitTests::TOLERANCE);
+	} else
+	{
+		TestEqual("Type [Ground] is null!", true, false);
+	}
+#pragma endregion
+	
+#pragma region Analysis tests (Flying/Ground analysis because Gliscor)
 
-	// GetNetModifier tests
-	TestEqual(
-		"GetNetModifier (ineffective single attack vs dual defender)",
-		UType::GetNetModifier({Ground}, {Fighting, Bug}),
-		0.5F, FType_UnitTests::TOLERANCE);
-	TestEqual(
-		"GetNetModifier (neutral single attack vs dual defender)",
-		UType::GetNetModifier({Ground}, {Bug, Electric}),
-		1, FType_UnitTests::TOLERANCE);
-	TestEqual(
-		"GetNetModifier (effective single attack vs dual defender)",
-		UType::GetNetModifier({Ground}, {Fighting, Electric}),
-		2, FType_UnitTests::TOLERANCE);
-	/*
-
-	// Analyze attack
-	TestSame("Analyze attack (non-resisted)",
-		UType::Analyze(
-			{&Fire, &Earth},
-			FFloatRange{
-				FFloatRangeBound::Inclusive(1),
-				FFloatRangeBound::Open()
-				},
-			EAttackModifierMode::Coverage,
-			true),
-		AllTypes);
-	TestSame("Analyze attack (only advantage)",
-		UType::Analyze(
-			{&Fire, &Earth},
-			FFloatRange{
-				FFloatRangeBound::Exclusive(1),
-				FFloatRangeBound::Open()
-				},
-			EAttackModifierMode::Coverage,
-			true),
-		{&Air, &Water});
-
-	// Analyze defense
-	TestSame("Analyze defense (non-weak)",
-		UType::Analyze(
-			{&Air, &Earth},
-			FFloatRange{
-				FFloatRangeBound::Open(),
-				FFloatRangeBound::Inclusive(1)
-				},
-			EAttackModifierMode::Coverage,
-			false),
-			{&Earth, &Water}
-		);
-
-	// Analyze Pokemon attacks: "Gliscor" (my personal favorite Pokemon)
-	//	Note: only relevant types are set up
-	UType Ground, Flying, Bug, Grass, Electric, Poison, Rock, Steel, Ice, Fighting;
-	Ground.AttackModifiers = {
-		{&Flying, FAttackModifier{0}},
-		{&Bug, FAttackModifier{0.5F}},
-		{&Grass, FAttackModifier{0.5F}},
-		{&Electric, FAttackModifier{2}},
-		{&Fire, FAttackModifier{2}},
-		{&Poison, FAttackModifier{2}},
-		{&Rock, FAttackModifier{2}},
-		{&Steel, FAttackModifier{2}},
-};
-	Flying.AttackModifiers = {
-		{&Electric, FAttackModifier{0.5F}},
-		{&Rock, FAttackModifier{0.5F}},
-		{&Steel, FAttackModifier{0.5F}},
-		{&Bug, FAttackModifier{2}},
-		{&Fighting, FAttackModifier{2}},
-		{&Grass, FAttackModifier{2}},
-	};
-	Electric.AttackModifiers = {
-		{&Ground, FAttackModifier{0}},
-		{&Flying, FAttackModifier{2}}
-	};
-	Rock.AttackModifiers = {
-		{&Flying, FAttackModifier{2}},
-		{&Ground, FAttackModifier{0.5F}},
-	};
-	Ice.AttackModifiers = {
-		{&Flying, FAttackModifier{2}},
-		{&Ground, FAttackModifier{2}},
-	};
-	Bug.AttackModifiers = {
-		{&Flying, FAttackModifier{0.5F}}
-	};
-	Fighting.AttackModifiers = {
-		{&Flying, FAttackModifier{0.5F}}
-	};
-	Grass.AttackModifiers = {
-		{&Flying, FAttackModifier{0.5F}},
-		{&Ground, FAttackModifier{2}},
-	};
-	Poison.AttackModifiers = {
-		{&Ground, FAttackModifier{0.5F}}
-	};
-	Water.AttackModifiers = {
-		{&Ground, FAttackModifier{2}},
-	};
-
-	// Execute Flying/Ground analysis
-	TestSame(
-		"Flying/Ground multiType attack",
-		UType::Analyze(
-			{&Ground, &Flying},
+	// Get the UTypes (actual)
+	TArray EffectiveMultiAtk_UType = UType::Analyze(
+			{Ground, Flying},
+			TArray<UType*>(AllDummyTypes),
 			FFloatRange{
 				FFloatRangeBound::Exclusive(1),
 				FFloatRangeBound::Open()
 				},
 				EAttackModifierMode::MultiType,
 				true
-			),
-			{&Fire, &Poison, &Flying}
+			);
+
+	// Convert to UType_UnitTest (actual; and start building description in case it fails)
+	FString Desc = "[Actual: ";
+	TArray<UType_UnitTest*> EffectiveMultiAtk_Actual;
+	for(UType* Type : EffectiveMultiAtk_UType)
+	{
+		if (UType_UnitTest* UTType = Cast<UType_UnitTest>(Type))
+		{
+			EffectiveMultiAtk_Actual.Add(UTType);
+			Desc += UTType->GetName() + " ";
+		}
+	}
+
+	// Get expected result
+	const TArray EffectiveMultiAtk_Expected = {Fire, Poison, Fighting};
+	Desc += "// Expected: ";
+	for(UType_UnitTest* UTType : EffectiveMultiAtk_Expected)
+		Desc += UTType->GetName() + " ";
+	Desc += "]";
+	Desc = Desc.Replace(TEXT(" ]"), TEXT("]"));
+
+	// Can't simply TestSame; TestSame([A, B], [B, A]) fails!
+	bool bPass = EffectiveMultiAtk_Expected.Num() == EffectiveMultiAtk_Actual.Num();
+	if (bPass)
+	{
+		for(UType_UnitTest* UTType : EffectiveMultiAtk_Expected)
+		{
+			if (!EffectiveMultiAtk_Actual.Contains(UTType))
+			{
+				Desc += " " + UTType->GetName() + " not found!";
+				bPass = false;
+				break;
+			}
+		}
+	} else
+	{
+		Desc += " " + FString::SanitizeFloat(EffectiveMultiAtk_Expected.Num()) + " != " + FString::SanitizeFloat(EffectiveMultiAtk_Actual.Num());
+	}
+
+	// Perform the test
+	TestEqual(
+		"Flying/Ground multiType attack " + Desc,
+		bPass, true
 	);
+#pragma endregion
+	/*
 	TestSame(
     		"Flying/Ground coverage",
     		UType::Analyze(
-    			{&Ground, &Flying},
+    			{Ground, Flying},
     			FFloatRange{
     			FFloatRangeBound::Exclusive(1),
 				FFloatRangeBound::Open()
@@ -193,10 +169,9 @@ bool UType_Analysis::RunTest(const FString& Parameters)
     				EAttackModifierMode::Coverage,
     				true
     			),
-    			{&Electric, &Fire, &Poison, &Rock, &Steel, &Bug, &Fighting, &Grass, &Air}
+    			{Electric, Fire, Poison, Rock, Steel, Bug, Fighting, Grass}
     	);
-    	*/
-
+*/
 	// All passed!
 	return true;
 }

@@ -73,9 +73,17 @@ public:
 	 * @param Inclusive If true, include results that are Min <= result <= Max.
 	 * @param Mode Determines whether the analysis is being done for a single multi-Typed attack or for coverage of several attacks.
 	 */
-	 UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable)
 	static TArray<UType*> Analyze(
 			const TArray<UType*> TypesToAnalyze,
+			const FFloatRange Range,
+			const EAttackModifierMode Mode = EAttackModifierMode::MultiType,
+			const bool bAtk = true
+			);
+
+	static TArray<UType*> Analyze(
+			const TArray<UType*> TypesToAnalyze,
+			const TArray<UType*> AgainstTypes,
 			const FFloatRange Range,
 			const EAttackModifierMode Mode = EAttackModifierMode::MultiType,
 			const bool bAtk = true
@@ -109,7 +117,7 @@ public:
 	static TArray<UType*> AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes, const int NumUntestedTypes, const FFloatRange Range, const bool bAnalyzeAtk);
 
 private:
-    static TArray<UType*> GetAllTypes(TArray<UType*> TypesSeeds);
+    static TArray<UType*> GetAllTypesFromSeeds(TArray<UType*> TypesSeeds);
 
 #pragma region Sorting for debug purposes
 
@@ -165,6 +173,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
 	static void GetAllTypes(TArray<UType*>& Types, const TArray<UType*> Exclude, const bool bSortABC = true);
+
+	static void GetAllTypes(TArray<UType*>& Types, const bool bSortABC = true);
 #pragma endregion
 	
 };

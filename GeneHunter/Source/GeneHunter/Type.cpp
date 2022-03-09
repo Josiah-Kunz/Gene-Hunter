@@ -45,10 +45,14 @@ TArray<UType*> UType::AnalyzeDef(const TArray<UType*> DefTypes, const FFloatRang
 
 TArray<UType*> UType::Analyze(const TArray<UType*> TypesToAnalyze, const FFloatRange Range, const EAttackModifierMode Mode, const bool bAtk)
 {
+	return Analyze(TypesToAnalyze, GetAllTypesFromSeeds(TypesToAnalyze), Range, Mode, bAtk);
+}
+
+TArray<UType*> UType::Analyze(const TArray<UType*> TypesToAnalyze, const TArray<UType*> AgainstTypes, const FFloatRange Range, const EAttackModifierMode Mode, const bool bAtk)
+{	
 	TArray<UType*> Ret;
-	TArray<UType*> SecondaryTypes = GetAllTypes(TypesToAnalyze);
 	float Modifier, NewModifier;
-	for(UType* Type2 : SecondaryTypes)
+	for(UType* Type2 : AgainstTypes)
 	{
 		// Must be vigilant; squirrels everywhere
 		if (!Type2)
@@ -70,7 +74,11 @@ TArray<UType*> UType::Analyze(const TArray<UType*> TypesToAnalyze, const FFloatR
 		{
 			if (!Type1)
 				continue;
-			NewModifier = bAtk ? Type1->AttackModifiers[Type2].Modifier : Type2->AttackModifiers[Type1].Modifier;
+			NewModifier = 1;
+			if (bAtk && Type1->AttackModifiers.Contains(Type2))
+				NewModifier = Type1->AttackModifiers[Type2].Modifier;
+			else if (!bAtk && Type2->AttackModifiers.Contains(Type1))
+ 				NewModifier = Type2->AttackModifiers[Type1].Modifier;
 			switch (Mode)
 			{
 			case EAttackModifierMode::MultiType:
@@ -318,7 +326,7 @@ TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumAtkTypes, co
 }
 */
 
-TArray<UType*> UType::GetAllTypes(TArray<UType*> TypesSeeds)
+TArray<UType*> UType::GetAllTypesFromSeeds(TArray<UType*> TypesSeeds)
 {
 	TArray<UType*> Ret;
 	for(UType* Type : TypesSeeds)
@@ -680,13 +688,23 @@ void UType::GetAllTypes(TArray<UType*>& Types, const TArray<UType*> Exclude, con
 }
 
 /*
+ * Gets all Types.
+ * @param Types The returned array filled with Types found in the assets (see GetAllTypeAssets).
+ * @param SortABC If true, sorts the Types alphabetically. Make false to improve performance.
+ */
+void UType::GetAllTypes(TArray<UType*>& Types, const bool bSortABC)
+{
+	GetAllTypes(Types, {}, bSortABC);
+}
+
+/*
  *	Deletes "None" entries in Type->AttackModifiers. This cannot be done by Blueprint methods (afaik).
  */
 void UType::PruneTypeAttackMods(UType* Type)
 {
 
 	// Vars
-	TMap<UType*, FAttackModifier> OldMap(Type->AttackModifiers);
+	TMap OldMap(Type->AttackModifiers);
 
 	// Clear and refill map
 	Type->AttackModifiers.Empty();
