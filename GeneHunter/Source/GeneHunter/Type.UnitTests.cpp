@@ -1,13 +1,8 @@
 ﻿
 #include "Type.h"
 #include "Type_UnitTest.h"
+#include "UnitTestUtilities.h"
 #include "AITestSuite/Public/AITestsCommon.h"
-
-class FType_UnitTests
-{
-public:
-	constexpr static float TOLERANCE = 0.1F;
-};
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UType_CombineModifiers, "UType.CombineModifiers", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
@@ -15,39 +10,39 @@ bool UType_CombineModifiers::RunTest(const FString& Parameters)
 {
 
 	// Heals
-	TestEqual("-1 & 2", UType::CombineModifiers(-1, 2), -0.5F, FType_UnitTests::TOLERANCE);
-	TestEqual("-1 & 1", UType::CombineModifiers(-1, 1), -1, FType_UnitTests::TOLERANCE);
-	TestEqual("-1 & 0.5", UType::CombineModifiers(-1, 0.5), -1, FType_UnitTests::TOLERANCE);
-	TestEqual("-1 & 0", UType::CombineModifiers(-1, 0), -1, FType_UnitTests::TOLERANCE);
-	TestEqual("-1 & -1", UType::CombineModifiers(-1, -1), -1, FType_UnitTests::TOLERANCE);
+	TestEqual("-1 & 2", UType::CombineModifiers(-1, 2), -0.5F,UnitTestUtilities::TOLERANCE);
+	TestEqual("-1 & 1", UType::CombineModifiers(-1, 1), -1,UnitTestUtilities::TOLERANCE);
+	TestEqual("-1 & 0.5", UType::CombineModifiers(-1, 0.5), -1,UnitTestUtilities::TOLERANCE);
+	TestEqual("-1 & 0", UType::CombineModifiers(-1, 0), -1,UnitTestUtilities::TOLERANCE);
+	TestEqual("-1 & -1", UType::CombineModifiers(-1, -1), -1,UnitTestUtilities::TOLERANCE);
 
 	// Immune
-	TestEqual("0 & -1", UType::CombineModifiers(0, -1), -1, FType_UnitTests::TOLERANCE);
-	TestEqual("0 & 0", UType::CombineModifiers(0, 0), 0, FType_UnitTests::TOLERANCE);
-	TestEqual("0 & 0.5", UType::CombineModifiers(0, 0.5), 0, FType_UnitTests::TOLERANCE);
-	TestEqual("0 & 1", UType::CombineModifiers(0, 1), 0, FType_UnitTests::TOLERANCE);
-	TestEqual("0 & 2", UType::CombineModifiers(0, 2), 0, FType_UnitTests::TOLERANCE);
+	TestEqual("0 & -1", UType::CombineModifiers(0, -1), -1,UnitTestUtilities::TOLERANCE);
+	TestEqual("0 & 0", UType::CombineModifiers(0, 0), 0,UnitTestUtilities::TOLERANCE);
+	TestEqual("0 & 0.5", UType::CombineModifiers(0, 0.5), 0,UnitTestUtilities::TOLERANCE);
+	TestEqual("0 & 1", UType::CombineModifiers(0, 1), 0,UnitTestUtilities::TOLERANCE);
+	TestEqual("0 & 2", UType::CombineModifiers(0, 2), 0,UnitTestUtilities::TOLERANCE);
 
 	// Resist
-	TestEqual("0.5 & -1", UType::CombineModifiers(0.5, -1), -1, FType_UnitTests::TOLERANCE);
-	TestEqual("0.5 & 0", UType::CombineModifiers(0.5, 0), 0, FType_UnitTests::TOLERANCE);
-	TestEqual("0.5 & 0.5", UType::CombineModifiers(0.5, 0.5), 0.25F, FType_UnitTests::TOLERANCE);
-	TestEqual("0.5 & 1", UType::CombineModifiers(0.5, 1), 0.5F, FType_UnitTests::TOLERANCE);
-	TestEqual("0.5 & 2", UType::CombineModifiers(0.5, 2), 1, FType_UnitTests::TOLERANCE);
+	TestEqual("0.5 & -1", UType::CombineModifiers(0.5, -1), -1,UnitTestUtilities::TOLERANCE);
+	TestEqual("0.5 & 0", UType::CombineModifiers(0.5, 0), 0,UnitTestUtilities::TOLERANCE);
+	TestEqual("0.5 & 0.5", UType::CombineModifiers(0.5, 0.5), 0.25F,UnitTestUtilities::TOLERANCE);
+	TestEqual("0.5 & 1", UType::CombineModifiers(0.5, 1), 0.5F,UnitTestUtilities::TOLERANCE);
+	TestEqual("0.5 & 2", UType::CombineModifiers(0.5, 2), 1,UnitTestUtilities::TOLERANCE);
 
 	// Neutral
-	TestEqual("1 & -1", UType::CombineModifiers(1, -1), -1, FType_UnitTests::TOLERANCE);
-	TestEqual("1 & 0", UType::CombineModifiers(1, 0), 0, FType_UnitTests::TOLERANCE);
-	TestEqual("1 & 0.5", UType::CombineModifiers(1, 0.5), 0.5F, FType_UnitTests::TOLERANCE);
-	TestEqual("1 & 1", UType::CombineModifiers(1, 1), 1, FType_UnitTests::TOLERANCE);
-	TestEqual("1 & 2", UType::CombineModifiers(1, 2), 2, FType_UnitTests::TOLERANCE);
+	TestEqual("1 & -1", UType::CombineModifiers(1, -1), -1,UnitTestUtilities::TOLERANCE);
+	TestEqual("1 & 0", UType::CombineModifiers(1, 0), 0,UnitTestUtilities::TOLERANCE);
+	TestEqual("1 & 0.5", UType::CombineModifiers(1, 0.5), 0.5F,UnitTestUtilities::TOLERANCE);
+	TestEqual("1 & 1", UType::CombineModifiers(1, 1), 1,UnitTestUtilities::TOLERANCE);
+	TestEqual("1 & 2", UType::CombineModifiers(1, 2), 2,UnitTestUtilities::TOLERANCE);
 	
 	// Weak
-	TestEqual("2 & -1", UType::CombineModifiers(2, -1), -0.5F, FType_UnitTests::TOLERANCE);
-	TestEqual("2 & 0", UType::CombineModifiers(2, 0), 0, FType_UnitTests::TOLERANCE);
-	TestEqual("2 & 0.5", UType::CombineModifiers(2, 0.5), 1, FType_UnitTests::TOLERANCE);
-	TestEqual("2 & 1", UType::CombineModifiers(2, 1), 2, FType_UnitTests::TOLERANCE);
-	TestEqual("2 & 2", UType::CombineModifiers(2, 2), 4, FType_UnitTests::TOLERANCE);
+	TestEqual("2 & -1", UType::CombineModifiers(2, -1), -0.5F,UnitTestUtilities::TOLERANCE);
+	TestEqual("2 & 0", UType::CombineModifiers(2, 0), 0,UnitTestUtilities::TOLERANCE);
+	TestEqual("2 & 0.5", UType::CombineModifiers(2, 0.5), 1,UnitTestUtilities::TOLERANCE);
+	TestEqual("2 & 1", UType::CombineModifiers(2, 1), 2,UnitTestUtilities::TOLERANCE);
+	TestEqual("2 & 2", UType::CombineModifiers(2, 2), 4,UnitTestUtilities::TOLERANCE);
 
 	// All done!
 	return true;
@@ -84,25 +79,37 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 		TestEqual(
 			"GetNetModifier (ineffective single attack vs dual defender)",
 			UType::GetNetModifier({Ground}, {Fighting, Bug}),
-			0.5F, FType_UnitTests::TOLERANCE);
+			0.5F,UnitTestUtilities::TOLERANCE);
 		TestEqual(
 			"GetNetModifier (neutral single attack vs dual defender)",
 			UType::GetNetModifier({Ground}, {Bug, Electric}),
-			1, FType_UnitTests::TOLERANCE);
+			1,UnitTestUtilities::TOLERANCE);
 		TestEqual(
 			"GetNetModifier (effective single attack vs dual defender)",
 			UType::GetNetModifier({Ground}, {Fighting, Electric}),
-			2, FType_UnitTests::TOLERANCE);
+			2,UnitTestUtilities::TOLERANCE);
+		TestEqual(
+			"GetNetModifier (ineffective dual attack vs dual defender)",
+			UType::GetNetModifier({Flying, Ground}, {Flying, Electric}),
+			0,UnitTestUtilities::TOLERANCE);
+		TestEqual(
+			"GetNetModifier (neutral dual attack vs dual defender)",
+			UType::GetNetModifier({Flying, Ground}, {Bug, Grass}),
+			1,UnitTestUtilities::TOLERANCE);
+		TestEqual(
+			"GetNetModifier (effective dual attack vs dual defender)",
+			UType::GetNetModifier({Flying, Ground}, {Ground, Fighting}),
+			2,UnitTestUtilities::TOLERANCE);
 	} else
 	{
 		TestEqual("Type [Ground] is null!", true, false);
 	}
 #pragma endregion
 	
-#pragma region Analysis tests (Flying/Ground analysis because Gliscor)
+#pragma region Multi-Type Analyze tests (Flying/Ground analysis because Gliscor)
 
 	// Get the UTypes (actual)
-	TArray EffectiveMultiAtk_UType = UType::Analyze(
+	TArray EffectiveAtk_UType = UType::Analyze(
 			{Ground, Flying},
 			TArray<UType*>(AllDummyTypes),
 			FFloatRange{
@@ -113,65 +120,37 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 				true
 			);
 
-	// Convert to UType_UnitTest (actual; and start building description in case it fails)
-	FString Desc = "[Actual: ";
-	TArray<UType_UnitTest*> EffectiveMultiAtk_Actual;
-	for(UType* Type : EffectiveMultiAtk_UType)
-	{
-		if (UType_UnitTest* UTType = Cast<UType_UnitTest>(Type))
-		{
-			EffectiveMultiAtk_Actual.Add(UTType);
-			Desc += UTType->GetName() + " ";
-		}
-	}
-
-	// Get expected result
-	const TArray EffectiveMultiAtk_Expected = {Fire, Poison, Fighting};
-	Desc += "// Expected: ";
-	for(UType_UnitTest* UTType : EffectiveMultiAtk_Expected)
-		Desc += UTType->GetName() + " ";
-	Desc += "]";
-	Desc = Desc.Replace(TEXT(" ]"), TEXT("]"));
-
-	// Can't simply TestSame; TestSame([A, B], [B, A]) fails!
-	bool bPass = EffectiveMultiAtk_Expected.Num() == EffectiveMultiAtk_Actual.Num();
-	if (bPass)
-	{
-		for(UType_UnitTest* UTType : EffectiveMultiAtk_Expected)
-		{
-			if (!EffectiveMultiAtk_Actual.Contains(UTType))
-			{
-				Desc += " " + UTType->GetName() + " not found!";
-				bPass = false;
-				break;
-			}
-		}
-	} else
-	{
-		Desc += " " + FString::SanitizeFloat(EffectiveMultiAtk_Expected.Num()) + " != " + FString::SanitizeFloat(EffectiveMultiAtk_Actual.Num());
-	}
-
 	// Perform the test
+	FString Desc;
+	bool bPass =UnitTestUtilities::TArrayAreEqual(EffectiveAtk_UType, {Fire, Poison, Fighting}, Desc);
 	TestEqual(
 		"Flying/Ground multiType attack " + Desc,
 		bPass, true
 	);
 #pragma endregion
-	/*
-	TestSame(
-    		"Flying/Ground coverage",
-    		UType::Analyze(
-    			{Ground, Flying},
-    			FFloatRange{
-    			FFloatRangeBound::Exclusive(1),
+
+#pragma region Coverage Analysis test
+
+	// Get the UTypes (actual)
+	EffectiveAtk_UType = UType::Analyze(
+			{Ground, Flying},
+			TArray<UType*>(AllDummyTypes),
+			FFloatRange{
+				FFloatRangeBound::Exclusive(1),
 				FFloatRangeBound::Open()
-    				},
-    				EAttackModifierMode::Coverage,
-    				true
-    			),
-    			{Electric, Fire, Poison, Rock, Steel, Bug, Fighting, Grass}
-    	);
-*/
+				},
+				EAttackModifierMode::Coverage,
+				true
+			);
+
+	// Perform the test
+	bPass = UnitTestUtilities::TArrayAreEqual(EffectiveAtk_UType, {Electric, Fire, Poison, Rock, Steel, Bug, Fighting, Grass}, Desc);
+	TestEqual(
+		"Flying/Ground coverage attack " + Desc,
+		bPass, true
+	);
+#pragma endregion
+	
 	// All passed!
 	return true;
 }
