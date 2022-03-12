@@ -3,6 +3,7 @@
 #include "Type_UnitTest.h"
 #include "UnitTestUtilities.h"
 #include "AITestSuite/Public/AITestsCommon.h"
+#include "NavMesh/RecastNavMesh.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UType_CombineModifiers, "UType.CombineModifiers", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
@@ -61,16 +62,18 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 #pragma region Get dummy Types
 	TArray<UType_UnitTest*> AllDummyTypes;
 	UType_UnitTest::GetAllUTTypes(AllDummyTypes);
-	UType_UnitTest* Flying = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Flying")));
-	UType_UnitTest* Ground = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Ground")));
 	UType_UnitTest* Bug = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Bug")));
-	UType_UnitTest* Grass = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Grass")));
 	UType_UnitTest* Electric = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Electric")));
-	UType_UnitTest* Fire = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Fire")));
 	UType_UnitTest* Fighting = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Fighting")));
+	UType_UnitTest* Fire = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Fire")));
+	UType_UnitTest* Flying = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Flying")));
+	UType_UnitTest* Grass = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Grass")));
+	UType_UnitTest* Ground = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Ground")));
+	UType_UnitTest* Ice = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Ice")));
 	UType_UnitTest* Poison = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Poison")));
 	UType_UnitTest* Rock = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Rock")));
 	UType_UnitTest* Steel = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Steel")));
+	UType_UnitTest* Water = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Water")));
 #pragma endregion
 	
 #pragma region GetNetModifier tests
@@ -129,7 +132,7 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 	);
 #pragma endregion
 
-#pragma region Coverage Analysis test
+#pragma region Coverage Analyze test
 
 	// Get the UTypes (actual)
 	EffectiveAtk_UType = UType::Analyze(
@@ -149,6 +152,31 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 		"Flying/Ground coverage attack " + Desc,
 		bPass, true
 	);
+#pragma endregion
+
+#pragma region AnalyzeAll tests
+
+	// AnalyzeAll 1v1 attacking
+	EffectiveAtk_UType = UType::AnalyzeAll(
+		TArray<UType*>(AllDummyTypes),
+		1, 1, 
+		FFloatRange{
+					FFloatRangeBound::Inclusive(1),
+					FFloatRangeBound::Open()
+					},
+		true
+	);
+
+	// Perform the test
+	bPass = UnitTestUtilities::TArrayAreEqual(
+		EffectiveAtk_UType,
+		{Ice, Fire, Steel, Water},
+		Desc);
+	TestEqual(
+		"AnalyzeAll 1v1 atk " + Desc,
+		bPass, true
+	);
+	
 #pragma endregion
 	
 	// All passed!

@@ -159,7 +159,6 @@ TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes,
 	 *		            0 1 2 3
 	 *
 	 */
-
 	
 	// The returned variable
 	TArray<UType*> Analysis;
@@ -183,7 +182,7 @@ TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes,
 	// Initialize Types being tested
 	for(i=1; i<NumTestedTypes; i++)
 		TestedIndices.Add(TestedIndices[i-1] + 1);	// {0, 1, 2, 3}
-
+	
 	// Loop until all options are exhausted
 	int Failsafe1 = 0, Failsafe2;
 	while (Failsafe1 < UGeneHunterBPLibrary::MAX_ITERATIONS && TestedIndices[0] <= Types.Num() - NumTestedTypes)
@@ -193,7 +192,7 @@ TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes,
 		TestedTypes.Empty();
 		for (i=0; i<NumTestedTypes;i++)
 			TestedTypes.Add(Types[TestedIndices[i]]);
-
+		
 		// Reset defending indices (since we're about to iterate over them)
 		UntestedIndices = {0};
 		for(i=1; i<NumUntestedTypes;i++)
@@ -216,7 +215,7 @@ TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes,
 			DefTypes = bAnalyzeAtk ? UntestedTypes : TestedTypes;
 			for (UType* Atk : AtkTypes)
 				Modifier = FMath::Max(Modifier, GetNetModifier({Atk}, DefTypes));
-
+			
 			// If not in the right range, pitch immediately
 			if (!Range.Contains(Modifier))
 			{
@@ -232,11 +231,13 @@ TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes,
 		if (bSuccess)
 			for (UType* SuccessfulType : TestedTypes)
 				Analysis.Add(SuccessfulType);
-		
-		
+
 		// Iterate
-		if (IncrementIndices(Types, TestedIndices)) // Never able to iterate; must be at the end of all possible Type combinations
+		if (IncrementIndices(Types, TestedIndices))
+		{
+			// Never able to iterate; must be at the end of all possible Type combinations
 			break;
+		}
 		Failsafe1++;
 	}
 
@@ -340,7 +341,6 @@ TArray<UType*> UType::GetAllTypesFromSeeds(TArray<UType*> TypesSeeds)
 	}
 	return Ret;
 }
-
 
 #pragma region Getting modifiers when attacking
 
@@ -629,18 +629,25 @@ void UType::GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, co
 
 bool UType::IncrementIndices(const TArray<UType*> Types, TArray<int>& Indices)
 {
+
+	/*
+	 *	In this example, we have five types and three indices:
+	 *		Indices = {1, 2, 5}
+	 *		Types.Num() ==> 5
+	 */
+	
 	bool Ret = true;
-	int i=Indices.Num()-1, j;
+	int i=Indices.Num()-1;	// Start at the last index (e.g., the "5" in {1, 2, 5})
 	while (Ret && i>=0)
 	{
-		Indices[i]++;
-		if (Indices[i] >= Types.Num() - (Indices.Num()-i))	// i=4's cap is 9; i=3's cap is 8; etc.
+		Indices[i]++;		// Increment this index (e.g., the "5" becomes a "6", which is over cap)
+		if (Indices[i] >= Types.Num() - ((Indices.Num()-1)-i))	// i=2's cap is 5; i=1's cap is 4; etc.
 		{
-			i--;	// Go to the previous index
+			i--;			// Go to the previous index (e.g, the "2")
 		} else
 		{
 			Ret = false;
-			for(j=i+1; j<Indices.Num();j++)	// This i works! Reset its following Indices (e.g., if i=2 was validly set to 6, set i=3 to 7 and i=4 to 8)
+			for(int j=i+1; j<Indices.Num();j++)	// This i works! Reset its following Indices (e.g., if i=1 was validly set to "3", set i=2 to "4")
 				Indices[j] = Indices[i]+(j-i);
 		}
 	}
