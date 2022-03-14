@@ -15,7 +15,7 @@ enum class EAttackModifierMode : uint8
 };
 
 /**
- * 
+ * Like Types in Pokemon, this class is the building block for a system of advantages and disadvantages in combat. Types may be assigned to Monsters or Moves.
  */
 UCLASS()
 class GENEHUNTER_API UType : public UPrimaryDataAsset
@@ -32,13 +32,13 @@ public:
 	UPROPERTY( EditAnywhere, BlueprintReadWrite )
 	TMap<UType*, FAttackModifier> AttackModifiers;
 
-	/*
+	/**
 	 * An array of LinearColors associated with this Type to do with as you please. For example, the zeroth color can be associated with a background color.
 	 */
 	UPROPERTY( EditAnywhere, BlueprintReadWrite )
 	TArray<FLinearColor> Colors;
 
-	/*
+	/**
 	 * The Text that describes this Type (e.g., dev note, flavor text, etc.).
 	 */
 	UPROPERTY( EditAnywhere, BlueprintReadWrite )
@@ -46,32 +46,33 @@ public:
 
 #pragma endregion
 
-	/*
+#pragma region Public functions
+	
+	/**
 	 * Gets the net modifier when using default rules for combining modifiers. For example:
 	 * 
-	 *	(-1 & 2)	-> (-1/2)
-	 *	(-1 & 1)	-> (-1)
-	 *	(-1 & 1/2)	-> (-1)
-	 *	(-1 & 0)	-> (-1)
-	 *	(-1 & -1)	-> (-1)
+	 *	- (-1 & 2)	 ==> (-1/2)
+	 *	- (-1 & 1)	 ==> (-1)
+	 *	- (-1 & 1/2) ==> (-1)
+	 *	- (-1 & 0)	 ==> (-1)
+	 *	- (-1 & -1)	 ==> (-1)
 	 *
-	 *	(0 & 1)		-> (0)
-	 *	(2 & 1/2)	-> (1)
+	 *	- (0 & 1)	 ==> (0)
+	 *	- (2 & 1/2)	 ==> (1)
 	 */
 	UFUNCTION(BlueprintCallable)
 	static float CombineModifiers(const float A, const float B);
 
-	/*
+	/**
 	 * Gets Types whose defense modifiers are between Min and Max when attacked by the given AtkTypes.
 	 * For example, a range of (1, INFINITY) gets Types who are "bad against" these AtkTypes (since they receive more damage).
 	 * Pokemon example:
 	 *		- AnalyzeAtk({Flying, Ground}, 1, INFINITY, false, MultiType) ==> {Fire, Poison, Fighting}
 	 *		- AnalyzeAtk({Flying, Ground}, 1, INFINITY, false, Coverage) ==> {Electric, Fire, Poison, Rock, Steel, B.ug, Fighting, Grass}
-	 * @param AtkTypes The Types doing the attacking.
-	 * @param Min The minimum AttackModifier to consider.
-	 * @param Max The maximum AttackModifier to consider.
-	 * @param Inclusive If true, include results that are Min <= result <= Max.
+	 * @param TypesToAnalyze The Types doing the attacking.
+	 * @param Range If the modifier is in the given range, the matchup is "successful".
 	 * @param Mode Determines whether the analysis is being done for a single multi-Typed attack or for coverage of several attacks.
+	 * @param bAtk True if doing the analysis on attacking Types, false if on defending Types.
 	 */
 	UFUNCTION(BlueprintCallable)
 	static TArray<UType*> Analyze(
@@ -81,6 +82,9 @@ public:
 			const bool bAtk = true
 			);
 
+	/**
+	 * Called by the BlueprintCallable version of this function.
+	 */
 	static TArray<UType*> Analyze(
 			const TArray<UType*> TypesToAnalyze,
 			const TArray<UType*> AgainstTypes,
@@ -89,26 +93,13 @@ public:
 			const bool bAtk = true
 			);
 
-	
-	UFUNCTION(BlueprintCallable)
-	static TArray<UType*> AnalyzeAtk(
-		const TArray<UType*> AtkTypes,
-		const FFloatRange Range,
-		const EAttackModifierMode Mode = EAttackModifierMode::MultiType);
-
-	UFUNCTION(BlueprintCallable)
-	static TArray<UType*> AnalyzeDef(
-		const TArray<UType*> DefTypes,
-		const FFloatRange Range,
-		const EAttackModifierMode Mode = EAttackModifierMode::MultiType);
-
-	/*
+	/**
 	 * Gets the net interaction between a (multi-Type) attack and a (multi-Type) defense.
 	 */
 	UFUNCTION(BlueprintCallable)
 	static float GetNetModifier(const TArray<UType*> AtkTypes, const TArray<UType*> DefTypes);
 	
-	/*
+	/**
 	 * Performs an analysis on the given Types.
 	 *		- If AnalyzeAtk, the "tested" Types are the attackers and the "untested" Types are the defenders.
 	 *		- Ex: AnalyzeAll([all], 1, 1, [1, open), true) ==> all attacks that are 1v1 never resisted (e.g., Typeless would be in that result).
@@ -116,17 +107,28 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static TArray<UType*> AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes, const int NumUntestedTypes, const FFloatRange Range, const bool bAnalyzeAtk);
 
+#pragma endregion
+
+#pragma region Private functions
+	
 private:
+
+	/**
+	 * A faster version for getting all types. For each "seed" given, if that seed has a non-zero list of AttackModifiers,
+	 * this function will return the list's keys (Types).
+	 */
     static TArray<UType*> GetAllTypesFromSeeds(TArray<UType*> TypesSeeds);
+
+#pragma endregion
 
 #pragma region Sorting for debug purposes
 
-	/*
+	/**
 	 * Sorts the given Types by the number of AttackModifiers within the specified range.
 	 * For example, if Water is only good attacking against Fire, it would be near the end of the list.
 	 */
 	UFUNCTION(BlueprintCallable)
-	static void SortTypesAttacking(const TArray<UType*> Types, TArray<UType*>& Sorted, const float Min, const float Max, const bool Inclusive);
+	static void SortTypesAttacking(const TArray<UType*> Types, TArray<UType*>& Sorted, const FFloatRange Range);
 
 	/*
 	 * Sorts the given Types by the number of defensible Types within the specified range.

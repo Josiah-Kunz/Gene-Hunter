@@ -112,7 +112,7 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 #pragma region Multi-Type Analyze tests (Flying/Ground analysis because Gliscor)
 
 	// Get the UTypes (actual)
-	TArray EffectiveAtk_UType = UType::Analyze(
+	TArray Actual = UType::Analyze(
 			{Ground, Flying},
 			TArray<UType*>(AllDummyTypes),
 			FFloatRange{
@@ -125,7 +125,7 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 
 	// Perform the test
 	FString Desc;
-	bool bPass =UnitTestUtilities::TArrayAreEqual(EffectiveAtk_UType, {Fire, Poison, Fighting}, Desc);
+	bool bPass = UnitTestUtilities::TArrayAreEqual(Actual, {Fire, Poison, Fighting}, Desc);
 	TestEqual(
 		"Flying/Ground multiType attack " + Desc,
 		bPass, true
@@ -135,7 +135,7 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 #pragma region Coverage Analyze test
 
 	// Get the UTypes (actual)
-	EffectiveAtk_UType = UType::Analyze(
+	Actual = UType::Analyze(
 			{Ground, Flying},
 			TArray<UType*>(AllDummyTypes),
 			FFloatRange{
@@ -147,7 +147,7 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 			);
 
 	// Perform the test
-	bPass = UnitTestUtilities::TArrayAreEqual(EffectiveAtk_UType, {Electric, Fire, Poison, Rock, Steel, Bug, Fighting, Grass}, Desc);
+	bPass = UnitTestUtilities::TArrayAreEqual(Actual, {Electric, Fire, Poison, Rock, Steel, Bug, Fighting, Grass}, Desc);
 	TestEqual(
 		"Flying/Ground coverage attack " + Desc,
 		bPass, true
@@ -157,7 +157,7 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 #pragma region AnalyzeAll tests
 
 	// AnalyzeAll 1v1 attacking
-	EffectiveAtk_UType = UType::AnalyzeAll(
+	Actual = UType::AnalyzeAll(
 		TArray<UType*>(AllDummyTypes),
 		1, 1, 
 		FFloatRange{
@@ -169,13 +169,63 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 
 	// Perform the test
 	bPass = UnitTestUtilities::TArrayAreEqual(
-		EffectiveAtk_UType,
+		Actual,
 		{Ice, Fire, Steel, Water},
 		Desc);
 	TestEqual(
-		"AnalyzeAll 1v1 atk " + Desc,
+		"AnalyzeAll 1v1 atk never resisted" + Desc,
 		bPass, true
 	);
+	
+	// AnalyzeAll 2v1 attacking
+	Actual = UType::AnalyzeAll(
+		TArray<UType*>(AllDummyTypes),
+		2, 1, 
+		FFloatRange{
+					FFloatRangeBound::Exclusive(1),
+					FFloatRangeBound::Open()
+					},
+		true
+	);
+
+	// Perform the test
+	// For the purposes of this test, Water and Ice have been made effective against EVERYTHING
+	// (otherwise, the type combinations are too numerous to compute by hand)
+	bPass = UnitTestUtilities::TArrayAreEqual(
+		Actual,
+		{
+			// Water/Ice + all types
+			Ice, Bug, Ice, Electric, Ice, Fighting, Ice, Fire, Ice, Flying, Ice, Grass, Ice, Ground, Ice, Poison, Ice, Rock, Ice, Steel, Ice, Water,
+			Water, Bug, Water, Electric, Water, Fighting, Water, Fire, Water, Flying, Water, Grass, Water, Ground, Water, Poison, Water, Rock, Water, Steel,
+			// Other "magic" combinations that complement each other
+			//Flying, Ground,
+			},
+		Desc);
+	TestEqual(
+		"AnalyzeAll 2v1 atk always effective" + Desc,
+		bPass, true
+	);
+
+	// AnalyzeAll 1v1 defending
+    	Actual = UType::AnalyzeAll(
+    		TArray<UType*>(AllDummyTypes),
+    		1, 1, 
+    		FFloatRange{
+    					FFloatRangeBound::Open(),
+    					FFloatRangeBound::Inclusive(1)
+    					},
+    		false
+    	);
+    
+    	// Perform the test
+    	bPass = UnitTestUtilities::TArrayAreEqual(
+    		Actual,
+    		{},
+    		Desc);
+    	TestEqual(
+    		"AnalyzeAll 1v1 def never weak" + Desc,
+    		bPass, true
+    	);
 	
 #pragma endregion
 	

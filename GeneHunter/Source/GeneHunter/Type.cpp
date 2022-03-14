@@ -2,9 +2,13 @@
 
 
 #include "Type.h"
+
+#include <filesystem>
+
 #include "GeneHunterBPLibrary.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 
+#pragma region Public functions
 
 float UType::CombineModifiers(const float A, const float B)
 {
@@ -31,16 +35,6 @@ float UType::CombineModifiers(const float A, const float B)
 	// Healing trumps all other damage reduction
 	return Min;
 	
-}
-
-TArray<UType*> UType::AnalyzeAtk(const TArray<UType*> AtkTypes, const FFloatRange Range, const EAttackModifierMode Mode)
-{
-	return Analyze(AtkTypes, Range, Mode, true);
-}
-
-TArray<UType*> UType::AnalyzeDef(const TArray<UType*> DefTypes, const FFloatRange Range, const EAttackModifierMode Mode)
-{
-	return Analyze(DefTypes, Range, Mode, false);
 }
 
 TArray<UType*> UType::Analyze(const TArray<UType*> TypesToAnalyze, const FFloatRange Range, const EAttackModifierMode Mode, const bool bAtk)
@@ -244,88 +238,9 @@ TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes,
 	return Analysis;
 }
 
-/*
-TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes, const FFloatRange Range, const bool bAnalyzeAtk)
-{
+#pragma endregion
 
-	// The returned variable
-	TArray<UType*> Analysis;
-	
-	// User is being dumb
-	if (Types.Num() == 0 ||
-		NumAtkTypes < 1 || Types.Num() < NumAtkTypes ||
-		NumDefTypes < 1 || Types.Num() < NumDefTypes)
-		return Analysis;
-
-	// Vars
-	bool bSuccess;							// Determines if all Types were hit at least neutrally
-	TArray AtkIndices = {0};				// The indices of the Types in AtkTypes. E.g., if Fire/Water is being tested, this may be {4, 13} (or whatever).
-	TArray DefIndices = {0};				// Same with defenders
-	TArray<UType*> AtkTypes;				// The combination that is attacking
-	TArray<UType*> DefTypes;				// The combination that is defending
-	int i;									// Dummy ints
-	float Modifier;
-	
-	// Initialize Types being tested
-	for(i=1; i<NumAtkTypes; i++)
-		AtkIndices.Add(AtkIndices[i-1] + 1);	// {0, 1, 2, 3}
-
-	// Loop until all options are exhausted
-	int Failsafe1 = 0, Failsafe2;
-	while (Failsafe1 < UGeneHunterBPLibrary::MAX_ITERATIONS && AtkIndices[0] <= Types.Num() - NumAtkTypes)
-	{
-
-		// Get the attacking Type combination based on current indices
-		AtkTypes.Empty();
-		for (i=0; i<NumAtkTypes;i++)
-			AtkTypes.Add(Types[AtkIndices[i]]);
-
-		// Reset defending indices (since we're about to iterate over them)
-		DefIndices = {0};
-		for(i=1; i<NumDefTypes;i++)
-			DefIndices.Add(DefIndices[i-1]+1);
-		
-		// Test this combination's effectiveness against all other Types
-		bSuccess = true;
-		Failsafe2 = 0;
-		while (Failsafe2 < UGeneHunterBPLibrary::MAX_ITERATIONS && DefIndices[0] <= Types.Num() - NumDefTypes)
-		{
-
-			// Get the attacking Type combination based on indices
-			DefTypes.Empty();
-			for (i=0; i<NumDefTypes;i++)
-				DefTypes.Add(Types[DefIndices[i]]);
-
-			// Get the [best] modifier (this is the meat; everything else is just bookkeeping!)
-			Modifier = -INFINITY;
-			for (UType* Atk : AtkTypes)
-				Modifier = FMath::Max(Modifier, GetNetModifier({Atk}, DefTypes));
-
-			// If not in the right range, pitch immediately
-			if (!Range.Contains(Modifier))
-			{
-				bSuccess = false;
-				break;
-			}
-			
-			// Iterate
-			if (IncrementIndices(Types, DefIndices)) // Never able to iterate; must be at the end of all possible Type combinations
-				break;
-			Failsafe2++;
-		}
-		if (bSuccess)
-			for (UType* SuccessfulType : (bAnalyzeAtk ? AtkTypes : DefTypes))
-				Analysis.Add(SuccessfulType);
-		
-		// Iterate
-		if (IncrementIndices(Types, AtkIndices)) // Never able to iterate; must be at the end of all possible Type combinations
-			break;
-		Failsafe1++;
-	}
-
-	return Analysis;
-}
-*/
+#pragma region Private functions
 
 TArray<UType*> UType::GetAllTypesFromSeeds(TArray<UType*> TypesSeeds)
 {
@@ -342,92 +257,34 @@ TArray<UType*> UType::GetAllTypesFromSeeds(TArray<UType*> TypesSeeds)
 	return Ret;
 }
 
-#pragma region Getting modifiers when attacking
-
-/*
-TArray<UType*> UType::GetMultiAtkTypes(const TArray<UType*> AtkTypes, TArray<UType*> DefTypes, const float Min, const float Max, const bool Inclusive)
-{
-
-	// If DefTypes is not given, assume AtkTypes contains the correct AtkModifiers
-	if (DefTypes.Num() == 0)
-	{
-		for(UType* Atk : AtkTypes)
-		{
-			if (Atk)
-			{
-				Atk->AttackModifiers.GetKeys(DefTypes);
-				break;
-			}
-		}
-	}
-	
-	TArray<UType*> Ret;
-	float Modifier;
-	for(UType* Defender : DefTypes)
-	{
-		if (Defender)
-		{
-			Modifier = 1;
-			for(UType* Attacker : AtkTypes)
-			{
-				if (Attacker)
-					Modifier = CombineModifiers(Modifier, Attacker->AttackModifiers[Defender].Modifier);
-			}
-			if (Inclusive)
-			{
-				if (Min <= Modifier && Modifier <= Max)
-					Ret.Add(Defender);
-			} else
-			{
-				if (Min < Modifier && Modifier < Max)
-					Ret.Add(Defender);
-			}
-		}
-	}
-	return Ret;
-}
-
-TArray<UType*> UType::GetAttackingTypesBetween(const float Min, const float Max, const bool Inclusive) const
-{
-	TArray<UType*> Ret;
-	for(const auto& Pair : AttackModifiers)
-	{
-		if (Inclusive)
-		{
-			if (Min <= Pair.Value.Modifier && Pair.Value.Modifier <= Max)
-				Ret.Add(Pair.Key);
-		} else
-		{
-			if (Min < Pair.Value.Modifier && Pair.Value.Modifier < Max)
-				Ret.Add(Pair.Key);
-		}
-	}
-	return Ret;
-}*/
-
-
 #pragma endregion
 
 #pragma region Sorting for debug purposes
 
-void UType::SortTypesAttacking(const TArray<UType*> Types, TArray<UType*>& Sorted, const float Min, const float Max, const bool Inclusive)
+void UType::SortTypesAttacking(const TArray<UType*> Types, TArray<UType*>& Sorted, const FFloatRange Range)
 {
 	Sorted = Types;
-	/*Sorted.Sort([Min, Max, Inclusive](const UType& A, const UType& B)
+	Sorted.Sort([Range](const UType& A, const UType& B)
 	{
-		const int NumA = A.GetAttackingTypesBetween(Min, Max, Inclusive).Num();
-		const int NumB = B.GetAttackingTypesBetween(Min, Max, Inclusive).Num();
+		return true;
+		/*
+		const int NumA = Analyze({A}, Range).Num();
+		const int NumB = Analyze({B}, Range).Num();
+		return NumA > NumB;
+		*/
+		/*
 		if (NumA == NumB)
 		{
 			// Getting "resisted" Types; tiebreaker is "badness" (least number of advantages)
-			if (Min < 1)
+			if (Range.GetLowerBound().GetValue() < 1)
 				return A.GetAttackingTypesBetween(Max, INFINITY, false).Num() < B.GetAttackingTypesBetween(Max, INFINITY, false).Num();
 			
 			// Getting "effective" Types; tiebreaker is "goodness" (least number of resisted Types)
 			return A.GetAttackingTypesBetween(-INFINITY, Min, false).Num() < B.GetAttackingTypesBetween(-INFINITY, Min, false).Num();
 		}
 		return NumA > NumB;
-	});*/
+		*/
+	});
 }
 
 void UType::SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorted, const float Min, const float Max, const bool Inclusive)

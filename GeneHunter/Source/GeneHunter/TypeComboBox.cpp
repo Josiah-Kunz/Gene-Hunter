@@ -13,6 +13,7 @@ TSharedRef<SWidget> UTypeComboBox::RebuildWidget()
 	for(int i=0; i<Types.Num(); i++)
 		Options.Add(MakeShared<FString>(Types[i]->GetName()));
 	SetSelectedIndex(0);
+	this->HandleSelectionChanged(Options[0], ESelectInfo::Direct);
 	return Ret;
 }
 
