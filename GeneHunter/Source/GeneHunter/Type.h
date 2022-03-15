@@ -135,7 +135,7 @@ private:
 	 * For example, if Fire is only weak (defending) to Water, it would be near the end of the list.
 	 */
 	UFUNCTION(BlueprintCallable)
-	static void SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorted, const float Min, const float Max, const bool Inclusive);
+	static void SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorted, const FFloatRange Range);
 
 	/*
 	 * Sorts the given Types by the ratio of [effective:ineffective] attack modifiers from high ratio to low ratio.

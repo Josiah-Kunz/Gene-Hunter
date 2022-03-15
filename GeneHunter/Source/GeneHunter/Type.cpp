@@ -266,30 +266,108 @@ void UType::SortTypesAttacking(const TArray<UType*> Types, TArray<UType*>& Sorte
 	Sorted = Types;
 	Sorted.Sort([Range](const UType& A, const UType& B)
 	{
-		return true;
-		/*
-		const int NumA = Analyze({A}, Range).Num();
-		const int NumB = Analyze({B}, Range).Num();
-		return NumA > NumB;
-		*/
-		/*
+
+		// "Sort" requires references, but the other functions require pointers (since UType can be null)
+		UType* PointerA = const_cast<UType*>(&A);
+		UType* PointerB = const_cast<UType*>(&B);
+
+		// Get number of advantages (or whatever)
+		int NumA = Analyze({PointerA}, Range).Num();
+		int NumB = Analyze({PointerB}, Range).Num();
+
+		// If they're equal, sort "ThenBy"
 		if (NumA == NumB)
 		{
-			// Getting "resisted" Types; tiebreaker is "badness" (least number of advantages)
+			// If getting "resisted" Types, tiebreaker is "badness" (least number of advantages)
 			if (Range.GetLowerBound().GetValue() < 1)
-				return A.GetAttackingTypesBetween(Max, INFINITY, false).Num() < B.GetAttackingTypesBetween(Max, INFINITY, false).Num();
-			
-			// Getting "effective" Types; tiebreaker is "goodness" (least number of resisted Types)
-			return A.GetAttackingTypesBetween(-INFINITY, Min, false).Num() < B.GetAttackingTypesBetween(-INFINITY, Min, false).Num();
+			{
+				NumA = Analyze({PointerA},
+					FFloatRange{
+				FFloatRangeBound::Exclusive(Range.GetUpperBound().GetValue()),
+				FFloatRangeBound::Open()
+				}).Num();
+				NumB = Analyze({PointerB},
+					FFloatRange{
+				FFloatRangeBound::Exclusive(Range.GetUpperBound().GetValue()),
+				FFloatRangeBound::Open()
+				}).Num();
+				return NumA < NumB;
+			}
+
+			// If getting "effective" Types, tiebreaker is "goodness" (least number of resisted Types)
+			NumA = Analyze({PointerA},
+				FFloatRange{
+		FFloatRangeBound::Open(),
+		FFloatRangeBound::Exclusive(Range.GetLowerBound().GetValue())
+				}).Num();
+			NumB = Analyze({PointerB},
+				FFloatRange{
+			FFloatRangeBound::Open(),
+			FFloatRangeBound::Exclusive(Range.GetLowerBound().GetValue())
+			}).Num();
+			return NumA < NumB;
 		}
+		
+		// Not equal; return as usual
 		return NumA > NumB;
-		*/
 	});
 }
 
-void UType::SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorted, const float Min, const float Max, const bool Inclusive)
+void UType::SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorted, const FFloatRange Range)
 {
 	Sorted = Types;
+	Sorted.Sort([Range](const UType& A, const UType& B)
+	{
+		// "Sort" requires references, but the other functions require pointers (since UType can be null)
+		UType* PointerA = const_cast<UType*>(&A);
+		UType* PointerB = const_cast<UType*>(&B);
+
+		// Get number of advantages (or whatever)
+		int NumA = Analyze({PointerA}, Range, EAttackModifierMode::Coverage, false).Num();
+		int NumB = Analyze({PointerB}, Range, EAttackModifierMode::Coverage, false).Num();
+
+		// If they're equal, sort "ThenBy"
+		if (NumA == NumB)
+		{
+			// If getting "resisted" Types, tiebreaker is "goodness" (least number of weaknesses)
+			if (Range.GetLowerBound().GetValue() < 1)
+			{
+				NumA = Analyze({PointerA},
+					FFloatRange{
+					FFloatRangeBound::Exclusive(Range.GetUpperBound().GetValue()),
+					FFloatRangeBound::Open()
+					},
+					EAttackModifierMode::Coverage, false).Num();
+				NumB = Analyze({PointerB},
+					FFloatRange{
+					FFloatRangeBound::Exclusive(Range.GetUpperBound().GetValue()),
+					FFloatRangeBound::Open()
+					},
+					EAttackModifierMode::Coverage, false).Num();
+				return NumA < NumB;
+			}
+
+			// If getting "weak to" Types, tiebreaker is "badness" (least number of resisted Types)
+			NumA = Analyze({PointerA},
+				FFloatRange{
+				FFloatRangeBound::Open(),
+				FFloatRangeBound::Exclusive(Range.GetLowerBound().GetValue())
+				},
+				EAttackModifierMode::Coverage, false).Num();
+			NumB = Analyze({PointerB},
+				FFloatRange{
+				FFloatRangeBound::Open(),
+				FFloatRangeBound::Exclusive(Range.GetLowerBound().GetValue())
+				},
+				EAttackModifierMode::Coverage, false).Num();
+			return NumA < NumB;
+		}
+
+		// Not equal; return as usual
+	return NumA > NumB;
+	});
+
+	
 	/*Sorted.Sort([Min, Max, Inclusive](const UType& A, const UType& B)
 	{
 		const int NumA = A.GetDefendingTypesBetween(Min, Max, Inclusive).Num();
