@@ -1,0 +1,3 @@
+Boy, I'm having a lot of fun! Unfortunately, work got kind of crazy (we're hiring a new engineer, and guess who needs to do the proposal for that?). Progress on GH is a bit slow, but I think about it all the time. 
+
+I've learned some lessons about UMG from the Type advantage editor tool. For one, it's really really really a good idea to have everything be its own sub-widget (where possible). That way, you don't have this giant UMG blueprint. (Of course, I always use functions in my UMG rather than a single graph, but the number of functions is >100 at this point.)
