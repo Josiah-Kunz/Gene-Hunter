@@ -18,6 +18,8 @@ class GENEHUNTER_API UEditableTextPlus : public UEditableText
 {
 	GENERATED_BODY()
 
+#pragma region Text Changing Events
+
 	/** Overrides and aliases (sort of). */
 	virtual TSharedRef<SWidget> RebuildWidget() override;
 	virtual void HandleOnTextChangedOverride(const FText& InText);
@@ -25,17 +27,17 @@ class GENEHUNTER_API UEditableTextPlus : public UEditableText
 public:
 	
 	/** Called whenever the text is changed programmatically (by code). */
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category="Widget Event", meta=(DisplayName="OnChangedByCode (EditableText+)"))
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category="Widget Event")
 	FOnEditableTextChangedProgrammaticEvent OnChangedByCode;
 
 	/** Called whenever the text is changed interactively (by the user). */
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category="Widget Event", meta=(DisplayName="OnChangedByUser (EditableText+)"))
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category="Widget Event")
 	FOnEditableTextChangedInteractiveEvent OnChangedByUser;
 
 	/** Only true when SetTextProgrammatic is called. Promptly set to false after HandleOnTextChangedOverride is called. */
 	bool bChangedProgrammatic;
 
-	/*
+	/**
 	 * Sets the text as usual by calling the base SetText. However, it also allows OnChangedByCode to be called.
 	 */
 	UFUNCTION(BlueprintCallable)
@@ -59,6 +61,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetTextByUser(const FText& NewText);
 
+#pragma  endregion
+
+#pragma region Text manipulation
+
 	/*
 	 * Allows the user to set the font color in the Blueprint (which, oddly enough, isn't standard).
 	 */
@@ -67,4 +73,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure=true)
 	void TextAsFloat(float& Float);
+
+#pragma endregion
 };
