@@ -1,0 +1,54 @@
+
+
+Jungle
+	- Air
+	- Nature
+	- Toxic
+	
+Paranormal
+	- Magic
+	- Spirit
+	- Void
+	
+Energy
+	- Fire
+	- Light
+	- Sound
+	
+Power
+	- Electric
+	- Martial
+	- Metal
+	
+Planetary
+	- Earth
+	- Ice
+	- Water
+
+	
+=========
+
+Arctic
+	- Air?
+	- Ice
+	- Water
+	
+Jungle
+	- Martial?
+	- Nature
+	- Toxic
+	
+Desert
+	- Metal?
+	- Fire
+	- Earth
+	
+Energy
+	- Electric
+	- Light
+	- Sound
+	
+Paranormal
+	- Magic
+	- Spirit
+	- Void
