@@ -52,3 +52,63 @@ Paranormal
 	- Magic
 	- Spirit
 	- Void
+	
+===========
+
+Jungle
+	- Nature
+	- Toxic
+	
+Island
+	- Water
+	- Earth
+	
+Arctic
+	- Ice
+	- Air
+	
+Solar
+	- Light
+	- Fire
+	
+Null
+	- Typeless
+	- Void
+	
+Paranormal
+	- Spirit
+	- Magic
+	
+Energy
+	- Electric
+	- Sound
+	
+Combat
+	- Martial
+	- Metal
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
