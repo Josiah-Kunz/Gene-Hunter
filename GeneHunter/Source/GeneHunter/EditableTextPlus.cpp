@@ -1,5 +1,8 @@
 
 #include "EditableTextPlus.h"
+
+#include <string>
+
 #include "Widgets/Input/SEditableText.h"
 #include "Components/EditableText.h"
 
@@ -31,6 +34,49 @@ TSharedRef<SWidget> UEditableTextPlus::RebuildWidget()
 
 void UEditableTextPlus::HandleOnTextChangedOverride(const FText& InText)
 {
+
+	// Check numeric, etc.
+	FText NewText = InText;
+	if (bNumeric)
+	{
+
+		// Get numeric representation
+		float TextAsFloat = FCString::Atof(*InText.ToString());
+
+		// Check negative/positive/zero
+		if (!bCanBeNegative && TextAsFloat < 0)
+			TextAsFloat = 0;
+		else if (!bCanBePositive && TextAsFloat > 0)
+			TextAsFloat = 0;
+		if (!bCanBeZero && FMath::IsNearlyZero(TextAsFloat))
+		{
+			if (bCanBeNegative)
+				TextAsFloat = -1;
+			else if (bCanBePositive)
+				TextAsFloat = 1;
+			else
+				NewText = FText::GetEmpty(); // F the man, yo
+		}
+
+		// If non-empty, parse the number
+		if (!NewText.IsEmpty())
+		{
+			if (bIntegerOnly)
+				NewText = FText::AsNumber(static_cast<int>(TextAsFloat));
+			else
+				NewText = FText::AsNumber(TextAsFloat);
+		}
+	}
+	if (!NewText.EqualTo(InText))
+	{
+		bool bCachedMode = bChangedProgrammatic;
+		SetText(NewText);
+		bChangedProgrammatic = bCachedMode;
+		HandleOnTextChangedOverride(NewText);
+		return;
+	}
+
+	// Call old handler + new events (if applicable)
 	HandleOnTextChanged(InText);
 	if (!bChangedProgrammatic)
 		OnChangedByUser.Broadcast(InText);

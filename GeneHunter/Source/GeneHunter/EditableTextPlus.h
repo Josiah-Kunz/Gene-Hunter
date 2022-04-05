@@ -17,8 +17,28 @@ UCLASS(meta=(DisplayName="EditableText+"))
 class GENEHUNTER_API UEditableTextPlus : public UEditableText
 {
 	GENERATED_BODY()
+	
+#pragma region Enhanced variables
 
-#pragma region Text Changing Events
+public:
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category="Text Options" )
+	bool bNumeric;
+
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category="Text Options", meta=(EditCondition="bNumeric") )
+	bool bIntegerOnly;
+
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category="Text Options", meta=(EditCondition="bNumeric") )
+	bool bCanBeNegative = true;
+
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category="Text Options", meta=(EditCondition="bNumeric") )
+	bool bCanBeZero = true;
+
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category="Text Options", meta=(EditCondition="bNumeric") )
+	bool bCanBePositive = true;
+
+#pragma endregion
+
+#pragma region Text changing events
 
 	/** Overrides and aliases (sort of). */
 	virtual TSharedRef<SWidget> RebuildWidget() override;

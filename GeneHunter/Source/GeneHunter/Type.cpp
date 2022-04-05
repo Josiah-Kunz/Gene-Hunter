@@ -261,9 +261,49 @@ TArray<UType*> UType::GetAllTypesFromSeeds(TArray<UType*> TypesSeeds)
 
 #pragma region Sorting for debug purposes
 
-void UType::SortTypesAttacking(const TArray<UType*> Types, TArray<UType*>& Sorted, const FFloatRange Range)
+TArray<FTypeInfo> UType::GetAllTypeCombinations(const TArray<UType*> Types, const int NumTypes)
 {
-	Sorted = Types;
+
+	TArray<FTypeInfo> Ret = {};
+	
+	// User is being dumb
+	if (Types.Num() == 0 || NumTypes < 1 || Types.Num() < NumTypes)
+			return Ret;
+
+	// Setup trackers
+	TArray Indices = {0};
+	for(int i=1; i<NumTypes; i++)
+		Indices.Add(Indices[i-1] + 1);
+
+	// Loop until options are exhausted
+	int Failsafe = 0;
+	while (Failsafe < UGeneHunterBPLibrary::MAX_ITERATIONS && Indices[0] <= Types.Num() - NumTypes)
+	{
+
+		// Add newest entry
+		FTypeInfo TypeInfo = FTypeInfo{{}, {}};
+		for (int i=0; i<NumTypes;i++)
+			TypeInfo.TypeArray1.Add(Types[Indices[i]]);
+
+		// Iterate
+		if (IncrementIndices(Types, Indices)) // Never able to iterate; must be at the end of all possible Type combinations
+			break;
+		Failsafe++;
+	}
+
+	// Return
+	return Ret;
+	
+}
+
+void UType::SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes, const FFloatRange Range, TArray<FTypeInfo>& Sorted)
+{
+
+	// Get unsorted list
+	TArray<FTypeInfo> Attackers = GetAllTypeCombinations(Types, NumAtkTypes);
+	TArray<FTypeInfo> Defenders = GetAllTypeCombinations(Types, NumDefTypes);
+	Sorted = {}; // TODO
+	
 	Sorted.Sort([Range](const UType& A, const UType& B)
 	{
 

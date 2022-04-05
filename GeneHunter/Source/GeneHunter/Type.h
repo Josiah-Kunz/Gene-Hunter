@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "AttackModifier.h"
+#include "FTypeInfo.h"
 #include "Type.generated.h"
 
 UENUM(BlueprintType)
@@ -128,35 +129,41 @@ private:
 	 * For example, if Water is only good attacking against Fire, it would be near the end of the list.
 	 */
 	UFUNCTION(BlueprintCallable)
-	static void SortTypesAttacking(const TArray<UType*> Types, TArray<UType*>& Sorted, const FFloatRange Range);
+	static void SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes, const FFloatRange Range, TArray<FTypeInfo>& Sorted);
 
-	/*
+	/**
 	 * Sorts the given Types by the number of defensible Types within the specified range.
 	 * For example, if Fire is only weak (defending) to Water, it would be near the end of the list.
 	 */
 	UFUNCTION(BlueprintCallable)
 	static void SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorted, const FFloatRange Range);
 
-	/*
+	/**
 	 * Sorts the given Types by the ratio of [effective:ineffective] attack modifiers from high ratio to low ratio.
 	 * For example, if Fire is effective against Nature and resisted against Water, it would be a 1:1 ratio (and hence near the middle of the list).
 	 */
 	UFUNCTION(BlueprintCallable)
 	static void SortTypesAttackingRatio(const TArray<UType*> Types, TArray<UType*>& Sorted);
 
-	/*
+	/**
 	 * Sorts the given Types by the ratio of [resists:weak to] from high ratio to low ratio.
 	 * For example, if Nature resists Water and is weak to Fire, it would be a 1:1 ratio (and hence near the middle of the list).
 	 */
 	UFUNCTION(BlueprintCallable)
 	static void SortTypesDefendingRatio(const TArray<UType*> Types, TArray<UType*>& Sorted);
 
-	/*
+	/**
 	 * Gets all combinations of attackers who have neutral coverage.
 	 * For example, in Pokemon, if NumTypes=2, Ice/Electric would be in the returned array.
 	 */
 	UFUNCTION(BlueprintCallable)
 	static void GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, const int NumAtkTypes=2, const int NumDefTypes=2);
+
+	/**
+	 * Lazily gets all Type combinations. If you care about performance, take a look at how AnalyzeAll handles the problem.
+	 * For example, for NumTypes = 2, this returns {A, B}, {A, C}, {A, D}, ...
+	 */
+	static TArray<FTypeInfo> GetAllTypeCombinations(const TArray<UType*> Types, const int NumTypes);
 
 private:
 	static bool IncrementIndices(const TArray<UType*> Types, TArray<int>& Indices);
