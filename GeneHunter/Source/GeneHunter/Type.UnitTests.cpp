@@ -164,7 +164,8 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 					FFloatRangeBound::Inclusive(1),
 					FFloatRangeBound::Open()
 					},
-		true
+		true,
+		EAttackModifierMode::Coverage
 	);
 
 	// Perform the test
@@ -185,7 +186,8 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 					FFloatRangeBound::Exclusive(1),
 					FFloatRangeBound::Open()
 					},
-		true
+					true,
+					EAttackModifierMode::Coverage
 	);
 
 	// Perform the test
@@ -214,7 +216,8 @@ bool UType_Analysis::RunTest(const FString& Parameters)
     					FFloatRangeBound::Open(),
     					FFloatRangeBound::Inclusive(1)
     					},
-    		false
+    					false,
+					EAttackModifierMode::Coverage
     	);
     
     	// Perform the test
@@ -226,6 +229,12 @@ bool UType_Analysis::RunTest(const FString& Parameters)
     		"AnalyzeAll 1v1 def never weak" + Desc,
     		bPass, true
     	);
+	
+#pragma endregion
+
+#pragma region Sorting tests
+
+	// TODO
 	
 #pragma endregion
 	

@@ -135,25 +135,58 @@ TArray<FTypeInfo*> UType::AnalyzeVsMulti(const TArray<UType*>& TypesToAnalyze, c
 	return Ret;
 }
 
-float UType::GetNetModifier(const TArray<UType*> AtkTypes, const TArray<UType*> DefTypes)
+float UType::GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>& DefTypes, const EAttackModifierMode Mode)
 {
+
+	// Set initial modifier
 	float Modifier = 1;
+	switch(Mode)
+	{
+	case EAttackModifierMode::Coverage:
+		
+		// Get the [best] modifier
+		Modifier = -INFINITY;
+		break;
+
+	case EAttackModifierMode::MultiType:
+
+		// Get the [net] modifier
+		Modifier = 1;
+		break;
+	}
+
+	// Loop over attackers and add their modifiers
 	for (UType* Atk : AtkTypes)
 	{
+
+		// Squirrel protection
 		if (!Atk)
 			continue;
-		for (UType* Def : DefTypes)
-		{
-			if (!Def)
-				continue;
+
+		// Single attack vs all defense Types (defenders always act as multi-Type)
+		float SingleAtkMod = 1;
+		for(const UType* Def : DefTypes)
 			if (Atk->AttackModifiers.Contains(Def))
-				Modifier = CombineModifiers(Modifier, Atk->AttackModifiers[Def].Modifier);
+				SingleAtkMod = CombineModifiers(SingleAtkMod, Atk->AttackModifiers[Def].Modifier);
+
+		// Best is based on mode
+		switch(Mode)
+		{
+		case EAttackModifierMode::Coverage:
+			Modifier = FMath::Max(Modifier, SingleAtkMod);
+			break;
+		case EAttackModifierMode::MultiType:
+			Modifier = CombineModifiers(Modifier, SingleAtkMod);
+			break;
 		}
 	}
+
+	// Return
 	return Modifier;
 }
 
-TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes, const int NumUntestedTypes, const FFloatRange Range, const bool bAnalyzeAtk)
+TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes, const int NumUntestedTypes,
+	const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode)
 {
 
 
@@ -250,11 +283,9 @@ TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes,
 				UntestedTypes.Add(Types[UntestedIndices[i]]);
 
 			// Get the [best] modifier (this is the meat; everything else is just bookkeeping!)
-			Modifier = -INFINITY;
 			AtkTypes = bAnalyzeAtk ? TestedTypes : UntestedTypes;
 			DefTypes = bAnalyzeAtk ? UntestedTypes : TestedTypes;
-			for (UType* Atk : AtkTypes)
-				Modifier = FMath::Max(Modifier, GetNetModifier({Atk}, DefTypes));
+			Modifier = GetNetModifier(AtkTypes, DefTypes, Mode);
 			
 			// If not in the right range, pitch immediately
 			if (!Range.Contains(Modifier))
@@ -307,7 +338,7 @@ TArray<UType*> UType::GetAllTypesFromSeeds(TArray<UType*> TypesSeeds)
 
 #pragma region Sorting for debug purposes
 
-TArray<FTypeInfo> UType::GetAllTypeCombinations(const TArray<UType*> Types, const int NumTypes)
+TArray<FTypeInfo> UType::GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes)
 {
 
 	TArray<FTypeInfo> Ret = {};
@@ -385,7 +416,7 @@ void UType::SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes
 	}
 
 	// Sort based on number of DefTypes
-	Sorted.Sort([Range](const FTypeInfo& A, const FTypeInfo& B)
+	Sorted.Sort([Range, Defenders, Mode](const FTypeInfo& A, const FTypeInfo& B)
 	{
 
 		// "Sort" requires references, but the other functions require pointers (since UType can be null)
@@ -399,38 +430,26 @@ void UType::SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes
 		// If they're equal, sort "ThenBy"
 		if (NumA == NumB)
 		{
+
+			// Get "inverted" range for tiebreaker
+			FFloatRange InverseRange;
+			
 			// If getting "resisted" Types, tiebreaker is "badness" (least number of advantages)
 			if (Range.GetLowerBound().GetValue() < 1)
-			{
-
-				// TODO: too tired
-				NumA = AnalyzeVsMulti(PointerA->TypeArray1, )
-				
-				NumA = Analyze({PointerA},
-					FFloatRange{
+				InverseRange = FFloatRange{
 				FFloatRangeBound::Exclusive(Range.GetUpperBound().GetValue()),
 				FFloatRangeBound::Open()
-				}).Num();
-				
-				NumB = Analyze({PointerB},
-					FFloatRange{
-				FFloatRangeBound::Exclusive(Range.GetUpperBound().GetValue()),
-				FFloatRangeBound::Open()
-				}).Num();
-				return NumA < NumB;
-			}
-
-			// If getting "effective" Types, tiebreaker is "goodness" (least number of resisted Types)
-			NumA = Analyze({PointerA},
-				FFloatRange{
-		FFloatRangeBound::Open(),
-		FFloatRangeBound::Exclusive(Range.GetLowerBound().GetValue())
-				}).Num();
-			NumB = Analyze({PointerB},
-				FFloatRange{
+				};
+			else 
+				// If getting "effective" Types, tiebreaker is "goodness" (least number of resisted Types)
+				InverseRange = FFloatRange{
 			FFloatRangeBound::Open(),
 			FFloatRangeBound::Exclusive(Range.GetLowerBound().GetValue())
-			}).Num();
+				};
+
+			// Make decision
+			NumA = AnalyzeVsMulti(A.TypeArray1, Defenders, InverseRange, Mode, true).Num();
+			NumB = AnalyzeVsMulti(B.TypeArray1, Defenders, InverseRange, Mode, true).Num();
 			return NumA < NumB;
 		}
 		

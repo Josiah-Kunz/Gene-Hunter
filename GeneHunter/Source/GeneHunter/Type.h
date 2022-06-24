@@ -119,10 +119,11 @@ public:
 			);
 
 	/**
-	 * Gets the net interaction between a (multi-Type) attack and a (multi-Type) defense.
+	 * Gets the net interaction between an attack (multi-Type or coverage; based on Mode) and a (multi-Type) defense.
 	 */
 	UFUNCTION(BlueprintCallable)
-	static float GetNetModifier(const TArray<UType*> AtkTypes, const TArray<UType*> DefTypes);
+	static float GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>& DefTypes,
+		const EAttackModifierMode Mode = EAttackModifierMode::Coverage);
 	
 	/**
 	 * Performs an analysis on the given Types.
@@ -130,7 +131,8 @@ public:
 	 *		- Ex: AnalyzeAll([all], 1, 1, [1, open), true) ==> all attacks that are 1v1 never resisted (e.g., Typeless would be in that result).
 	 */
 	UFUNCTION(BlueprintCallable)
-	static TArray<UType*> AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes, const int NumUntestedTypes, const FFloatRange Range, const bool bAnalyzeAtk);
+	static TArray<UType*> AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes, const int NumUntestedTypes,
+		const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode);
 
 #pragma endregion
 
@@ -187,7 +189,7 @@ private:
 	 * Lazily gets all Type combinations. If you care about performance, take a look at how AnalyzeAll handles the problem.
 	 * For example, for NumTypes = 2, this returns {A, B}, {A, C}, {A, D}, ...
 	 */
-	static TArray<FTypeInfo> GetAllTypeCombinations(const TArray<UType*> Types, const int NumTypes);
+	static TArray<FTypeInfo> GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes);
 
 private:
 	static bool IncrementIndices(const TArray<UType*> Types, TArray<int>& Indices);
