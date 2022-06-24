@@ -112,7 +112,7 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 #pragma region Multi-Type Analyze tests (Flying/Ground analysis because Gliscor)
 
 	// Get the UTypes (actual)
-	TArray Actual = UType::Analyze(
+	TArray Actual = UType::AnalyzeVsSingle(
 			{Ground, Flying},
 			TArray<UType*>(AllDummyTypes),
 			FFloatRange{
@@ -135,7 +135,7 @@ bool UType_Analysis::RunTest(const FString& Parameters)
 #pragma region Coverage Analyze test
 
 	// Get the UTypes (actual)
-	Actual = UType::Analyze(
+	Actual = UType::AnalyzeVsSingle(
 			{Ground, Flying},
 			TArray<UType*>(AllDummyTypes),
 			FFloatRange{

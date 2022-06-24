@@ -1,8 +1,15 @@
 ﻿#pragma once
-#include "Type.h"
+#include "FTypeInfo.generated.h"
 
+// Forward dclarations
+class UType;
+
+USTRUCT(BlueprintType)
 struct FTypeInfo
 {
-	TArray<UType*> TypeArray1;
-	TArray<UType*> TypeArray2;
+
+	GENERATED_USTRUCT_BODY()
+	
+	TArray<UType*> TypeArray1 = {};
+	TArray<UType*> TypeArray2 = {};
 };

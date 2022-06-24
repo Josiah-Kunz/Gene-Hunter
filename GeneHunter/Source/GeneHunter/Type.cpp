@@ -37,20 +37,39 @@ float UType::CombineModifiers(const float A, const float B)
 	
 }
 
-TArray<UType*> UType::Analyze(const TArray<UType*> TypesToAnalyze, const FFloatRange Range, const EAttackModifierMode Mode, const bool bAtk)
+TArray<UType*> UType::AnalyzeVsSingle(const TArray<UType*> TypesToAnalyze, const FFloatRange Range, const EAttackModifierMode Mode, const bool bAtk)
 {
-	return Analyze(TypesToAnalyze, GetAllTypesFromSeeds(TypesToAnalyze), Range, Mode, bAtk);
+	return AnalyzeVsSingle(TypesToAnalyze, GetAllTypesFromSeeds(TypesToAnalyze), Range, Mode, bAtk);
 }
 
-TArray<UType*> UType::Analyze(const TArray<UType*> TypesToAnalyze, const TArray<UType*> AgainstTypes, const FFloatRange Range, const EAttackModifierMode Mode, const bool bAtk)
-{	
-	TArray<UType*> Ret;
-	float Modifier, NewModifier;
-	for(UType* Type2 : AgainstTypes)
+TArray<UType*> UType::AnalyzeVsSingle(const TArray<UType*> TypesToAnalyze, const TArray<UType*> AgainstTypes,
+	const FFloatRange Range, const EAttackModifierMode Mode, const bool bAtk)
+{
+
+	// TArray<UType*> AgainstTypes -> TArray<FTypeInfo*>
+	TArray<FTypeInfo> AgainstTypesSingle = {};
+	for(UType* AgainstType : AgainstTypes)
 	{
-		// Must be vigilant; squirrels everywhere
-		if (!Type2)
-			continue;
+		FTypeInfo TypeInfo = FTypeInfo{{AgainstType}, {}};
+		AgainstTypesSingle.Add(TypeInfo);
+	}
+	TArray<FTypeInfo*> MultiResult = AnalyzeVsMulti(TypesToAnalyze, AgainstTypesSingle, Range, Mode, bAtk);
+
+	// TArray<FTypeInfo*> MultiResult --> TArray<UType*>
+	TArray<UType*> Ret = {};
+	for(FTypeInfo* TypeInfo : MultiResult)
+		Ret.Add(TypeInfo->TypeArray2[0]);
+	return Ret;
+	
+}
+
+TArray<FTypeInfo*> UType::AnalyzeVsMulti(const TArray<UType*>& TypesToAnalyze, const TArray<FTypeInfo>& AgainstTypes,
+	const FFloatRange Range, const EAttackModifierMode Mode, const bool bAtk)
+{	
+	TArray<FTypeInfo*> Ret;
+	float Modifier = 1;
+	for(FTypeInfo AgainstInfo : AgainstTypes)
+	{
 
 		// Initialize Modifier
 		switch (Mode)
@@ -63,29 +82,56 @@ TArray<UType*> UType::Analyze(const TArray<UType*> TypesToAnalyze, const TArray<
 			break;
 		}
 
-		// Go through attacking types and combine their modifiers
-		for(UType* Type1 : TypesToAnalyze)
+		// Go through each "Against" type
+		// In the example, this is a {Steel, Normal} defending dual-type
+		for(UType* AgainstType : AgainstInfo.TypeArray1)
 		{
-			if (!Type1)
+			// Must be vigilant; squirrels everywhere
+			if (!AgainstType)
 				continue;
-			NewModifier = 1;
-			if (bAtk && Type1->AttackModifiers.Contains(Type2))
-				NewModifier = Type1->AttackModifiers[Type2].Modifier;
-			else if (!bAtk && Type2->AttackModifiers.Contains(Type1))
- 				NewModifier = Type2->AttackModifiers[Type1].Modifier;
-			switch (Mode)
+
+			// Go through analyzing types types and combine their modifiers
+			// In the example, this is a {Fire, Water} attacking dual-type
+			for(UType* AnalyzeType : TypesToAnalyze)
 			{
-			case EAttackModifierMode::MultiType:
-				Modifier = CombineModifiers(Modifier, NewModifier );
-				break;
-			case EAttackModifierMode::Coverage:
-				Modifier = FMath::Max(Modifier, NewModifier);
-				break;
+				if (!AnalyzeType)
+					continue;
+				float NewModifier = 1;
+				if (bAtk && AnalyzeType->AttackModifiers.Contains(AgainstType))
+					NewModifier = AnalyzeType->AttackModifiers[AgainstType].Modifier;	// Fire -> 2x Steel + 1x Normal
+																						// Water -> 1x Steel + 1x Normal
+				else if (!bAtk && AgainstType->AttackModifiers.Contains(AnalyzeType))
+					NewModifier = AgainstType->AttackModifiers[AnalyzeType].Modifier;
+				switch (Mode)
+				{
+				case EAttackModifierMode::MultiType:
+					Modifier = CombineModifiers(Modifier, NewModifier );
+					break;
+				case EAttackModifierMode::Coverage:
+
+					/* Example is:
+					 * 
+					 *	Fire -> Steel = 2x
+					 *	Water -> Steel = 1x --->	1x + 2x = 2x 
+					 *	--------
+					 *	(Next AgainstType iteration)
+					 *	--------
+					 *	Fire -> Normal = 1x -->		1x + 2x = 2x 
+					 *	Water -> Normal = 1x -->	1x + 2x = 2x 
+					 */
+					
+					Modifier = FMath::Max(Modifier, NewModifier);
+					break;
+				}
 			}
 		}
+
+		// All done with combining types; add?
 		if (Range.Contains(Modifier))
-			Ret.Add(Type2);
+			Ret.Add(&AgainstInfo);
 	}
+
+	// Return result
 	return Ret;
 }
 
@@ -280,11 +326,14 @@ TArray<FTypeInfo> UType::GetAllTypeCombinations(const TArray<UType*> Types, cons
 	while (Failsafe < UGeneHunterBPLibrary::MAX_ITERATIONS && Indices[0] <= Types.Num() - NumTypes)
 	{
 
-		// Add newest entry
+		// Populate TypeInfo
 		FTypeInfo TypeInfo = FTypeInfo{{}, {}};
 		for (int i=0; i<NumTypes;i++)
 			TypeInfo.TypeArray1.Add(Types[Indices[i]]);
 
+		// Add newest entry
+		Ret.Add(TypeInfo);
+		
 		// Iterate
 		if (IncrementIndices(Types, Indices)) // Never able to iterate; must be at the end of all possible Type combinations
 			break;
@@ -296,24 +345,56 @@ TArray<FTypeInfo> UType::GetAllTypeCombinations(const TArray<UType*> Types, cons
 	
 }
 
-void UType::SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes, const FFloatRange Range, TArray<FTypeInfo>& Sorted)
+void UType::SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes,
+	const FFloatRange Range, const EAttackModifierMode Mode, TArray<FTypeInfo>& Sorted)
 {
 
 	// Get unsorted list
 	TArray<FTypeInfo> Attackers = GetAllTypeCombinations(Types, NumAtkTypes);
 	TArray<FTypeInfo> Defenders = GetAllTypeCombinations(Types, NumDefTypes);
-	Sorted = {}; // TODO
-	
-	Sorted.Sort([Range](const UType& A, const UType& B)
+
+	// In "Sorted", TypeArray1 is the attack combinations and TypeArray2 is the defenders
+	// For example, using Pokemon rules, some entries could be:
+	//	-----------------------------
+	//	If multitype:
+	//		- Sorted[0].TypeArray1 = {Fire, Water}
+	//		- Sorted[0].TypeArray2 = {Steel, Normal,
+	//									Ice, Electric, ...}
+	//
+	//	If coverage:
+	//		- Sorted[0].TypeArray1 = {Fire, Water}
+	//		- Sorted[0].TypeArray2 = {Grass, Normal,		(because Fire alone would suffice)
+	//									Fire, Rock, ...}	(because Water alone would suffice)
+	Sorted = {};
+	for(int i=0; i<Attackers.Num(); i++)
+	{
+
+		// Attacking types (TypeArray1)
+		const TArray<UType*> AtkTypes = Attackers[i].TypeArray1;
+
+		// Defending types that fall within range
+		TArray<UType*> DefTypes = {};
+		TArray<FTypeInfo*> AnalysisResult = AnalyzeVsMulti(Attackers[i].TypeArray1, Defenders, Range, Mode, true);
+		for(FTypeInfo* TypeInfo : AnalysisResult)
+			for(UType* Type : TypeInfo->TypeArray2)
+				DefTypes.Add(Type);
+		
+		// Construct and add
+		FTypeInfo TypeInfo = FTypeInfo{AtkTypes, DefTypes};
+		Sorted.Add(TypeInfo);
+	}
+
+	// Sort based on number of DefTypes
+	Sorted.Sort([Range](const FTypeInfo& A, const FTypeInfo& B)
 	{
 
 		// "Sort" requires references, but the other functions require pointers (since UType can be null)
-		UType* PointerA = const_cast<UType*>(&A);
-		UType* PointerB = const_cast<UType*>(&B);
+		FTypeInfo* PointerA = const_cast<FTypeInfo*>(&A);
+		FTypeInfo* PointerB = const_cast<FTypeInfo*>(&B);
 
-		// Get number of advantages (or whatever)
-		int NumA = Analyze({PointerA}, Range).Num();
-		int NumB = Analyze({PointerB}, Range).Num();
+		// Get number of advantages (or whatever based on Range)
+		int NumA = A.TypeArray2.Num();
+		int NumB = B.TypeArray2.Num();
 
 		// If they're equal, sort "ThenBy"
 		if (NumA == NumB)
@@ -321,11 +402,16 @@ void UType::SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes
 			// If getting "resisted" Types, tiebreaker is "badness" (least number of advantages)
 			if (Range.GetLowerBound().GetValue() < 1)
 			{
+
+				// TODO: too tired
+				NumA = AnalyzeVsMulti(PointerA->TypeArray1, )
+				
 				NumA = Analyze({PointerA},
 					FFloatRange{
 				FFloatRangeBound::Exclusive(Range.GetUpperBound().GetValue()),
 				FFloatRangeBound::Open()
 				}).Num();
+				
 				NumB = Analyze({PointerB},
 					FFloatRange{
 				FFloatRangeBound::Exclusive(Range.GetUpperBound().GetValue()),
@@ -363,8 +449,8 @@ void UType::SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorte
 		UType* PointerB = const_cast<UType*>(&B);
 
 		// Get number of advantages (or whatever)
-		int NumA = Analyze({PointerA}, Range, EAttackModifierMode::Coverage, false).Num();
-		int NumB = Analyze({PointerB}, Range, EAttackModifierMode::Coverage, false).Num();
+		int NumA = AnalyzeVsSingle({PointerA}, Range, EAttackModifierMode::Coverage, false).Num();
+		int NumB = AnalyzeVsSingle({PointerB}, Range, EAttackModifierMode::Coverage, false).Num();
 
 		// If they're equal, sort "ThenBy"
 		if (NumA == NumB)
@@ -372,13 +458,13 @@ void UType::SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorte
 			// If getting "resisted" Types, tiebreaker is "goodness" (least number of weaknesses)
 			if (Range.GetLowerBound().GetValue() < 1)
 			{
-				NumA = Analyze({PointerA},
+				NumA = AnalyzeVsSingle({PointerA},
 					FFloatRange{
 					FFloatRangeBound::Exclusive(Range.GetUpperBound().GetValue()),
 					FFloatRangeBound::Open()
 					},
 					EAttackModifierMode::Coverage, false).Num();
-				NumB = Analyze({PointerB},
+				NumB = AnalyzeVsSingle({PointerB},
 					FFloatRange{
 					FFloatRangeBound::Exclusive(Range.GetUpperBound().GetValue()),
 					FFloatRangeBound::Open()
@@ -388,13 +474,13 @@ void UType::SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorte
 			}
 
 			// If getting "weak to" Types, tiebreaker is "badness" (least number of resisted Types)
-			NumA = Analyze({PointerA},
+			NumA = AnalyzeVsSingle({PointerA},
 				FFloatRange{
 				FFloatRangeBound::Open(),
 				FFloatRangeBound::Exclusive(Range.GetLowerBound().GetValue())
 				},
 				EAttackModifierMode::Coverage, false).Num();
-			NumB = Analyze({PointerB},
+			NumB = AnalyzeVsSingle({PointerB},
 				FFloatRange{
 				FFloatRangeBound::Open(),
 				FFloatRangeBound::Exclusive(Range.GetLowerBound().GetValue())

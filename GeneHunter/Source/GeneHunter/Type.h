@@ -76,7 +76,7 @@ public:
 	 * @param bAtk True if doing the analysis on attacking Types, false if on defending Types.
 	 */
 	UFUNCTION(BlueprintCallable)
-	static TArray<UType*> Analyze(
+	static TArray<UType*> AnalyzeVsSingle(
 			const TArray<UType*> TypesToAnalyze,
 			const FFloatRange Range,
 			const EAttackModifierMode Mode = EAttackModifierMode::MultiType,
@@ -86,9 +86,33 @@ public:
 	/**
 	 * Called by the BlueprintCallable version of this function.
 	 */
-	static TArray<UType*> Analyze(
+	static TArray<UType*> AnalyzeVsSingle(
 			const TArray<UType*> TypesToAnalyze,
 			const TArray<UType*> AgainstTypes,
+			const FFloatRange Range,
+			const EAttackModifierMode Mode = EAttackModifierMode::MultiType,
+			const bool bAtk = true
+			);
+
+	/**
+	 * Example: 
+		* - TypesToAnalyze is the attack combinations {Fire, Water}
+		* - AgainstTypes are all possible defenders combinations of length 2 (returned from GetAllTypeCombinations(Types, 2))
+		* - Range = (1, INFINITY)
+		* - bAtk = true (since TypesToAnalyze is attacking)
+		* - Using Pokemon rules, the returns should be:
+		*	- If multitype:
+		*		- Ret[0].TypeArray1 = {Steel, Normal}		(because Fire = 2x and Water = 1x)
+		*		- Ret[1].TypeArray1 = {Ground, Electric}	(because Fire = 1x and Water = 2x)
+		*		- ...
+		*	- If coverage:
+		*		- Ret[0].TypeArray1 = {Grass, Normal}		(because Fire alone would suffice)
+		*		- Ret[1].TypeArray1 = {Fire, Rock}			(because Water alone would suffice)
+		*		- ...
+	 */
+	static TArray<FTypeInfo*> AnalyzeVsMulti(
+			const TArray<UType*>& TypesToAnalyze,
+			const TArray<FTypeInfo>& AgainstTypes,
 			const FFloatRange Range,
 			const EAttackModifierMode Mode = EAttackModifierMode::MultiType,
 			const bool bAtk = true
@@ -129,7 +153,7 @@ private:
 	 * For example, if Water is only good attacking against Fire, it would be near the end of the list.
 	 */
 	UFUNCTION(BlueprintCallable)
-	static void SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes, const FFloatRange Range, TArray<FTypeInfo>& Sorted);
+	static void SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes, const FFloatRange Range, const EAttackModifierMode Mode, TArray<FTypeInfo>& Sorted);
 
 	/**
 	 * Sorts the given Types by the number of defensible Types within the specified range.
