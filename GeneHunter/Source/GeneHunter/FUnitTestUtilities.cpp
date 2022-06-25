@@ -1,14 +1,14 @@
 ﻿#include "FUnitTestUtilities.h"
 
-bool FUnitTestUtilities::TArrayAreEqual(const TArray<UType*> Array1, const TArray<UType_UnitTest*> Array2, FString& Description)
+bool FUnitTestUtilities::TArrayAreEqual(const TArray<UType*> Array1, const TArray<UDummyType*> Array2, FString& Description)
 {
 	
-	// Convert to UType_UnitTest (actual; and start building description in case it fails)
+	// Convert to UDummyType (actual; and start building description in case it fails)
 	Description = "[Actual: ";
-	TArray<UType_UnitTest*> Array1_UTType;
+	TArray<UDummyType*> Array1_UTType;
 	for(UType* Type : Array1)
 	{
-		if (UType_UnitTest* UTType = Cast<UType_UnitTest>(Type))
+		if (UDummyType* UTType = Cast<UDummyType>(Type))
 		{
 			Array1_UTType.Add(UTType);
 			Description += UTType->GetName() + " ";
@@ -17,7 +17,7 @@ bool FUnitTestUtilities::TArrayAreEqual(const TArray<UType*> Array1, const TArra
 
 	// Get expected result
 	Description += "// Expected: ";
-	for(const UType_UnitTest* UTType : Array2)
+	for(const UDummyType* UTType : Array2)
 		Description += UTType->GetName() + " ";
 	Description += "]";
 	Description = Description.Replace(TEXT(" ]"), TEXT("]"));
@@ -26,7 +26,7 @@ bool FUnitTestUtilities::TArrayAreEqual(const TArray<UType*> Array1, const TArra
 	bool bPass = Array1_UTType.Num() == Array2.Num();
 	if (bPass)
 	{
-		for(const UType_UnitTest* UTType : Array1_UTType)
+		for(const UDummyType* UTType : Array1_UTType)
 		{
 			if (!Array2.Contains(UTType))
 			{

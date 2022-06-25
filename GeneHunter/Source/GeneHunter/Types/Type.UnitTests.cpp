@@ -2,17 +2,17 @@
 #include <string>
 
 #include "Type.h"
-#include "Type_UnitTest.h"
+#include "DummyType.h"
 #include "../FUnitTestUtilities.h"
 #include "AITestSuite/Public/AITestsCommon.h"
 #include "NavMesh/RecastNavMesh.h"
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UType_CombineModifiers, "UType.CombineModifiers", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_CombineModifiers, "UType.CombineModifiers", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /*
  * Tests on combining modifiers (e.g., -1 & 2 -> -0.5)
  */
-bool UType_CombineModifiers::RunTest(const FString& Parameters)
+bool FUType_CombineModifiers::RunTest(const FString& Parameters)
 {
 
 	// Heals
@@ -54,6 +54,34 @@ bool UType_CombineModifiers::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_GetDummyTypes, "UType.GetDummyTypes", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+/*
+ * Ensures the macro GET_DUMMY_TYPES() works.
+ */
+bool FUType_GetDummyTypes::RunTest(const FString& Parameters)
+{
+
+	// Import types
+	GET_DUMMY_TYPES()
+
+	// Number of types
+	TestEqual(
+				"GET_DUMMY_TYPES number of array elements",
+				AllDummyTypes.Num(),
+				12,FUnitTestUtilities::TOLERANCE);
+
+	// Non-null types
+	TestSame(
+		"Bug Type non-null",
+		Bug != nullptr,
+		true
+		);
+	
+	// Done!
+	return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Analysis, "UType.MatchupAnalysis", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /*
@@ -68,20 +96,21 @@ bool FUType_Analysis::RunTest(const FString& Parameters)
 #pragma region Get dummy Types
 
 	/*
-	TArray<UType_UnitTest*> AllDummyTypes;
-	UType_UnitTest::GetAllUTTypes(AllDummyTypes);
-	UType_UnitTest* Bug = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Bug")));
-	UType_UnitTest* Electric = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Electric")));
-	UType_UnitTest* Fighting = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Fighting")));
-	UType_UnitTest* Fire = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Fire")));
-	UType_UnitTest* Flying = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Flying")));
-	UType_UnitTest* Grass = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Grass")));
-	UType_UnitTest* Ground = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Ground")));
-	UType_UnitTest* Ice = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Ice")));
-	UType_UnitTest* Poison = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Poison")));
-	UType_UnitTest* Rock = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Rock")));
-	UType_UnitTest* Steel = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Steel")));
-	UType_UnitTest* Water = UType_UnitTest::GetUTTypeByName(AllDummyTypes, FName(TEXT("Water")));*/
+	TArray<UDummyType*> AllDummyTypes;
+	UDummyType::GetAllDummyTypes(AllDummyTypes);
+	UDummyType* Bug = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Bug")));
+	UDummyType* Electric = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Electric")));
+	UDummyType* Fighting = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Fighting")));
+	UDummyType* Fire = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Fire")));
+	UDummyType* Flying = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Flying")));
+	UDummyType* Grass = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Grass")));
+	UDummyType* Ground = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Ground")));
+	UDummyType* Ice = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Ice")));
+	UDummyType* Poison = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Poison")));
+	UDummyType* Rock = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Rock")));
+	UDummyType* Steel = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Steel")));
+	UDummyType* Water = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Water")));
+	*/
 
 	GET_DUMMY_TYPES()
 #pragma endregion
@@ -89,8 +118,11 @@ bool FUType_Analysis::RunTest(const FString& Parameters)
 #pragma region GetNetModifier tests
 	if (Ground)
 	{
+		FString DeWater = "No";
+		if (Water)
+			DeWater = Water->GetName();
 		TestEqual(
-			"GetNetModifier (ineffective single attack vs dual defender)",
+			"GetNetModifier (ineffective single attack vs dual defender) ::" + DeWater + "::",
 			UType::GetNetModifier({Ground}, {Fighting, Bug}),
 			0.5F,FUnitTestUtilities::TOLERANCE);
 		TestEqual(
@@ -118,12 +150,14 @@ bool FUType_Analysis::RunTest(const FString& Parameters)
 		TestEqual("Type [Ground] is null!", true, false);
 	}
 #pragma endregion
+
+/*
 	
 #pragma region Multi-Type Analyze attack test (Flying/Ground analysis because Gliscor)
 
 	// Get array of FTypeArrays (one for each Type in AllDummyTypes)
 	TArray<FTypeArrays*> AgainstTypes = {};
-	for(UType_UnitTest* DummyType : AllDummyTypes)
+	for(UDummyType* DummyType : AllDummyTypes)
 	{
 		FTypeArrays* DummyTypeArrays = new FTypeArrays{{DummyType}, {}};
 		AgainstTypes.Add(DummyTypeArrays);
@@ -140,7 +174,7 @@ bool FUType_Analysis::RunTest(const FString& Parameters)
 				true
 			);
 
-	// Convert FTypeArrays* -> UType_UnitTest*
+	// Convert FTypeArrays* -> UDummyType*
 	TArray<UType*> Actual = {};
 	for(FTypeArrays* TypeInfo : Analysis)
 		Actual.Add(TypeInfo->TypeArray1[0]);
@@ -154,6 +188,8 @@ bool FUType_Analysis::RunTest(const FString& Parameters)
 	);
 #pragma endregion
 
+*/
+	
 	/*
 	
 #pragma region Coverage Analyze test
