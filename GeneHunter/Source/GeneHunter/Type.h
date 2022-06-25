@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "AttackModifier.h"
-#include "FTypeInfo.h"
+#include "FTypeArrays.h"
 #include "Type.generated.h"
 
 UENUM(BlueprintType)
@@ -75,24 +75,14 @@ public:
 	 * @param Mode Determines whether the analysis is being done for a single multi-Typed attack or for coverage of several attacks.
 	 * @param bAtk True if doing the analysis on attacking Types, false if on defending Types.
 	 */
+	/*
 	UFUNCTION(BlueprintCallable)
 	static TArray<UType*> AnalyzeVsSingle(
 			const TArray<UType*> TypesToAnalyze,
 			const FFloatRange Range,
 			const EAttackModifierMode Mode = EAttackModifierMode::MultiType,
 			const bool bAtk = true
-			);
-
-	/**
-	 * Called by the BlueprintCallable version of this function.
-	 */
-	static TArray<UType*> AnalyzeVsSingle(
-			const TArray<UType*> TypesToAnalyze,
-			const TArray<UType*> AgainstTypes,
-			const FFloatRange Range,
-			const EAttackModifierMode Mode = EAttackModifierMode::MultiType,
-			const bool bAtk = true
-			);
+			);*/
 
 	/**
 	 * Example: 
@@ -110,9 +100,9 @@ public:
 		*		- Ret[1].TypeArray1 = {Fire, Rock}			(because Water alone would suffice)
 		*		- ...
 	 */
-	static TArray<FTypeInfo*> AnalyzeVsMulti(
+	static TArray<FTypeArrays*> Analyze(
 			const TArray<UType*>& TypesToAnalyze,
-			const TArray<FTypeInfo>& AgainstTypes,
+			const TArray<FTypeArrays*>& AgainstTypes,
 			const FFloatRange Range,
 			const EAttackModifierMode Mode = EAttackModifierMode::MultiType,
 			const bool bAtk = true
@@ -155,7 +145,7 @@ private:
 	 * For example, if Water is only good attacking against Fire, it would be near the end of the list.
 	 */
 	UFUNCTION(BlueprintCallable)
-	static void SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes, const FFloatRange Range, const EAttackModifierMode Mode, TArray<FTypeInfo>& Sorted);
+	static void SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes, const FFloatRange Range, const EAttackModifierMode Mode, TArray<FTypeArrays>& Sorted);
 
 	/**
 	 * Sorts the given Types by the number of defensible Types within the specified range.
@@ -189,7 +179,7 @@ private:
 	 * Lazily gets all Type combinations. If you care about performance, take a look at how AnalyzeAll handles the problem.
 	 * For example, for NumTypes = 2, this returns {A, B}, {A, C}, {A, D}, ...
 	 */
-	static TArray<FTypeInfo> GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes);
+	static TArray<FTypeArrays*> GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes);
 
 private:
 	static bool IncrementIndices(const TArray<UType*> Types, TArray<int>& Indices);

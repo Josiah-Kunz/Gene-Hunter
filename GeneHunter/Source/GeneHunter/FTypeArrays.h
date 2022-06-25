@@ -1,11 +1,11 @@
 ﻿#pragma once
-#include "FTypeInfo.generated.h"
+#include "FTypeArrays.generated.h"
 
-// Forward dclarations
+// Forward declarations
 class UType;
 
 USTRUCT(BlueprintType)
-struct FTypeInfo
+struct FTypeArrays
 {
 
 	GENERATED_USTRUCT_BODY()
