@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-
-#include "Type.h"
 #include "Components/PanelWidget.h"
 #include "GeneHunterBPLibrary.generated.h"
 
@@ -36,7 +34,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static UWidget* Duplicate(const UWidget* Original);
 	
-	static const int MAX_ITERATIONS = 10000;
+	static constexpr int MAX_ITERATIONS = 10000;
 
 	static UWidget* GetChildOfType(const UUserWidget* Parent, const class TSubclassOf<class UWidget> WidgetClass);
 };

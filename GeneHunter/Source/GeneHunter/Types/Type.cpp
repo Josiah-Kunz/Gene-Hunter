@@ -5,7 +5,7 @@
 
 #include <filesystem>
 
-#include "GeneHunterBPLibrary.h"
+#include "../GeneHunterBPLibrary.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 
 #pragma region Public functions

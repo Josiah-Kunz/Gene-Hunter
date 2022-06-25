@@ -3,7 +3,7 @@
 
 #include "Type_UnitTest.h"
 
-#include "GeneHunterBPLibrary.h"
+#include "../GeneHunterBPLibrary.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 
 /*

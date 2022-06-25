@@ -1,6 +1,6 @@
-﻿#include "UnitTestUtilities.h"
+﻿#include "FUnitTestUtilities.h"
 
-bool UnitTestUtilities::TArrayAreEqual(const TArray<UType*> Array1, const TArray<UType_UnitTest*> Array2, FString& Description)
+bool FUnitTestUtilities::TArrayAreEqual(const TArray<UType*> Array1, const TArray<UType_UnitTest*> Array2, FString& Description)
 {
 	
 	// Convert to UType_UnitTest (actual; and start building description in case it fails)

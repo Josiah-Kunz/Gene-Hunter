@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
-#include "AttackModifier.h"
+#include "../AttackModifier.h"
 #include "FTypeArrays.h"
 #include "Type.generated.h"
 
