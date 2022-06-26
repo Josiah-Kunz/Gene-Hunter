@@ -1,9 +1,8 @@
-
-
-
+#pragma once
 #include "Type.h"
 
 #include <filesystem>
+#include <string>
 
 #include "../GeneHunterBPLibrary.h"
 #include "AssetRegistry/AssetRegistryModule.h"
@@ -38,7 +37,7 @@ float UType::CombineModifiers(const float A, const float B)
 }
 
 TArray<FTypeArrays*> UType::Analyze(const TArray<UType*>& TypesToAnalyze, const TArray<FTypeArrays*>& AgainstTypes,
-	const FFloatRange Range, const EAttackModifierMode Mode, const bool bAtk)
+	const FFloatRange Range, const EAttackModifierMode Mode, const bool bAtk, const bool bDebug)
 {	
 	TArray<FTypeArrays*> Ret;
 	float Modifier = 1;
@@ -56,10 +55,15 @@ TArray<FTypeArrays*> UType::Analyze(const TArray<UType*>& TypesToAnalyze, const 
 			break;
 		}
 
+		// Debug
+		if (bDebug)
+			UE_LOG(LogTemp, Display, TEXT("======================="));
+
 		// Go through each "Against" type
 		// In the example, this is a {Steel, Normal} defending dual-type
 		for(UType* AgainstType : AgainstInfo->TypeArray1)
 		{
+			
 			// Must be vigilant; squirrels everywhere
 			if (!AgainstType)
 				continue;
@@ -68,6 +72,7 @@ TArray<FTypeArrays*> UType::Analyze(const TArray<UType*>& TypesToAnalyze, const 
 			// In the example, this is a {Fire, Water} attacking dual-type
 			for(UType* AnalyzeType : TypesToAnalyze)
 			{
+				
 				if (!AnalyzeType)
 					continue;
 				float NewModifier = 1;
@@ -96,6 +101,16 @@ TArray<FTypeArrays*> UType::Analyze(const TArray<UType*>& TypesToAnalyze, const 
 					
 					Modifier = FMath::Max(Modifier, NewModifier);
 					break;
+				}
+
+				// Debug?
+				if (bDebug)
+				{
+					const FString NewModString = FString::SanitizeFloat(NewModifier);
+					const FString TotalModString = FString::SanitizeFloat(Modifier);
+					UE_LOG(LogTemp, Display, TEXT("%s attacks %s => %s (Total: %s)"),
+						*AnalyzeType->GetName(), *AgainstType->GetName(),
+						*NewModString, *TotalModString);
 				}
 			}
 		}
@@ -287,25 +302,6 @@ TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes,
 	}
 
 	return Analysis;
-}
-
-#pragma endregion
-
-#pragma region Private functions
-
-TArray<UType*> UType::GetAllTypesFromSeeds(TArray<UType*> TypesSeeds)
-{
-	TArray<UType*> Ret;
-	for(UType* Type : TypesSeeds)
-	{
-		if (Type)
-		{
-			for(TTuple<UType*, FAttackModifier>& Kvp : Type->AttackModifiers)
-				Ret.Add(Kvp.Key);
-			break;
-		}
-	}
-	return Ret;
 }
 
 #pragma endregion
@@ -775,6 +771,25 @@ void UType::PruneTypeAttackMods(UType* Type)
 		if (pair.Key != nullptr)
 			Type->AttackModifiers.Add(pair.Key, pair.Value);
 	}
+}
+
+#pragma endregion
+
+#pragma region Private functions
+
+TArray<UType*> UType::GetAllTypesFromSeeds(TArray<UType*> TypesSeeds)
+{
+	TArray<UType*> Ret;
+	for(UType* Type : TypesSeeds)
+	{
+		if (Type)
+		{
+			for(TTuple<UType*, FAttackModifier>& Kvp : Type->AttackModifiers)
+				Ret.Add(Kvp.Key);
+			break;
+		}
+	}
+	return Ret;
 }
 
 #pragma endregion

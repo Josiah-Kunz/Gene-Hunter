@@ -1,9 +1,9 @@
-﻿// 
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "Type.h"
+#include "GeneHunter/GeneHunterBPLibrary.h"
+#include "AssetRegistry/AssetRegistryModule.h"
+#include "GeneHunter/Types/Type.h"
 #include "DummyType.generated.h"
 
 /**

@@ -105,7 +105,8 @@ public:
 			const TArray<FTypeArrays*>& AgainstTypes,
 			const FFloatRange Range,
 			const EAttackModifierMode Mode = EAttackModifierMode::MultiType,
-			const bool bAtk = true
+			const bool bAtk = true,
+			const bool bDebug = false
 			);
 
 	/**
@@ -123,18 +124,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static TArray<UType*> AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes, const int NumUntestedTypes,
 		const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode);
-
-#pragma endregion
-
-#pragma region Private functions
-	
-private:
-
-	/**
-	 * A faster version for getting all types. For each "seed" given, if that seed has a non-zero list of AttackModifiers,
-	 * this function will return the list's keys (Types).
-	 */
-    static TArray<UType*> GetAllTypesFromSeeds(TArray<UType*> TypesSeeds);
 
 #pragma endregion
 
@@ -188,8 +177,6 @@ private:
 
 #pragma region Getting Types
 	
-public:
-	
 	UFUNCTION(BlueprintCallable)
 	static void PruneTypeAttackMods(UType* Type);
 
@@ -199,7 +186,22 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
 	static void GetAllTypes(TArray<UType*>& Types, const TArray<UType*> Exclude, const bool bSortABC = true);
 
+public:
 	static void GetAllTypes(TArray<UType*>& Types, const bool bSortABC = true);
 #pragma endregion
+	
+private:
+	
+#pragma region Private functions
+
+	/**
+	 * A faster version for getting all types. For each "seed" given, if that seed has a non-zero list of AttackModifiers,
+	 * this function will return the list's keys (Types).
+	 */
+    static TArray<UType*> GetAllTypesFromSeeds(TArray<UType*> TypesSeeds);
+
+#pragma endregion
+
+
 	
 };

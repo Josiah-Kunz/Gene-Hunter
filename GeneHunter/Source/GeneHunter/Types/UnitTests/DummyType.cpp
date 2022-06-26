@@ -1,10 +1,6 @@
-﻿// 
-
-
+﻿#pragma once
 #include "DummyType.h"
 
-#include "../GeneHunterBPLibrary.h"
-#include "AssetRegistry/AssetRegistryModule.h"
 
 /*
  * Gets the Type Assets (not the Types themselves).
@@ -13,7 +9,7 @@
 void UDummyType::GetAllDummyAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC)
 {
 	const FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
-	AssetRegistryModule.Get().GetAssetsByClass(TEXT("Type_UnitTest"), TypeAssets, false);
+	AssetRegistryModule.Get().GetAssetsByClass(TEXT("DummyType"), TypeAssets, false);
 	if (bSortABC)
 		UGeneHunterBPLibrary::SortAssetsAlphabetically(TypeAssets, TypeAssets);
 }
