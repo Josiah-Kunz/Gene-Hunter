@@ -30,33 +30,74 @@ bool FUType_AnalyzeMultiTypeEffecitveAttack::RunTest(const FString& Parameters)
 			new FTypeArray1{{Fighting}},
 			new FTypeArray1{{Poison}},
 		},{
-			// Doubly-Typed defenders
-
-			// Fire + whatever
+			/* Doubly-Typed defenders
+			 *
+			 * This formula is (generally):
+			 *		SUM_[i=1] ^[N] (i + k - 1)
+			 *	where	N = number of effectives
+			 *			k = number of neutrals
+			 *
+			 * Base advantages are (3):
+			 *	- Fire
+			 *	- Fighting
+			 *	- Poison
+			 *
+			 * Base neutrals are (8):
+   			 *	- B.ug
+   			 *	- Electric
+			 *	- Grass
+			 *	- Ground
+			 *	- Ice
+			 *	- Rock
+			 *	- Steel
+			 *	- Water
+			 */
+			
+			// (10) Fire + those listed above
+			new FTypeArray1{{Fire, Bug}},
+			new FTypeArray1{{Fire, Electric}},
+			new FTypeArray1{{Fire, Grass}},
 			new FTypeArray1{{Fire, Fighting}},
 			new FTypeArray1{{Fire, Ground}},
 			new FTypeArray1{{Fire, Ice}},
 			new FTypeArray1{{Fire, Poison}},
+			new FTypeArray1{{Fire, Rock}},
+			new FTypeArray1{{Fire, Steel}},
 			new FTypeArray1{{Fire, Water}},
 
-			// Fighting + whatever
+			// (9) Fighting + all - Fire
+			new FTypeArray1{{Fighting, Bug}},
+			new FTypeArray1{{Fighting, Electric}},
+			new FTypeArray1{{Fighting, Grass}},
 			new FTypeArray1{{Fighting, Ground}},
 			new FTypeArray1{{Fighting, Ice}},
 			new FTypeArray1{{Fighting, Poison}},
+			new FTypeArray1{{Fighting, Rock}},
+			new FTypeArray1{{Fighting, Steel}},
 			new FTypeArray1{{Fighting, Water}},
 
-			// Poison + whatever
+			// (8) Poison + all - Fire & Fighting
+			new FTypeArray1{{Poison, Bug}},
+			new FTypeArray1{{Poison, Electric}},
+			new FTypeArray1{{Poison, Grass}},
 			new FTypeArray1{{Poison, Ground}},
 			new FTypeArray1{{Poison, Ice}},
+			new FTypeArray1{{Poison, Rock}},
+			new FTypeArray1{{Poison, Steel}},
 			new FTypeArray1{{Poison, Water}},
 		}
 	};
 	
 	// Do the tests for 1 or 2 defenders
-	for(int NumDefendingType = 1; NumDefendingType < Expected.Num(); NumDefendingType++)
+	for(int NumDefendingType = 0; NumDefendingType < Expected.Num(); NumDefendingType++)
 	{
+
+		FString NumDefString = FString::FromInt(NumDefendingType + 1);
+		UE_LOG(LogTemp, Display, TEXT("%s defenders"),
+						*NumDefString);
+		
 		// Get array of FTypeArray1 (one or two for each Type in AllDummyTypes)
-		TArray<FTypeArray1*> DefenderTypes = UType::GetAllTypeCombinations(AllTypes, NumDefendingType);
+		TArray<FTypeArray1*> DefenderTypes = UType::GetAllTypeCombinations(AllTypes, NumDefendingType + 1);
 	
 		// Get the UTypes (actual) that Ground + Flying are effective against
 		TArray<FTypeArray1*> Analysis = UType::Analyze({Ground, Flying},
@@ -70,16 +111,11 @@ bool FUType_AnalyzeMultiTypeEffecitveAttack::RunTest(const FString& Parameters)
 					true
 				);
 
-		// TODO: Don't do this and instead write a new function FTypeArraysAreEqual (like TArrayAreEqual)
-		// Convert FTypeArray1* -> UDummyType*
-		TArray<UType*> Actual = {};
-		for(FTypeArray1* TypeInfo : Analysis)
-			if (TypeInfo && TypeInfo->TypeArray.Num() > 0)
-				Actual.Add(TypeInfo->TypeArray[0]);
 
-		// Perform the test
+		// Test it
 		FString Desc;
-		bool bPass = FUnitTestUtilities::TypesAndDummiesAreEqual(Actual, {Fire, Poison, Fighting}, Desc);
+		const bool bPass = FUnitTestUtilities::ArrayOfTypeArray1sAreEqual(Analysis,
+			Expected[NumDefendingType], Desc);
 		TestEqual(
 			"Flying/Ground multiType effective attack " + Desc,
 			bPass, true

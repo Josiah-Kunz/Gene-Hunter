@@ -14,14 +14,54 @@ public:
 	 *	- If ByName is true, only compares by name.
 	 *	- If ByName is false, compares via direct object comparison.
 	 */
-	static bool Contains(const TArray<UType*>& Container, const UType* SearchTarget, const bool bByName = true);
-
-	static bool TypesAndDummiesAreEqual(const TArray<UType*>& Actual, const TArray<UDummyType*>& Expected, FString& Description);
-
-	static bool ArraysOfTypeAreEqual(const TArray<UType*>& Actual, const TArray<UType*>& Expected, FString& Description);
+	static bool Contains(const TArray<UType*>& Container, const UType* SearchTarget,
+		const bool bByName = true);
 	
-	static bool TypeArray1sAreEqual(const FTypeArray1& Array1, const FTypeArray1& Array2, FString& Description);
+	/**
+	 * Determines if SearchTarget is inside Container.
+	 *	- If ByName is true, only compares by name.
+	 *	- If ByName is false, compares via direct object comparison.
+	 */
+	static bool Contains(const TArray<FTypeArray1*>& Container, const FTypeArray1* SearchTarget,
+		const bool bByName = true);
 
+	/**
+	 * Tests if the arrays of Type* and DummyType* are equal (by name).
+	 */
+	static bool TypesAndDummiesAreEqual(const TArray<UType*>& Actual, const TArray<UDummyType*>& Expected,
+		FString& Description);
+
+	/**
+	 * Tests if the arrays of Type* and Type* are equal (by name).
+	 */
+	static bool ArraysOfTypeAreEqual(const TArray<UType*>& Actual, const TArray<UType*>& Expected,
+		FString& Description);
+
+	/**
+	 * Tests if two TypeArray1 are equal by simply checking if their FTypeArray1.TypeArray are equal.
+	 */
+	static bool TypeArray1sAreEqual(const FTypeArray1& Actual, const FTypeArray1& Expected, FString& Description);
+
+	/**
+	 * Determines if
+	 *	- Actual[i].TypeArray[j] == Expected[k].TypeArray[l]
+	 *	
+	 * for any i, j, k, l (by name comparison).
+	 * 
+	 *	- For example, [{A, B}, {a, b}] should equal [{b, a}, {A, B}]
+	 */ 
+	static bool ArrayOfTypeArray1sAreEqual(const TArray<FTypeArray1*>& Actual, const TArray<FTypeArray1*>& Expected,
+		FString& Description);
+
+	/**
+	 * Returns, e.g., "[Air, Earth, Fire, Water]".
+	 */
+	static FString TypeArray1ToFString(const FTypeArray1* TypeArray1);
+
+	/**
+	 * Returns, e.g., "{[Air, Earth], [Fire, Water]}".
+	 */
+	static FString ArrayOfTypeArray1ToFString(const TArray<FTypeArray1*>& ArrayOfTypeArray1);
 	
 	/**
 	 * A macro to get "dummy" Types. These are of type UDummyType and inherit from UType. These are independent of
