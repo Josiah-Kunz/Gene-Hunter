@@ -8,7 +8,11 @@ public:
 	
 	constexpr static float TOLERANCE = 0.1F;
 
-	static bool TArrayAreEqual(const TArray<UType*> Array1, const TArray<UDummyType*> Array2, FString& Description);
+	static bool TypesAndDummiesAreEqual(const TArray<UType*>& Actual, const TArray<UDummyType*>& Expected, FString& Description);
+
+	static bool ArraysOfTypeAreEqual(const TArray<UType*>& Actual, const TArray<UType*>& Expected, FString& Description);
+	
+	static bool TypeArray1sAreEqual(const FTypeArray1& Array1, const FTypeArray1& Array2, FString& Description);
 
 	/**
 	 * A macro to get "dummy" Types. These are of type UDummyType and inherit from UType. These are independent of

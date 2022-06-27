@@ -1,15 +1,16 @@
 ﻿#pragma once
-#include "FTypeArrays.generated.h"
+#include "FTypeArray1.h"
+#include "FTypeArray2.generated.h"
 
 // Forward declarations
 class UType;
 
 USTRUCT(BlueprintType)
-struct FTypeArrays
+struct FTypeArray2 : public FTypeArray1
 {
 
 	GENERATED_USTRUCT_BODY()
-	
-	TArray<UType*> TypeArray1 = {};
+
+public:
 	TArray<UType*> TypeArray2 = {};
 };

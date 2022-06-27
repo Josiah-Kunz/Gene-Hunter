@@ -5,7 +5,8 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "../AttackModifier.h"
-#include "FTypeArrays.h"
+#include "FTypeArray1.h"
+#include "FTypeArray2.h"
 #include "Type.generated.h"
 
 UENUM(BlueprintType)
@@ -92,17 +93,17 @@ public:
 		* - bAtk = true (since TypesToAnalyze is attacking)
 		* - Using Pokemon rules, the returns should be:
 		*	- If multitype:
-		*		- Ret[0].TypeArray1 = {Steel, Normal}		(because Fire = 2x and Water = 1x)
-		*		- Ret[1].TypeArray1 = {Ground, Electric}	(because Fire = 1x and Water = 2x)
+		*		- Ret[0].TypeArray = {Steel, Normal}		(because Fire = 2x and Water = 1x)
+		*		- Ret[1].TypeArray = {Ground, Electric}		(because Fire = 1x and Water = 2x)
 		*		- ...
 		*	- If coverage:
-		*		- Ret[0].TypeArray1 = {Grass, Normal}		(because Fire alone would suffice)
-		*		- Ret[1].TypeArray1 = {Fire, Rock}			(because Water alone would suffice)
+		*		- Ret[0].TypeArray = {Grass, Normal}		(because Fire alone would suffice)
+		*		- Ret[1].TypeArray = {Fire, Rock}			(because Water alone would suffice)
 		*		- ...
 	 */
-	static TArray<FTypeArrays*> Analyze(
+	static TArray<FTypeArray1*> Analyze(
 			const TArray<UType*>& TypesToAnalyze,
-			const TArray<FTypeArrays*>& AgainstTypes,
+			const TArray<FTypeArray1*>& AgainstTypes,
 			const FFloatRange Range,
 			const EAttackModifierMode Mode = EAttackModifierMode::MultiType,
 			const bool bAtk = true,
@@ -132,9 +133,18 @@ public:
 	/**
 	 * Sorts the given Types by the number of AttackModifiers within the specified range.
 	 * For example, if Water is only good attacking against Fire, it would be near the end of the list.
+	 * The returned FTypeArray2 is broken into:
+	 *	- Indices, e.g., Sorted[0] for the data on the first attack combination
+	 *	- Attacking combination, e.g., Sorted[0].TypeArray could yield {Fire, Water} as the attackers
+	 *	- Defending combinations that fall within the given range, e.g., Sorted[0].TypeArray2 could yield
+	 *		{Grass, Normal,
+	 *			Fire, Rock,
+	 *			...}
+	 *			(It's up to you to parse this array. In this example, do %2.)
 	 */
 	UFUNCTION(BlueprintCallable)
-	static void SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes, const FFloatRange Range, const EAttackModifierMode Mode, TArray<FTypeArrays>& Sorted);
+	static void SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes,
+		const FFloatRange Range, const EAttackModifierMode Mode, TArray<FTypeArray2>& Sorted);
 
 	/**
 	 * Sorts the given Types by the number of defensible Types within the specified range.
@@ -168,7 +178,7 @@ public:
 	 * Lazily gets all Type combinations. If you care about performance, take a look at how AnalyzeAll handles the problem.
 	 * For example, for NumTypes = 2, this returns {A, B}, {A, C}, {A, D}, ...
 	 */
-	static TArray<FTypeArrays*> GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes);
+	static TArray<FTypeArray1*> GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes);
 
 private:
 	static bool IncrementIndices(const TArray<UType*> Types, TArray<int>& Indices);

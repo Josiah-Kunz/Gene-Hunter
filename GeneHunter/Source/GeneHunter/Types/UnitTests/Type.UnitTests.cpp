@@ -22,16 +22,16 @@ bool FUType_Analysis::RunTest(const FString& Parameters)
 	
 #pragma region Multi-Type Analyze attack test (Flying/Ground analysis because Gliscor)
 
-	// Get array of FTypeArrays (one for each Type in AllDummyTypes)
-	TArray<FTypeArrays*> AgainstTypes = {};
+	// Get array of FTypeArray1 (one for each Type in AllDummyTypes)
+	TArray<FTypeArray1*> AgainstTypes = {};
 	for(UDummyType* DummyType : AllDummyTypes)
 	{
-		FTypeArrays* DummyTypeArrays = new FTypeArrays{{DummyType}, {}};
+		FTypeArray1* DummyTypeArrays = new FTypeArray1{{DummyType}, {}};
 		AgainstTypes.Add(DummyTypeArrays);
 	}
 	
 	// Get the UTypes (actual)
-	TArray<FTypeArrays*> Analysis = UType::Analyze({Ground, Flying},
+	TArray<FTypeArray1*> Analysis = UType::Analyze({Ground, Flying},
 		AgainstTypes,
 		FFloatRange{
 				FFloatRangeBound::Exclusive(1),
@@ -41,10 +41,10 @@ bool FUType_Analysis::RunTest(const FString& Parameters)
 				true
 			);
 
-	// Convert FTypeArrays* -> UDummyType*
+	// Convert FTypeArray1* -> UDummyType*
 	TArray<UType*> Actual = {};
-	for(FTypeArrays* TypeInfo : Analysis)
-		Actual.Add(TypeInfo->TypeArray1[0]);
+	for(FTypeArray1* TypeInfo : Analysis)
+		Actual.Add(TypeInfo->TypeArray[0]);
 
 	// Perform the test
 	FString Desc;
