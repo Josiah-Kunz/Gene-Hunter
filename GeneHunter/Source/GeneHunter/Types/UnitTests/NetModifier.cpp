@@ -12,32 +12,35 @@ bool FUType_NetModifier::RunTest(const FString& Parameters)
 	
 	if (Ground)
 	{
-		FString DeWater = "No";
-		if (Water)
-			DeWater = Water->GetName();
 		TestEqual(
-			"GetNetModifier (ineffective single attack vs dual defender) ::" + DeWater + "::",
-			UType::GetNetModifier({Ground}, {Fighting, Bug}),
+			"NetModifier (Ground vs. Fighting + Bug should be ineffective)",
+			UType::GetNetModifier({Ground}, {Fighting, Bug},
+				EAttackModifierMode::MultiType, true),
 			0.5F,FUnitTestUtilities::TOLERANCE);
 		TestEqual(
-			"GetNetModifier (neutral single attack vs dual defender)",
-			UType::GetNetModifier({Ground}, {Bug, Electric}),
+			"NetModifier (Ground vs. Electric + Bug should be neutral)",
+			UType::GetNetModifier({Ground}, {Bug, Electric},
+				EAttackModifierMode::MultiType, true),
 			1,FUnitTestUtilities::TOLERANCE);
 		TestEqual(
-			"GetNetModifier (effective single attack vs dual defender)",
-			UType::GetNetModifier({Ground}, {Fighting, Electric}),
+			"NetModifier (Ground vs. Fighting + Electric should be effective)",
+			UType::GetNetModifier({Ground}, {Fighting, Electric},
+				EAttackModifierMode::MultiType, true),
 			2,FUnitTestUtilities::TOLERANCE);
 		TestEqual(
-			"GetNetModifier (ineffective dual attack vs dual defender)",
-			UType::GetNetModifier({Flying, Ground}, {Flying, Electric}, EAttackModifierMode::MultiType),
+			"NetModifier (Flying + Ground [multi-Type] vs. Flying + Electric should be ineffective)",
+			UType::GetNetModifier({Flying, Ground}, {Flying, Electric},
+				EAttackModifierMode::MultiType, true),
 			0,FUnitTestUtilities::TOLERANCE);
 		TestEqual(
-			"GetNetModifier (neutral dual attack vs dual defender)",
-			UType::GetNetModifier({Flying, Ground}, {Bug, Grass}, EAttackModifierMode::MultiType),
+			"NetModifier (Flying + Ground [multi-Type] vs. Bug + Grass should be neutral)",
+			UType::GetNetModifier({Flying, Ground}, {Bug, Grass},
+				EAttackModifierMode::MultiType, true),
 			1,FUnitTestUtilities::TOLERANCE);
 		TestEqual(
-			"GetNetModifier (effective dual attack vs dual defender)",
-			UType::GetNetModifier({Flying, Ground}, {Ground, Fighting}, EAttackModifierMode::MultiType),
+			"NetModifier (Flying + Ground [multi-Type] vs. Ground + Fighting should be effective)",
+			UType::GetNetModifier({Flying, Ground}, {Ground, Fighting},
+				EAttackModifierMode::MultiType, true),
 			2,FUnitTestUtilities::TOLERANCE);
 	} else
 	{

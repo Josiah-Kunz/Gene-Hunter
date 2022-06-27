@@ -1,5 +1,16 @@
 ﻿#include "FUnitTestUtilities.h"
 
+
+bool FUnitTestUtilities::Contains(const TArray<UType*>& Container, const UType* SearchTarget, const bool bByName)
+{
+	return std::any_of(std::begin(Container), std::end(Container),
+								[&](UType* Test) {
+									if (bByName)
+										return Test->GetName() == SearchTarget->GetName();
+									return Test == SearchTarget;
+								});
+}
+
 bool FUnitTestUtilities::ArraysOfTypeAreEqual(const TArray<UType*>& Actual, const TArray<UType*>& Expected, FString& Description)
 {
 
@@ -25,9 +36,12 @@ bool FUnitTestUtilities::ArraysOfTypeAreEqual(const TArray<UType*>& Actual, cons
 	bool bPass = Actual.Num() == Expected.Num();
 	if (bPass)
 	{
+
+		
+		
 		for(const UType* ExpectedType : Expected)
 		{
-			if (!Actual.Contains(ExpectedType))
+			if (!Contains(Actual, ExpectedType))
 			{
 				Description += " | Expected [" + ExpectedType->GetName() + "] not found!";
 				bPass = false;

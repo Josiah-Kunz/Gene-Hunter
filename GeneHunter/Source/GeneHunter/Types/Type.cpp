@@ -124,7 +124,8 @@ TArray<FTypeArray1*> UType::Analyze(const TArray<UType*>& TypesToAnalyze, const 
 	return Ret;
 }
 
-float UType::GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>& DefTypes, const EAttackModifierMode Mode)
+float UType::GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>& DefTypes,
+	const EAttackModifierMode Mode, const bool bDebug)
 {
 
 	// Set initial modifier
@@ -147,17 +148,32 @@ float UType::GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>
 	// Loop over attackers and add their modifiers
 	for (UType* Atk : AtkTypes)
 	{
-
 		// Squirrel protection
 		if (!Atk)
 			continue;
 
+		// Get defender names for debug purposes
+		FString DefNames = "[";
+
 		// Single attack vs all defense Types (defenders always act as multi-Type)
 		float SingleAtkMod = 1;
 		for(const UType* Def : DefTypes)
+		{
 			if (Atk->AttackModifiers.Contains(Def))
+			{
 				SingleAtkMod = CombineModifiers(SingleAtkMod, Atk->AttackModifiers[Def].Modifier);
+				DefNames += Def->GetName() + " ";
+			}else if (bDebug)
+			{
+				UE_LOG(LogTemp, Error, TEXT("%s does not contain AttackModifiers data on %s!"),
+						*Atk->GetName(), *Def->GetName());
+			}
+		}
 
+		// End names list
+		DefNames += "]";
+		DefNames = DefNames.Replace(TEXT(" ]"), TEXT("]"));
+		
 		// Best is based on mode
 		switch(Mode)
 		{
@@ -167,6 +183,16 @@ float UType::GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>
 		case EAttackModifierMode::MultiType:
 			Modifier = CombineModifiers(Modifier, SingleAtkMod);
 			break;
+		}
+
+		// Debug
+		if (bDebug)
+		{
+			const FString NewModString = FString::SanitizeFloat(SingleAtkMod);
+			const FString TotalModString = FString::SanitizeFloat(Modifier);
+			UE_LOG(LogTemp, Display, TEXT("%s attacks %s => %s (Total: %s)"),
+						*Atk->GetName(), *DefNames,
+						*NewModString, *TotalModString);
 		}
 	}
 

@@ -115,7 +115,7 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	static float GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>& DefTypes,
-		const EAttackModifierMode Mode = EAttackModifierMode::Coverage);
+		const EAttackModifierMode Mode = EAttackModifierMode::Coverage, const bool bDebug = false);
 	
 	/**
 	 * Performs an analysis on the given Types.

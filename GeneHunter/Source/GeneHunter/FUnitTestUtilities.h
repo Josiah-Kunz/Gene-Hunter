@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Types/Type.h"
+#include <algorithm>
 #include "Types/UnitTests/DummyType.h"
 
 class FUnitTestUtilities
@@ -8,12 +9,20 @@ public:
 	
 	constexpr static float TOLERANCE = 0.1F;
 
+	/**
+	 * Determines if SearchTarget is inside Container.
+	 *	- If ByName is true, only compares by name.
+	 *	- If ByName is false, compares via direct object comparison.
+	 */
+	static bool Contains(const TArray<UType*>& Container, const UType* SearchTarget, const bool bByName = true);
+
 	static bool TypesAndDummiesAreEqual(const TArray<UType*>& Actual, const TArray<UDummyType*>& Expected, FString& Description);
 
 	static bool ArraysOfTypeAreEqual(const TArray<UType*>& Actual, const TArray<UType*>& Expected, FString& Description);
 	
 	static bool TypeArray1sAreEqual(const FTypeArray1& Array1, const FTypeArray1& Array2, FString& Description);
 
+	
 	/**
 	 * A macro to get "dummy" Types. These are of type UDummyType and inherit from UType. These are independent of
 	 *	in-game data (and hence are good for unit tests).
