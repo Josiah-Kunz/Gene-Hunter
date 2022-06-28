@@ -9,55 +9,73 @@
 
 #pragma region Public functions
 
-float UType::CombineModifiers(const float A, const float B)
+float UType::CombineModifiers(const float A, const float B, const EAttackModifierMode Mode)
 {
-	// Order doesn't matter
-	float Min, Max;
-	if (A>B)
+
+	switch(Mode)
 	{
-		Max = A;
-		Min = B;
-	} else
-	{
-		Max = B;
-		Min = A;
+	case EAttackModifierMode::Coverage:
+		return FMath::Max(A, B);
+		
+	case EAttackModifierMode::MultiType:
+		// Order doesn't matter
+		float Min, Max;
+		if (A>B)
+		{
+			Max = A;
+			Min = B;
+		} else
+		{
+			Max = B;
+			Min = A;
+		}
+
+		// Apply regular multiplicative rules
+		if (Min >= 0)			 
+			return Min*Max;
+
+		// If healed and weak to...
+		if (Max > 1)
+			return Min/Max;  // e.g., -1 & 2 -> -1/2
+
+		// Healing trumps all other damage reduction
+		return Min;
+
+	default:
+		UE_LOG(LogTemp, Error, TEXT("Mode not coded for in Type::CombineModifiers! Fix ASAP!"));
+		return 1;
 	}
-
-	// Apply regular multiplicative rules
-	if (Min >= 0)			 
-		return Min*Max;
-
-	// If healed and weak to...
-	if (Max > 1)
-		return Min/Max;  // e.g., -1 & 2 -> -1/2
-
-	// Healing trumps all other damage reduction
-	return Min;
-	
 }
 
 TArray<FTypeArray1*> UType::Analyze(const TArray<UType*>& TypesToAnalyze, const TArray<FTypeArray1*>& AgainstTypes,
 	const FFloatRange Range, const EAttackModifierMode Mode, const bool bAtk, const bool bDebug)
-{	
+{
+	
 	TArray<FTypeArray1*> Ret;
-	float Modifier = 1;
+	float OverallModifier = 1;
+
+	// Loop over, e.g., {{Fire, Water}, {Fire, Grass}, {Grass, Water}, ...}
 	for(FTypeArray1* AgainstInfo : AgainstTypes)
 	{
-
-		// Initialize Modifier
-		switch (Mode)
-		{
-		case EAttackModifierMode::MultiType:
-			Modifier = 1;
-			break;
-		case EAttackModifierMode::Coverage:
-			Modifier = -INFINITY;
-			break;
-		}
 
 		// Debug
 		if (bDebug)
 			UE_LOG(LogTemp, Display, TEXT("======================="));
+
+		// Rely on another function
+		const float Modifier = GetNetModifier(bAtk ? TypesToAnalyze : AgainstInfo->TypeArray,
+			bAtk ? AgainstInfo->TypeArray : TypesToAnalyze,
+			Mode, bDebug);
+
+		// All done with combining types; add?
+		if (Range.Contains(Modifier))
+			Ret.Add(AgainstInfo);
+		
+		
+		// Initialize Modifier
+		InitializeModifier(OverallModifier, Mode);
+
+		/*
 
 		// Go through each "Against" type
 		// In the example, this is a {Steel, Normal} defending dual-type
@@ -70,54 +88,48 @@ TArray<FTypeArray1*> UType::Analyze(const TArray<UType*>& TypesToAnalyze, const 
 
 			// Go through analyzing types types and combine their modifiers
 			// In the example, this is a {Fire, Water} attacking dual-type
+			float AnalysisModifier = 0;
+			InitializeModifier(AnalysisModifier, Mode);
 			for(UType* AnalyzeType : TypesToAnalyze)
 			{
-				
+
+				// Guard
 				if (!AnalyzeType)
 					continue;
+
+				// 1v1 matchup modifier
 				float NewModifier = 1;
 				if (bAtk && AnalyzeType->AttackModifiers.Contains(AgainstType))
 					NewModifier = AnalyzeType->AttackModifiers[AgainstType].Modifier;	// Fire -> 2x Steel + 1x Normal
 																						// Water -> 1x Steel + 1x Normal
 				else if (!bAtk && AgainstType->AttackModifiers.Contains(AnalyzeType))
 					NewModifier = AgainstType->AttackModifiers[AnalyzeType].Modifier;
-				switch (Mode)
-				{
-				case EAttackModifierMode::MultiType:
-					Modifier = CombineModifiers(Modifier, NewModifier );
-					break;
-				case EAttackModifierMode::Coverage:
 
-					/* Example is:
-					 * 
-					 *	Fire -> Steel = 2x
-					 *	Water -> Steel = 1x --->	1x + 2x = 2x 
-					 *	--------
-					 *	(Next AgainstType iteration)
-					 *	--------
-					 *	Fire -> Normal = 1x -->		1x + 2x = 2x 
-					 *	Water -> Normal = 1x -->	1x + 2x = 2x 
-					 */
-					
-					Modifier = FMath::Max(Modifier, NewModifier);
-					break;
-				}
-
+				// Add to the "TypesToAnalyze" modifier
+				AnalysisModifier = CombineModifiers(AnalysisModifier, NewModifier, Mode);
+				
 				// Debug?
 				if (bDebug)
 				{
 					const FString NewModString = FString::SanitizeFloat(NewModifier);
-					const FString TotalModString = FString::SanitizeFloat(Modifier);
-					UE_LOG(LogTemp, Display, TEXT("%s attacks %s => %s (Total: %s)"),
-						*AnalyzeType->GetName(), *AgainstType->GetName(),
-						*NewModString, *TotalModString);
+					const FString AnalysisModString = FString::SanitizeFloat(AnalysisModifier);
+					const FString TotalModString = FString::SanitizeFloat(OverallModifier);
+					const FString Attacks = bAtk ? TEXT("attacks") : TEXT("defends");
+					UE_LOG(LogTemp, Display, TEXT("%s %s %s => %s (Current: %s || Total: %s)"),
+						*AnalyzeType->GetName(), *Attacks, *AgainstType->GetName(),
+						*NewModString, *AnalysisModString, *TotalModString);
 				}
 			}
+
+			// Combine the "TypesToAnalyze" modifier with the overall modifier
+			OverallModifier = CombineModifiers(OverallModifier, AnalysisModifier, Mode);
+			
 		}
 
 		// All done with combining types; add?
-		if (Range.Contains(Modifier))
+		if (Range.Contains(OverallModifier))
 			Ret.Add(AgainstInfo);
+		*/
 	}
 
 	// Return result
@@ -130,20 +142,7 @@ float UType::GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>
 
 	// Set initial modifier
 	float Modifier = 1;
-	switch(Mode)
-	{
-	case EAttackModifierMode::Coverage:
-		
-		// Get the [best] modifier
-		Modifier = -INFINITY;
-		break;
-
-	case EAttackModifierMode::MultiType:
-
-		// Get the [net] modifier
-		Modifier = 1;
-		break;
-	}
+	InitializeModifier(Modifier, Mode);
 
 	// Loop over attackers and add their modifiers
 	for (UType* Atk : AtkTypes)
@@ -163,8 +162,7 @@ float UType::GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>
 			{
 				SingleAtkMod = CombineModifiers(SingleAtkMod, Atk->AttackModifiers[Def].Modifier);
 				DefNames += Def->GetName() + " ";
-			}else if (bDebug)
-			{
+			} else if (bDebug) {
 				UE_LOG(LogTemp, Error, TEXT("%s does not contain AttackModifiers data on %s!"),
 						*Atk->GetName(), *Def->GetName());
 			}
@@ -175,15 +173,7 @@ float UType::GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>
 		DefNames = DefNames.Replace(TEXT(" ]"), TEXT("]"));
 		
 		// Best is based on mode
-		switch(Mode)
-		{
-		case EAttackModifierMode::Coverage:
-			Modifier = FMath::Max(Modifier, SingleAtkMod);
-			break;
-		case EAttackModifierMode::MultiType:
-			Modifier = CombineModifiers(Modifier, SingleAtkMod);
-			break;
-		}
+		Modifier = CombineModifiers(Modifier, SingleAtkMod, Mode);
 
 		// Debug
 		if (bDebug)
@@ -813,5 +803,25 @@ TArray<UType*> UType::GetAllTypesFromSeeds(TArray<UType*> TypesSeeds)
 	}
 	return Ret;
 }
+
+void UType::InitializeModifier(float& Modifier, const EAttackModifierMode Mode)
+{
+	switch (Mode)
+	{
+	case EAttackModifierMode::MultiType:
+
+		// Get the [best] modifier
+		Modifier = 1;
+		break;
+	case EAttackModifierMode::Coverage:
+
+		// Get the [net] modifier
+		Modifier = -INFINITY;
+		break;
+	default:
+		UE_LOG(LogTemp, Error, TEXT("Mode not coded for in Type::InitializeModifier! Fix ASAP!"));
+	}
+}
+
 
 #pragma endregion

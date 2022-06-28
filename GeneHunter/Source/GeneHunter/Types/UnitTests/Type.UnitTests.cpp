@@ -11,51 +11,6 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Analysis, "UType.MatchupAnalysis", EAuto
 
 bool FUType_Analysis::RunTest(const FString& Parameters)
 {
-#pragma region Get dummy Types
-
-
-
-	GET_DUMMY_TYPES()
-#pragma endregion
-
-/*
-	
-#pragma region Multi-Type Analyze attack test (Flying/Ground analysis because Gliscor)
-
-	// Get array of FTypeArray1 (one for each Type in AllDummyTypes)
-	TArray<FTypeArray1*> AgainstTypes = {};
-	for(UDummyType* DummyType : AllDummyTypes)
-	{
-		FTypeArray1* DummyTypeArrays = new FTypeArray1{{DummyType}, {}};
-		AgainstTypes.Add(DummyTypeArrays);
-	}
-	
-	// Get the UTypes (actual)
-	TArray<FTypeArray1*> Analysis = UType::Analyze({Ground, Flying},
-		AgainstTypes,
-		FFloatRange{
-				FFloatRangeBound::Exclusive(1),
-				FFloatRangeBound::Open()
-				},
-				EAttackModifierMode::MultiType,
-				true
-			);
-
-	// Convert FTypeArray1* -> UDummyType*
-	TArray<UType*> Actual = {};
-	for(FTypeArray1* TypeInfo : Analysis)
-		Actual.Add(TypeInfo->TypeArray[0]);
-
-	// Perform the test
-	FString Desc;
-	bool bPass = FUnitTestUtilities::TArrayAreEqual(Actual, {Fire, Poison, Fighting}, Desc);
-	TestEqual(
-		"Flying/Ground multiType attack " + Desc + " " + FString::FromInt(Actual.Num()),
-		bPass, true
-	);
-#pragma endregion
-
-*/
 	
 	/*
 	

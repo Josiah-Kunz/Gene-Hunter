@@ -1,0 +1,12 @@
+Wow---three months of no activity! Get ready for excuses:
+
+The end of the semester got kinda crazy. We're adding an engineering major and 
+yours truly is supposed to spearhead it. I had to make a conscious choice to 
+prioritize work over fun. After that, summer research got in full swing. We're 
+making a 2D pixel platformer that utilize special relativity rules (such as 
+length contraction). It's fun, it's in Unity, and my two students (an art
+student and a CS student) are great. It also lets me learn more practical skills
+on the hobby I enjoy most---developing video games.
+
+Unit tests are going well. I'm rejuvinated to see them working. I bet my past
+self left the Blueprints in a mess, though.

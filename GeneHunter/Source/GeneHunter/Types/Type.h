@@ -51,8 +51,10 @@ public:
 #pragma region Public functions
 	
 	/**
-	 * Gets the net modifier when using default rules for combining modifiers. For example:
-	 * 
+	 * Gets the net modifier when using default rules for combining modifiers. Explicitly:
+	 *
+	 * Multi-Type
+	 * ----------
 	 *	- (-1 & 2)	 ==> (-1/2)
 	 *	- (-1 & 1)	 ==> (-1)
 	 *	- (-1 & 1/2) ==> (-1)
@@ -61,9 +63,21 @@ public:
 	 *
 	 *	- (0 & 1)	 ==> (0)
 	 *	- (2 & 1/2)	 ==> (1)
+	 *
+	 * Coverage
+	 * --------
+	 *	- (-1 & 2)	 ==> 2
+	 *	- (-1 & 1)	 ==> 1
+	 *	- (-1 & 1/2) ==> 1/2
+	 *	- (-1 & 0)	 ==> 0
+	 *	- (-1 & -1)	 ==> -1
+	 *
+	 *	- (0 & 1)	 ==> 1
+	 *	- (2 & 1/2)	 ==> 2
 	 */
 	UFUNCTION(BlueprintCallable)
-	static float CombineModifiers(const float A, const float B);
+	static float CombineModifiers(const float A, const float B,
+		const EAttackModifierMode Mode = EAttackModifierMode::MultiType);
 
 	/**
 	 * Gets Types whose defense modifiers are between Min and Max when attacked by the given AtkTypes.
@@ -88,7 +102,8 @@ public:
 	/**
 	 * Example: 
 		* - TypesToAnalyze is the attack combinations {Fire, Water}
-		* - AgainstTypes are all possible defenders combinations of length 2 (returned from GetAllTypeCombinations(Types, 2))
+		* - AgainstTypes are all possible defenders combinations of length 2 (returned from GetAllTypeCombinations(Types, 2)).
+		*	For example, {{Fire, Grass}, {Fire, Water}, {Grass, Water}, ...}
 		* - Range = (1, INFINITY)
 		* - bAtk = true (since TypesToAnalyze is attacking)
 		* - Using Pokemon rules, the returns should be:
@@ -209,6 +224,8 @@ private:
 	 * this function will return the list's keys (Types).
 	 */
     static TArray<UType*> GetAllTypesFromSeeds(TArray<UType*> TypesSeeds);
+
+	static void InitializeModifier(float& Modifier, const EAttackModifierMode Mode);
 
 #pragma endregion
 

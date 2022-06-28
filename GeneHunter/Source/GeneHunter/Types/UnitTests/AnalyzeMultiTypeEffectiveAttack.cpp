@@ -6,7 +6,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_AnalyzeMultiTypeEffecitveAttack, "UType.
 
 /**
  * Tests a Flying + Ground (because Gliscor) multi-Type attack against every singly-Typed and dual-Typed (dummy) defender.
- * The Types that are weak against Flying + Ground get reported and tested against.
+ * The Types that are weak against Flying _and_ Ground simultaneously get reported and tested against.
  */
 bool FUType_AnalyzeMultiTypeEffecitveAttack::RunTest(const FString& Parameters)
 {
@@ -91,10 +91,6 @@ bool FUType_AnalyzeMultiTypeEffecitveAttack::RunTest(const FString& Parameters)
 	// Do the tests for 1 or 2 defenders
 	for(int NumDefendingType = 0; NumDefendingType < Expected.Num(); NumDefendingType++)
 	{
-
-		FString NumDefString = FString::FromInt(NumDefendingType + 1);
-		UE_LOG(LogTemp, Display, TEXT("%s defenders"),
-						*NumDefString);
 		
 		// Get array of FTypeArray1 (one or two for each Type in AllDummyTypes)
 		TArray<FTypeArray1*> DefenderTypes = UType::GetAllTypeCombinations(AllTypes, NumDefendingType + 1);

@@ -6,7 +6,7 @@
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_CombineModifiers, "UType.CombineModifiers", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /*
- * Tests on combining modifiers (e.g., -1 & 2 -> -0.5)
+ * Tests on combining (multi-Type) modifiers (e.g., -1 & 2 -> -0.5)
  */
 bool FUType_CombineModifiers::RunTest(const FString& Parameters)
 {
