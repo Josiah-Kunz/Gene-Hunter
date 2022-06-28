@@ -1,13 +1,15 @@
 ﻿#pragma once
 
-#include "GeneHunter/FUnitTestUtilities.h"
+#include "GeneHunter/FTypeUnitTestUtilities.h"
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_GetDummyTypes, "UType.GetDummyTypes", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Utilities_GetDummyTypes,
+	"UType.Utilities.GetDummyTypes",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /*
  * Ensures the macro GET_DUMMY_TYPES() works.
  */
-bool FUType_GetDummyTypes::RunTest(const FString& Parameters)
+bool FUType_Utilities_GetDummyTypes::RunTest(const FString& Parameters)
 {
 
 	// Import types
@@ -19,13 +21,13 @@ bool FUType_GetDummyTypes::RunTest(const FString& Parameters)
 	TestEqual(
 				"GET_DUMMY_TYPES number of assets loaded",
 				TypeAssets.Num(),
-				12,FUnitTestUtilities::TOLERANCE);
+				12,FTypeUnitTestUtilities::TOLERANCE);
 
 	// Number of types
 	TestEqual(
 				"GET_DUMMY_TYPES number of array elements",
 				AllDummyTypes.Num(),
-				12,FUnitTestUtilities::TOLERANCE);
+				12,FTypeUnitTestUtilities::TOLERANCE);
 
 
 	// Non-null types

@@ -3,7 +3,7 @@
 
 #include "../Type.h"
 #include "DummyType.h"
-#include "GeneHunter/FUnitTestUtilities.h"
+#include "GeneHunter/FTypeUnitTestUtilities.h"
 #include "AITestSuite/Public/AITestsCommon.h"
 #include "NavMesh/RecastNavMesh.h"
 

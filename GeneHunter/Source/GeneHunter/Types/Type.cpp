@@ -74,62 +74,6 @@ TArray<FTypeArray1*> UType::Analyze(const TArray<UType*>& TypesToAnalyze, const 
 		
 		// Initialize Modifier
 		InitializeModifier(OverallModifier, Mode);
-
-		/*
-
-		// Go through each "Against" type
-		// In the example, this is a {Steel, Normal} defending dual-type
-		for(UType* AgainstType : AgainstInfo->TypeArray)
-		{
-			
-			// Must be vigilant; squirrels everywhere
-			if (!AgainstType)
-				continue;
-
-			// Go through analyzing types types and combine their modifiers
-			// In the example, this is a {Fire, Water} attacking dual-type
-			float AnalysisModifier = 0;
-			InitializeModifier(AnalysisModifier, Mode);
-			for(UType* AnalyzeType : TypesToAnalyze)
-			{
-
-				// Guard
-				if (!AnalyzeType)
-					continue;
-
-				// 1v1 matchup modifier
-				float NewModifier = 1;
-				if (bAtk && AnalyzeType->AttackModifiers.Contains(AgainstType))
-					NewModifier = AnalyzeType->AttackModifiers[AgainstType].Modifier;	// Fire -> 2x Steel + 1x Normal
-																						// Water -> 1x Steel + 1x Normal
-				else if (!bAtk && AgainstType->AttackModifiers.Contains(AnalyzeType))
-					NewModifier = AgainstType->AttackModifiers[AnalyzeType].Modifier;
-
-				// Add to the "TypesToAnalyze" modifier
-				AnalysisModifier = CombineModifiers(AnalysisModifier, NewModifier, Mode);
-				
-				// Debug?
-				if (bDebug)
-				{
-					const FString NewModString = FString::SanitizeFloat(NewModifier);
-					const FString AnalysisModString = FString::SanitizeFloat(AnalysisModifier);
-					const FString TotalModString = FString::SanitizeFloat(OverallModifier);
-					const FString Attacks = bAtk ? TEXT("attacks") : TEXT("defends");
-					UE_LOG(LogTemp, Display, TEXT("%s %s %s => %s (Current: %s || Total: %s)"),
-						*AnalyzeType->GetName(), *Attacks, *AgainstType->GetName(),
-						*NewModString, *AnalysisModString, *TotalModString);
-				}
-			}
-
-			// Combine the "TypesToAnalyze" modifier with the overall modifier
-			OverallModifier = CombineModifiers(OverallModifier, AnalysisModifier, Mode);
-			
-		}
-
-		// All done with combining types; add?
-		if (Range.Contains(OverallModifier))
-			Ret.Add(AgainstInfo);
-		*/
 	}
 
 	// Return result

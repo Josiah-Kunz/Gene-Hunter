@@ -1,8 +1,8 @@
-﻿#include "FUnitTestUtilities.h"
+﻿#include "FTypeUnitTestUtilities.h"
 
 
-bool FUnitTestUtilities::Contains(const TArray<UType*>& Container, const UType* SearchTarget,
-	const bool bByName)
+bool FTypeUnitTestUtilities::Contains(const TArray<UType*>& Container, const UType* SearchTarget,
+                                      const bool bByName)
 {
 	return std::any_of(std::begin(Container), std::end(Container),
 								[&](UType* Test) {
@@ -12,7 +12,7 @@ bool FUnitTestUtilities::Contains(const TArray<UType*>& Container, const UType* 
 								});
 }
 
-bool FUnitTestUtilities::Contains(const TArray<FTypeArray1*>& Container, const FTypeArray1* SearchTarget,
+bool FTypeUnitTestUtilities::Contains(const TArray<FTypeArray1*>& Container, const FTypeArray1* SearchTarget,
 	const bool bByName)
 {
 	return std::any_of(std::begin(Container), std::end(Container),
@@ -34,7 +34,7 @@ bool FUnitTestUtilities::Contains(const TArray<FTypeArray1*>& Container, const F
 								});
 }
 
-bool FUnitTestUtilities::ArraysOfTypeAreEqual(const TArray<UType*>& Actual, const TArray<UType*>& Expected, FString& Description)
+bool FTypeUnitTestUtilities::ArraysOfTypeAreEqual(const TArray<UType*>& Actual, const TArray<UType*>& Expected, FString& Description)
 {
 
 	// Start building string in case it fails
@@ -78,7 +78,7 @@ bool FUnitTestUtilities::ArraysOfTypeAreEqual(const TArray<UType*>& Actual, cons
 	
 }
 
-bool FUnitTestUtilities::TypesAndDummiesAreEqual(const TArray<UType*>& Actual, const TArray<UDummyType*>& Expected, FString& Description)
+bool FTypeUnitTestUtilities::TypesAndDummiesAreEqual(const TArray<UType*>& Actual, const TArray<UDummyType*>& Expected, FString& Description)
 {
 	
 	// UDummyType* -> UType*
@@ -92,12 +92,12 @@ bool FUnitTestUtilities::TypesAndDummiesAreEqual(const TArray<UType*>& Actual, c
 
 }
 
-bool FUnitTestUtilities::TypeArray1sAreEqual(const FTypeArray1& Actual, const FTypeArray1& Expected, FString& Description)
+bool FTypeUnitTestUtilities::TypeArray1sAreEqual(const FTypeArray1& Actual, const FTypeArray1& Expected, FString& Description)
 {
 	return ArraysOfTypeAreEqual(Actual.TypeArray, Expected.TypeArray, Description);
 }
 
-bool FUnitTestUtilities::ArrayOfTypeArray1sAreEqual(const TArray<FTypeArray1*>& Actual,
+bool FTypeUnitTestUtilities::ArrayOfTypeArray1sAreEqual(const TArray<FTypeArray1*>& Actual,
 	const TArray<FTypeArray1*>& Expected, FString& Description)
 {
 	bool bFound = true;
@@ -115,7 +115,7 @@ bool FUnitTestUtilities::ArrayOfTypeArray1sAreEqual(const TArray<FTypeArray1*>& 
 	return bFound;
 }
 
-FString FUnitTestUtilities::TypeArray1ToFString(const FTypeArray1* TypeArray1)
+FString FTypeUnitTestUtilities::TypeArray1ToFString(const FTypeArray1* TypeArray1)
 {
 	FString Ret = "[";
 	for(UType* Type : TypeArray1->TypeArray)
@@ -125,7 +125,7 @@ FString FUnitTestUtilities::TypeArray1ToFString(const FTypeArray1* TypeArray1)
 	return Ret;
 }
 
-FString FUnitTestUtilities::ArrayOfTypeArray1ToFString(const TArray<FTypeArray1*>& ArrayOfTypeArray1)
+FString FTypeUnitTestUtilities::ArrayOfTypeArray1ToFString(const TArray<FTypeArray1*>& ArrayOfTypeArray1)
 {
 	FString Ret = "{";
 	for(const FTypeArray1* TypeArray1 : ArrayOfTypeArray1)
@@ -133,4 +133,27 @@ FString FUnitTestUtilities::ArrayOfTypeArray1ToFString(const TArray<FTypeArray1*
 	Ret += "}";
 	Ret = Ret.Replace(TEXT(", }"), TEXT("}"));
 	return Ret;
+}
+
+bool FTypeUnitTestUtilities::DoAttackAnalysis(const TArray<UType*>& AllTypes, const TArray<UType*>& Attackers,
+	const int NumDefendingTypes, const EAttackModifierMode Mode, const TArray<FTypeArray1*>& Expected,
+	FString& Description)
+{
+	// Get array of FTypeArray1 (one or two for each Type in AllDummyTypes)
+	const TArray<FTypeArray1*> DefenderTypes = UType::GetAllTypeCombinations(AllTypes, NumDefendingTypes);
+	
+	// Get the UTypes (actual) that Ground + Flying are effective against
+	const TArray<FTypeArray1*> Analysis = UType::Analyze(Attackers, DefenderTypes,
+		FFloatRange{
+				FFloatRangeBound::Exclusive(1),
+				FFloatRangeBound::Open()
+				},
+				Mode,
+				true,
+				true
+			);
+
+
+	// Test it
+	return ArrayOfTypeArray1sAreEqual(Analysis, Expected, Description);
 }

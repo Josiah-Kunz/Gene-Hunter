@@ -1,14 +1,16 @@
 ﻿#pragma once
 
-#include "GeneHunter/FUnitTestUtilities.h"
+#include "GeneHunter/FTypeUnitTestUtilities.h"
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_AnalyzeCoverageEffecitveAttack, "UType.AnalyzeCoverageAttack", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Attack_Coverage_DualDefender,
+	"UType.Combat.Attack.Coverage.Dual-Typed Defender",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /**
- * Tests a Flying + Ground (because Gliscor) "coverage" attack against every singly-Typed and dual-Typed (dummy) defender.
+ * Tests a Flying + Ground (because Gliscor) "coverage" attack against every dual-Typed (dummy) defender.
  * The Types that are weak against Flying _or_ Ground separately get reported and tested against.
  */
-bool FUType_AnalyzeCoverageEffecitveAttack::RunTest(const FString& Parameters)
+bool FUType_Combat_Attack_Coverage_DualDefender::RunTest(const FString& Parameters)
 {
 
 	// Get all types
@@ -19,24 +21,9 @@ bool FUType_AnalyzeCoverageEffecitveAttack::RunTest(const FString& Parameters)
 	for(UDummyType* DummyType : AllDummyTypes)
 		AllTypes.Add(DummyType);
 
-	// Define success based on index:
-	//	- Index [0] for singly-Typed defenders
-	//	- Index [1] for doubly-Typed defenders
-	TArray<TArray<FTypeArray1*>> Expected = {
+	// Define success:
+	const TArray<FTypeArray1*> Expected = {
 
-		{
-			// Flying singly-Typed defenders 
-			new FTypeArray1{{Bug}},
-			new FTypeArray1{{Fighting}},
-			new FTypeArray1{{Grass}},
-
-			// Ground singly-Typed defenders 
-			new FTypeArray1{{Electric}},
-			new FTypeArray1{{Fire}},
-			new FTypeArray1{{Poison}},
-			new FTypeArray1{{Rock}},
-			new FTypeArray1{{Steel}},
-		},{
 			/* Doubly-Typed defenders
 			 *
 			 * Flying advantages are (3):
@@ -134,39 +121,17 @@ bool FUType_AnalyzeCoverageEffecitveAttack::RunTest(const FString& Parameters)
 			new FTypeArray1{{Steel, Ground}},
 			new FTypeArray1{{Steel, Ice}},
 			new FTypeArray1{{Steel, Water}},
-		}
 	};
 	
-	// Do the tests for 1 or 2 defenders
-	for(int NumDefendingType = 0; NumDefendingType < Expected.Num(); NumDefendingType++)
-	{
-		
-		// Get array of FTypeArray1 (one or two for each Type in AllDummyTypes)
-		TArray<FTypeArray1*> DefenderTypes = UType::GetAllTypeCombinations(AllTypes, NumDefendingType + 1);
-	
-		// Get the UTypes (actual) that Ground + Flying are effective against
-		TArray<FTypeArray1*> Analysis = UType::Analyze({Ground, Flying},
-			DefenderTypes,
-			FFloatRange{
-					FFloatRangeBound::Exclusive(1),
-					FFloatRangeBound::Open()
-					},
-					EAttackModifierMode::Coverage,
-					true,
-					true
-				);
+	// Do the testsFString Desc = "";
+	FString Desc = "";
+	const bool bPass = FTypeUnitTestUtilities::DoAttackAnalysis(AllTypes, {Flying, Ground}, 2,
+		EAttackModifierMode::Coverage, Expected, Desc);
+	TestEqual(
+	"Flying/Ground coverage effective attack vs dual-Typed defenders " + Desc,
+	bPass, true
+	);
 
-
-		// Test it
-		FString Desc;
-		const bool bPass = FUnitTestUtilities::ArrayOfTypeArray1sAreEqual(Analysis,
-			Expected[NumDefendingType], Desc);
-		TestEqual(
-			"Flying/Ground coverage effective attack " + Desc,
-			bPass, true
-		);
-	}
-		
 	return true;
 	
 }

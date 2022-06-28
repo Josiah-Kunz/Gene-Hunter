@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "Types/UnitTests/DummyType.h"
 
-class FUnitTestUtilities
+class FTypeUnitTestUtilities
 {
 public:
 	
@@ -62,6 +62,13 @@ public:
 	 * Returns, e.g., "{[Air, Earth], [Fire, Water]}".
 	 */
 	static FString ArrayOfTypeArray1ToFString(const TArray<FTypeArray1*>& ArrayOfTypeArray1);
+
+	/**
+	 * Performs "UType::Analyze" (assuming attackers) and returns if the result is equal to the expected values.
+	 */
+	static bool DoAttackAnalysis(const TArray<UType*>& AllTypes, const TArray<UType*>& Attackers, 
+		const int NumDefendingTypes, const EAttackModifierMode Mode, const TArray<FTypeArray1*>& Expected,
+		FString& Description);
 	
 	/**
 	 * A macro to get "dummy" Types. These are of type UDummyType and inherit from UType. These are independent of
