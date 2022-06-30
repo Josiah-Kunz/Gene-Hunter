@@ -123,10 +123,14 @@ bool FUType_Combat_Attack_Coverage_DualDefender::RunTest(const FString& Paramete
 			new FTypeArray1{{Steel, Water}},
 	};
 	
-	// Do the testsFString Desc = "";
+	// Do the tests
 	FString Desc = "";
-	const bool bPass = FTypeUnitTestUtilities::DoAttackAnalysis(AllTypes, {Flying, Ground}, 2,
-		EAttackModifierMode::Coverage, Expected, Desc);
+	const bool bPass = FTypeUnitTestUtilities::DoCombatAnalysis(AllTypes, {Flying, Ground}, 2,
+		FFloatRange{
+				FFloatRangeBound::Exclusive(1),
+				FFloatRangeBound::Open()
+				},
+		true, EAttackModifierMode::Coverage, Expected, Desc);
 	TestEqual(
 	"Flying/Ground coverage effective attack vs dual-Typed defenders " + Desc,
 	bPass, true

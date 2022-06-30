@@ -47,6 +47,14 @@ float UType::CombineModifiers(const float A, const float B, const EAttackModifie
 	}
 }
 
+float UType::GetAttackModifier(const UType* AgainstType)
+{
+	if (AttackModifiers.Contains(AgainstType))
+		return AttackModifiers[AgainstType].Modifier;
+	return 1;
+}
+
+
 TArray<FTypeArray1*> UType::Analyze(const TArray<UType*>& TypesToAnalyze, const TArray<FTypeArray1*>& AgainstTypes,
 	const FFloatRange Range, const EAttackModifierMode Mode, const bool bAtk, const bool bDebug)
 {
@@ -104,11 +112,12 @@ float UType::GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>
 		{
 			if (Atk->AttackModifiers.Contains(Def))
 			{
-				SingleAtkMod = CombineModifiers(SingleAtkMod, Atk->AttackModifiers[Def].Modifier);
+				SingleAtkMod = CombineModifiers(SingleAtkMod, Atk->GetAttackModifier(Def));
 				DefNames += Def->GetName() + " ";
 			} else if (bDebug) {
-				UE_LOG(LogTemp, Error, TEXT("%s does not contain AttackModifiers data on %s!"),
+				UE_LOG(LogTemp, Warning, TEXT("%s does not contain AttackModifiers data on %s!"),
 						*Atk->GetName(), *Def->GetName());
+				SingleAtkMod = 1;
 			}
 		}
 
@@ -134,7 +143,7 @@ float UType::GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>
 	return Modifier;
 }
 
-TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes, const int NumUntestedTypes,
+TArray<FTypeArray2> UType::AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
 	const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode)
 {
 
@@ -146,7 +155,7 @@ TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes,
 	 *		- In this example, there are 10 Types A-J
 	 *		- In this example, NumTestedTypes=4, NumUntestedTypes=1, Range=[1, open), bAnalyzeAtk=true
 	 *		- The iteration count is boxed on the left
-	 *		- E.g., in the zeroth iteration, Types ABCD are tested against the "first row" (defender)
+	 *		- E.g., in the zeroth iteration, Types ABCD are tested against the "first row" (defender; presumably type A)
 	 *
 	 *	0 |
 	 *	--
@@ -183,7 +192,7 @@ TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes,
 	 */
 	
 	// The returned variable
-	TArray<UType*> Analysis;
+	TArray<FTypeArray2> Analysis;
 	
 	// User is being dumb
 	if (Types.Num() == 0 ||
@@ -192,11 +201,9 @@ TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes,
 		return Analysis;
 
 	// Vars
-	bool bSuccess;							// Determines success based on Range
 	TArray TestedIndices = {0};				// The indices of the Types in TestedTypes. E.g., if Fire/Water is being tested, this may be {4, 13} (or whatever).
 	TArray UntestedIndices = {0};			// Same with what's being tested against
-	TArray<UType*> TestedTypes;				// If bAtk, the combination that is attacking
-	TArray<UType*> UntestedTypes;			// If bAtk, the combination that is defending
+	TArray<UType*> TypeCandidates;			// If bAtk, the combination that is defending
 	int i;									// Dummy int
 	TArray<UType*> AtkTypes, DefTypes;
 	float Modifier;							// The result of the (incremental) test
@@ -211,9 +218,10 @@ TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes,
 	{
 
 		// Get the attacking Type combination based on current indices
-		TestedTypes.Empty();
+		FTypeArray2 A;
+		Analysis.Add(A);
 		for (i=0; i<NumTestedTypes;i++)
-			TestedTypes.Add(Types[TestedIndices[i]]);
+			Analysis.Last().TypeArray.Add(Types[TestedIndices[i]]);
 		
 		// Reset defending indices (since we're about to iterate over them)
 		UntestedIndices = {0};
@@ -221,43 +229,34 @@ TArray<UType*> UType::AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes,
 			UntestedIndices.Add(UntestedIndices[i-1]+1);
 		
 		// Test this combination's effectiveness against all other Types
-		bSuccess = true;
 		Failsafe2 = 0;
 		while (Failsafe2 < UGeneHunterBPLibrary::MAX_ITERATIONS && UntestedIndices[0] <= Types.Num() - NumUntestedTypes)
 		{
 
 			// Get the attacking Type combination based on indices
-			UntestedTypes.Empty();
+			TypeCandidates.Empty();
 			for (i=0; i<NumUntestedTypes;i++)
-				UntestedTypes.Add(Types[UntestedIndices[i]]);
+				TypeCandidates.Add(Types[UntestedIndices[i]]);
 
 			// Get the [best] modifier (this is the meat; everything else is just bookkeeping!)
-			AtkTypes = bAnalyzeAtk ? TestedTypes : UntestedTypes;
-			DefTypes = bAnalyzeAtk ? UntestedTypes : TestedTypes;
+			AtkTypes = bAnalyzeAtk ? Analysis.Last().TypeArray : TypeCandidates;
+			DefTypes = bAnalyzeAtk ? TypeCandidates : Analysis.Last().TypeArray;
 			Modifier = GetNetModifier(AtkTypes, DefTypes, Mode);
 			
-			// If not in the right range, pitch immediately
-			if (!Range.Contains(Modifier))
-			{
-				bSuccess = false;
-				break;
-			}
+			// Check success
+			if (Range.Contains(Modifier))
+				for (UType* SuccessfulType : TypeCandidates)
+					Analysis.Last().TypeArray2.Add(SuccessfulType);
 			
 			// Iterate
 			if (IncrementIndices(Types, UntestedIndices)) // Never able to iterate; must be at the end of all possible Type combinations
 				break;
 			Failsafe2++;
 		}
-		if (bSuccess)
-			for (UType* SuccessfulType : TestedTypes)
-				Analysis.Add(SuccessfulType);
 
 		// Iterate
-		if (IncrementIndices(Types, TestedIndices))
-		{
-			// Never able to iterate; must be at the end of all possible Type combinations
+		if (IncrementIndices(Types, TestedIndices)) // Never able to iterate; must be at the end of all possible Type combinations
 			break;
-		}
 		Failsafe1++;
 	}
 
@@ -603,11 +602,11 @@ void UType::GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, co
 			Modifier = 1;
 			
 			FString attackers, defenders;
-			for(auto& Atks :AtkTypes)
+			for(const auto& Atks :AtkTypes)
 				attackers += Atks->GetName() + " ";
-			for(auto& Defs :DefTypes)
+			for(const auto& Defs :DefTypes)
 				defenders += Defs->GetName() + " ";
-			FString logmsg = TEXT("[" + attackers + "] vs [" + defenders + "] = " + FString::SanitizeFloat(Modifier));
+			const FString logmsg = TEXT("[" + attackers + "] vs [" + defenders + "] = " + FString::SanitizeFloat(Modifier));
 			GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red, logmsg);
 			UE_LOG(LogBlueprint, Warning, TEXT("%s"), *logmsg);
 			
@@ -623,7 +622,7 @@ void UType::GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, co
 			Failsafe2++;
 		}
 		if (bSuccess)
-				for (UType* SuccessfulType : AtkTypes)
+			for (UType* SuccessfulType : AtkTypes)
 				Coverage.Add(SuccessfulType);
 		
 		
@@ -634,7 +633,7 @@ void UType::GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, co
 	}
 }
 
-bool UType::IncrementIndices(const TArray<UType*> Types, TArray<int>& Indices)
+bool UType::IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices)
 {
 
 	/*

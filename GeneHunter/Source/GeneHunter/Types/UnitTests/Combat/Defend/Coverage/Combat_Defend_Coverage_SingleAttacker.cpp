@@ -1,0 +1,65 @@
+﻿#pragma once
+
+#include "GeneHunter/FTypeUnitTestUtilities.h"
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Defend_Coverage_SingleAttacker,
+	"UType.Combat.Defend.Coverage.Single-Typed Defender",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+/**
+ * Tests a Flying + Ground (because Gliscor) "coverage" defense against every single-Typed (dummy) attacker.
+ * The single Types that Flying + Ground resist get reported and tested against.
+ */
+bool FUType_Combat_Defend_Coverage_SingleAttacker::RunTest(const FString& Parameters)
+{
+
+	// Get all types
+	GET_DUMMY_TYPES()
+
+	// Convert to UType* (for functions' sakes)
+	TArray<UType*> AllTypes = {};
+	for(UDummyType* DummyType : AllDummyTypes)
+		AllTypes.Add(DummyType);
+
+	// Define success:
+	const TArray<FTypeArray1*> Expected = {
+
+		/* Flying singly resists:
+		 *	- Ground
+		 *	- B.ug
+		 *	- Fighting
+		 *	- Grass [no; Ground is weak to Grass]
+		 */ 
+		new FTypeArray1{{Ground}},
+		new FTypeArray1{{Bug}},
+		new FTypeArray1{{Fighting}},
+
+		/*
+		 * Ground singly resists:
+		 *  - Electric [immunity trumps Flying's weakness]
+		 *  - Poison
+		 *  - Rock [no; Flying is weak to Rock]
+		 */
+		new FTypeArray1{{Electric}},
+		new FTypeArray1{{Poison}},
+		
+	};
+	
+	// Do the tests
+	FString Desc = "";
+	const bool bPass = FTypeUnitTestUtilities::DoCombatAnalysis(AllTypes, {Flying, Ground},
+		1,
+		FFloatRange{
+			FFloatRangeBound::Open(),
+			FFloatRangeBound::Exclusive(1)
+		},
+		false,
+		EAttackModifierMode::Coverage, Expected, Desc);
+	TestEqual(
+	"Flying/Ground resisted vs (multiType) single-Typed attackers " + Desc,
+	bPass, true
+	);
+
+	return true;
+	
+}

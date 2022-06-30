@@ -54,6 +54,12 @@ public:
 		FString& Description);
 
 	/**
+	 * Uses ArrayOfTypeArray1sAreEqual.
+	 */
+	static bool ArrayOfTypeArray2sAreEqual(const TArray<FTypeArray2*>& Actual, const TArray<FTypeArray2*>& Expected,
+		FString& Description);
+
+	/**
 	 * Returns, e.g., "[Air, Earth, Fire, Water]".
 	 */
 	static FString TypeArray1ToFString(const FTypeArray1* TypeArray1);
@@ -64,11 +70,25 @@ public:
 	static FString ArrayOfTypeArray1ToFString(const TArray<FTypeArray1*>& ArrayOfTypeArray1);
 
 	/**
-	 * Performs "UType::Analyze" (assuming attackers) and returns if the result is equal to the expected values.
+	 * Performs "UType::Analyze" depending on bAtk. Returns if the result is equal to the expected values.
+	 * For example:
+	 *	- TypesToAnalyze = {Flying, Ground} (attackers)
+	 *	- NumOpponentTypes = 2 (so we're getting all dual Type combinations)
+	*	- Range = FFloatRange{FFloatRangeBound::Exclusive(1), FFloatRangeBound::Open()} (only effective attacks)
+	 *	- bAtk = true (confirms {Flying, Ground} are attackers)
+	 *	- Mode = Coverage
+	 *	- Expected = {new FTypeArray{{B.ug, Fighting}}, new FTypeArray1{{B.ug, Fire}}, ...}
 	 */
-	static bool DoAttackAnalysis(const TArray<UType*>& AllTypes, const TArray<UType*>& Attackers, 
-		const int NumDefendingTypes, const EAttackModifierMode Mode, const TArray<FTypeArray1*>& Expected,
-		FString& Description);
+	static bool DoCombatAnalysis(const TArray<UType*>& AllTypes, const TArray<UType*>& TypesToAnalyze, 
+		const int NumOpponentTypes, const FFloatRange Range, const bool bAtk, const EAttackModifierMode Mode,
+		const TArray<FTypeArray1*>& Expected, FString& Description);
+
+	/**
+	 * Performs a test similar to DoCombatAnalysis, but for UType::AnalyzeAll.
+	 */
+	static bool DoAnalyzeAll(TArray<UType*>& AllTypes, const int NumTestedTypes, const int NumUntestedTypes,
+		const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode,
+		const TArray<FTypeArray2*>& Expected, FString& Description);
 	
 	/**
 	 * A macro to get "dummy" Types. These are of type UDummyType and inherit from UType. These are independent of

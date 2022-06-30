@@ -9,6 +9,11 @@
 #include "FTypeArray2.h"
 #include "Type.generated.h"
 
+/*
+ * Note: this is an interesting phenomenon also seen in statistical thermodynamics and has to do with a binomial
+ *	expansion. MultiType has higher highs (hits select things much harder) and lower lows (is more easily resisted)
+ *	compared to Coverage.
+ */
 UENUM(BlueprintType)
 enum class EAttackModifierMode : uint8
 {
@@ -80,6 +85,14 @@ public:
 		const EAttackModifierMode Mode = EAttackModifierMode::MultiType);
 
 	/**
+	 * Gets the attack modifier when this Type attacks the given Type. If the attack
+	 * modifier is not defined, returns 1.
+	 * This is much safer than Type->AttackModifiers[AgainstType].Modifier.
+	 */
+	UFUNCTION(BlueprintCallable)
+	float GetAttackModifier(const UType* AgainstType);
+
+	/**
 	 * Gets Types whose defense modifiers are between Min and Max when attacked by the given AtkTypes.
 	 * For example, a range of (1, INFINITY) gets Types who are "bad against" these AtkTypes (since they receive more damage).
 	 * Pokemon example:
@@ -134,11 +147,20 @@ public:
 	
 	/**
 	 * Performs an analysis on the given Types.
-	 *		- If AnalyzeAtk, the "tested" Types are the attackers and the "untested" Types are the defenders.
+	 *		- If bAnalyzeAtk, the "tested" Types are the attackers and the "untested" Types are the defenders.
 	 *		- Ex: AnalyzeAll([all], 1, 1, [1, open), true) ==> all attacks that are 1v1 never resisted (e.g., Typeless would be in that result).
+	 *
+	 * The returned FTypeArray2 is broken into:
+	 *	- Indices, e.g., Ret[0] for the data on the first attack combination
+	 *	- Attacking combination, e.g., Ret[0].TypeArray could yield {Fire, Water} as the attackers
+	 *	- Defending combinations that fall within the given range, e.g., Ret[0].TypeArray2 could yield
+	 *		{Grass, Normal,
+	 *			Fire, Rock,
+	 *			...}
+	 *			(It's up to you to parse this array. In this example, do %2.)
 	 */
 	UFUNCTION(BlueprintCallable)
-	static TArray<UType*> AnalyzeAll(TArray<UType*> Types, const int NumTestedTypes, const int NumUntestedTypes,
+	static TArray<FTypeArray2> AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
 		const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode);
 
 #pragma endregion
@@ -196,7 +218,7 @@ public:
 	static TArray<FTypeArray1*> GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes);
 
 private:
-	static bool IncrementIndices(const TArray<UType*> Types, TArray<int>& Indices);
+	static bool IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices);
 	
 #pragma endregion
 

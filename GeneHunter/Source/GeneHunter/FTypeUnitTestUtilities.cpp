@@ -16,8 +16,8 @@ bool FTypeUnitTestUtilities::Contains(const TArray<FTypeArray1*>& Container, con
 	const bool bByName)
 {
 	return std::any_of(std::begin(Container), std::end(Container),
-								[&](FTypeArray1* Test) {
-									bool bFound = false;
+								[&](const FTypeArray1* Test) {
+									bool bFound = true;
 									for(const UType* Type : SearchTarget->TypeArray)
 									{
 										if (Type)
@@ -101,7 +101,7 @@ bool FTypeUnitTestUtilities::ArrayOfTypeArray1sAreEqual(const TArray<FTypeArray1
 	const TArray<FTypeArray1*>& Expected, FString& Description)
 {
 	bool bFound = true;
-	for(FTypeArray1* TypeArray1 : Actual)
+	for(const FTypeArray1* TypeArray1 : Actual)
 	{
 		bFound = Contains(Expected, TypeArray1);
 		if (!bFound)
@@ -115,10 +115,41 @@ bool FTypeUnitTestUtilities::ArrayOfTypeArray1sAreEqual(const TArray<FTypeArray1
 	return bFound;
 }
 
+bool FTypeUnitTestUtilities::ArrayOfTypeArray2sAreEqual(const TArray<FTypeArray2*>& Actual,
+	const TArray<FTypeArray2*>& Expected, FString& Description)
+{
+
+	/* Create 2 FTypeArray1 for each [Actual/Expected] by splitting:
+	*	- Actual = {	FTypeArray2{{A, B, C}, {a, b, c}},
+	*					FTypeArray2{{D, E, F}, {d, e, f}},
+	*					...}
+	*	- Actual1 = {	FTypeArray1{{A, B, C}},
+	*					FTypeArray1{{D, E, F}},
+	*					...}
+	*	- Actual2 = {	FTypeArray1{{a, b, c}},
+	*					FTypeArray1{{d, e, f}},
+	*					...}
+	*/
+	TArray<FTypeArray1*> Actual1, Actual2;
+	for(const FTypeArray2* TypeArray2 : Actual)
+	{
+		Actual1.Add(new FTypeArray1{TypeArray2->TypeArray});
+		Actual2.Add(new FTypeArray1{TypeArray2->TypeArray2});
+	}
+	TArray<FTypeArray1*> Expected1, Expected2;
+	for(const FTypeArray2* TypeArray2 : Expected)
+	{
+		Expected1.Add(new FTypeArray1{TypeArray2->TypeArray});
+		Expected2.Add(new FTypeArray1{TypeArray2->TypeArray2});
+	}
+	return ArrayOfTypeArray1sAreEqual(Actual1, Expected1, Description) &&
+		ArrayOfTypeArray1sAreEqual(Actual2, Expected2, Description);
+}
+
 FString FTypeUnitTestUtilities::TypeArray1ToFString(const FTypeArray1* TypeArray1)
 {
 	FString Ret = "[";
-	for(UType* Type : TypeArray1->TypeArray)
+	for(const UType* Type : TypeArray1->TypeArray)
 		Ret += Type->GetName() + ", ";
 	Ret += "]";
 	Ret = Ret.Replace(TEXT(", ]"), TEXT("]"));
@@ -135,25 +166,37 @@ FString FTypeUnitTestUtilities::ArrayOfTypeArray1ToFString(const TArray<FTypeArr
 	return Ret;
 }
 
-bool FTypeUnitTestUtilities::DoAttackAnalysis(const TArray<UType*>& AllTypes, const TArray<UType*>& Attackers,
-	const int NumDefendingTypes, const EAttackModifierMode Mode, const TArray<FTypeArray1*>& Expected,
-	FString& Description)
+bool FTypeUnitTestUtilities::DoCombatAnalysis(const TArray<UType*>& AllTypes, const TArray<UType*>& TypesToAnalyze,
+	const int NumOpponentTypes, const FFloatRange Range, const bool bAtk, const EAttackModifierMode Mode,
+	const TArray<FTypeArray1*>& Expected, FString& Description)
 {
-	// Get array of FTypeArray1 (one or two for each Type in AllDummyTypes)
-	const TArray<FTypeArray1*> DefenderTypes = UType::GetAllTypeCombinations(AllTypes, NumDefendingTypes);
+	// Get array of FTypeArray1 (either defenders or attackers)
+	const TArray<FTypeArray1*> OpponentTypes = UType::GetAllTypeCombinations(AllTypes, NumOpponentTypes);
 	
-	// Get the UTypes (actual) that Ground + Flying are effective against
-	const TArray<FTypeArray1*> Analysis = UType::Analyze(Attackers, DefenderTypes,
-		FFloatRange{
-				FFloatRangeBound::Exclusive(1),
-				FFloatRangeBound::Open()
-				},
+	// Get the UTypes (actual) that fall within the given range
+	const TArray<FTypeArray1*> Analysis = UType::Analyze(TypesToAnalyze, OpponentTypes,
+				Range,
 				Mode,
-				true,
+				bAtk,
 				true
 			);
 
-
 	// Test it
 	return ArrayOfTypeArray1sAreEqual(Analysis, Expected, Description);
+}
+
+bool FTypeUnitTestUtilities::DoAnalyzeAll(TArray<UType*>& AllTypes, const int NumTestedTypes, const int NumUntestedTypes,
+		const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode,
+		const TArray<FTypeArray2*>& Expected, FString& Description)
+{
+	
+	// Get the FTypeArray2 (actual) that fall within the given range
+	TArray<FTypeArray2> Analysis = UType::AnalyzeAll(AllTypes, NumTestedTypes, NumUntestedTypes, Range, bAnalyzeAtk,
+		Mode);
+	TArray<FTypeArray2*> AnalysisPointer;
+	for(FTypeArray2& TypeArray2 : Analysis)
+		AnalysisPointer.Add(std::addressof(TypeArray2));
+
+	// Test it
+	return ArrayOfTypeArray2sAreEqual(AnalysisPointer, Expected, Description);
 }

@@ -83,8 +83,12 @@ bool FUType_Combat_Attack_MultiType_DualDefender::RunTest(const FString& Paramet
 	
 	// Do the tests
 	FString Desc = "";
-	const bool bPass = FTypeUnitTestUtilities::DoAttackAnalysis(AllTypes, {Flying, Ground}, 2,
-		EAttackModifierMode::MultiType, Expected, Desc);
+	const bool bPass = FTypeUnitTestUtilities::DoCombatAnalysis(AllTypes, {Flying, Ground}, 2,
+		FFloatRange{
+				FFloatRangeBound::Exclusive(1),
+				FFloatRangeBound::Open()
+				},
+		true, EAttackModifierMode::MultiType, Expected, Desc);
 	TestEqual(
 	"Flying/Ground multi-Type effective attack vs dual-Typed defenders " + Desc,
 	bPass, true

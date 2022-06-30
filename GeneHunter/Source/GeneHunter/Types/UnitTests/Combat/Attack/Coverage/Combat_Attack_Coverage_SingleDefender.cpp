@@ -39,8 +39,12 @@ bool FUType_Combat_Attack_Coverage_SingleDefender::RunTest(const FString& Parame
 		
 	// Do the test
 	FString Desc = "";
-	const bool bPass = FTypeUnitTestUtilities::DoAttackAnalysis(AllTypes, {Flying, Ground}, 1,
-		EAttackModifierMode::Coverage, Expected, Desc);
+	const bool bPass = FTypeUnitTestUtilities::DoCombatAnalysis(AllTypes, {Flying, Ground}, 1,
+		FFloatRange{
+				FFloatRangeBound::Exclusive(1),
+				FFloatRangeBound::Open()
+				},
+		true, EAttackModifierMode::Coverage, Expected, Desc);
 	TestEqual(
 	"Flying/Ground coverage effective attack vs singly-Typed defenders " + Desc,
 	bPass, true
