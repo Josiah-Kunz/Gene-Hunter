@@ -22,7 +22,7 @@ bool FUType_Combat_Defend_Coverage_SingleAttacker::RunTest(const FString& Parame
 		AllTypes.Add(DummyType);
 
 	// Define success:
-	const TArray<FTypeArray1*> Expected = {
+	const TArray<FTypeArray1D*> Expected = {
 
 		/* Flying singly resists:
 		 *	- Ground
@@ -30,9 +30,9 @@ bool FUType_Combat_Defend_Coverage_SingleAttacker::RunTest(const FString& Parame
 		 *	- Fighting
 		 *	- Grass [no; Ground is weak to Grass]
 		 */ 
-		new FTypeArray1{{Ground}},
-		new FTypeArray1{{Bug}},
-		new FTypeArray1{{Fighting}},
+		new FTypeArray1D{{Ground}},
+		new FTypeArray1D{{Bug}},
+		new FTypeArray1D{{Fighting}},
 
 		/*
 		 * Ground singly resists:
@@ -40,21 +40,15 @@ bool FUType_Combat_Defend_Coverage_SingleAttacker::RunTest(const FString& Parame
 		 *  - Poison
 		 *  - Rock [no; Flying is weak to Rock]
 		 */
-		new FTypeArray1{{Electric}},
-		new FTypeArray1{{Poison}},
+		new FTypeArray1D{{Electric}},
+		new FTypeArray1D{{Poison}},
 		
 	};
 	
 	// Do the tests
 	FString Desc = "";
 	const bool bPass = FTypeUnitTestUtilities::DoCombatAnalysis(AllTypes, {Flying, Ground},
-		1,
-		FFloatRange{
-			FFloatRangeBound::Open(),
-			FFloatRangeBound::Exclusive(1)
-		},
-		false,
-		EAttackModifierMode::Coverage, Expected, Desc);
+		1, UType::INEFFECTIVE, false, EAttackModifierMode::Coverage, Expected, Desc);
 	TestEqual(
 	"Flying/Ground resisted vs (multiType) single-Typed attackers " + Desc,
 	bPass, true

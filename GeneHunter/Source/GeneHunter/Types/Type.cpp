@@ -55,15 +55,15 @@ float UType::GetAttackModifier(const UType* AgainstType)
 }
 
 
-TArray<FTypeArray1*> UType::Analyze(const TArray<UType*>& TypesToAnalyze, const TArray<FTypeArray1*>& AgainstTypes,
+TArray<FTypeArray1D*> UType::Analyze(const TArray<UType*>& TypesToAnalyze, const TArray<FTypeArray1D*>& AgainstTypes,
 	const FFloatRange Range, const EAttackModifierMode Mode, const bool bAtk, const bool bDebug)
 {
 	
-	TArray<FTypeArray1*> Ret;
+	TArray<FTypeArray1D*> Ret;
 	float OverallModifier = 1;
 
 	// Loop over, e.g., {{Fire, Water}, {Fire, Grass}, {Grass, Water}, ...}
-	for(FTypeArray1* AgainstInfo : AgainstTypes)
+	for(FTypeArray1D* AgainstInfo : AgainstTypes)
 	{
 
 		// Debug
@@ -71,8 +71,8 @@ TArray<FTypeArray1*> UType::Analyze(const TArray<UType*>& TypesToAnalyze, const 
 			UE_LOG(LogTemp, Display, TEXT("======================="));
 
 		// Rely on another function
-		const float Modifier = GetNetModifier(bAtk ? TypesToAnalyze : AgainstInfo->TypeArray,
-			bAtk ? AgainstInfo->TypeArray : TypesToAnalyze,
+		const float Modifier = GetNetModifier(bAtk ? TypesToAnalyze : AgainstInfo->Array,
+			bAtk ? AgainstInfo->Array : TypesToAnalyze,
 			Mode, bDebug);
 
 		// All done with combining types; add?
@@ -143,7 +143,13 @@ float UType::GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>
 	return Modifier;
 }
 
-TArray<FTypeArray2> UType::AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
+float UType::GetNetModifier(const FTypeArray1D AtkTypes, const FTypeArray2D DefTypes, const EAttackModifierMode Mode, const bool bDebug)
+{
+	return GetNetModifier(AtkTypes.Array, DefTypes.Array, Mode, bDebug);
+}
+
+
+TArray<FTypeArray2D> UType::AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
 	const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode)
 {
 
@@ -192,7 +198,7 @@ TArray<FTypeArray2> UType::AnalyzeAll(TArray<UType*>& Types, const int NumTested
 	 */
 	
 	// The returned variable
-	TArray<FTypeArray2> Analysis;
+	TArray<FTypeArray2D> Analysis;
 	
 	// User is being dumb
 	if (Types.Num() == 0 ||
@@ -218,10 +224,10 @@ TArray<FTypeArray2> UType::AnalyzeAll(TArray<UType*>& Types, const int NumTested
 	{
 
 		// Get the attacking Type combination based on current indices
-		FTypeArray2 A;
+		FTypeArray2D A;
 		Analysis.Add(A);
 		for (i=0; i<NumTestedTypes;i++)
-			Analysis.Last().TypeArray.Add(Types[TestedIndices[i]]);
+			Analysis.Last().Array.Add(Types[TestedIndices[i]]);
 		
 		// Reset defending indices (since we're about to iterate over them)
 		UntestedIndices = {0};
@@ -239,14 +245,14 @@ TArray<FTypeArray2> UType::AnalyzeAll(TArray<UType*>& Types, const int NumTested
 				TypeCandidates.Add(Types[UntestedIndices[i]]);
 
 			// Get the [best] modifier (this is the meat; everything else is just bookkeeping!)
-			AtkTypes = bAnalyzeAtk ? Analysis.Last().TypeArray : TypeCandidates;
-			DefTypes = bAnalyzeAtk ? TypeCandidates : Analysis.Last().TypeArray;
+			AtkTypes = bAnalyzeAtk ? Analysis.Last().Array : TypeCandidates;
+			DefTypes = bAnalyzeAtk ? TypeCandidates : Analysis.Last().Array;
 			Modifier = GetNetModifier(AtkTypes, DefTypes, Mode);
 			
 			// Check success
 			if (Range.Contains(Modifier))
 				for (UType* SuccessfulType : TypeCandidates)
-					Analysis.Last().TypeArray2.Add(SuccessfulType);
+					Analysis.Last().Array2.Add(SuccessfulType);
 			
 			// Iterate
 			if (IncrementIndices(Types, UntestedIndices)) // Never able to iterate; must be at the end of all possible Type combinations
@@ -265,92 +271,53 @@ TArray<FTypeArray2> UType::AnalyzeAll(TArray<UType*>& Types, const int NumTested
 
 #pragma endregion
 
-#pragma region Sorting for debug purposes
-
-TArray<FTypeArray1*> UType::GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes)
-{
-
-	TArray<FTypeArray1*> Ret = {};
-	
-	// User is being dumb
-	if (Types.Num() == 0 || NumTypes < 1 || Types.Num() < NumTypes)
-			return Ret;
-
-	// Setup trackers
-	TArray Indices = {0};
-	for(int i=1; i<NumTypes; i++)
-		Indices.Add(Indices[i-1] + 1);
-
-	// Loop until options are exhausted
-	int Failsafe = 0;
-	while (Failsafe < UGeneHunterBPLibrary::MAX_ITERATIONS && Indices[0] <= Types.Num() - NumTypes)
-	{
-
-		// Populate TypeInfo
-		FTypeArray1* TypeInfo = new FTypeArray1{{}};
-		for (int i=0; i<NumTypes;i++)
-			TypeInfo->TypeArray.Add(Types[Indices[i]]);
-
-		// Add newest entry
-		Ret.Add(TypeInfo);
-		
-		// Iterate
-		if (IncrementIndices(Types, Indices)) // Never able to iterate; must be at the end of all possible Type combinations
-			break;
-		Failsafe++;
-	}
-
-	// Return
-	return Ret;
-	
-}
-
+/*
 void UType::SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes,
-	const FFloatRange Range, const EAttackModifierMode Mode, TArray<FTypeArray2>& Sorted)
+	const FFloatRange Range, const EAttackModifierMode Mode, TArray<FTypeArray2D>& Sorted)
 {
 
 	// Get unsorted list
-	TArray<FTypeArray1*> Attackers = GetAllTypeCombinations(Types, NumAtkTypes);
-	TArray<FTypeArray1*> Defenders = GetAllTypeCombinations(Types, NumDefTypes);
+	TArray<FTypeArray1D*> Attackers = GetAllTypeCombinations(Types, NumAtkTypes);
+	TArray<FTypeArray1D*> Defenders = GetAllTypeCombinations(Types, NumDefTypes);
 
-	// In "Sorted", TypeArray is the attack combinations and TypeArray2 is the defenders
+	// In "Sorted", Array is the attack combinations and TypeArray2D is the defenders
 	// For example, using Pokemon rules, some entries could be:
 	//	-----------------------------
 	//	If multitype:
-	//		- Sorted[0].TypeArray = {Fire, Water}
-	//		- Sorted[0].TypeArray2 = {Steel, Normal,
+	//		- Sorted[0].Array = {Fire, Water}
+	//		- Sorted[0].TypeArray2D = {Steel, Normal,
 	//									Ice, Electric, ...}
 	//
 	//	If coverage:
-	//		- Sorted[0].TypeArray = {Fire, Water}
-	//		- Sorted[0].TypeArray2 = {Grass, Normal,		(because Fire alone would suffice)
+	//		- Sorted[0].Array = {Fire, Water}
+	//		- Sorted[0].TypeArray2D = {Grass, Normal,		(because Fire alone would suffice)
 	//									Fire, Rock, ...}	(because Water alone would suffice)
 	Sorted = {};
 	for(int i=0; i<Attackers.Num(); i++)
 	{
 
-		// Attacking types (TypeArray)
-		const TArray<UType*> AtkTypes = Attackers[i]->TypeArray;
+		// Attacking types (Array)
+		const TArray<UType*> AtkTypes = Attackers[i]->Array;
 
 		// Defending types that fall within range
 		TArray<UType*> DefTypes = {};
-		TArray<FTypeArray1*> AnalysisResult = Analyze(Attackers[i]->TypeArray, Defenders, Range, Mode, true);
-		for(FTypeArray1* TypeInfo : AnalysisResult)
-			for(UType* Type : TypeInfo->TypeArray)
+		TArray<FTypeArray1D*> AnalysisResult = Analyze(Attackers[i]->Array, Defenders, Range, Mode, true);
+		for(FTypeArray1D* TypeInfo : AnalysisResult)
+			for(UType* Type : TypeInfo->Array)
 				DefTypes.Add(Type);
 		
 		// Construct and add
-		FTypeArray2 TypeInfo = FTypeArray2{AtkTypes, DefTypes};
+		FTypeArray2D TypeInfo = FTypeArray2D{AtkTypes, DefTypes};
 		Sorted.Add(TypeInfo);
 	}
 
 	// Sort based on number of DefTypes
-	Sorted.Sort([Range, Defenders, Mode](const FTypeArray1& A, const FTypeArray1& B)
+	Sorted.Sort([Range, Defenders, Mode](const FTypeArray1D& A, const FTypeArray1D& B)
 	{
 
 		// Get number of advantages (or whatever based on Range)
-		int NumA = A.TypeArray.Num();
-		int NumB = B.TypeArray.Num();
+		int NumA = A.Array.Num();
+		int NumB = B.Array.Num();
 
 		// If they're equal, sort "ThenBy"
 		if (NumA == NumB)
@@ -373,8 +340,8 @@ void UType::SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes
 				};
 
 			// Make decision
-			NumA = Analyze(A.TypeArray, Defenders, InverseRange, Mode, true).Num();
-			NumB = Analyze(B.TypeArray, Defenders, InverseRange, Mode, true).Num();
+			NumA = Analyze(A.Array, Defenders, InverseRange, Mode, true).Num();
+			NumB = Analyze(B.Array, Defenders, InverseRange, Mode, true).Num();
 			return NumA < NumB;
 		}
 		
@@ -382,295 +349,10 @@ void UType::SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes
 		return NumA > NumB;
 	});
 }
-
-void UType::SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorted, const FFloatRange Range)
-{
-	/*
-	Sorted = Types;
-	Sorted.Sort([Range](const UType& A, const UType& B)
-	{
-		// "Sort" requires references, but the other functions require pointers (since UType can be null)
-		UType* PointerA = const_cast<UType*>(&A);
-		UType* PointerB = const_cast<UType*>(&B);
-
-		// Get number of advantages (or whatever)
-		int NumA = AnalyzeVsSingle({PointerA}, Range, EAttackModifierMode::Coverage, false).Num();
-		int NumB = AnalyzeVsSingle({PointerB}, Range, EAttackModifierMode::Coverage, false).Num();
-
-		// If they're equal, sort "ThenBy"
-		if (NumA == NumB)
-		{
-			// If getting "resisted" Types, tiebreaker is "goodness" (least number of weaknesses)
-			if (Range.GetLowerBound().GetValue() < 1)
-			{
-				NumA = AnalyzeVsSingle({PointerA},
-					FFloatRange{
-					FFloatRangeBound::Exclusive(Range.GetUpperBound().GetValue()),
-					FFloatRangeBound::Open()
-					},
-					EAttackModifierMode::Coverage, false).Num();
-				NumB = AnalyzeVsSingle({PointerB},
-					FFloatRange{
-					FFloatRangeBound::Exclusive(Range.GetUpperBound().GetValue()),
-					FFloatRangeBound::Open()
-					},
-					EAttackModifierMode::Coverage, false).Num();
-				return NumA < NumB;
-			}
-
-			// If getting "weak to" Types, tiebreaker is "badness" (least number of resisted Types)
-			NumA = AnalyzeVsSingle({PointerA},
-				FFloatRange{
-				FFloatRangeBound::Open(),
-				FFloatRangeBound::Exclusive(Range.GetLowerBound().GetValue())
-				},
-				EAttackModifierMode::Coverage, false).Num();
-			NumB = AnalyzeVsSingle({PointerB},
-				FFloatRange{
-				FFloatRangeBound::Open(),
-				FFloatRangeBound::Exclusive(Range.GetLowerBound().GetValue())
-				},
-				EAttackModifierMode::Coverage, false).Num();
-			return NumA < NumB;
-		}
-
-		// Not equal; return as usual
-	return NumA > NumB;
-	});
-	*/
-	
-	/*Sorted.Sort([Min, Max, Inclusive](const UType& A, const UType& B)
-	{
-		const int NumA = A.GetDefendingTypesBetween(Min, Max, Inclusive).Num();
-		const int NumB = B.GetDefendingTypesBetween(Min, Max, Inclusive).Num();
-		if (NumA == NumB)
-		{
-			// Getting "resisted" Types; tiebreaker is "goodness" (least number of weaknesses)
-			if (Min < 1)
-				return A.GetDefendingTypesBetween(Max, INFINITY, false).Num() < B.GetDefendingTypesBetween(Max, INFINITY, false).Num();
-			
-			// Getting "weak to" Types; tiebreaker is "badness" (least number of resisted Types)
-			return A.GetDefendingTypesBetween(-INFINITY, Min, false).Num() < B.GetDefendingTypesBetween(-INFINITY, Min, false).Num();
-		}
-		return NumA > NumB;
-	});*/
-}
-
-void UType::SortTypesAttackingRatio(const TArray<UType*> Types, TArray<UType*>& Sorted)
-{
-	Sorted = Types;
-	/*Sorted.Sort([](const UType&A, const UType& B)
-	{
-		// Get ratios for A and B
-		const int EffectiveA = A.GetAttackingTypesBetween(1, INFINITY, false).Num();
-		const int IneffectiveA = A.GetAttackingTypesBetween(-INFINITY, 1, false).Num();
-		if (IneffectiveA == 0)
-			return true;
-		const int EffectiveB = B.GetAttackingTypesBetween(1, INFINITY, false).Num();
-		const int IneffectiveB = B.GetAttackingTypesBetween(-INFINITY, 1, false).Num();
-		if (IneffectiveB == 0)
-			return false;
-		const float RatioA = EffectiveA/static_cast<float>(IneffectiveA);
-		const float RatioB = EffectiveB/static_cast<float>(IneffectiveB);
-		
-		// If equal, defer to the one whose numerator is bigger
-		if (FMath::IsNearlyEqual(RatioA, RatioB))
-			return EffectiveA > EffectiveB;
-
-		// Judge accordingly
-		return  RatioA > RatioB ;
-	});*/
-}
-
-void UType::SortTypesDefendingRatio(const TArray<UType*> Types, TArray<UType*>& Sorted)
-{
-	Sorted = Types;
-	/*Sorted.Sort([](const UType&A, const UType& B)
-	{
-		// Get ratios for A and B
-		const int ResistedA = A.GetDefendingTypesBetween(-INFINITY, 1, false).Num();
-		const int WeakToA = A.GetDefendingTypesBetween(1, INFINITY, false).Num();
-		if (WeakToA == 0)
-			return true;
-		const int ResistedB = B.GetDefendingTypesBetween(-INFINITY, 1, false).Num();
-		const int WeakToB = B.GetDefendingTypesBetween(1, INFINITY, false).Num();
-		if (WeakToB == 0)
-			return false;
-		const float RatioA = ResistedA/static_cast<float>(WeakToA);
-		const float RatioB = ResistedB/static_cast<float>(WeakToB);
-		
-		// If equal, defer to the one whose numerator is bigger
-		if (FMath::IsNearlyEqual(RatioA, RatioB))
-			return ResistedA > ResistedB;
-
-		// Judge accordingly
-		return  RatioA > RatioB ;
-	});*/
-}
-
-void UType::GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, const int NumAtkTypes, const int NumDefTypes)
-{
-
-	/*
-	 *	Visualization of algorithm
-	 *	==========================
-	 *
-	 *		- In this example, there are 10 Types A-J
-	 *		- In this example, NumTypes=4
-	 *		- The iteration count is boxed on the left
-	 *		- E.g., in the zeroth iteration, Types ABCD are tested
-	 *
-	 *	0 |
-	 *	--
-	 *		A B C D E F G H I J
-	 *		0 1 2 3
-	 *
-	 *	1 |
-	 *	--
-	 *		A B C D E F G H I J
-	 *		0 1 2   3
-	 *
-	 *	...
-	 *
-	 *	6 |
-	 *	--
-	 *		A B C D E F G H I J
-	 *		0 1 2             3
-	 *
-	 *	7 |
-	 *	--
-	 *		A B C D E F G H I J
-	 *		0 1   2 3
-	 *
-	 *	Penultimate |
-	 *	------------
-	 *		A B C D E F G H I J
-	 *		          0   1 2 3
-	 *
-	 *	Final |
-	 *	------
-	 *		A B C D E F G H I J
-	 *		            0 1 2 3
-	 *
-	 */
-
-	// User is being dumb
-	if (Types.Num() == 0 ||
-		NumAtkTypes < 1 || Types.Num() < NumAtkTypes ||
-		NumDefTypes < 1 || Types.Num() < NumDefTypes)
-		return;
-
-	// Vars
-	bool bSuccess;							// Determines if all Types were hit at least neutrally
-	TArray<int> AtkIndices = {0};			// The indices of the Types in AtkTypes. E.g., if Fire/Water is being tested, this may be {4, 13} (or whatever).
-	TArray<int> DefIndices = {0};			// Same with defenders
-	TArray<UType*> AtkTypes;				// The combination that is attacking
-	TArray<UType*> DefTypes;				// The combination that is defending
-	int i;									// Dummy ints
-	float Modifier;
-	
-	// Initialize Types being tested
-	for(i=1; i<NumAtkTypes; i++)
-		AtkIndices.Add(AtkIndices[i-1] + 1);	// {0, 1, 2, 3}
-
-	// Loop until all options are exhausted
-	int Failsafe1 = 0, Failsafe2;
-	while (Failsafe1 < UGeneHunterBPLibrary::MAX_ITERATIONS && AtkIndices[0] <= Types.Num() - NumAtkTypes)
-	{
-
-		// Get the attacking Type combination based on indices
-		AtkTypes.Empty();
-		for (i=0; i<NumAtkTypes;i++)
-			AtkTypes.Add(Types[AtkIndices[i]]);
-
-		// Reset defending indices
-		DefIndices = {0};
-		for(i=1; i<NumDefTypes;i++)
-			DefIndices.Add(DefIndices[i-1]+1);
-		
-		// Test this combination's effectiveness against all other Types
-		bSuccess = true;
-		Failsafe2 = 0;
-		while (Failsafe2 < UGeneHunterBPLibrary::MAX_ITERATIONS && DefIndices[0] <= Types.Num() - NumDefTypes)
-		{
-
-			// Get the attacking Type combination based on indices
-			DefTypes.Empty();
-			for (i=0; i<NumDefTypes;i++)
-				DefTypes.Add(Types[DefIndices[i]]);
-			//Modifier = GetNetModifier(AtkTypes, DefTypes, ModifierFetchMode::Max);
-			Modifier = 1;
-			
-			FString attackers, defenders;
-			for(const auto& Atks :AtkTypes)
-				attackers += Atks->GetName() + " ";
-			for(const auto& Defs :DefTypes)
-				defenders += Defs->GetName() + " ";
-			const FString logmsg = TEXT("[" + attackers + "] vs [" + defenders + "] = " + FString::SanitizeFloat(Modifier));
-			GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red, logmsg);
-			UE_LOG(LogBlueprint, Warning, TEXT("%s"), *logmsg);
-			
-			if (Modifier < 1)
-			{
-				bSuccess = false;
-				break;
-			}
-			
-			// Iterate
-			if (IncrementIndices(Types, DefIndices)) // Never able to iterate; must be at the end of all possible Type combinations
-				break;
-			Failsafe2++;
-		}
-		if (bSuccess)
-			for (UType* SuccessfulType : AtkTypes)
-				Coverage.Add(SuccessfulType);
-		
-		
-		// Iterate
-		if (IncrementIndices(Types, AtkIndices)) // Never able to iterate; must be at the end of all possible Type combinations
-			break;
-		Failsafe1++;
-	}
-}
-
-bool UType::IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices)
-{
-
-	/*
-	 *	In this example, we have five types and three indices:
-	 *		Indices = {1, 2, 5}
-	 *		Types.Num() ==> 5
-	 */
-	
-	bool Ret = true;
-	int i=Indices.Num()-1;	// Start at the last index (e.g., the "5" in {1, 2, 5})
-	while (Ret && i>=0)
-	{
-		Indices[i]++;		// Increment this index (e.g., the "5" becomes a "6", which is over cap)
-		if (Indices[i] >= Types.Num() - ((Indices.Num()-1)-i))	// i=2's cap is 5; i=1's cap is 4; etc.
-		{
-			i--;			// Go to the previous index (e.g, the "2")
-		} else
-		{
-			Ret = false;
-			for(int j=i+1; j<Indices.Num();j++)	// This i works! Reset its following Indices (e.g., if i=1 was validly set to "3", set i=2 to "4")
-				Indices[j] = Indices[i]+(j-i);
-		}
-	}
-	return Ret;
-}
-
-
-
-#pragma endregion
+*/
 
 #pragma region Getting Types
 
-
-/*
- * Gets the Type Assets (not the Types themselves).
- * @param SortABC If true, sorts the Types alphabetically. Make false to improve performance.
- */
 void UType::GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC)
 {
 	const FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
@@ -679,12 +361,6 @@ void UType::GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC
 		UGeneHunterBPLibrary::SortAssetsAlphabetically(TypeAssets, TypeAssets);
 }
 
-/*
- * Gets all Types.
- * @param Types The returned array filled with Types found in the assets (see GetAllTypeAssets).
- * @param Exclude A list of Types to exclude from this list.
- * @param SortABC If true, sorts the Types alphabetically. Make false to improve performance.
- */
 void UType::GetAllTypes(TArray<UType*>& Types, const TArray<UType*> Exclude, const bool bSortABC)
 {
 	Types.Empty();
@@ -700,19 +376,49 @@ void UType::GetAllTypes(TArray<UType*>& Types, const TArray<UType*> Exclude, con
 	}
 }
 
-/*
- * Gets all Types.
- * @param Types The returned array filled with Types found in the assets (see GetAllTypeAssets).
- * @param SortABC If true, sorts the Types alphabetically. Make false to improve performance.
- */
 void UType::GetAllTypes(TArray<UType*>& Types, const bool bSortABC)
 {
 	GetAllTypes(Types, {}, bSortABC);
 }
 
-/*
- *	Deletes "None" entries in Type->AttackModifiers. This cannot be done by Blueprint methods (afaik).
- */
+TArray<FTypeArray1D*> UType::GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes)
+{
+
+	TArray<FTypeArray1D*> Ret = {};
+	
+	// User is being dumb
+	if (Types.Num() == 0 || NumTypes < 1 || Types.Num() < NumTypes)
+		return Ret;
+
+	// Setup trackers
+	TArray Indices = {0};
+	for(int i=1; i<NumTypes; i++)
+		Indices.Add(Indices[i-1] + 1);
+
+	// Loop until options are exhausted
+	int Failsafe = 0;
+	while (Failsafe < UGeneHunterBPLibrary::MAX_ITERATIONS && Indices[0] <= Types.Num() - NumTypes)
+	{
+
+		// Populate TypeInfo
+		FTypeArray1D* TypeInfo = new FTypeArray1D{{}};
+		for (int i=0; i<NumTypes;i++)
+			TypeInfo->Array.Add(Types[Indices[i]]);
+
+		// Add newest entry
+		Ret.Add(TypeInfo);
+		
+		// Iterate
+		if (IncrementIndices(Types, Indices)) // Never able to iterate; must be at the end of all possible Type combinations
+			break;
+		Failsafe++;
+	}
+
+	// Return
+	return Ret;
+	
+}
+
 void UType::PruneTypeAttackMods(UType* Type)
 {
 
@@ -747,6 +453,33 @@ TArray<UType*> UType::GetAllTypesFromSeeds(TArray<UType*> TypesSeeds)
 	return Ret;
 }
 
+bool UType::IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices)
+{
+
+	/*
+	 *	In this example, we have five types and three indices:
+	 *		Indices = {1, 2, 5}
+	 *		Types.Num() ==> 5
+	 */
+	
+	bool Ret = true;
+	int i=Indices.Num()-1;	// Start at the last index (e.g., the "5" in {1, 2, 5})
+	while (Ret && i>=0)
+	{
+		Indices[i]++;		// Increment this index (e.g., the "5" becomes a "6", which is over cap)
+		if (Indices[i] >= Types.Num() - ((Indices.Num()-1)-i))	// i=2's cap is 5; i=1's cap is 4; etc.
+			{
+			i--;			// Go to the previous index (e.g, the "2")
+			} else
+			{
+				Ret = false;
+				for(int j=i+1; j<Indices.Num();j++)	// This i works! Reset its following Indices (e.g., if i=1 was validly set to "3", set i=2 to "4")
+					Indices[j] = Indices[i]+(j-i);
+			}
+	}
+	return Ret;
+}
+
 void UType::InitializeModifier(float& Modifier, const EAttackModifierMode Mode)
 {
 	switch (Mode)
@@ -765,6 +498,5 @@ void UType::InitializeModifier(float& Modifier, const EAttackModifierMode Mode)
 		UE_LOG(LogTemp, Error, TEXT("Mode not coded for in Type::InitializeModifier! Fix ASAP!"));
 	}
 }
-
 
 #pragma endregion

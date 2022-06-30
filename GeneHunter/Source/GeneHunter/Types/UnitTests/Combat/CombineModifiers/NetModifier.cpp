@@ -21,32 +21,32 @@ bool FUType_Combat_NetModifier::RunTest(const FString& Parameters)
 		TestEqual(
 			"NetModifier (Ground vs. Fighting + Bug should be ineffective)",
 			UType::GetNetModifier({Ground}, {Fighting, Bug},
-				EAttackModifierMode::MultiType, true),
+				EAttackModifierMode::MultiType, FTypeUnitTestUtilities::DEBUG),
 			0.5F,FTypeUnitTestUtilities::TOLERANCE);
 		TestEqual(
 			"NetModifier (Ground vs. Electric + Bug should be neutral)",
 			UType::GetNetModifier({Ground}, {Bug, Electric},
-				EAttackModifierMode::MultiType, true),
+				EAttackModifierMode::MultiType, FTypeUnitTestUtilities::DEBUG),
 			1,FTypeUnitTestUtilities::TOLERANCE);
 		TestEqual(
 			"NetModifier (Ground vs. Fighting + Electric should be effective)",
 			UType::GetNetModifier({Ground}, {Fighting, Electric},
-				EAttackModifierMode::MultiType, true),
+				EAttackModifierMode::MultiType, FTypeUnitTestUtilities::DEBUG),
 			2,FTypeUnitTestUtilities::TOLERANCE);
 		TestEqual(
 			"NetModifier (Flying + Ground [multi-Type] vs. Flying + Electric should be ineffective)",
 			UType::GetNetModifier({Flying, Ground}, {Flying, Electric},
-				EAttackModifierMode::MultiType, true),
+				EAttackModifierMode::MultiType, FTypeUnitTestUtilities::DEBUG),
 			0,FTypeUnitTestUtilities::TOLERANCE);
 		TestEqual(
 			"NetModifier (Flying + Ground [multi-Type] vs. Bug + Grass should be neutral)",
 			UType::GetNetModifier({Flying, Ground}, {Bug, Grass},
-				EAttackModifierMode::MultiType, true),
+				EAttackModifierMode::MultiType, FTypeUnitTestUtilities::DEBUG),
 			1,FTypeUnitTestUtilities::TOLERANCE);
 		TestEqual(
 			"NetModifier (Flying + Ground [multi-Type] vs. Ground + Fighting should be effective)",
 			UType::GetNetModifier({Flying, Ground}, {Ground, Fighting},
-				EAttackModifierMode::MultiType, true),
+				EAttackModifierMode::MultiType, FTypeUnitTestUtilities::DEBUG),
 			2,FTypeUnitTestUtilities::TOLERANCE);
 	} else
 	{

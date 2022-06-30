@@ -22,29 +22,25 @@ bool FUType_Combat_Attack_Coverage_SingleDefender::RunTest(const FString& Parame
 		AllTypes.Add(DummyType);
 
 	// Define success:
-	const TArray<FTypeArray1*> Expected = {
+	const TArray<FTypeArray1D*> Expected = {
 		
 		// Flying singly-Typed defenders 
-		new FTypeArray1{{Bug}},
-		new FTypeArray1{{Fighting}},
-		new FTypeArray1{{Grass}},
+		new FTypeArray1D{{Bug}},
+		new FTypeArray1D{{Fighting}},
+		new FTypeArray1D{{Grass}},
 
 		// Ground singly-Typed defenders 
-		new FTypeArray1{{Electric}},
-		new FTypeArray1{{Fire}},
-		new FTypeArray1{{Poison}},
-		new FTypeArray1{{Rock}},
-		new FTypeArray1{{Steel}},
+		new FTypeArray1D{{Electric}},
+		new FTypeArray1D{{Fire}},
+		new FTypeArray1D{{Poison}},
+		new FTypeArray1D{{Rock}},
+		new FTypeArray1D{{Steel}},
 		};
 		
 	// Do the test
 	FString Desc = "";
 	const bool bPass = FTypeUnitTestUtilities::DoCombatAnalysis(AllTypes, {Flying, Ground}, 1,
-		FFloatRange{
-				FFloatRangeBound::Exclusive(1),
-				FFloatRangeBound::Open()
-				},
-		true, EAttackModifierMode::Coverage, Expected, Desc);
+		UType::EFFECTIVE, true, EAttackModifierMode::Coverage, Expected, Desc);
 	TestEqual(
 	"Flying/Ground coverage effective attack vs singly-Typed defenders " + Desc,
 	bPass, true

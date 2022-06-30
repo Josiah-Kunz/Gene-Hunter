@@ -5,8 +5,8 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "../AttackModifier.h"
-#include "FTypeArray1.h"
-#include "FTypeArray2.h"
+#include "FTypeArray1D.h"
+#include "FTypeArray2D.h"
 #include "Type.generated.h"
 
 /*
@@ -30,7 +30,20 @@ class GENEHUNTER_API UType : public UPrimaryDataAsset
 	GENERATED_BODY()
 
 public:
+
+#pragma region Constants
 	
+	inline static const FFloatRange EFFECTIVE = FFloatRange{
+		FFloatRangeBound::Exclusive(1),
+		FFloatRangeBound::Open()
+	};
+	inline static const FFloatRange INEFFECTIVE =  FFloatRange{
+		FFloatRangeBound::Open(),
+		FFloatRangeBound::Exclusive(1)
+	};
+	
+#pragma endregion
+
 #pragma region Variables
 	
 	/**
@@ -93,26 +106,6 @@ public:
 	float GetAttackModifier(const UType* AgainstType);
 
 	/**
-	 * Gets Types whose defense modifiers are between Min and Max when attacked by the given AtkTypes.
-	 * For example, a range of (1, INFINITY) gets Types who are "bad against" these AtkTypes (since they receive more damage).
-	 * Pokemon example:
-	 *		- AnalyzeAtk({Flying, Ground}, 1, INFINITY, false, MultiType) ==> {Fire, Poison, Fighting}
-	 *		- AnalyzeAtk({Flying, Ground}, 1, INFINITY, false, Coverage) ==> {Electric, Fire, Poison, Rock, Steel, B.ug, Fighting, Grass}
-	 * @param TypesToAnalyze The Types doing the attacking.
-	 * @param Range If the modifier is in the given range, the matchup is "successful".
-	 * @param Mode Determines whether the analysis is being done for a single multi-Typed attack or for coverage of several attacks.
-	 * @param bAtk True if doing the analysis on attacking Types, false if on defending Types.
-	 */
-	/*
-	UFUNCTION(BlueprintCallable)
-	static TArray<UType*> AnalyzeVsSingle(
-			const TArray<UType*> TypesToAnalyze,
-			const FFloatRange Range,
-			const EAttackModifierMode Mode = EAttackModifierMode::MultiType,
-			const bool bAtk = true
-			);*/
-
-	/**
 	 * Example: 
 		* - TypesToAnalyze is the attack combinations {Fire, Water}
 		* - AgainstTypes are all possible defenders combinations of length 2 (returned from GetAllTypeCombinations(Types, 2)).
@@ -121,17 +114,17 @@ public:
 		* - bAtk = true (since TypesToAnalyze is attacking)
 		* - Using Pokemon rules, the returns should be:
 		*	- If multitype:
-		*		- Ret[0].TypeArray = {Steel, Normal}		(because Fire = 2x and Water = 1x)
-		*		- Ret[1].TypeArray = {Ground, Electric}		(because Fire = 1x and Water = 2x)
+		*		- Ret[0].Array = {Steel, Normal}		(because Fire = 2x and Water = 1x)
+		*		- Ret[1].Array = {Ground, Electric}		(because Fire = 1x and Water = 2x)
 		*		- ...
 		*	- If coverage:
-		*		- Ret[0].TypeArray = {Grass, Normal}		(because Fire alone would suffice)
-		*		- Ret[1].TypeArray = {Fire, Rock}			(because Water alone would suffice)
+		*		- Ret[0].Array = {Grass, Normal}		(because Fire alone would suffice)
+		*		- Ret[1].Array = {Fire, Rock}			(because Water alone would suffice)
 		*		- ...
 	 */
-	static TArray<FTypeArray1*> Analyze(
+	static TArray<FTypeArray1D*> Analyze(
 			const TArray<UType*>& TypesToAnalyze,
-			const TArray<FTypeArray1*>& AgainstTypes,
+			const TArray<FTypeArray1D*>& AgainstTypes,
 			const FFloatRange Range,
 			const EAttackModifierMode Mode = EAttackModifierMode::MultiType,
 			const bool bAtk = true,
@@ -141,8 +134,14 @@ public:
 	/**
 	 * Gets the net interaction between an attack (multi-Type or coverage; based on Mode) and a (multi-Type) defense.
 	 */
-	UFUNCTION(BlueprintCallable)
 	static float GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>& DefTypes,
+		const EAttackModifierMode Mode = EAttackModifierMode::Coverage, const bool bDebug = false);
+
+	/**
+	 * Gets the net interaction between an attack (multi-Type or coverage; based on Mode) and a (multi-Type) defense.
+	 */
+	UFUNCTION(BlueprintCallable)
+	static float GetNetModifier(const FTypeArray1D AtkTypes, const FTypeArray2D DefTypes,
 		const EAttackModifierMode Mode = EAttackModifierMode::Coverage, const bool bDebug = false);
 	
 	/**
@@ -150,91 +149,60 @@ public:
 	 *		- If bAnalyzeAtk, the "tested" Types are the attackers and the "untested" Types are the defenders.
 	 *		- Ex: AnalyzeAll([all], 1, 1, [1, open), true) ==> all attacks that are 1v1 never resisted (e.g., Typeless would be in that result).
 	 *
-	 * The returned FTypeArray2 is broken into:
+	 * The returned FTypeArray2D is broken into:
 	 *	- Indices, e.g., Ret[0] for the data on the first attack combination
-	 *	- Attacking combination, e.g., Ret[0].TypeArray could yield {Fire, Water} as the attackers
-	 *	- Defending combinations that fall within the given range, e.g., Ret[0].TypeArray2 could yield
+	 *	- Attacking combination, e.g., Ret[0].Array could yield {Fire, Water} as the attackers
+	 *	- Defending combinations that fall within the given range, e.g., Ret[0].TypeArray2D could yield
 	 *		{Grass, Normal,
 	 *			Fire, Rock,
 	 *			...}
 	 *			(It's up to you to parse this array. In this example, do %2.)
 	 */
 	UFUNCTION(BlueprintCallable)
-	static TArray<FTypeArray2> AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
+	static TArray<FTypeArray2D> AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
 		const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode);
 
 #pragma endregion
 
-#pragma region Sorting for debug purposes
+#pragma region Getting Types
 
 	/**
-	 * Sorts the given Types by the number of AttackModifiers within the specified range.
-	 * For example, if Water is only good attacking against Fire, it would be near the end of the list.
-	 * The returned FTypeArray2 is broken into:
-	 *	- Indices, e.g., Sorted[0] for the data on the first attack combination
-	 *	- Attacking combination, e.g., Sorted[0].TypeArray could yield {Fire, Water} as the attackers
-	 *	- Defending combinations that fall within the given range, e.g., Sorted[0].TypeArray2 could yield
-	 *		{Grass, Normal,
-	 *			Fire, Rock,
-	 *			...}
-	 *			(It's up to you to parse this array. In this example, do %2.)
+	 *	Deletes "None" entries in Type->AttackModifiers. This cannot be done by Blueprint methods (afaik).
 	 */
 	UFUNCTION(BlueprintCallable)
-	static void SortTypesAttacking(const TArray<UType*> Types, const int NumAtkTypes, const int NumDefTypes,
-		const FFloatRange Range, const EAttackModifierMode Mode, TArray<FTypeArray2>& Sorted);
+	static void PruneTypeAttackMods(UType* Type);
 
 	/**
-	 * Sorts the given Types by the number of defensible Types within the specified range.
-	 * For example, if Fire is only weak (defending) to Water, it would be near the end of the list.
+	 * Gets the Type Assets (not the Types themselves).
+	 * @param SortABC If true, sorts the Types alphabetically. Make false to improve performance.
 	 */
 	UFUNCTION(BlueprintCallable)
-	static void SortTypesDefending(const TArray<UType*> Types, TArray<UType*>& Sorted, const FFloatRange Range);
+	static void GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC = false);
 
 	/**
-	 * Sorts the given Types by the ratio of [effective:ineffective] attack modifiers from high ratio to low ratio.
-	 * For example, if Fire is effective against Nature and resisted against Water, it would be a 1:1 ratio (and hence near the middle of the list).
+	 * Gets all Types.
+	 * @param Types The returned array filled with Types found in the assets (see GetAllTypeAssets).
+	 * @param Exclude A list of Types to exclude from this list.
+	 * @param bSortABC If true, sorts the Types alphabetically. Make false to improve performance.
 	 */
-	UFUNCTION(BlueprintCallable)
-	static void SortTypesAttackingRatio(const TArray<UType*> Types, TArray<UType*>& Sorted);
+	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
+	static void GetAllTypes(TArray<UType*>& Types, const TArray<UType*> Exclude, const bool bSortABC = true);
 
-	/**
-	 * Sorts the given Types by the ratio of [resists:weak to] from high ratio to low ratio.
-	 * For example, if Nature resists Water and is weak to Fire, it would be a 1:1 ratio (and hence near the middle of the list).
-	 */
-	UFUNCTION(BlueprintCallable)
-	static void SortTypesDefendingRatio(const TArray<UType*> Types, TArray<UType*>& Sorted);
+public:
 
-	/**
-	 * Gets all combinations of attackers who have neutral coverage.
-	 * For example, in Pokemon, if NumTypes=2, Ice/Electric would be in the returned array.
+	/*
+	 * Gets all Types.
+	 * @param Types The returned array filled with Types found in the assets (see GetAllTypeAssets).
+	 * @param SortABC If true, sorts the Types alphabetically. Make false to improve performance.
 	 */
-	UFUNCTION(BlueprintCallable)
-	static void GetCoverage(const TArray<UType*> Types, TArray<UType*>& Coverage, const int NumAtkTypes=2, const int NumDefTypes=2);
+	static void GetAllTypes(TArray<UType*>& Types, const bool bSortABC = true);
 
 	/**
 	 * Lazily gets all Type combinations. If you care about performance, take a look at how AnalyzeAll handles the problem.
 	 * For example, for NumTypes = 2, this returns {A, B}, {A, C}, {A, D}, ...
 	 */
-	static TArray<FTypeArray1*> GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes);
-
-private:
-	static bool IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices);
+	static TArray<FTypeArray1D*> GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes);
 	
-#pragma endregion
-
-#pragma region Getting Types
-	
-	UFUNCTION(BlueprintCallable)
-	static void PruneTypeAttackMods(UType* Type);
-
-	UFUNCTION(BlueprintCallable)
-	static void GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC = false);
-
-	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
-	static void GetAllTypes(TArray<UType*>& Types, const TArray<UType*> Exclude, const bool bSortABC = true);
-
-public:
-	static void GetAllTypes(TArray<UType*>& Types, const bool bSortABC = true);
 #pragma endregion
 	
 private:
@@ -248,6 +216,8 @@ private:
     static TArray<UType*> GetAllTypesFromSeeds(TArray<UType*> TypesSeeds);
 
 	static void InitializeModifier(float& Modifier, const EAttackModifierMode Mode);
+
+	static bool IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices);
 
 #pragma endregion
 

@@ -22,7 +22,7 @@ bool FUType_Combat_Defend_Coverage_DualAttacker::RunTest(const FString& Paramete
 		AllTypes.Add(DummyType);
 
 	// Define success:
-	const TArray<FTypeArray1*> Expected = {
+	const TArray<FTypeArray1D*> Expected = {
 
 		/* Flying singly resists:
 		 *	- Ground
@@ -39,34 +39,28 @@ bool FUType_Combat_Defend_Coverage_DualAttacker::RunTest(const FString& Paramete
 		 */
 
 		// Ground + others
-		new FTypeArray1{{Ground, Bug}},
-		new FTypeArray1{{Ground, Fighting}},
-		new FTypeArray1{{Ground, Electric}},
-		new FTypeArray1{{Ground, Poison}},
+		new FTypeArray1D{{Ground, Bug}},
+		new FTypeArray1D{{Ground, Fighting}},
+		new FTypeArray1D{{Ground, Electric}},
+		new FTypeArray1D{{Ground, Poison}},
 
 		// B.ug + others - Ground
-		new FTypeArray1{{Bug, Fighting}},
-		new FTypeArray1{{Bug, Electric}},
-		new FTypeArray1{{Bug, Poison}},
+		new FTypeArray1D{{Bug, Fighting}},
+		new FTypeArray1D{{Bug, Electric}},
+		new FTypeArray1D{{Bug, Poison}},
 
 		// Fighting + others - Ground - B.ug
-		new FTypeArray1{{Fighting, Electric}},
-		new FTypeArray1{{Fighting, Poison}},
+		new FTypeArray1D{{Fighting, Electric}},
+		new FTypeArray1D{{Fighting, Poison}},
 
 		// Electric + others - Ground/B.ug/Fighting
-		new FTypeArray1{{Electric, Poison}},
+		new FTypeArray1D{{Electric, Poison}},
 	};
 	
 	// Do the tests
 	FString Desc = "";
 	const bool bPass = FTypeUnitTestUtilities::DoCombatAnalysis(AllTypes, {Flying, Ground},
-		2,
-		FFloatRange{
-			FFloatRangeBound::Open(),
-			FFloatRangeBound::Exclusive(1)
-		},
-		false,
-		EAttackModifierMode::Coverage, Expected, Desc);
+		2, UType::INEFFECTIVE, false, EAttackModifierMode::Coverage, Expected, Desc);
 	TestEqual(
 	"Flying/Ground resisted vs (coverage) dual-Typed attackers " + Desc,
 	bPass, true

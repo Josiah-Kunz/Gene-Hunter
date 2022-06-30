@@ -22,22 +22,18 @@ bool FUType_Combat_Attack_MultiType_SingleDefender::RunTest(const FString& Param
 		AllTypes.Add(DummyType);
 
 	// Define success 
-	const TArray<FTypeArray1*> Expected =
+	const TArray<FTypeArray1D*> Expected =
 		{
 			// Singly-Typed defenders
-			new FTypeArray1{{Fire}},
-			new FTypeArray1{{Fighting}},
-			new FTypeArray1{{Poison}},
+			new FTypeArray1D{{Fire}},
+			new FTypeArray1D{{Fighting}},
+			new FTypeArray1D{{Poison}},
 		};
 	
 	// Do the tests
 	FString Desc = "";
 	const bool bPass = FTypeUnitTestUtilities::DoCombatAnalysis(AllTypes, {Flying, Ground}, 1,
-		FFloatRange{
-				FFloatRangeBound::Exclusive(1),
-				FFloatRangeBound::Open()
-				},
-		true, EAttackModifierMode::MultiType, Expected, Desc);
+		UType::EFFECTIVE, true, EAttackModifierMode::MultiType, Expected, Desc);
 	TestEqual(
 	"Flying/Ground multi-Type effective attack vs singly-Typed defenders " + Desc,
 	bPass, true

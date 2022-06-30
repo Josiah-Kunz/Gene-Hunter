@@ -9,6 +9,8 @@ public:
 	
 	constexpr static float TOLERANCE = 0.1F;
 
+	constexpr static bool DEBUG = false;
+
 	/**
 	 * Determines if SearchTarget is inside Container.
 	 *	- If ByName is true, only compares by name.
@@ -22,8 +24,14 @@ public:
 	 *	- If ByName is true, only compares by name.
 	 *	- If ByName is false, compares via direct object comparison.
 	 */
-	static bool Contains(const TArray<FTypeArray1*>& Container, const FTypeArray1* SearchTarget,
+	static bool Contains(const TArray<FTypeArray1D*>& Container, const FTypeArray1D* SearchTarget,
 		const bool bByName = true);
+
+	/**
+	 * Determines if SearchTarget is inside Container (by name).
+	 */
+	static bool Contains(const TArray<FTypeArray2D*>& Container, const FTypeArray2D* SearchTarget,
+		FString& Description);
 
 	/**
 	 * Tests if the arrays of Type* and DummyType* are equal (by name).
@@ -38,36 +46,52 @@ public:
 		FString& Description);
 
 	/**
-	 * Tests if two TypeArray1 are equal by simply checking if their FTypeArray1.TypeArray are equal.
+	 * Tests if two TypeArray1D are equal by simply checking if their FTypeArray1D.Array are equal.
 	 */
-	static bool TypeArray1sAreEqual(const FTypeArray1& Actual, const FTypeArray1& Expected, FString& Description);
+	static bool TypeArray1DsAreEqual(const FTypeArray1D& Actual, const FTypeArray1D& Expected, FString& Description);
 
 	/**
 	 * Determines if
-	 *	- Actual[i].TypeArray[j] == Expected[k].TypeArray[l]
+	 *	- Actual[i].Array[j] == Expected[k].Array[l]
 	 *	
 	 * for any i, j, k, l (by name comparison).
 	 * 
 	 *	- For example, [{A, B}, {a, b}] should equal [{b, a}, {A, B}]
 	 */ 
-	static bool ArrayOfTypeArray1sAreEqual(const TArray<FTypeArray1*>& Actual, const TArray<FTypeArray1*>& Expected,
+	static bool ArrayOFTypeArray1DsAreEqual(const TArray<FTypeArray1D*>& Actual, const TArray<FTypeArray1D*>& Expected,
 		FString& Description);
 
 	/**
-	 * Uses ArrayOfTypeArray1sAreEqual.
+	 * Uses ArrayOFTypeArray1DsAreEqual.
 	 */
-	static bool ArrayOfTypeArray2sAreEqual(const TArray<FTypeArray2*>& Actual, const TArray<FTypeArray2*>& Expected,
+	static bool ArrayOfTypeArray2DsAreEqual(const TArray<FTypeArray2D*>& Actual, const TArray<FTypeArray2D*>& Expected,
 		FString& Description);
+
 
 	/**
 	 * Returns, e.g., "[Air, Earth, Fire, Water]".
 	 */
-	static FString TypeArray1ToFString(const FTypeArray1* TypeArray1);
+	static FString ArrayOfUTypeToFString(const TArray<UType*>& Array);
+	
+	/**
+	 * Returns, e.g., "[Air, Earth, Fire, Water]".
+	 */
+	static FString TypeArray1DToFString(const FTypeArray1D* TypeArray1D);
 
 	/**
 	 * Returns, e.g., "{[Air, Earth], [Fire, Water]}".
 	 */
-	static FString ArrayOfTypeArray1ToFString(const TArray<FTypeArray1*>& ArrayOfTypeArray1);
+	static FString TypeArray2DToFString(const FTypeArray2D* TypeArray2D);
+
+	/**
+	 * Returns, e.g., "{[Air, Earth], [Fire, Water]}".
+	 */
+	static FString ArrayOFTypeArray1DToFString(const TArray<FTypeArray1D*>& ArrayOFTypeArray1D);
+
+	/**
+	 * Returns, e.g., "<{[Air, Earth], [Fire, Water]}, {[Flying, Ground], [Ice, Steel]}>". 
+	 */
+	static FString ArrayOfTypeArray2DToFString(const TArray<FTypeArray2D*>& ArrayOfTypeArray2D);
 
 	/**
 	 * Performs "UType::Analyze" depending on bAtk. Returns if the result is equal to the expected values.
@@ -77,18 +101,18 @@ public:
 	*	- Range = FFloatRange{FFloatRangeBound::Exclusive(1), FFloatRangeBound::Open()} (only effective attacks)
 	 *	- bAtk = true (confirms {Flying, Ground} are attackers)
 	 *	- Mode = Coverage
-	 *	- Expected = {new FTypeArray{{B.ug, Fighting}}, new FTypeArray1{{B.ug, Fire}}, ...}
+	 *	- Expected = {new FTypeArray1D{{B.ug, Fighting}}, new FTypeArray1D{{B.ug, Fire}}, ...}
 	 */
 	static bool DoCombatAnalysis(const TArray<UType*>& AllTypes, const TArray<UType*>& TypesToAnalyze, 
 		const int NumOpponentTypes, const FFloatRange Range, const bool bAtk, const EAttackModifierMode Mode,
-		const TArray<FTypeArray1*>& Expected, FString& Description);
+		const TArray<FTypeArray1D*>& Expected, FString& Description);
 
 	/**
 	 * Performs a test similar to DoCombatAnalysis, but for UType::AnalyzeAll.
 	 */
 	static bool DoAnalyzeAll(TArray<UType*>& AllTypes, const int NumTestedTypes, const int NumUntestedTypes,
 		const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode,
-		const TArray<FTypeArray2*>& Expected, FString& Description);
+		const TArray<FTypeArray2D*>& Expected, FString& Description);
 	
 	/**
 	 * A macro to get "dummy" Types. These are of type UDummyType and inherit from UType. These are independent of

@@ -22,7 +22,7 @@ bool FUType_Combat_Attack_Coverage_DualDefender::RunTest(const FString& Paramete
 		AllTypes.Add(DummyType);
 
 	// Define success:
-	const TArray<FTypeArray1*> Expected = {
+	const TArray<FTypeArray1D*> Expected = {
 
 			/* Doubly-Typed defenders
 			 *
@@ -41,31 +41,31 @@ bool FUType_Combat_Attack_Coverage_DualDefender::RunTest(const FString& Paramete
 			 */
 			
 			// (8) B.ug + those listed above
-			new FTypeArray1{{Bug, Fighting}},
-			new FTypeArray1{{Bug, Fire}},
-			new FTypeArray1{{Bug, Flying}},
-			new FTypeArray1{{Bug, Grass}},
-			new FTypeArray1{{Bug, Ground}},
-			new FTypeArray1{{Bug, Ice}},
-			new FTypeArray1{{Bug, Poison}},
-			new FTypeArray1{{Bug, Water}},
+			new FTypeArray1D{{Bug, Fighting}},
+			new FTypeArray1D{{Bug, Fire}},
+			new FTypeArray1D{{Bug, Flying}},
+			new FTypeArray1D{{Bug, Grass}},
+			new FTypeArray1D{{Bug, Ground}},
+			new FTypeArray1D{{Bug, Ice}},
+			new FTypeArray1D{{Bug, Poison}},
+			new FTypeArray1D{{Bug, Water}},
 
 			// (7) Fighting + those listed above - B.ug
-			new FTypeArray1{{Fighting, Fire}},
-			new FTypeArray1{{Fighting, Flying}},
-			new FTypeArray1{{Fighting, Grass}},
-			new FTypeArray1{{Fighting, Ground}},
-			new FTypeArray1{{Fighting, Ice}},
-			new FTypeArray1{{Fighting, Poison}},
-			new FTypeArray1{{Fighting, Water}},
+			new FTypeArray1D{{Fighting, Fire}},
+			new FTypeArray1D{{Fighting, Flying}},
+			new FTypeArray1D{{Fighting, Grass}},
+			new FTypeArray1D{{Fighting, Ground}},
+			new FTypeArray1D{{Fighting, Ice}},
+			new FTypeArray1D{{Fighting, Poison}},
+			new FTypeArray1D{{Fighting, Water}},
 
 			// (6) Grass + those listed above - B.ug - Fighting
-			new FTypeArray1{{Grass, Fire}},
-			new FTypeArray1{{Grass, Flying}},
-			new FTypeArray1{{Grass, Ground}},
-			new FTypeArray1{{Grass, Ice}},
-			new FTypeArray1{{Grass, Poison}},
-			new FTypeArray1{{Grass, Water}},
+			new FTypeArray1D{{Grass, Fire}},
+			new FTypeArray1D{{Grass, Flying}},
+			new FTypeArray1D{{Grass, Ground}},
+			new FTypeArray1D{{Grass, Ice}},
+			new FTypeArray1D{{Grass, Poison}},
+			new FTypeArray1D{{Grass, Water}},
 			
 
 			/* Ground advantages are (5):
@@ -83,54 +83,50 @@ bool FUType_Combat_Attack_Coverage_DualDefender::RunTest(const FString& Paramete
 			 */
 
 			// (8) Electric + those listed above
-			new FTypeArray1{{Electric, Fire}},
-			new FTypeArray1{{Electric, Poison}},
-			new FTypeArray1{{Electric, Rock}},
-			new FTypeArray1{{Electric, Steel}},
-			new FTypeArray1{{Electric, Fighting}},
-			new FTypeArray1{{Electric, Ground}},
-			new FTypeArray1{{Electric, Ice}},
-			new FTypeArray1{{Electric, Water}},
+			new FTypeArray1D{{Electric, Fire}},
+			new FTypeArray1D{{Electric, Poison}},
+			new FTypeArray1D{{Electric, Rock}},
+			new FTypeArray1D{{Electric, Steel}},
+			new FTypeArray1D{{Electric, Fighting}},
+			new FTypeArray1D{{Electric, Ground}},
+			new FTypeArray1D{{Electric, Ice}},
+			new FTypeArray1D{{Electric, Water}},
 
 			// (6) Fire + those listed above
-			new FTypeArray1{{Fire, Poison}},
-			new FTypeArray1{{Fire, Rock}},
-			new FTypeArray1{{Fire, Steel}},
-			//new FTypeArray1{{Fire, Fighting}}, // already in Flying
-			new FTypeArray1{{Fire, Ground}},
-			new FTypeArray1{{Fire, Ice}},
-			new FTypeArray1{{Fire, Water}},
+			new FTypeArray1D{{Fire, Poison}},
+			new FTypeArray1D{{Fire, Rock}},
+			new FTypeArray1D{{Fire, Steel}},
+			//new FTypeArray1D{{Fire, Fighting}}, // already in Flying
+			new FTypeArray1D{{Fire, Ground}},
+			new FTypeArray1D{{Fire, Ice}},
+			new FTypeArray1D{{Fire, Water}},
 
 			// (5) Poison + those listed above
-			new FTypeArray1{{Poison, Rock}},
-			new FTypeArray1{{Poison, Steel}},
-			//new FTypeArray1{{Poison, Fighting}}, // already in Flying
-			new FTypeArray1{{Poison, Ground}},
-			new FTypeArray1{{Poison, Ice}},
-			new FTypeArray1{{Poison, Water}},
+			new FTypeArray1D{{Poison, Rock}},
+			new FTypeArray1D{{Poison, Steel}},
+			//new FTypeArray1D{{Poison, Fighting}}, // already in Flying
+			new FTypeArray1D{{Poison, Ground}},
+			new FTypeArray1D{{Poison, Ice}},
+			new FTypeArray1D{{Poison, Water}},
 
 			// (5) Rock + those listed above
-			new FTypeArray1{{Rock, Steel}},
-			new FTypeArray1{{Rock, Fighting}},
-			new FTypeArray1{{Rock, Ground}},
-			new FTypeArray1{{Rock, Ice}},
-			new FTypeArray1{{Rock, Water}},
+			new FTypeArray1D{{Rock, Steel}},
+			new FTypeArray1D{{Rock, Fighting}},
+			new FTypeArray1D{{Rock, Ground}},
+			new FTypeArray1D{{Rock, Ice}},
+			new FTypeArray1D{{Rock, Water}},
 
 			// (4) Steel + those listed above
-			new FTypeArray1{{Steel, Fighting}},
-			new FTypeArray1{{Steel, Ground}},
-			new FTypeArray1{{Steel, Ice}},
-			new FTypeArray1{{Steel, Water}},
+			new FTypeArray1D{{Steel, Fighting}},
+			new FTypeArray1D{{Steel, Ground}},
+			new FTypeArray1D{{Steel, Ice}},
+			new FTypeArray1D{{Steel, Water}},
 	};
 	
 	// Do the tests
 	FString Desc = "";
 	const bool bPass = FTypeUnitTestUtilities::DoCombatAnalysis(AllTypes, {Flying, Ground}, 2,
-		FFloatRange{
-				FFloatRangeBound::Exclusive(1),
-				FFloatRangeBound::Open()
-				},
-		true, EAttackModifierMode::Coverage, Expected, Desc);
+		UType::EFFECTIVE, true, EAttackModifierMode::Coverage, Expected, Desc);
 	TestEqual(
 	"Flying/Ground coverage effective attack vs dual-Typed defenders " + Desc,
 	bPass, true

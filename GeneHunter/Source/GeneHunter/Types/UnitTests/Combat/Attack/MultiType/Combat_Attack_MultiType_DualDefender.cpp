@@ -22,7 +22,7 @@ bool FUType_Combat_Attack_MultiType_DualDefender::RunTest(const FString& Paramet
 		AllTypes.Add(DummyType);
 
 	// Define success 
-	const TArray<FTypeArray1*> Expected =
+	const TArray<FTypeArray1D*> Expected =
 	{
 		/* Doubly-Typed defenders
 		 *
@@ -48,47 +48,43 @@ bool FUType_Combat_Attack_MultiType_DualDefender::RunTest(const FString& Paramet
 		 */
 		
 		// (10) Fire + those listed above
-		new FTypeArray1{{Fire, Bug}},
-		new FTypeArray1{{Fire, Electric}},
-		new FTypeArray1{{Fire, Grass}},
-		new FTypeArray1{{Fire, Fighting}},
-		new FTypeArray1{{Fire, Ground}},
-		new FTypeArray1{{Fire, Ice}},
-		new FTypeArray1{{Fire, Poison}},
-		new FTypeArray1{{Fire, Rock}},
-		new FTypeArray1{{Fire, Steel}},
-		new FTypeArray1{{Fire, Water}},
+		new FTypeArray1D{{Fire, Bug}},
+		new FTypeArray1D{{Fire, Electric}},
+		new FTypeArray1D{{Fire, Grass}},
+		new FTypeArray1D{{Fire, Fighting}},
+		new FTypeArray1D{{Fire, Ground}},
+		new FTypeArray1D{{Fire, Ice}},
+		new FTypeArray1D{{Fire, Poison}},
+		new FTypeArray1D{{Fire, Rock}},
+		new FTypeArray1D{{Fire, Steel}},
+		new FTypeArray1D{{Fire, Water}},
 
 		// (9) Fighting + all - Fire
-		new FTypeArray1{{Fighting, Bug}},
-		new FTypeArray1{{Fighting, Electric}},
-		new FTypeArray1{{Fighting, Grass}},
-		new FTypeArray1{{Fighting, Ground}},
-		new FTypeArray1{{Fighting, Ice}},
-		new FTypeArray1{{Fighting, Poison}},
-		new FTypeArray1{{Fighting, Rock}},
-		new FTypeArray1{{Fighting, Steel}},
-		new FTypeArray1{{Fighting, Water}},
+		new FTypeArray1D{{Fighting, Bug}},
+		new FTypeArray1D{{Fighting, Electric}},
+		new FTypeArray1D{{Fighting, Grass}},
+		new FTypeArray1D{{Fighting, Ground}},
+		new FTypeArray1D{{Fighting, Ice}},
+		new FTypeArray1D{{Fighting, Poison}},
+		new FTypeArray1D{{Fighting, Rock}},
+		new FTypeArray1D{{Fighting, Steel}},
+		new FTypeArray1D{{Fighting, Water}},
 
 		// (8) Poison + all - Fire & Fighting
-		new FTypeArray1{{Poison, Bug}},
-		new FTypeArray1{{Poison, Electric}},
-		new FTypeArray1{{Poison, Grass}},
-		new FTypeArray1{{Poison, Ground}},
-		new FTypeArray1{{Poison, Ice}},
-		new FTypeArray1{{Poison, Rock}},
-		new FTypeArray1{{Poison, Steel}},
-		new FTypeArray1{{Poison, Water}},
+		new FTypeArray1D{{Poison, Bug}},
+		new FTypeArray1D{{Poison, Electric}},
+		new FTypeArray1D{{Poison, Grass}},
+		new FTypeArray1D{{Poison, Ground}},
+		new FTypeArray1D{{Poison, Ice}},
+		new FTypeArray1D{{Poison, Rock}},
+		new FTypeArray1D{{Poison, Steel}},
+		new FTypeArray1D{{Poison, Water}},
 	};
 	
 	// Do the tests
 	FString Desc = "";
 	const bool bPass = FTypeUnitTestUtilities::DoCombatAnalysis(AllTypes, {Flying, Ground}, 2,
-		FFloatRange{
-				FFloatRangeBound::Exclusive(1),
-				FFloatRangeBound::Open()
-				},
-		true, EAttackModifierMode::MultiType, Expected, Desc);
+		UType::EFFECTIVE, true, EAttackModifierMode::MultiType, Expected, Desc);
 	TestEqual(
 	"Flying/Ground multi-Type effective attack vs dual-Typed defenders " + Desc,
 	bPass, true
