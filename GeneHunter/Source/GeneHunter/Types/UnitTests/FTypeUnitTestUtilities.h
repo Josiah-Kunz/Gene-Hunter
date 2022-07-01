@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "Types/Type.h"
+#include "GeneHunter/Types/Type.h"
 #include <algorithm>
-#include "Types/UnitTests/DummyType.h"
+#include "GeneHunter/Types/UnitTests/DummyType.h"
 
 class FTypeUnitTestUtilities
 {

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "GeneHunter/FTypeUnitTestUtilities.h"
+#include "GeneHunter/Types/UnitTests/FTypeUnitTestUtilities.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Attack_MultiType_SingleDefender,
 	"UType.Combat.Attack.MultiType.Single-Typed Defender",

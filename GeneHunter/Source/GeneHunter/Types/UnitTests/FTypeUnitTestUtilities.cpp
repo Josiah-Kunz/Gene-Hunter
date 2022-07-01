@@ -227,8 +227,8 @@ bool FTypeUnitTestUtilities::DoAnalyzeAll(TArray<UType*>& AllTypes, const int Nu
 {
 	
 	// Get the FTypeArray2D (actual) that fall within the given range
-	TArray<FTypeArray2D> Analysis = UType::AnalyzeAll(AllTypes, NumTestedTypes, NumUntestedTypes, Range, bAnalyzeAtk,
-		Mode);
+	TArray<FTypeArray2D> Analysis;
+	UType::AnalyzeAll(AllTypes, NumTestedTypes, NumUntestedTypes, Range, bAnalyzeAtk, Mode, Analysis);
 	TArray<FTypeArray2D*> AnalysisPointer;
 	for(FTypeArray2D& TypeArray2D : Analysis)
 		AnalysisPointer.Add(std::addressof(TypeArray2D));

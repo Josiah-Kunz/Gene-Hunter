@@ -140,7 +140,6 @@ public:
 	/**
 	 * Gets the net interaction between an attack (multi-Type or coverage; based on Mode) and a (multi-Type) defense.
 	 */
-	UFUNCTION(BlueprintCallable)
 	static float GetNetModifier(const FTypeArray1D AtkTypes, const FTypeArray2D DefTypes,
 		const EAttackModifierMode Mode = EAttackModifierMode::Coverage, const bool bDebug = false);
 	
@@ -158,9 +157,16 @@ public:
 	 *			...}
 	 *			(It's up to you to parse this array. In this example, do %2.)
 	 */
-	UFUNCTION(BlueprintCallable)
-	static TArray<FTypeArray2D> AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
-		const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode);
+	static void AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
+		const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode, TArray<FTypeArray2D>& Result);
+
+
+	/**
+	 * Gets the net interaction between an attack (multi-Type or coverage; based on Mode) and a (multi-Type) defense.
+	 */
+	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
+	static void PrintStatistics(const int NumAttackers, const int NumDefenders, const FFloatRange Range,
+		const EAttackModifierMode Mode, const bool bAtk, UPARAM(ref) TArray<UType*>& Exclude);
 
 #pragma endregion
 
@@ -186,7 +192,7 @@ public:
 	 * @param bSortABC If true, sorts the Types alphabetically. Make false to improve performance.
 	 */
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
-	static void GetAllTypes(TArray<UType*>& Types, const TArray<UType*> Exclude, const bool bSortABC = true);
+	static void GetAllTypes(TArray<UType*>& Types, UPARAM(ref) const TArray<UType*>& Exclude, const bool bSortABC = true);
 
 public:
 

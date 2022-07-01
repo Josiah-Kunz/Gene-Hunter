@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "GeneHunter/FTypeUnitTestUtilities.h"
+#include "GeneHunter/Types/UnitTests/FTypeUnitTestUtilities.h"
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_Coverage_Resists,

@@ -6,6 +6,8 @@
 
 #include "../GeneHunterBPLibrary.h"
 #include "AssetRegistry/AssetRegistryModule.h"
+#include "GeneHunter/Types/UnitTests/FTypeUnitTestUtilities.h"
+#include "Kismet2/BlueprintEditorUtils.h"
 
 #pragma region Public functions
 
@@ -149,8 +151,8 @@ float UType::GetNetModifier(const FTypeArray1D AtkTypes, const FTypeArray2D DefT
 }
 
 
-TArray<FTypeArray2D> UType::AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
-	const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode)
+void UType::AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
+	const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode, TArray<FTypeArray2D>& Result)
 {
 
 
@@ -196,15 +198,12 @@ TArray<FTypeArray2D> UType::AnalyzeAll(TArray<UType*>& Types, const int NumTeste
 	 *		            0 1 2 3
 	 *
 	 */
-	
-	// The returned variable
-	TArray<FTypeArray2D> Analysis;
-	
+
 	// User is being dumb
 	if (Types.Num() == 0 ||
 		NumTestedTypes < 1 || Types.Num() < NumTestedTypes ||
 		NumUntestedTypes < 1 || Types.Num() < NumUntestedTypes)
-		return Analysis;
+		return;
 
 	// Vars
 	TArray TestedIndices = {0};				// The indices of the Types in TestedTypes. E.g., if Fire/Water is being tested, this may be {4, 13} (or whatever).
@@ -225,9 +224,9 @@ TArray<FTypeArray2D> UType::AnalyzeAll(TArray<UType*>& Types, const int NumTeste
 
 		// Get the attacking Type combination based on current indices
 		FTypeArray2D A;
-		Analysis.Add(A);
+		Result.Add(A);
 		for (i=0; i<NumTestedTypes;i++)
-			Analysis.Last().Array.Add(Types[TestedIndices[i]]);
+			Result.Last().Array.Add(Types[TestedIndices[i]]);
 		
 		// Reset defending indices (since we're about to iterate over them)
 		UntestedIndices = {0};
@@ -245,14 +244,14 @@ TArray<FTypeArray2D> UType::AnalyzeAll(TArray<UType*>& Types, const int NumTeste
 				TypeCandidates.Add(Types[UntestedIndices[i]]);
 
 			// Get the [best] modifier (this is the meat; everything else is just bookkeeping!)
-			AtkTypes = bAnalyzeAtk ? Analysis.Last().Array : TypeCandidates;
-			DefTypes = bAnalyzeAtk ? TypeCandidates : Analysis.Last().Array;
+			AtkTypes = bAnalyzeAtk ? Result.Last().Array : TypeCandidates;
+			DefTypes = bAnalyzeAtk ? TypeCandidates : Result.Last().Array;
 			Modifier = GetNetModifier(AtkTypes, DefTypes, Mode);
 			
 			// Check success
 			if (Range.Contains(Modifier))
 				for (UType* SuccessfulType : TypeCandidates)
-					Analysis.Last().Array2.Add(SuccessfulType);
+					Result.Last().Array2.Add(SuccessfulType);
 			
 			// Iterate
 			if (IncrementIndices(Types, UntestedIndices)) // Never able to iterate; must be at the end of all possible Type combinations
@@ -265,9 +264,87 @@ TArray<FTypeArray2D> UType::AnalyzeAll(TArray<UType*>& Types, const int NumTeste
 			break;
 		Failsafe1++;
 	}
-
-	return Analysis;
 }
+
+void UType::PrintStatistics(const int NumAttackers, const int NumDefenders, const FFloatRange Range,
+	const EAttackModifierMode Mode, const bool bAtk, TArray<UType*>& Exclude)
+{
+
+	// Get all types except exclusions
+	TArray<UType*> AllTypes;
+	GetAllTypes(AllTypes, Exclude);
+
+	// Perform analysis
+	TArray<FTypeArray2D> Analysis;
+	AnalyzeAll(
+		AllTypes,
+		bAtk ? NumAttackers : NumDefenders,
+		bAtk ? NumDefenders : NumAttackers,
+		Range, true, Mode, Analysis);
+
+	// Sort analysis
+	Analysis.Sort([](const FTypeArray2D& A, const FTypeArray2D& B)
+	{
+		return A.Array2.Num() > B.Array2.Num();
+	});
+
+	// Print header
+	UE_LOG(LogTemp, Display, TEXT("%s"), *UGeneHunterBPLibrary::LINE_SEPARATOR);
+	const FString GettingAttacked = bAtk ? "attacking" : "getting attacked";
+	UE_LOG(LogTemp, Display, TEXT("Analysis when %s"), *GettingAttacked);
+	const FString NumAtkText = (NumAttackers == 1 ? "Single" : (NumAttackers == 2 ? "Dual" : FString::FromInt(NumAttackers)));
+	const FString NumDefText = (NumDefenders == 1 ? "single" : (NumDefenders == 2 ? "dual" : FString::FromInt(NumDefenders)));
+	UE_LOG(LogTemp, Display, TEXT("   %s-Type Attacker"), *NumAtkText);
+	UE_LOG(LogTemp, Display, TEXT("   vs %s-Type Defender"), *NumDefText)
+	const FString LowerParen = Range.GetLowerBound().IsInclusive() ? "[" : "(";
+	const FString UpperParen = Range.GetLowerBound().IsInclusive() ? "]" : ")";
+	UE_LOG(LogTemp, Display, TEXT("   %s%s -- %s%s"),
+		*LowerParen,
+		*FString::SanitizeFloat(Range.GetLowerBound().GetValue()),
+		*FString::SanitizeFloat(Range.GetUpperBound().GetValue()),
+		*UpperParen
+		);
+	UE_LOG(LogTemp, Display, TEXT("%s"), *UGeneHunterBPLibrary::LINE_SEPARATOR);
+
+	// Print results
+	
+	for(FTypeArray2D TypeArray2D : Analysis)
+	{
+		UE_LOG(LogTemp, Display, TEXT("(%s) %s:"),
+			*FString::FromInt(TypeArray2D.Array2.Num()),
+			*FTypeUnitTestUtilities::ArrayOfUTypeToFString(TypeArray2D.Array));
+
+		// Check none
+		if (TypeArray2D.Array2.Num() == 0)
+		{
+			UE_LOG(LogTemp, Display, TEXT("NONE!"));
+			continue;
+		}
+
+		// Get names
+		FString DefenderNames = "";
+		int i=0;
+		for(const UType* Defender : TypeArray2D.Array2)
+		{
+			DefenderNames += Defender->GetName() + " ";
+			i++;
+			if (i>=NumDefenders)
+			{
+				UE_LOG(LogTemp, Display, TEXT("     %s"), *DefenderNames);
+				DefenderNames = "";
+				i=0;
+			}
+		}
+
+		// Last one
+		UE_LOG(LogTemp, Display, TEXT("   %s"), *DefenderNames);
+	}
+
+	// End
+	UE_LOG(LogTemp, Display, TEXT("%s"), *UGeneHunterBPLibrary::LINE_SEPARATOR);
+	
+}
+
 
 #pragma endregion
 
@@ -361,7 +438,7 @@ void UType::GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC
 		UGeneHunterBPLibrary::SortAssetsAlphabetically(TypeAssets, TypeAssets);
 }
 
-void UType::GetAllTypes(TArray<UType*>& Types, const TArray<UType*> Exclude, const bool bSortABC)
+void UType::GetAllTypes(TArray<UType*>& Types, const TArray<UType*>& Exclude, const bool bSortABC)
 {
 	Types.Empty();
 	TArray<FAssetData> Assets;

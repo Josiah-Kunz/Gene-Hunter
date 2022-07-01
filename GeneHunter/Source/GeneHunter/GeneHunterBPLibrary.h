@@ -19,6 +19,9 @@ class GENEHUNTER_API UGeneHunterBPLibrary : public UBlueprintFunctionLibrary
 
 public:
 
+	static constexpr int MAX_ITERATIONS = 10000;
+	inline static const FString LINE_SEPARATOR = "=================================";
+	
 	UFUNCTION(BlueprintCallable)
 	static void EnsureValidAssetName(const FString Filename, const FString Path, FString& SafeFilename, FString& AbsolutePath, const FString Ext = "uasset", const FString OldFilename = "");
 
@@ -33,8 +36,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	static UWidget* Duplicate(const UWidget* Original);
-	
-	static constexpr int MAX_ITERATIONS = 10000;
 
 	static UWidget* GetChildOfType(const UUserWidget* Parent, const class TSubclassOf<class UWidget> WidgetClass);
 };
