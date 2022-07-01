@@ -4,10 +4,10 @@
 #include <filesystem>
 #include <string>
 
+#include "IHeadMountedDisplay.h"
 #include "../GeneHunterBPLibrary.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "GeneHunter/Types/UnitTests/FTypeUnitTestUtilities.h"
-#include "Kismet2/BlueprintEditorUtils.h"
 
 #pragma region Public functions
 
@@ -267,7 +267,8 @@ void UType::AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const in
 }
 
 void UType::PrintStatistics(const int NumAttackers, const int NumDefenders, const FFloatRange Range,
-	const EAttackModifierMode Mode, const bool bAtk, TArray<UType*>& Exclude)
+	const EAttackModifierMode Mode, const bool bAtk, const bool bPrintToConsole, const bool bPrintToFile,
+	TArray<UType*>& Exclude)
 {
 
 	// Get all types except exclusions
@@ -289,35 +290,65 @@ void UType::PrintStatistics(const int NumAttackers, const int NumDefenders, cons
 	});
 
 	// Print header
-	UE_LOG(LogTemp, Display, TEXT("%s"), *UGeneHunterBPLibrary::LINE_SEPARATOR);
-	const FString GettingAttacked = bAtk ? "attacking" : "getting attacked";
-	UE_LOG(LogTemp, Display, TEXT("Analysis when %s"), *GettingAttacked);
+	FString OutputText = "\n\n";
+	OutputText += UGeneHunterBPLibrary::LINE_SEPARATOR;
+	OutputText += "\n";
+	OutputText += "Analysis when ";
+	const FString AttackingText = bAtk ? "attacking" : "getting attacked";
+	OutputText += AttackingText;
+	OutputText += "\n";
+
+	// Number of attackers/defenders
 	const FString NumAtkText = (NumAttackers == 1 ? "Single" : (NumAttackers == 2 ? "Dual" : FString::FromInt(NumAttackers)));
 	const FString NumDefText = (NumDefenders == 1 ? "single" : (NumDefenders == 2 ? "dual" : FString::FromInt(NumDefenders)));
-	UE_LOG(LogTemp, Display, TEXT("   %s-Type Attacker"), *NumAtkText);
-	UE_LOG(LogTemp, Display, TEXT("   vs %s-Type Defender"), *NumDefText)
+	OutputText += "\t";
+	OutputText += NumAtkText + "-Type Attacker\n";
+	OutputText += "\tvs " + NumDefText + "-Type Defender\n";
+
+	// Mode
+	FString ModeText;
+	OutputText += "\tAttack mode: ";
+	switch(Mode)
+	{
+	case EAttackModifierMode::Coverage:
+		ModeText = "Coverage";
+		break;
+	case EAttackModifierMode::MultiType:
+		ModeText = "Multi-Type";
+		break;
+	default:
+		OutputText+= "ERROR! Mode not defined in code. Please fix UType::PrintStatistics in Type.cpp.";
+		UE_LOG(LogTemp, Error, TEXT("%s:"), *OutputText);
+		return;
+	}
+	OutputText += ModeText;
+	OutputText += "\n";
+	
+	
+	// Range
 	const FString LowerParen = Range.GetLowerBound().IsInclusive() ? "[" : "(";
 	const FString UpperParen = Range.GetLowerBound().IsInclusive() ? "]" : ")";
-	UE_LOG(LogTemp, Display, TEXT("   %s%s -- %s%s"),
-		*LowerParen,
-		*FString::SanitizeFloat(Range.GetLowerBound().GetValue()),
-		*FString::SanitizeFloat(Range.GetUpperBound().GetValue()),
-		*UpperParen
-		);
-	UE_LOG(LogTemp, Display, TEXT("%s"), *UGeneHunterBPLibrary::LINE_SEPARATOR);
+	FString RangeText = FString::Printf(TEXT("%s%s -- %s%s"),
+		*LowerParen, *FString::SanitizeFloat(Range.GetLowerBound().GetValue()),
+		*FString::SanitizeFloat(Range.GetUpperBound().GetValue()), *UpperParen);
+	OutputText += FString::Printf(TEXT("\t%s\n"), *RangeText);
+	
+	// Last line for header
+	OutputText += UGeneHunterBPLibrary::LINE_SEPARATOR;
+	OutputText += "\n\n";
+
 
 	// Print results
-	
 	for(FTypeArray2D TypeArray2D : Analysis)
 	{
-		UE_LOG(LogTemp, Display, TEXT("(%s) %s:"),
-			*FString::FromInt(TypeArray2D.Array2.Num()),
-			*FTypeUnitTestUtilities::ArrayOfUTypeToFString(TypeArray2D.Array));
+		OutputText += FString::Printf(TEXT("(%s) %s:\n"),
+		*FString::FromInt(TypeArray2D.Array2.Num()),
+		*FTypeUnitTestUtilities::ArrayOfUTypeToFString(TypeArray2D.Array));
 
 		// Check none
 		if (TypeArray2D.Array2.Num() == 0)
 		{
-			UE_LOG(LogTemp, Display, TEXT("NONE!"));
+			OutputText += "\tNONE!\n";
 			continue;
 		}
 
@@ -330,18 +361,52 @@ void UType::PrintStatistics(const int NumAttackers, const int NumDefenders, cons
 			i++;
 			if (i>=NumDefenders)
 			{
-				UE_LOG(LogTemp, Display, TEXT("     %s"), *DefenderNames);
+				OutputText += FString::Printf(TEXT("\t%s\n"), *DefenderNames);
 				DefenderNames = "";
 				i=0;
 			}
 		}
 
-		// Last one
-		UE_LOG(LogTemp, Display, TEXT("   %s"), *DefenderNames);
+		// Blank line
+		OutputText += "\n";
 	}
 
 	// End
-	UE_LOG(LogTemp, Display, TEXT("%s"), *UGeneHunterBPLibrary::LINE_SEPARATOR);
+	OutputText += UGeneHunterBPLibrary::LINE_SEPARATOR;
+
+	// Print
+	if (bPrintToConsole)
+		UE_LOG(LogTemp, Display, TEXT("%s"), *OutputText);
+	if (bPrintToFile)
+	{
+		FString FileName = FString::Printf(TEXT("%sanalysis_%sv%s_%s_%s%_%s.txt"),
+					*FPaths::ProjectDir(),
+					*NumAtkText, *NumDefText,
+					*AttackingText,
+					*ModeText,
+					*RangeText);
+		FileName = FPaths::ConvertRelativePathToFull(FileName);
+
+		/*
+		std::ofstream OutputFile;
+		OutputFile.open(TCHAR_TO_UTF8(*FileName));
+		OutputFile << TCHAR_TO_UTF8(*OutputText);
+		OutputFile.close();*/
+		
+
+
+		const bool bSaved = FFileHelper::SaveStringToFile(OutputText, *FileName,
+			FFileHelper::EEncodingOptions::AutoDetect,
+			&IFileManager::Get(),
+			EFileWrite::FILEWRITE_EvenIfReadOnly
+			);
+
+		if (bSaved)
+		{
+			UE_LOG(LogTemp, Display, TEXT("Saved @ %s"), *FileName);
+		}else
+			UE_LOG(LogTemp, Warning, TEXT("Failed to save @ %s"), *FileName);
+	}
 	
 }
 

@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <iostream>
+#include <fstream>
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "../AttackModifier.h"
@@ -166,7 +168,8 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
 	static void PrintStatistics(const int NumAttackers, const int NumDefenders, const FFloatRange Range,
-		const EAttackModifierMode Mode, const bool bAtk, UPARAM(ref) TArray<UType*>& Exclude);
+		const EAttackModifierMode Mode, const bool bAtk, const bool bPrintToConsole, const bool bPrintToFile,
+		UPARAM(ref) TArray<UType*>& Exclude);
 
 #pragma endregion
 
