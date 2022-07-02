@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "GeneHunter/Types/UnitTests/FTypeUnitTestUtilities.h"
+#include "GeneHunter/Types/UnitTests/TypeUnitTestUtilities.h"
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_MultiType_Heals,
@@ -12,15 +12,15 @@ bool FUType_Combat_CombineModifiers_MultiType_Heals::RunTest(const FString& Para
 
 	// Heals
 	TestEqual("-1 & 2", UType::CombineModifiers(-1, 2, EAttackModifierMode::MultiType), -0.5F,
-		FTypeUnitTestUtilities::TOLERANCE);
+		UTypeUnitTestUtilities::TOLERANCE);
 	TestEqual("-1 & 1", UType::CombineModifiers(-1, 1, EAttackModifierMode::MultiType), -1,
-		FTypeUnitTestUtilities::TOLERANCE);
+		UTypeUnitTestUtilities::TOLERANCE);
 	TestEqual("-1 & 0.5", UType::CombineModifiers(-1, 0.5, EAttackModifierMode::MultiType), -1,
-		FTypeUnitTestUtilities::TOLERANCE);
+		UTypeUnitTestUtilities::TOLERANCE);
 	TestEqual("-1 & 0", UType::CombineModifiers(-1, 0, EAttackModifierMode::MultiType), -1,
-		FTypeUnitTestUtilities::TOLERANCE);
+		UTypeUnitTestUtilities::TOLERANCE);
 	TestEqual("-1 & -1", UType::CombineModifiers(-1, -1, EAttackModifierMode::MultiType), -1,
-		FTypeUnitTestUtilities::TOLERANCE);
+		UTypeUnitTestUtilities::TOLERANCE);
 
 	// All done!
 	return true;

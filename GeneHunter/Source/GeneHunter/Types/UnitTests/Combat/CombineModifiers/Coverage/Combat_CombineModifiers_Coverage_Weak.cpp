@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "GeneHunter/Types/UnitTests/FTypeUnitTestUtilities.h"
+#include "GeneHunter/Types/UnitTests/TypeUnitTestUtilities.h"
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_Coverage_Weak,
@@ -12,15 +12,15 @@ bool FUType_Combat_CombineModifiers_Coverage_Weak::RunTest(const FString& Parame
 	
 	// Weak
 	TestEqual("2 & -1", UType::CombineModifiers(2, -1, EAttackModifierMode::Coverage), 2,
-		FTypeUnitTestUtilities::TOLERANCE);
+		UTypeUnitTestUtilities::TOLERANCE);
 	TestEqual("2 & 0", UType::CombineModifiers(2, 0, EAttackModifierMode::Coverage), 2,
-		FTypeUnitTestUtilities::TOLERANCE);
+		UTypeUnitTestUtilities::TOLERANCE);
 	TestEqual("2 & 0.5", UType::CombineModifiers(2, 0.5, EAttackModifierMode::Coverage), 2,
-		FTypeUnitTestUtilities::TOLERANCE);
+		UTypeUnitTestUtilities::TOLERANCE);
 	TestEqual("2 & 1", UType::CombineModifiers(2, 1, EAttackModifierMode::Coverage), 2,
-		FTypeUnitTestUtilities::TOLERANCE);
+		UTypeUnitTestUtilities::TOLERANCE);
 	TestEqual("2 & 2", UType::CombineModifiers(2, 2, EAttackModifierMode::Coverage), 2,
-		FTypeUnitTestUtilities::TOLERANCE);
+		UTypeUnitTestUtilities::TOLERANCE);
 
 	// All done!
 	return true;

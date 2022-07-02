@@ -21,9 +21,11 @@ public:
 
 	static constexpr int MAX_ITERATIONS = 10000;
 	inline static const FString LINE_SEPARATOR = "=================================";
+	inline static const FString FSTRING_INFINITY = "∞";
 	
 	UFUNCTION(BlueprintCallable)
-	static void EnsureValidAssetName(const FString Filename, const FString Path, FString& SafeFilename, FString& AbsolutePath, const FString Ext = "uasset", const FString OldFilename = "");
+	static void EnsureValidAssetName(const FString Filename, const FString Path, FString& SafeFilename,
+		FString& AbsolutePath, const FString Ext = "uasset", const FString OldFilename = "");
 
 	UFUNCTION(BlueprintCallable)
 	static void SortAssetsAlphabetically(const TArray<FAssetData> Assets, TArray<FAssetData>& Sorted);
@@ -37,5 +39,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static UWidget* Duplicate(const UWidget* Original);
 
-	static UWidget* GetChildOfType(const UUserWidget* Parent, const class TSubclassOf<class UWidget> WidgetClass);
+	UFUNCTION(BlueprintCallable)
+	static UWidget* GetChildOfType(const UUserWidget* Parent, const TSubclassOf<UWidget> WidgetClass);
+
+	UFUNCTION(BlueprintCallable)
+	static void RangeToString(UPARAM(ref) const FFloatRange& Range, FString& Out);
+	
 };

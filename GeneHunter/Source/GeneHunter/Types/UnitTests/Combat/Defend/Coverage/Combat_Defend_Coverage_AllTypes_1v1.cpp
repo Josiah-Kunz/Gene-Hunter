@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "GeneHunter/Types/UnitTests/FTypeUnitTestUtilities.h"
+#include "GeneHunter/Types/UnitTests/TypeUnitTestUtilities.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Defend_Coverage_AllTypes_1v1,
 	"UType.Combat.Defend.Coverage.All Types.1v1",
@@ -39,7 +39,7 @@ bool FUType_Combat_Defend_Coverage_AllTypes_1v1::RunTest(const FString& Paramete
 		
 	// Do the test
 	FString Desc = "";
-	const bool bPass = FTypeUnitTestUtilities::DoAnalyzeAll(AllTypes, 1, 1,
+	const bool bPass = UTypeUnitTestUtilities::TestAnalyzeAll(AllTypes, 1, 1,
 		UType::INEFFECTIVE,
 		false, EAttackModifierMode::Coverage, Expected, Desc);
 	TestEqual(

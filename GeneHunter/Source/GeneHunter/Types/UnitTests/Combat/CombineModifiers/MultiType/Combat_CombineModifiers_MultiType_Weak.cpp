@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "GeneHunter/Types/UnitTests/FTypeUnitTestUtilities.h"
+#include "GeneHunter/Types/UnitTests/TypeUnitTestUtilities.h"
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_MultiType_Weak,
@@ -14,11 +14,11 @@ bool FUType_Combat_CombineModifiers_MultiType_Weak::RunTest(const FString& Param
 {
 	
 	// Weak
-	TestEqual("2 & -1", UType::CombineModifiers(2, -1), -0.5F,FTypeUnitTestUtilities::TOLERANCE);
-	TestEqual("2 & 0", UType::CombineModifiers(2, 0), 0,FTypeUnitTestUtilities::TOLERANCE);
-	TestEqual("2 & 0.5", UType::CombineModifiers(2, 0.5), 1,FTypeUnitTestUtilities::TOLERANCE);
-	TestEqual("2 & 1", UType::CombineModifiers(2, 1), 2,FTypeUnitTestUtilities::TOLERANCE);
-	TestEqual("2 & 2", UType::CombineModifiers(2, 2), 4,FTypeUnitTestUtilities::TOLERANCE);
+	TestEqual("2 & -1", UType::CombineModifiers(2, -1), -0.5F,UTypeUnitTestUtilities::TOLERANCE);
+	TestEqual("2 & 0", UType::CombineModifiers(2, 0), 0,UTypeUnitTestUtilities::TOLERANCE);
+	TestEqual("2 & 0.5", UType::CombineModifiers(2, 0.5), 1,UTypeUnitTestUtilities::TOLERANCE);
+	TestEqual("2 & 1", UType::CombineModifiers(2, 1), 2,UTypeUnitTestUtilities::TOLERANCE);
+	TestEqual("2 & 2", UType::CombineModifiers(2, 2), 4,UTypeUnitTestUtilities::TOLERANCE);
 
 	// All done!
 	return true;

@@ -128,3 +128,26 @@ UWidget* UGeneHunterBPLibrary::Duplicate(const UWidget* Original)
 	return DuplicateObject(Original, Original->GetOuter());
 }
 
+void UGeneHunterBPLibrary::RangeToString(const FFloatRange& Range, FString& Out)
+{
+
+	// Get parens
+	const FString LowerParen = Range.GetLowerBound().IsInclusive() ? "[" : "(";
+	const FString UpperParen = Range.GetLowerBound().IsInclusive() ? "]" : ")";
+
+	// Get parentheticals
+	const FString LowerParenthetical = Range.GetLowerBound().IsClosed() ?
+		FString::SanitizeFloat(Range.GetLowerBound().GetValue()) :
+		FSTRING_INFINITY;
+	const FString UpperParenthetical = Range.GetUpperBound().IsClosed() ?
+		FString::SanitizeFloat(Range.GetUpperBound().GetValue()) :
+		FSTRING_INFINITY;
+
+	// Return
+	Out = FString::Printf(TEXT("%s%s -- %s%s"),
+		*LowerParen,
+		*LowerParenthetical,
+		*UpperParen,
+		*UpperParenthetical
+		);
+}

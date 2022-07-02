@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "GeneHunter/Types/UnitTests/FTypeUnitTestUtilities.h"
+#include "GeneHunter/Types/UnitTests/TypeUnitTestUtilities.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Utilities_GetDummyTypes,
 	"UType.Utilities.GetDummyTypes",
@@ -21,13 +21,13 @@ bool FUType_Utilities_GetDummyTypes::RunTest(const FString& Parameters)
 	TestEqual(
 				"GET_DUMMY_TYPES number of assets loaded",
 				TypeAssets.Num(),
-				12,FTypeUnitTestUtilities::TOLERANCE);
+				12,UTypeUnitTestUtilities::TOLERANCE);
 
 	// Number of types
 	TestEqual(
 				"GET_DUMMY_TYPES number of array elements",
 				AllDummyTypes.Num(),
-				12,FTypeUnitTestUtilities::TOLERANCE);
+				12,UTypeUnitTestUtilities::TOLERANCE);
 
 
 	// Non-null types

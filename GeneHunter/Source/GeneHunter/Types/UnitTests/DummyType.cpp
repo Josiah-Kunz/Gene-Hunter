@@ -37,10 +37,24 @@ void UDummyType::GetAllDummyTypes(TArray<UDummyType*>& Types, const TArray<UType
 
 UDummyType* UDummyType::GetDummyTypeByName(const TArray<UDummyType*>& Pool, const FName Name)
 {
-	for(UDummyType* UTType : Pool)
+	for(UDummyType* DummyType : Pool)
 	{
-		if (UTType->GetFName() == Name)
-			return UTType;
+		if (DummyType->GetFName() == Name)
+			return DummyType;
 	}
 	return nullptr;
+}
+
+bool UDummyType::TypesAndDummiesAreEqual(const TArray<UType*>& Actual, const TArray<UDummyType*>& Expected, FString& Description)
+{
+	
+	// UDummyType* -> UType*
+	TArray<UType*> ExpectedTypes;
+	for(UDummyType* Dummy : Expected)
+		if (UType* Type = Cast<UType>(Dummy))
+			ExpectedTypes.Add(Type);
+
+	// Pass to UType* comparison function
+	return ArraysOfTypeAreEqual(Actual, ExpectedTypes, Description);
+
 }
