@@ -48,121 +48,6 @@ float UType::GetAttackModifier(const UType* AgainstType)
 	return 1;
 }
 
-#pragma endregion
-
-#pragma region Getting Types
-
-void UType::GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC)
-{
-	const FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
-	AssetRegistryModule.Get().GetAssetsByClass(TEXT("Type"), TypeAssets, false);
-	if (bSortABC)
-		UGeneHunterBPLibrary::SortAssetsAlphabetically(TypeAssets, TypeAssets);
-}
-
-void UType::GetAllTypes(TArray<UType*>& Types, const TArray<UType*>& Exclude, const bool bSortABC)
-{
-	Types.Empty();
-	TArray<FAssetData> Assets;
-	GetAllTypeAssets(Assets, bSortABC);
-	for(FAssetData& Asset : Assets)
-	{
-		if (UType* Type = Cast<UType>(Asset.GetAsset()))
-		{
-			if (!Exclude.Contains(Type))
-				Types.Add(Type);
-		}
-	}
-}
-
-void UType::GetAllTypes(TArray<UType*>& Types, const bool bSortABC)
-{
-	GetAllTypes(Types, {}, bSortABC);
-}
-
-void UType::PruneTypeAttackMods(UType* Type)
-{
-
-	// Vars
-	TMap OldMap(Type->AttackModifiers);
-
-	// Clear and refill map
-	Type->AttackModifiers.Empty();
-	for(const TPair<UType*, FAttackModifier>& pair : OldMap)
-	{
-		if (pair.Key != nullptr)
-			Type->AttackModifiers.Add(pair.Key, pair.Value);
-	}
-}
-
-#pragma endregion
-
-#pragma region Utilities
-
-
-bool UType::Contains(const TArray<UType*>& Container, const UType* SearchTarget,
-									  const bool bByName)
-{
-	return std::any_of(std::begin(Container), std::end(Container),
-								[&](UType* Test) {
-									if (bByName)
-										return Test->GetName() == SearchTarget->GetName();
-									return Test == SearchTarget;
-								});
-}
-
-bool UType::ArraysOfTypeAreEqual(const TArray<UType*>& Actual, const TArray<UType*>& Expected, FString& Description)
-{
-
-	// Start building string in case it fails
-	Description += "[Expected: ";
-
-	// Expected
-	for(const UType* ExpectedType : Expected)
-		if (ExpectedType)
-			Description += ExpectedType->GetName() + " ";
-
-	// Actual
-	Description += " || Actual: ";
-	for(const UType* ActualType : Actual)
-		if (ActualType)
-			Description += ActualType->GetName() + " ";
-
-	// Delete last space
-	Description += "]";
-	Description = Description.Replace(TEXT(" ]"), TEXT("] "));
-
-	// Can't simply TestSame; TestSame([A, B], [B, A]) fails!
-	bool bPass = Actual.Num() == Expected.Num();
-	if (bPass)
-	{
-		for(const UType* ExpectedType : Expected)
-		{
-			if (!Contains(Actual, ExpectedType))
-			{
-				Description += " | Expected [" + ExpectedType->GetName() + "] not found!";
-				bPass = false;
-			}
-		}
-	} else
-	{
-		Description += " " + FString::SanitizeFloat(Actual.Num()) + " != " + FString::SanitizeFloat(Expected.Num());
-	}
-	return bPass;
-	
-}
-
-FString UType::ArrayOfUTypeToFString(const TArray<UType*>& Array)
-{
-	FString Ret = "[";
-	for(const UType* Type : Array)
-		Ret += Type->GetName() + ", ";
-	Ret += "]";
-	Ret = Ret.Replace(TEXT(", ]"), TEXT("]"));
-	return Ret;
-}
-
-
 float UType::GetNetModifier(const TArray<UType*>& AtkTypes, const TArray<UType*>& DefTypes,
 	const EAttackModifierMode Mode, const bool bDebug)
 {
@@ -235,6 +120,119 @@ void UType::InitializeModifier(float& Modifier, const EAttackModifierMode Mode)
 	default:
 		UE_LOG(LogTemp, Error, TEXT("Mode not coded for in Type::InitializeModifier! Fix ASAP!"));
 	}
+}
+
+void UType::PruneTypeAttackMods(UType* Type)
+{
+
+	// Vars
+	TMap OldMap(Type->AttackModifiers);
+
+	// Clear and refill map
+	Type->AttackModifiers.Empty();
+	for(const TPair<UType*, FAttackModifier>& pair : OldMap)
+	{
+		if (pair.Key != nullptr)
+			Type->AttackModifiers.Add(pair.Key, pair.Value);
+	}
+}
+
+#pragma endregion
+
+#pragma region Getting Types
+
+void UType::GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC)
+{
+	const FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	AssetRegistryModule.Get().GetAssetsByClass(TEXT("Type"), TypeAssets, false);
+	if (bSortABC)
+		UGeneHunterBPLibrary::SortAssetsAlphabetically(TypeAssets, TypeAssets);
+}
+
+void UType::GetAllTypes(TArray<UType*>& Types, const bool bSortABC)
+{
+	GetAllTypes(Types, {}, bSortABC);
+}
+
+void UType::GetAllTypes(TArray<UType*>& Types, const TArray<UType*>& Exclude, const bool bSortABC)
+{
+	Types.Empty();
+	TArray<FAssetData> Assets;
+	GetAllTypeAssets(Assets, bSortABC);
+	for(FAssetData& Asset : Assets)
+	{
+		if (UType* Type = Cast<UType>(Asset.GetAsset()))
+		{
+			if (!Exclude.Contains(Type))
+				Types.Add(Type);
+		}
+	}
+}
+
+#pragma endregion
+
+#pragma region Utilities
+
+bool UType::ArraysAreEqual(const TArray<UType*>& Actual, const TArray<UType*>& Expected, FString& Description)
+{
+
+	// Start building string in case it fails
+	Description += "[Expected: ";
+
+	// Expected
+	for(const UType* ExpectedType : Expected)
+		if (ExpectedType)
+			Description += ExpectedType->GetName() + " ";
+
+	// Actual
+	Description += " || Actual: ";
+	for(const UType* ActualType : Actual)
+		if (ActualType)
+			Description += ActualType->GetName() + " ";
+
+	// Delete last space
+	Description += "]";
+	Description = Description.Replace(TEXT(" ]"), TEXT("] "));
+
+	// Can't simply TestSame; TestSame([A, B], [B, A]) fails!
+	bool bPass = Actual.Num() == Expected.Num();
+	if (bPass)
+	{
+		for(const UType* ExpectedType : Expected)
+		{
+			if (!Contains(Actual, ExpectedType))
+			{
+				Description += " | Expected [" + ExpectedType->GetName() + "] not found!";
+				bPass = false;
+			}
+		}
+	} else
+	{
+		Description += " " + FString::SanitizeFloat(Actual.Num()) + " != " + FString::SanitizeFloat(Expected.Num());
+	}
+	return bPass;
+	
+}
+
+FString UType::ArrayToFString(const TArray<UType*>& Array)
+{
+	FString Ret = "[";
+	for(const UType* Type : Array)
+		Ret += Type->GetName() + ", ";
+	Ret += "]";
+	Ret = Ret.Replace(TEXT(", ]"), TEXT("]"));
+	return Ret;
+}
+
+bool UType::Contains(const TArray<UType*>& Container, const UType* SearchTarget,
+									  const bool bByName)
+{
+	return std::any_of(std::begin(Container), std::end(Container),
+								[&](const UType* Test) {
+									if (bByName)
+										return Test->GetName() == SearchTarget->GetName();
+									return Test == SearchTarget;
+								});
 }
 
 #pragma endregion 

@@ -4,14 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/UserDefinedEnum.h"
-#include "TypeAdvantageEditorEnums.generated.h"
-
-UENUM(BlueprintType)
-enum class TAQueueStatus : uint8
-{
-	Idle	UMETA(DisplayName = "Idle"),
-	Rename	UMETA(DisplayName = "Rename"),
-};
+#include "TypeAdvantageText.generated.h"
 
 UENUM(BlueprintType)
 enum class TAText : uint8

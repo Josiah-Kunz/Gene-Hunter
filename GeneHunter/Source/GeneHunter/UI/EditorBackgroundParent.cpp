@@ -1,8 +1,6 @@
 
-
 #include "EditorBackgroundParent.h"
-
-#include "GeneHunterBPLibrary.h"
+#include "GeneHunter/GeneHunterBPLibrary.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Engine/Canvas.h"

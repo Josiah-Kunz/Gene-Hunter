@@ -55,6 +55,6 @@ bool UDummyType::TypesAndDummiesAreEqual(const TArray<UType*>& Actual, const TAr
 			ExpectedTypes.Add(Type);
 
 	// Pass to UType* comparison function
-	return ArraysOfTypeAreEqual(Actual, ExpectedTypes, Description);
+	return ArraysAreEqual(Actual, ExpectedTypes, Description);
 
 }

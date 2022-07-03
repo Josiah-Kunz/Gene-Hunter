@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-#include "GeneHunter/Types/UnitTests/TypeUnitTestUtilities.h"
+#include "GeneHunter/Types/UnitTests/Utilities/TypeUnitTestUtilities.h"
+#include "GeneHunter/Types/UnitTests/DummyType.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Utilities_GetDummyTypes,
 	"UType.Utilities.GetDummyTypes",

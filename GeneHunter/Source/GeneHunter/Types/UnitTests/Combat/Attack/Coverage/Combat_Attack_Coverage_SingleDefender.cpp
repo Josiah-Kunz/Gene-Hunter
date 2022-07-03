@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-#include "GeneHunter/Types/UnitTests/TypeUnitTestUtilities.h"
+#include "GeneHunter/Types/UnitTests/Utilities/TypeUnitTestUtilities.h"
+#include "GeneHunter/Types/UnitTests/DummyType.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Attack_Coverage_SingleDefender,
 	"UType.Combat.Attack.Coverage.Single-Typed Defender",
@@ -40,7 +41,7 @@ bool FUType_Combat_Attack_Coverage_SingleDefender::RunTest(const FString& Parame
 	// Do the test
 	FString Desc = "";
 	const bool bPass = UTypeUnitTestUtilities::TestCombatAnalysis(AllTypes, {Flying, Ground}, 1,
-		UType::EFFECTIVE, true, EAttackModifierMode::Coverage, Expected, Desc, false);
+		UType::Effective, true, EAttackModifierMode::Coverage, Expected, Desc, false);
 	TestEqual(
 	"Flying/Ground coverage effective attack vs singly-Typed defenders " + Desc,
 	bPass, true

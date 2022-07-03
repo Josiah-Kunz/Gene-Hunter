@@ -1,0 +1,73 @@
+\begin{table}[H]
+\caption{1v1 Attacking Ineffective}
+\label{1v1-Attacking-Ineffective}
+\centering
+\rule{0.5\textwidth}{0.1em}\\\begin{tabular}{>{\bfseries}c c}\\
+	(4) [Fire]:&\\
+	& Air \\
+	& Ice \\
+	& Metal \\
+	& Nature \\
+
+	(3) [Electric]:&\\
+	& Air \\
+	& Metal \\
+	& Water \\
+
+	(3) [Earth]:&\\
+	& Electric \\
+	& Fire \\
+	& Toxic \\
+
+	(3) [Ice]:&\\
+	& Air \\
+	& Nature \\
+	& Water \\
+
+	(3) [Nature]:&\\
+	& Earth \\
+	& Light \\
+	& Water \\
+
+	(3) [Sound]:&\\
+	& Air \\
+	& Metal \\
+	& Spirit \\
+
+	(3) [Void]:&\\
+	& Fire \\
+	& Light \\
+	& Sound \\
+
+	(3) [Toxic]:&\\
+	& Martial \\
+	& Nature \\
+	& Water \\
+
+	(2) [Metal]:&\\
+	& Earth \\
+	& Nature \\
+
+	(2) [Light]:&\\
+	& Magic \\
+	& Void \\
+
+	(2) [Martial]:&\\
+	& Ice \\
+	& Metal \\
+
+	(2) [Water]:&\\
+	& Earth \\
+	& Fire \\
+
+	(1) [Magic]:&\\
+	& Spirit \\
+
+	(1) [Air]:&\\
+	& Void \\
+
+	(1) [Spirit]:&\\
+	& Void \\
+
+\end{tabular}
+\end{table}

@@ -1,8 +1,5 @@
 ﻿#pragma once
-#include "GeneHunter/Types/UnitTests/DummyType.h"
-#include "GeneHunter/Types/TypeArray1D.h"
 #include "GeneHunter/Types/TypeArray2D.h"
-#include "GeneHunter/Types/Type.h"
 #include "TypeUnitTestUtilities.generated.h"
 
 UCLASS()
@@ -44,7 +41,7 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
 	static void PrintStatistics(const int NumAttackers, const int NumDefenders, const FFloatRange Range,
 		const EAttackModifierMode Mode, const bool bAtk, const bool bPrintToConsole, const bool bPrintToFile,
-		UPARAM(ref) TArray<UType*>& Exclude,
+		const bool bPrintToFileLaTeX, UPARAM(ref) TArray<UType*>& Exclude,
 		const FString PrintDirectory = "Content/Editor/Type-Advantage/Statistics-Output/");
 	
 	/**

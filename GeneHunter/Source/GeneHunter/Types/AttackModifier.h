@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SupportingText.h"
+#include "GeneHunter/UI/SupportingText.h"
 #include "AttackModifier.generated.h"
 
 /**

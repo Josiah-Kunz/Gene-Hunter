@@ -13,8 +13,8 @@ bool FTypeArray2D::Contains(const TArray<FTypeArray2D*>& Container, const FTypeA
 	
 	return std::any_of(std::begin(Container), std::end(Container),
 								[&](const FTypeArray2D* Test) {
-									return UType::ArraysOfTypeAreEqual(SearchTarget->Array, Test->Array, Description) &&
-										UType::ArraysOfTypeAreEqual(SearchTarget->Array2, Test->Array2, Description);
+									return UType::ArraysAreEqual(SearchTarget->Array, Test->Array, Description) &&
+										UType::ArraysAreEqual(SearchTarget->Array2, Test->Array2, Description);
 								});
 }
 
@@ -48,9 +48,9 @@ bool FTypeArray2D::ArrayOfTypeArray2DsAreEqual(const TArray<FTypeArray2D*>& Actu
 FString FTypeArray2D::TypeArray2DToFString(const FTypeArray2D* TypeArray2D)
 {
 	FString Ret = "{";
-	Ret += UType::ArrayOfUTypeToFString(TypeArray2D->Array);
+	Ret += UType::ArrayToFString(TypeArray2D->Array);
 	Ret += ", ";
-	Ret += UType::ArrayOfUTypeToFString(TypeArray2D->Array2);
+	Ret += UType::ArrayToFString(TypeArray2D->Array2);
 	Ret += "} ";
 	return Ret;
 }

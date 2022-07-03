@@ -25,7 +25,7 @@ bool FTypeArray1D::Contains(const TArray<FTypeArray1D*>& Container, const FTypeA
 
 bool FTypeArray1D::TypeArray1DsAreEqual(const FTypeArray1D& Actual, const FTypeArray1D& Expected, FString& Description)
 {
-	return UType::ArraysOfTypeAreEqual(Actual.Array, Expected.Array, Description);
+	return UType::ArraysAreEqual(Actual.Array, Expected.Array, Description);
 }
 
 bool FTypeArray1D::ArrayOfTypeArray1DsAreEqual(const TArray<FTypeArray1D*>& Actual,
@@ -48,7 +48,7 @@ bool FTypeArray1D::ArrayOfTypeArray1DsAreEqual(const TArray<FTypeArray1D*>& Actu
 
 FString FTypeArray1D::TypeArray1DToFString(const FTypeArray1D* TypeArray1D)
 {
-	return UType::ArrayOfUTypeToFString(TypeArray1D->Array);
+	return UType::ArrayToFString(TypeArray1D->Array);
 }
 
 FString FTypeArray1D::ArrayOfTypeArray1DToFString(const TArray<FTypeArray1D*>& ArrayOfTypeArray1D)

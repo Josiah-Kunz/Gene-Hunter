@@ -38,7 +38,7 @@ bool UTypeUnitTestUtilities::TestAnalyzeAll(TArray<UType*>& AllTypes, const int 
 
 void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int NumDefenders, const FFloatRange Range,
 	const EAttackModifierMode Mode, const bool bAtk, const bool bPrintToConsole, const bool bPrintToFile,
-	TArray<UType*>& Exclude, const FString PrintDirectory)
+	const bool bPrintToFileLaTeX, TArray<UType*>& Exclude, const FString PrintDirectory)
 {
 
 	// Get all types except exclusions
@@ -59,25 +59,47 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 		return A.Array2.Num() > B.Array2.Num();
 	});
 
-	// Print header
-	FString OutputText = "\n\n";
-	OutputText += UGeneHunterBPLibrary::LINE_SEPARATOR;
-	OutputText += "\n";
-	OutputText += "Analysis when ";
-	const FString AttackingText = bAtk ? "attacking" : "getting attacked";
-	OutputText += AttackingText;
-	OutputText += "\n";
+	// LaTeX text header
+	FString NumAtkText = FString::FromInt(NumAttackers);
+	FString NumDefText = FString::FromInt(NumDefenders);
+	FString AttackingText = bAtk ? "Attacking" : "Defending";
+	const FString EffectiveText = Range.HasLowerBound() ?
+		(bAtk ? "Ineffective" : "Resisted") :
+		(bAtk ? "Effective" : "Weak");
+	FString LaTeXText = "\\begin{table}[H]\n";
+	LaTeXText += FString::Printf(TEXT("\\caption{%sv%s %s %s}\n"),
+		*NumAtkText,
+		*NumDefText,
+		*AttackingText,
+		*EffectiveText);
+	LaTeXText += FString::Printf(TEXT("\\label{%sv%s-%s-%s}\n"),
+		*NumAtkText,
+		*NumDefText,
+		*AttackingText,
+		*EffectiveText);
+	LaTeXText += "\\centering\n";
+	LaTeXText += "\\rule{0.5\\textwidth}{0.1em}\\\\";
+	LaTeXText += "\\begin{tabular}{>{\\bfseries}c c}\\\\\n";
+
+	// Print header in console
+	FString ConsoleText = "";
+	ConsoleText += UGeneHunterBPLibrary::LINE_SEPARATOR;
+	ConsoleText += "\n";
+	ConsoleText += "Analysis when ";
+	AttackingText = bAtk ? "attacking" : "defending";
+	ConsoleText += AttackingText;
+	ConsoleText += "\n";
 
 	// Number of attackers/defenders
-	const FString NumAtkText = (NumAttackers == 1 ? "Single" : (NumAttackers == 2 ? "Dual" : FString::FromInt(NumAttackers)));
-	const FString NumDefText = (NumDefenders == 1 ? "single" : (NumDefenders == 2 ? "dual" : FString::FromInt(NumDefenders)));
-	OutputText += "\t";
-	OutputText += NumAtkText + "-Type Attacker\n";
-	OutputText += "\tvs " + NumDefText + "-Type Defender\n";
+	NumAtkText = (NumAttackers == 1 ? "Single" : (NumAttackers == 2 ? "Dual" : FString::FromInt(NumAttackers)));
+	NumDefText = (NumDefenders == 1 ? "single" : (NumDefenders == 2 ? "dual" : FString::FromInt(NumDefenders)));
+	ConsoleText += "\t";
+	ConsoleText += NumAtkText + "-Type Attacker\n";
+	ConsoleText += "\tvs " + NumDefText + "-Type Defender\n";
 
 	// Mode
 	FString ModeText;
-	OutputText += "\tAttack mode: ";
+	ConsoleText += "\tAttack mode: ";
 	switch(Mode)
 	{
 	case EAttackModifierMode::Coverage:
@@ -87,35 +109,41 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 		ModeText = "Multi-Type";
 		break;
 	default:
-		OutputText+= "ERROR! Mode not defined in code. Please fix UType::PrintStatistics in Type.cpp.";
-		UE_LOG(LogTemp, Error, TEXT("%s:"), *OutputText);
+		ConsoleText+= "ERROR! Mode not defined in code. Please fix UType::PrintStatistics in Type.cpp.";
+		UE_LOG(LogTemp, Error, TEXT("%s:"), *ConsoleText);
 		return;
 	}
-	OutputText += ModeText;
-	OutputText += "\n";
+	ConsoleText += ModeText;
+	ConsoleText += "\n";
 	
 	
 	// Range
 	FString RangeText;
 	UGeneHunterBPLibrary::RangeToString(Range, RangeText);
-	OutputText += FString::Printf(TEXT("\t%s\n"), *RangeText);
+	ConsoleText += FString::Printf(TEXT("\t%s\n"), *RangeText);
 	
 	// Last line for header
-	OutputText += UGeneHunterBPLibrary::LINE_SEPARATOR;
-	OutputText += "\n\n";
+	ConsoleText += UGeneHunterBPLibrary::LINE_SEPARATOR;
+	ConsoleText += "\n\n";
 
 
 	// Print results
 	for(FTypeArray2D TypeArray2D : Analysis)
 	{
-		OutputText += FString::Printf(TEXT("(%s) %s:\n"),
+		ConsoleText += FString::Printf(TEXT("(%s) %s:\n"),
 		*FString::FromInt(TypeArray2D.Array2.Num()),
-		*UType::ArrayOfUTypeToFString(TypeArray2D.Array));
+		*UType::ArrayToFString(TypeArray2D.Array));
+
+		LaTeXText += FString::Printf(TEXT("\t(%s) %s:&\\\\\n"),
+		*FString::FromInt(TypeArray2D.Array2.Num()),
+		*UType::ArrayToFString(TypeArray2D.Array)
+		);
 
 		// Check none
 		if (TypeArray2D.Array2.Num() == 0)
 		{
-			OutputText += "\tNONE!\n";
+			ConsoleText += "\tNONE!\n";
+			LaTeXText += "\t&NONE\\\\\n";
 			continue;
 		}
 
@@ -128,22 +156,28 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 			i++;
 			if (i>=NumDefenders)
 			{
-				OutputText += FString::Printf(TEXT("\t%s\n"), *DefenderNames);
+				ConsoleText += FString::Printf(TEXT("\t%s\n"), *DefenderNames);
+				LaTeXText += FString::Printf(TEXT("\t& %s\\\\\n"),
+					*DefenderNames
+					);
 				DefenderNames = "";
 				i=0;
 			}
 		}
 
 		// Blank line
-		OutputText += "\n";
+		ConsoleText += "\n";
+		LaTeXText += "\n";
 	}
 
 	// End
-	OutputText += UGeneHunterBPLibrary::LINE_SEPARATOR;
+	ConsoleText += UGeneHunterBPLibrary::LINE_SEPARATOR;
+	LaTeXText += "\\end{tabular}\n";
+	LaTeXText += "\\end{table}\n";
 
 	// Print
 	if (bPrintToConsole)
-		UE_LOG(LogTemp, Display, TEXT("%s"), *OutputText);
+		UE_LOG(LogTemp, Display, TEXT("\n\n%s"), *ConsoleText);
 	if (bPrintToFile)
 	{
 		FString FileName = FString::Printf(TEXT("%s%sanalysis_%sv%s_%s_%s_%s.txt"),
@@ -154,7 +188,9 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 					*ModeText,
 					*RangeText);
 		FileName = FPaths::ConvertRelativePathToFull(FileName);
-		const bool bSaved = FFileHelper::SaveStringToFile(OutputText, *FileName,
+		const bool bSaved = FFileHelper::SaveStringToFile(
+			bPrintToFileLaTeX ? LaTeXText : ConsoleText,
+			*FileName,
 			FFileHelper::EEncodingOptions::AutoDetect,
 			&IFileManager::Get(),
 			FILEWRITE_EvenIfReadOnly
@@ -162,12 +198,12 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 
 		if (bSaved)
 		{
-			UE_LOG(LogTemp, Display, TEXT("%s\nSaved @ %s\n%s"),
+			UE_LOG(LogTemp, Display, TEXT("\n%s\nSaved @ %s\n%s"),
 				*UGeneHunterBPLibrary::LINE_SEPARATOR,
 				*FileName,
 				*UGeneHunterBPLibrary::LINE_SEPARATOR);
 		}else
-			UE_LOG(LogTemp, Warning, TEXT("%s\nFailed to save @ %s\n%s"),
+			UE_LOG(LogTemp, Warning, TEXT("\n%s\nFailed to save @ %s\n%s"),
 				*UGeneHunterBPLibrary::LINE_SEPARATOR,
 				*FileName,
 				*UGeneHunterBPLibrary::LINE_SEPARATOR);

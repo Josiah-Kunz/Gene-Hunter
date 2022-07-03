@@ -7,17 +7,24 @@
 #include "Components/Widget.h"
 #include "EditorScriptingUtilities/Public/EditorAssetLibrary.h"
 
-/*
- * Determines a "safe" filename that is alphanumeric + "-" + "_" and is unique with the given Path. For example, takes "a 123 ??.txt" and returns "a123.txt".
- *	- If it is not unique (for example, if there's already a file named "a123.txt"), counts up until it is unique (e.g., "a123_2.txt").
- *	- It doesn't compare against itself, and hence the OldFilename is required.
- */
+FString UGeneHunterBPLibrary::GetInfinityText()
+{
+	return TEXT("∞");
+}
+
+
+float UGeneHunterBPLibrary::GetFloatInfinity()
+{
+	return INFINITY;
+}
+
+
 void UGeneHunterBPLibrary::EnsureValidAssetName(const FString Filename, const FString Path, FString& SafeFilename, FString& AbsolutePath, const FString Ext, const FString OldFilename)
 {
 
 	// Debugging
-	const bool bDebug = false && GEngine;
-	const float DisplayTime = 15.0f;
+	constexpr bool bDebug = false && GEngine;
+	constexpr float DisplayTime = 15.0f;
 	if (bDebug)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, DisplayTime, FColor::Cyan, TEXT("[In] Filename: ") + Filename);
@@ -138,16 +145,16 @@ void UGeneHunterBPLibrary::RangeToString(const FFloatRange& Range, FString& Out)
 	// Get parentheticals
 	const FString LowerParenthetical = Range.GetLowerBound().IsClosed() ?
 		FString::SanitizeFloat(Range.GetLowerBound().GetValue()) :
-		FSTRING_INFINITY;
+		GetInfinityText();
 	const FString UpperParenthetical = Range.GetUpperBound().IsClosed() ?
 		FString::SanitizeFloat(Range.GetUpperBound().GetValue()) :
-		FSTRING_INFINITY;
+		GetInfinityText();
 
 	// Return
 	Out = FString::Printf(TEXT("%s%s -- %s%s"),
 		*LowerParen,
 		*LowerParenthetical,
-		*UpperParen,
-		*UpperParenthetical
+		*UpperParenthetical,
+		*UpperParen
 		);
 }

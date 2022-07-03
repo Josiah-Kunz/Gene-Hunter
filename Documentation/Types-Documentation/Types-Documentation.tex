@@ -1,6 +1,6 @@
 \input{../preamble}
 
-\textbf{\color{red}Last updated: 2022/03/30}
+\textbf{\color{red}Last updated: 2022/07/02}
 
 \begin{tldr}
 	\begin{itemize}
@@ -13,53 +13,6 @@
 	Note: Types may be found, analyzed, and modified using an EditorUtilityWidget found under \texttt{Content/Editor/Type-Advantage}, right-clicking the \texttt{TypeAdvantages} widget, and selecting \texttt{Run Editor Utility Widget}.
 \end{tldr}
 
-\sect{Highs and Lows}
-
-Note: ``immune'' and ``healed'' are grouped into ``ineffective'' (attacking) and ``resists'' (defending).
-
-\subsect{Attacking}
-\begin{itemize}
-	\item{\textbf{Type with most effective attacks:}\\Fire (4)
-		\begin{itemize}
-			\item{To be fair, Fire also has a good number of ineffective attack (4; the same as its number of effective attacks).}
-		\end{itemize}
-	}
-	\item{\textbf{Type with best ratio of effective-to-ineffective attacks:}\\Spirit (1:0), Typeless (0:0), then Ice (3:2) and Electric (3:2, but those 2 are immune and healed by)
-		\begin{itemize}
-			\item{Electric might be a dominant Type, but that's okay. One of them should be dominant.}
-			\item{Earth takes zero damage from it, making it a solid check (although Electric + Metal/Nature/Water might be a terrifying combination, with Electric + Nature being able to take on other Electric Types).}
-		\end{itemize}
-	}
-	\item{\textbf{Type with the least effective attacks:}\\Magic (0)
-		\begin{itemize}
-			\item{Toxic deserves a special mention here as the only Type with zero attack against \textit{two} other Types (Poison and Metal). It has 3 effective attacks, though, making it not so bad.}
-		\end{itemize}
-	}
-	\item{\textbf{Type with the worst ratio of effective-to-ineffective attacks:}\\Magic (0:1) then Martial (2:3)
-		\begin{itemize}
-			\item{It's okay that Magic and Martial suck. Magic should be used for utility reasons and Martial should be used for raw power.}
-			\item{Air is worth noting since it's 1:1, which is super boring.}
-		\end{itemize}
-	}
-\end{itemize}
-
-\subsect{Defending}
-\begin{itemize}
-	\item{\textbf{Type with the most resists:}\\Earth (4), Void (4), Metal (4), Nature (4), and Water (4).
-		\begin{itemize}
-			\item{This is way fewer than Pok\'{e}mon has. For example, Fire in Pok\'{e}mon has 6 resists, Poison has 5, and Steel has a whopping 10.}
-			\item{To be fair, Pok\'{e}mon also has more types overall (18 vs our 15).}
-			\item{Of ours, Earth, Void, and Metal are the ``best'', since they only have 3 weaknesses and one of their resists is an immunity.}
-		\end{itemize}
-		\item{\textbf{Type with the most immunities:}\\Air (1), Earth (1), Metal (1), Toxic (1), and Void (1)
-			\begin{itemize}
-				\item{Electric gets a special mention as the only Type to have a ``healed by'' other Electric Types, which is better than being immune.}
-			\end{itemize}
-		}
-	}
-	\item{Ratios don't really make sense here. Is Toxic (2;1) really better than Earth (4:4)?}
-\end{itemize}
-
 \newpage
 
 \sect{Map from Pok\'{e}mon}
@@ -71,15 +24,83 @@ Note: ``immune'' and ``healed'' are grouped into ``ineffective'' (attacking) and
 \end{center}
 \end{figure}
 
-\sect{Fearsome Dual Types}
+%----------------------
+\newpage
+\sect{Data}
 
+\begin{table}[H]
+\caption{1v1 Attacking Ineffective}
+\label{1v1-Attacking-Ineffective}
+\centering
+\rule{0.5\textwidth}{0.1em}\\\begin{tabular}{>{\bfseries}c c}\\
+	(4) [Fire]:&\\
+	& Air \\
+	& Ice \\
+	& Metal \\
+	& Nature \\
 
-\begin{figure}
-	\centering
-	\includegraphics[scale=2]{unresisted-2v2}
-	\caption{Dual Types that have unresisted coverage against dual Type defenders. Without Spirit, the list becomes [Air/Void], [Earth/Ice], [Fire/Light], [Fire/Water], and [Light/Magic].}
-\end{figure}
+	(3) [Electric]:&\\
+	& Air \\
+	& Metal \\
+	& Water \\
 
-\sect{Rock-Paper-Scissors}
+	(3) [Earth]:&\\
+	& Electric \\
+	& Fire \\
+	& Toxic \\
+
+	(3) [Ice]:&\\
+	& Air \\
+	& Nature \\
+	& Water \\
+
+	(3) [Nature]:&\\
+	& Earth \\
+	& Light \\
+	& Water \\
+
+	(3) [Sound]:&\\
+	& Air \\
+	& Metal \\
+	& Spirit \\
+
+	(3) [Void]:&\\
+	& Fire \\
+	& Light \\
+	& Sound \\
+
+	(3) [Toxic]:&\\
+	& Martial \\
+	& Nature \\
+	& Water \\
+
+	(2) [Metal]:&\\
+	& Earth \\
+	& Nature \\
+
+	(2) [Light]:&\\
+	& Magic \\
+	& Void \\
+
+	(2) [Martial]:&\\
+	& Ice \\
+	& Metal \\
+
+	(2) [Water]:&\\
+	& Earth \\
+	& Fire \\
+
+	(1) [Magic]:&\\
+	& Spirit \\
+
+	(1) [Air]:&\\
+	& Void \\
+
+	(1) [Spirit]:&\\
+	& Void \\
+
+\end{tabular}
+\end{table}
+
 
 \input{../postamble}
