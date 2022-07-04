@@ -64,22 +64,26 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 	FString NumDefText = FString::FromInt(NumDefenders);
 	FString AttackingText = bAtk ? "Attacking" : "Defending";
 	const FString EffectiveText = Range.HasLowerBound() ?
-		(bAtk ? "Ineffective" : "Resisted") :
-		(bAtk ? "Effective" : "Weak");
-	FString LaTeXText = "\\begin{table}[H]\n";
-	LaTeXText += FString::Printf(TEXT("\\caption{%sv%s %s %s}\n"),
+		(bAtk ? "Effective" : "Weak") :
+		(bAtk ? "Ineffective" : "Resisted");
+	FString LaTeXText = "";
+	LaTeXText += "\\twocolumn\n";
+	LaTeXText += "\\begin{longtblr}[\n";
+	LaTeXText += FString::Printf(TEXT("\tcaption = {%sv%s %s %s},\n"),
 		*NumAtkText,
 		*NumDefText,
 		*AttackingText,
 		*EffectiveText);
-	LaTeXText += FString::Printf(TEXT("\\label{%sv%s-%s-%s}\n"),
+	LaTeXText += FString::Printf(TEXT("\tlabel = {%sv%s-%s-%s},\n"),
 		*NumAtkText,
 		*NumDefText,
 		*AttackingText,
 		*EffectiveText);
-	LaTeXText += "\\centering\n";
-	LaTeXText += "\\rule{0.5\\textwidth}{0.1em}\\\\";
-	LaTeXText += "\\begin{tabular}{>{\\bfseries}c c}\\\\\n";
+	LaTeXText += "]{\n";
+	LaTeXText += "\tcolspec = {XXX}, width = 0.95\\linewidth,\n";
+	LaTeXText += "\thlines,\n";
+	LaTeXText += "\trow{1-3,X,Y,Z} = {font=\\bfseries},\n";
+	LaTeXText += "}\n";
 
 	// Print header in console
 	FString ConsoleText = "";
@@ -125,8 +129,7 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 	// Last line for header
 	ConsoleText += UGeneHunterBPLibrary::LINE_SEPARATOR;
 	ConsoleText += "\n\n";
-
-
+	
 	// Print results
 	for(FTypeArray2D TypeArray2D : Analysis)
 	{
@@ -134,30 +137,41 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 		*FString::FromInt(TypeArray2D.Array2.Num()),
 		*UType::ArrayToFString(TypeArray2D.Array));
 
-		LaTeXText += FString::Printf(TEXT("\t(%s) %s:&\\\\\n"),
-		*FString::FromInt(TypeArray2D.Array2.Num()),
-		*UType::ArrayToFString(TypeArray2D.Array)
+		LaTeXText += FString::Printf(TEXT("\t:%s:&{(%s)\\\\\n"),
+		*UType::ArrayToFString(TypeArray2D.Array),
+		*FString::FromInt(TypeArray2D.Array2.Num())
 		);
 
 		// Check none
 		if (TypeArray2D.Array2.Num() == 0)
 		{
 			ConsoleText += "\tNONE!\n";
-			LaTeXText += "\t&NONE\\\\\n";
+			LaTeXText += "\tNONE\\\\}\n";
 			continue;
 		}
 
 		// Get names
 		FString DefenderNames = "";
 		int i=0;
+		int LineCount = 0;
 		for(const UType* Defender : TypeArray2D.Array2)
 		{
+
+			// Check line count
+			LineCount++;
+			if (LineCount > MAX_LATEX_LINES)
+			{
+				LaTeXText += "\t...\\\\\n";
+				break;
+			}
+
+			// Add defender names
 			DefenderNames += Defender->GetName() + " ";
 			i++;
 			if (i>=NumDefenders)
 			{
 				ConsoleText += FString::Printf(TEXT("\t%s\n"), *DefenderNames);
-				LaTeXText += FString::Printf(TEXT("\t& %s\\\\\n"),
+				LaTeXText += FString::Printf(TEXT("\t%s\\\\\n"),
 					*DefenderNames
 					);
 				DefenderNames = "";
@@ -167,26 +181,28 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 
 		// Blank line
 		ConsoleText += "\n";
-		LaTeXText += "\n";
+		LaTeXText += "\t}\\\\\n\n";
 	}
 
 	// End
 	ConsoleText += UGeneHunterBPLibrary::LINE_SEPARATOR;
-	LaTeXText += "\\end{tabular}\n";
-	LaTeXText += "\\end{table}\n";
+	LaTeXText += "\\end{longtblr}\n";
+	LaTeXText += "\\onecolumn\n";
 
 	// Print
 	if (bPrintToConsole)
 		UE_LOG(LogTemp, Display, TEXT("\n\n%s"), *ConsoleText);
 	if (bPrintToFile)
 	{
-		FString FileName = FString::Printf(TEXT("%s%sanalysis_%sv%s_%s_%s_%s.txt"),
+		const FString Extension = bPrintToFileLaTeX ? "tex" : "txt";
+		FString FileName = FString::Printf(TEXT("%s%sanalysis_%sv%s_%s_%s_%s.%s"),
 					*FPaths::ProjectDir(),
 					*PrintDirectory,
 					*NumAtkText, *NumDefText,
 					*AttackingText,
 					*ModeText,
-					*RangeText);
+					*RangeText,
+					*Extension);
 		FileName = FPaths::ConvertRelativePathToFull(FileName);
 		const bool bSaved = FFileHelper::SaveStringToFile(
 			bPrintToFileLaTeX ? LaTeXText : ConsoleText,

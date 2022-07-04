@@ -1,6 +1,6 @@
 \input{../preamble}
 
-\textbf{\color{red}Last updated: 2022/07/02}
+\textbf{\color{red}Last updated: 2022/07/03}
 
 \begin{tldr}
 	\begin{itemize}
@@ -24,83 +24,72 @@
 \end{center}
 \end{figure}
 
-%----------------------
+
 \newpage
+
 \sect{Data}
+The raw data acquired from the statistics tab of the type advantages UI (see Figure~\ref{fig:stats-ui}) can be found under the ``Type-Matchup-Statistics-Copy'' folder. They're formatted as .tex tables in case I ever wanted to print them, but they can be opened up with any text editor (think Notepad). I don't recommend parsing through it unless you're looking for something specific. For example, the 2v2 data has 126 entries. The full data is always available by running the UI as seen in the figure below.
 
-\begin{table}[H]
-\caption{1v1 Attacking Ineffective}
-\label{1v1-Attacking-Ineffective}
-\centering
-\rule{0.5\textwidth}{0.1em}\\\begin{tabular}{>{\bfseries}c c}\\
-	(4) [Fire]:&\\
-	& Air \\
-	& Ice \\
-	& Metal \\
-	& Nature \\
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=2]{statistics-ui}
+		\caption{The statistics UI (from which the data was acquired).}
+		\label{fig:stats-ui}
+	\end{center}
+\end{figure}
 
-	(3) [Electric]:&\\
-	& Air \\
-	& Metal \\
-	& Water \\
+The following sub-sections list data. The Type numbers in parentheses are the sum of advantages\footnote{or resists, or disadvantages, or whatever.} of single- and dual-Type defenders. For example, in the first sub-section, Fire has 4 single advantages and 68 dual advantages for a total of 72 Types.
 
-	(3) [Earth]:&\\
-	& Electric \\
-	& Fire \\
-	& Toxic \\
 
-	(3) [Ice]:&\\
-	& Air \\
-	& Nature \\
-	& Water \\
+\subsect{Attacking}
 
-	(3) [Nature]:&\\
-	& Earth \\
-	& Light \\
-	& Water \\
 
-	(3) [Sound]:&\\
-	& Air \\
-	& Metal \\
-	& Spirit \\
 
-	(3) [Void]:&\\
-	& Fire \\
-	& Light \\
-	& Sound \\
+When attacking, ``best'' is defined as most effective and ``worst'' is defined as the most resisted. In practice, these may not so easily be defined.
 
-	(3) [Toxic]:&\\
-	& Martial \\
-	& Nature \\
-	& Water \\
 
-	(2) [Metal]:&\\
-	& Earth \\
-	& Nature \\
 
-	(2) [Light]:&\\
-	& Magic \\
-	& Void \\
+\subsubsect{Best Single-Type Attackers}
 
-	(2) [Martial]:&\\
-	& Ice \\
-	& Metal \\
+\begin{itemize}
+	\item{Fire (72)}
+	\item{Electric (69)}
+	\item{Ice (69)}
+	\item{Earth (63)}
+	\item{Void (63)}
+\end{itemize}
 
-	(2) [Water]:&\\
-	& Earth \\
-	& Fire \\
+\subsubsect{Best Dual-Type Attackers}
 
-	(1) [Magic]:&\\
-	& Spirit \\
+\begin{itemize}
+	\item{Earth + Ice (132)}
+	\item{Electric + Void (132)}
+	\item{Fire + Nature (129)}
+	\item{Earth + Electric (128)}
+	\item{Ice + Void (128)}
+\end{itemize}
 
-	(1) [Air]:&\\
-	& Void \\
+\noindent Note: not surprisingly, these are just combinations of the best single-Type attackers plus Nature.
 
-	(1) [Spirit]:&\\
-	& Void \\
+\subsubsect{Worst Single-Type Attackers}
 
-\end{tabular}
-\end{table}
+\begin{itemize}
+	\item{Toxic (92)}
+	\item{Sound (86)}
+	\item{Nature (80)}
+	\item{Fire (72)}
+	\item{Earth (69)}
+	\item{Martial (69)}
+\end{itemize}
+
+\subsubsect{Worst Dual-Type Attackers}
+\begin{itemize}
+	\item{Fire + Sound (53)}
+	\item{Fire + Martial (44)}
+	\item{Earth + Void (41)}
+	\item{Nature + Toxic (35)}
+	\item{Earth + Sound (34)}
+\end{itemize}
 
 
 \input{../postamble}

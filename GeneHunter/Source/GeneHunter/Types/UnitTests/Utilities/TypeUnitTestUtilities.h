@@ -14,6 +14,11 @@ public:
 	constexpr static bool DEBUG = false;
 
 	/**
+	 * If we're building a .tex file and a multicol goes over this, we'll truncate the column with "...".
+	 */
+	constexpr static int MAX_LATEX_LINES = 38;
+
+	/**
 	 * Performs "UType::Analyze" depending on bAtk for unit tests. Returns if the result is equal to the expected
 	 * values.
 	 * For example:
