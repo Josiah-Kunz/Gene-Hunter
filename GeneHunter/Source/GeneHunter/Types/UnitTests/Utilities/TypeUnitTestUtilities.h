@@ -97,28 +97,22 @@ public:
 	 */
 	static void AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
 		const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode, TArray<FTypeArray2D>& Result);
-	
+
+	/**
+	 * Gets a "rock-paper-scissors" Type triad, such as Pokemon's Fire > Grass > Water.
+	 * @param Types The Types to analyze.
+	 * @param bTwoWay If true, the triad must be a two-way triad. For example, 2x attacking Fire > Grass > Water, but also 0.5x attacking Fire < Grass < Water.
+	 * @param Triad The returned array of possible triads, such as Pokemon's {{Fire, Grass, Water}, {Fighting, Dark, Psychic}}. 
+	 */
+	static void GetRockPaperScissors(const TArray<UType*>& Types, const bool bTwoWay, TArray<FTypeArray1D*>& Triad);
+
+	/**
+	 *
+	 */
+private:
 
 	static bool IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices);
-	
 
-	
-
-
-	
-	
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-	
-	
+	static bool FormsTriadSide(UType* Attacker, UType* Defender, const bool bTwoWay);
 	
 };

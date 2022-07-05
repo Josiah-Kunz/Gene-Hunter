@@ -301,33 +301,6 @@ TArray<FTypeArray1D*> UTypeUnitTestUtilities::Analyze(const TArray<UType*>& Type
 	return Ret;
 }
 
-bool UTypeUnitTestUtilities::IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices)
-{
-
-	/*
-	 *	In this example, we have five types and three indices:
-	 *		Indices = {1, 2, 5}
-	 *		Types.Num() ==> 5
-	 */
-	
-	bool Ret = true;
-	int i=Indices.Num()-1;	// Start at the last index (e.g., the "5" in {1, 2, 5})
-	while (Ret && i>=0)
-	{
-		Indices[i]++;		// Increment this index (e.g., the "5" becomes a "6", which is over cap)
-		if (Indices[i] >= Types.Num() - ((Indices.Num()-1)-i))	// i=2's cap is 5; i=1's cap is 4; etc.
-			{
-			i--;			// Go to the previous index (e.g, the "2")
-			} else
-			{
-				Ret = false;
-				for(int j=i+1; j<Indices.Num();j++)	// This i works! Reset its following Indices (e.g., if i=1 was validly set to "3", set i=2 to "4")
-					Indices[j] = Indices[i]+(j-i);
-			}
-	}
-	return Ret;
-}
-
 void UTypeUnitTestUtilities::AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
 	const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode, TArray<FTypeArray2D>& Result)
 {
@@ -443,34 +416,63 @@ void UTypeUnitTestUtilities::AnalyzeAll(TArray<UType*>& Types, const int NumTest
 	}
 }
 
+void UTypeUnitTestUtilities::GetRockPaperScissors(const TArray<UType*>& Types, const bool bTwoWay,
+	TArray<FTypeArray1D*>& Triad)
+{
 
+	// Using Pokemon's "Fire", "Grass", "Water" triad as example variables
+	for(UType* Fire : Types)
+	{
+		for (UType* Grass : Types)
+		{
 
+			// Fire's relationship with Grass
+			if (!FormsTriadSide(Fire, Grass, bTwoWay))
+				continue;
 
+			// One triad side down; check the second
+			for (UType* Water : Types)
+			{
+				if (!FormsTriadSide(Grass, Water, bTwoWay))
+					continue;
 
+				// Second triad side was successful; try the third
+				if (FormsTriadSide(Water, Fire, bTwoWay))
+					Triad.Add(new FTypeArray1D{{Fire, Grass, Water}});
+			}
+		}
+	}
+}
 
+bool UTypeUnitTestUtilities::IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices)
+{
 
+	/*
+	 *	In this example, we have five types and three indices:
+	 *		Indices = {1, 2, 5}
+	 *		Types.Num() ==> 5
+	 */
+	
+	bool Ret = true;
+	int i=Indices.Num()-1;	// Start at the last index (e.g., the "5" in {1, 2, 5})
+	while (Ret && i>=0)
+	{
+		Indices[i]++;		// Increment this index (e.g., the "5" becomes a "6", which is over cap)
+		if (Indices[i] >= Types.Num() - ((Indices.Num()-1)-i))	// i=2's cap is 5; i=1's cap is 4; etc.
+			{
+			i--;			// Go to the previous index (e.g, the "2")
+			} else
+			{
+				Ret = false;
+				for(int j=i+1; j<Indices.Num();j++)	// This i works! Reset its following Indices (e.g., if i=1 was validly set to "3", set i=2 to "4")
+					Indices[j] = Indices[i]+(j-i);
+			}
+	}
+	return Ret;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+bool UTypeUnitTestUtilities::FormsTriadSide(UType* Attacker, UType* Defender, const bool bTwoWay)
+{
+	return Attacker->GetAttackModifier(Defender) > 1 &&
+				(bTwoWay ? Defender->GetAttackModifier(Attacker) < 1 : true);
+}

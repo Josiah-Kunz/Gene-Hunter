@@ -26,7 +26,7 @@ bool FUType_Combat_Defend_Coverage_AllTypes_1v1::RunTest(const FString& Paramete
 	const TArray<FTypeArray2D*> Expected = {
 		new FTypeArray2D{{{Bug}}, {Ground}},
 		new FTypeArray2D{{{Electric}}, {Flying}},
-		new FTypeArray2D{{{Fighting}}, {Bug}},
+		new FTypeArray2D{{{Fighting}}, {Bug, Rock}},
 		new FTypeArray2D{{{Fire}}, {Bug}},
 		new FTypeArray2D{{{Flying}}, {Ground, Bug, Fighting, Grass}},
 		new FTypeArray2D{{{Grass}}, {Ground}},
