@@ -281,7 +281,7 @@ TArray<FTypeArray1D*> UTypeUnitTestUtilities::Analyze(const TArray<UType*>& Type
 
 		// Debug
 		if (bDebug)
-			UE_LOG(LogTemp, Display, TEXT("======================="));
+			UE_LOG(LogTemp, Display, TEXT("%s"), *UGeneHunterBPLibrary::LINE_SEPARATOR);
 
 		// Rely on another function
 		const float Modifier = UType::GetNetModifier(bAtk ? TypesToAnalyze : AgainstInfo->Array,
@@ -417,7 +417,7 @@ void UTypeUnitTestUtilities::AnalyzeAll(TArray<UType*>& Types, const int NumTest
 }
 
 void UTypeUnitTestUtilities::GetRockPaperScissors(const TArray<UType*>& Types, const bool bTwoWay,
-	TArray<FTypeArray1D*>& Triad)
+	TArray<FTypeArray1D*>& Triads)
 {
 
 	// Using Pokemon's "Fire", "Grass", "Water" triad as example variables
@@ -438,11 +438,34 @@ void UTypeUnitTestUtilities::GetRockPaperScissors(const TArray<UType*>& Types, c
 
 				// Second triad side was successful; try the third
 				if (FormsTriadSide(Water, Fire, bTwoWay))
-					Triad.Add(new FTypeArray1D{{Fire, Grass, Water}});
+					Triads.Add(new FTypeArray1D{{Fire, Grass, Water}});
 			}
 		}
 	}
 }
+
+void UTypeUnitTestUtilities::PrintRockPaperScissors(const bool bTwoWay)
+{
+
+	// Get data
+	TArray<UType*> Types;
+	UType::GetAllTypes(Types);
+	TArray<FTypeArray1D*> Triads;
+	GetRockPaperScissors(Types, bTwoWay, Triads);
+
+	// Print it
+	const FString TwoWay = bTwoWay ? "Two-Way" : "One-Way";
+	UE_LOG(LogTemp, Warning, TEXT(" \n%s\nTriads (%s)\n%s"),
+				*UGeneHunterBPLibrary::LINE_SEPARATOR,
+				*TwoWay,
+				*UGeneHunterBPLibrary::LINE_SEPARATOR);
+	for(const FTypeArray1D* Triad : Triads)
+		UE_LOG(LogTemp, Display, TEXT("\t%s\n"),
+			*FTypeArray1D::TypeArray1DToFString(Triad)
+			);
+	UE_LOG(LogTemp, Warning, TEXT(" \n%s"), *UGeneHunterBPLibrary::LINE_SEPARATOR);
+}
+
 
 bool UTypeUnitTestUtilities::IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices)
 {

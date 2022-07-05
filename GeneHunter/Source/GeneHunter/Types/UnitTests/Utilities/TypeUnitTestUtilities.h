@@ -99,16 +99,20 @@ public:
 		const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode, TArray<FTypeArray2D>& Result);
 
 	/**
-	 * Gets a "rock-paper-scissors" Type triad, such as Pokemon's Fire > Grass > Water.
+	 * Gets the "rock-paper-scissors" Type triads, such as Pokemon's Fire > Grass > Water.
 	 * @param Types The Types to analyze.
 	 * @param bTwoWay If true, the triad must be a two-way triad. For example, 2x attacking Fire > Grass > Water, but also 0.5x attacking Fire < Grass < Water.
-	 * @param Triad The returned array of possible triads, such as Pokemon's {{Fire, Grass, Water}, {Fighting, Dark, Psychic}}. 
+	 * @param Triads The returned array of possible triads, such as Pokemon's {{Fire, Grass, Water}, {Fighting, Dark, Psychic}}. 
 	 */
-	static void GetRockPaperScissors(const TArray<UType*>& Types, const bool bTwoWay, TArray<FTypeArray1D*>& Triad);
+	static void GetRockPaperScissors(const TArray<UType*>& Types, const bool bTwoWay, TArray<FTypeArray1D*>& Triads);
 
 	/**
-	 *
+	 * Prints all "rock-paper-scissors" Type triad, such as Pokemon's Fire > Grass > Water.
+	 * @param bTwoWay If true, the triad must be a two-way triad. For example, 2x attacking Fire > Grass > Water, but also 0.5x attacking Fire < Grass < Water. 
 	 */
+	UFUNCTION(BlueprintCallable)
+	static void PrintRockPaperScissors(const bool bTwoWay);
+
 private:
 
 	static bool IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices);
