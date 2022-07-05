@@ -438,7 +438,12 @@ void UTypeUnitTestUtilities::GetRockPaperScissors(const TArray<UType*>& Types, c
 
 				// Second triad side was successful; try the third
 				if (FormsTriadSide(Water, Fire, bTwoWay))
-					Triads.Add(new FTypeArray1D{{Fire, Grass, Water}});
+				{
+					// Must be unique
+					FTypeArray1D* Triad = new FTypeArray1D{{Fire, Grass, Water}};
+					if (!FTypeArray1D::Contains(Triads, Triad))
+						Triads.Add(Triad);
+				}
 			}
 		}
 	}
