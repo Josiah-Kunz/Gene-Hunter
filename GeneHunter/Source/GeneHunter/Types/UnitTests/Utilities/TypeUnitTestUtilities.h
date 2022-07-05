@@ -46,7 +46,7 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
 	static void PrintStatistics(const int NumAttackers, const int NumDefenders, const FFloatRange Range,
 		const EAttackModifierMode Mode, const bool bAtk, const bool bPrintToConsole, const bool bPrintToFile,
-		const bool bPrintToFileLaTeX, UPARAM(ref) TArray<UType*>& Exclude,
+		UPARAM(DisplayName="Format LaTeX") const bool bPrintToFileLaTeX, UPARAM(ref) TArray<UType*>& Exclude,
 		const FString PrintDirectory = "Content/Editor/Type-Advantage/Statistics-Output/");
 	
 	/**

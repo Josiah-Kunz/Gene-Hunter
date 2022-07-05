@@ -51,7 +51,7 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 		AllTypes,
 		bAtk ? NumAttackers : NumDefenders,
 		bAtk ? NumDefenders : NumAttackers,
-		Range, true, Mode, Analysis);
+		Range, bAtk, Mode, Analysis);
 
 	// Sort analysis
 	Analysis.Sort([](const FTypeArray2D& A, const FTypeArray2D& B)
@@ -81,6 +81,7 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 		*EffectiveText);
 	LaTeXText += "]{\n";
 	LaTeXText += "\tcolspec = {XXX}, width = 0.95\\linewidth,\n";
+	LaTeXText += "\thline{1,Z} = {2pt},\n";
 	LaTeXText += "\thlines,\n";
 	LaTeXText += "\trow{1-3,X,Y,Z} = {font=\\bfseries},\n";
 	LaTeXText += "}\n";
