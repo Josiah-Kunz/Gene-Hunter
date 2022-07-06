@@ -53,7 +53,8 @@ public:
 	 * Lazily gets all Type combinations. If you care about performance, take a look at how AnalyzeAll handles the problem.
 	 * For example, for NumTypes = 2, this returns {A, B}, {A, C}, {A, D}, ...
 	 */
-	static TArray<FTypeArray1D*> GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes);
+	static void GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes,
+		TArray<FTypeArray1D>& TypeCombinations);
 	
 	/**
 	 * Example: 
@@ -64,18 +65,20 @@ public:
 		* - bAtk = true (since TypesToAnalyze is attacking)
 		* - Using Pokemon rules, the returns should be:
 		*	- If multitype:
-		*		- Ret[0].Array = {Steel, Normal}		(because Fire = 2x and Water = 1x)
-		*		- Ret[1].Array = {Ground, Electric}		(because Fire = 1x and Water = 2x)
+		*		- Analysis[0].Array = {Steel, Normal}		(because Fire = 2x and Water = 1x)
+		*		- Analysis[1].Array = {Ground, Electric}	(because Fire = 1x and Water = 2x)
 		*		- ...
 		*	- If coverage:
-		*		- Ret[0].Array = {Grass, Normal}		(because Fire alone would suffice)
-		*		- Ret[1].Array = {Fire, Rock}			(because Water alone would suffice)
+		*		- Analysis[0].Array = {Grass, Normal}		(because Fire alone would suffice)
+		*		- Analysis[1].Array = {Fire, Rock}			(because Water alone would suffice)
 		*		- ...
 	 */
-	static TArray<FTypeArray1D*> Analyze(
+	UFUNCTION(BlueprintCallable)
+	static void Analyze(
 			const TArray<UType*>& TypesToAnalyze,
-			const TArray<FTypeArray1D*>& AgainstTypes,
+			const TArray<FTypeArray1D>& AgainstTypes,
 			const FFloatRange Range,
+			TArray<FTypeArray1D>& Analysis,
 			const EAttackModifierMode Mode = EAttackModifierMode::MultiType,
 			const bool bAtk = true,
 			const bool bDebug = false
@@ -112,6 +115,23 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	static void PrintRockPaperScissors(const bool bTwoWay);
+
+	/**
+	 * Converts, e.g.,:
+	 *	- TypeArray1D{ {A, B}, {C, D} } ==> {A, B, C, D}
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static void ArrayOfTypeArray1DToArrayOfTypes(UPARAM(ref) const TArray<FTypeArray1D>& Original,
+		TArray<UType*>& Result);
+
+	/**
+	 * Converts, e.g.,:
+	 *  - Wrap = 2
+	 *	- {A, B, C, D} ==> TypeArray1D{ {A, B}, {C, D} }
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static void ArrayOfTypesToArrayOfTypeArray1D(UPARAM(ref) const TArray<UType*>& Original,
+		TArray<FTypeArray1D>& Result, const int Wrap = 1);
 
 private:
 

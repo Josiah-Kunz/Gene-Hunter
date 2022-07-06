@@ -1,23 +1,33 @@
 ﻿#include "TypeUnitTestUtilities.h"
 
+#include "DiffResults.h"
+
 
 bool UTypeUnitTestUtilities::TestCombatAnalysis(const TArray<UType*>& AllTypes, const TArray<UType*>& TypesToAnalyze,
-	const int NumOpponentTypes, const FFloatRange Range, const bool bAtk, const EAttackModifierMode Mode,
-	const TArray<FTypeArray1D*>& Expected, FString& Description, const bool bDebug)
+                                                const int NumOpponentTypes, const FFloatRange Range, const bool bAtk, const EAttackModifierMode Mode,
+                                                const TArray<FTypeArray1D*>& Expected, FString& Description, const bool bDebug)
 {
 	// Get array of FTypeArray1D (either defenders or attackers)
-	const TArray<FTypeArray1D*> OpponentTypes = GetAllTypeCombinations(AllTypes, NumOpponentTypes);
+	TArray<FTypeArray1D> OpponentTypes;
+	GetAllTypeCombinations(AllTypes, NumOpponentTypes, OpponentTypes);
 	
 	// Get the UTypes (actual) that fall within the given range
-	const TArray<FTypeArray1D*> Analysis = Analyze(TypesToAnalyze, OpponentTypes,
+	TArray<FTypeArray1D> Analysis;
+	Analyze(TypesToAnalyze, OpponentTypes,
 				Range,
+				Analysis,
 				Mode,
 				bAtk,
 				bDebug
 			);
 
+	// Convert to pointer
+	TArray<FTypeArray1D*> AnalysisPointers = {};
+	for(FTypeArray1D TypeArray1D : Analysis)
+		AnalysisPointers.Add(std::addressof(TypeArray1D));
+
 	// Test it
-	return FTypeArray1D::ArrayOfTypeArray1DsAreEqual(Analysis, Expected, Description);
+	return FTypeArray1D::ArrayOfTypeArray1DsAreEqual(AnalysisPointers, Expected, Description);
 }
 
 bool UTypeUnitTestUtilities::TestAnalyzeAll(TArray<UType*>& AllTypes, const int NumTestedTypes, const int NumUntestedTypes,
@@ -229,14 +239,13 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 }
 
 
-TArray<FTypeArray1D*> UTypeUnitTestUtilities::GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes)
+void UTypeUnitTestUtilities::GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes,
+	TArray<FTypeArray1D>& TypeCombinations)
 {
-
-	TArray<FTypeArray1D*> Ret = {};
 	
 	// User is being dumb
 	if (Types.Num() == 0 || NumTypes < 1 || Types.Num() < NumTypes)
-		return Ret;
+		return;
 
 	// Setup trackers
 	TArray Indices = {0};
@@ -249,34 +258,30 @@ TArray<FTypeArray1D*> UTypeUnitTestUtilities::GetAllTypeCombinations(const TArra
 	{
 
 		// Populate TypeInfo
-		FTypeArray1D* TypeInfo = new FTypeArray1D{{}};
+		FTypeArray1D TypeInfo = {{}};
 		for (int i=0; i<NumTypes;i++)
-			TypeInfo->Array.Add(Types[Indices[i]]);
+			TypeInfo.Array.Add(Types[Indices[i]]);
 
 		// Add newest entry
-		Ret.Add(TypeInfo);
+		TypeCombinations.Add(TypeInfo);
 		
 		// Iterate
 		if (IncrementIndices(Types, Indices)) // Never able to iterate; must be at the end of all possible Type combinations
 			break;
 		Failsafe++;
 	}
-
-	// Return
-	return Ret;
 	
 }
 
 
-TArray<FTypeArray1D*> UTypeUnitTestUtilities::Analyze(const TArray<UType*>& TypesToAnalyze, const TArray<FTypeArray1D*>& AgainstTypes,
-	const FFloatRange Range, const EAttackModifierMode Mode, const bool bAtk, const bool bDebug)
+void UTypeUnitTestUtilities::Analyze(const TArray<UType*>& TypesToAnalyze,
+	const TArray<FTypeArray1D>& AgainstTypes, const FFloatRange Range, TArray<FTypeArray1D>& Analysis,
+	const EAttackModifierMode Mode, const bool bAtk, const bool bDebug)
 {
-	
-	TArray<FTypeArray1D*> Ret;
 	float OverallModifier = 1;
 
 	// Loop over, e.g., {{Fire, Water}, {Fire, Grass}, {Grass, Water}, ...}
-	for(FTypeArray1D* AgainstInfo : AgainstTypes)
+	for(FTypeArray1D AgainstInfo : AgainstTypes)
 	{
 
 		// Debug
@@ -284,21 +289,18 @@ TArray<FTypeArray1D*> UTypeUnitTestUtilities::Analyze(const TArray<UType*>& Type
 			UE_LOG(LogTemp, Display, TEXT("%s"), *UGeneHunterBPLibrary::LINE_SEPARATOR);
 
 		// Rely on another function
-		const float Modifier = UType::GetNetModifier(bAtk ? TypesToAnalyze : AgainstInfo->Array,
-			bAtk ? AgainstInfo->Array : TypesToAnalyze,
+		const float Modifier = UType::GetNetModifier(bAtk ? TypesToAnalyze : AgainstInfo.Array,
+			bAtk ? AgainstInfo.Array : TypesToAnalyze,
 			Mode, bDebug);
 
 		// All done with combining types; add?
 		if (Range.Contains(Modifier))
-			Ret.Add(AgainstInfo);
+			Analysis.Add(AgainstInfo);
 		
 		
 		// Initialize Modifier
 		UType::InitializeModifier(OverallModifier, Mode);
 	}
-
-	// Return result
-	return Ret;
 }
 
 void UTypeUnitTestUtilities::AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
@@ -471,6 +473,34 @@ void UTypeUnitTestUtilities::PrintRockPaperScissors(const bool bTwoWay)
 	UE_LOG(LogTemp, Warning, TEXT(" \n%s"), *UGeneHunterBPLibrary::LINE_SEPARATOR);
 }
 
+void UTypeUnitTestUtilities::ArrayOfTypeArray1DToArrayOfTypes(const TArray<FTypeArray1D>& Original,
+	TArray<UType*>& Result)
+{
+	for(FTypeArray1D TypeArray1D : Original)
+		for(UType* Type : TypeArray1D.Array)
+			Result.Add(Type);
+}
+
+void UTypeUnitTestUtilities::ArrayOfTypesToArrayOfTypeArray1D(const TArray<UType*>& Original,
+	TArray<FTypeArray1D>& Result, const int Wrap)
+{
+	int i=0;
+	TArray<UType*> Types = {};
+	for(UType* Type : Original)
+	{
+		Types.Add(Type);
+		i++;
+		if (i==Wrap)
+		{
+			i = 0;
+			Result.Add(FTypeArray1D{Types});
+			Types = {};
+		}
+		
+	}
+}
+
+
 
 bool UTypeUnitTestUtilities::IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices)
 {
@@ -504,3 +534,5 @@ bool UTypeUnitTestUtilities::FormsTriadSide(UType* Attacker, UType* Defender, co
 	return Attacker->GetAttackModifier(Defender) > 1 &&
 				(bTwoWay ? Defender->GetAttackModifier(Attacker) < 1 : true);
 }
+
+
