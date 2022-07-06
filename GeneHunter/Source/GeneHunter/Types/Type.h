@@ -110,8 +110,8 @@ public:
 	static void InitializeModifier(float& Modifier, const EAttackModifierMode Mode);
 
 	/**
-		 *	Deletes "None" entries in Type->AttackModifiers. This cannot be done by Blueprint methods (afaik).
-		 */
+	 *	Deletes "None" entries in Type->AttackModifiers. This cannot be done by Blueprint methods (afaik).
+	 */
 	UFUNCTION(BlueprintCallable)
 	static void PruneTypeAttackMods(UType* Type);
 	
@@ -141,6 +141,20 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
 	static void GetAllTypes(TArray<UType*>& Types, UPARAM(ref) const TArray<UType*>& Exclude, const bool bSortABC = true);
+
+	/**
+	 * Parses through this Type's AttackModifiers and returns the defenders who are within the specified range.
+	 */
+	UFUNCTION(BlueprintCallable)
+	void GetTypesInRange(UPARAM(ref) const TArray<UType*>& AllTypes, const FFloatRange Range,
+	                     TArray<UType*>& Defenders);
+
+	/**
+	 * Parses through AllTypes to find attackers whose AttackModifiers are within the specified range when attacking this Type.
+	 */
+	UFUNCTION(BlueprintCallable)
+	void GetTypesInRangeDefending(UPARAM(ref) const TArray<UType*>& AllTypes, const FFloatRange Range,
+	                              TArray<UType*>& Attackers);
 	
 #pragma endregion
 

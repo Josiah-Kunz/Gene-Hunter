@@ -46,6 +46,8 @@
 				}
 			\end{itemize}
 		}
+		\item{Types can have \textit{traits} that are auras or abilities for balance purposes.}
+		\item{Several ``triads'' (rock-paper-scissors groups) exist, such as Earth/Toxic/Nature.}
 	\end{itemize}
 	Note: Types may be found, analyzed, and modified using an EditorUtilityWidget found under \texttt{Content/Editor/Type-Advantage}, right-clicking the \texttt{TypeAdvantages} widget, and selecting \texttt{Run Editor Utility Widget}.
 \end{tldr}
@@ -208,7 +210,7 @@ As an additional balancing tool, all Types will have traits (including Typeless)
 	caption = {Type Trait Suggestions},
 	label = {type-traits},
 ]{
-	colspec= {l X[wd=15em]},
+	colspec= {c X[wd=15em]},
 	hline{1,Z} = {2pt},
 	hlines,
 	row{1} = {font=\bfseries},
@@ -238,6 +240,7 @@ The Types fit nicely into two or three group schemes. The reason for these group
 	caption = {Type Scheme 1},
 	label = {type-scheme-1},
 ]{
+	colspec = {Q[c,0.2\linewidth]Q[c,0.2\linewidth]},
 	hline{1,Z} = {2pt},
 	hlines,
 	row{1} = {font=\bfseries},
@@ -258,6 +261,7 @@ The Types fit nicely into two or three group schemes. The reason for these group
 	caption = {Type Scheme 2},
 	label = {type-scheme-2},
 ]{
+	colspec = {Q[c,0.2\linewidth]Q[c,0.2\linewidth]},
 	hline{1,Z} = {2pt},
 	hlines,
 	row{1} = {font=\bfseries},
@@ -278,6 +282,7 @@ The Types fit nicely into two or three group schemes. The reason for these group
 	caption = {Type Scheme 3},
 	label = {type-scheme-3},
 ]{
+	colspec = {Q[c,0.2\linewidth]Q[c,0.2\linewidth]},
 	hline{1,Z} = {2pt},
 	hlines,
 	row{1} = {font=\bfseries},
@@ -294,5 +299,55 @@ The Types fit nicely into two or three group schemes. The reason for these group
 	Solar		& {Fire\\Light}\\
 
 \end{longtblr}
+
+%----------------------------------------
+
+\sect{Triads}
+
+Triads are groups of three Types that form a rock-paper-scissors--style dynamic. One-way triads have an attacking advantage. For example, Air/Void/Fire form a one-way triad because attacking:
+\begin{itemize}
+	\item{Air $\rightarrow$ Void = 2x}
+	\item{Void $\rightarrow$ Fire = 2x}
+	\item{Fire $\rightarrow$ Air = 2x}
+\end{itemize}
+
+\noindent However, this triad is not \textit{two}-way because it doesn't also work with defending:
+
+\begin{itemize}
+	\item{Air $\leftarrow$ Void = 0.5x {\color{green}$\checkmark$}}
+	\item{Void $\leftarrow$ Fire = 0.5x {\color{green}$\checkmark$}}
+	\item{Fire $\leftarrow$ Air = 1x {\color{red}$\times$}}
+\end{itemize}
+
+\noindent Two-way triads are also one-way triads, and so are not reproduced again in the one-way section below.
+
+
+\begin{longtblr}[
+	caption = {Triads},
+	label = {triads},
+]{
+	colspec = {Q[c,0.1\linewidth]Q[c,0.1\linewidth]Q[c,0.1\linewidth]},
+	hline{1,Z} = {2pt},
+	hlines,
+}
+
+	\SetCell[c=3]{c} \textbf{Two-Way} \\
+	Air 	& Sound 	& Void\\
+	Earth	& Fire		& Nature\\
+	Earth	& Toxic		& Nature\\
+	Fire	& Ice		& Water\\
+	Fire	& Nature	& Water\\
+	
+	\\\hline
+	\SetCell[c=3]{c} \textbf{One-Way} \\
+	Air		& Void		& Fire\\
+	Earth	& Electric	& Metal\\
+	Earth	& Electric	& Water\\
+	Earth	& Fire		& Metal\\
+	Earth	& Toxic		& Water\\
+	Sound	& Spririt	& Void\\
+
+\end{longtblr}
+
 
 \input{../postamble}

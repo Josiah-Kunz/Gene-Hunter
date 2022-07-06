@@ -169,6 +169,24 @@ void UType::GetAllTypes(TArray<UType*>& Types, const TArray<UType*>& Exclude, co
 	}
 }
 
+void UType::GetTypesInRange(const TArray<UType*>& AllTypes, const FFloatRange Range, TArray<UType*>& Defenders)
+{
+	Defenders = {};
+	for(UType* Defender : AllTypes)
+		if (Range.Contains(GetAttackModifier(Defender)))
+			Defenders.Add(Defender);
+}
+
+void UType::GetTypesInRangeDefending(const TArray<UType*>& AllTypes, const FFloatRange Range, TArray<UType*>& Attackers)
+{
+	Attackers = {};
+	for(UType* Attacker : AllTypes)
+		if (Range.Contains(Attacker->GetAttackModifier(this)))
+			Attackers.Add(Attacker);
+}
+
+
+
 #pragma endregion
 
 #pragma region Utilities
