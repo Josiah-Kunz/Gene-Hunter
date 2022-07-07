@@ -1,7 +1,7 @@
-	x\input{../preamble}
+\input{../preamble}
 \def\tableWidth{0.5\textwidth}
 
-\sect{TL; DR}
+\begin{tldr}
 ``Stats'' are numbers used to determine outcomes in battles. There are seven types of stats listed in Table~\ref{tab: stat-key}. They depend on:
 
 \begin{itemize}
@@ -11,7 +11,7 @@
 	\item{Level (Figures~\ref{fig: standard-stat}, \ref{fig: hp-overview}, \ref{fig: haste-overview}, and~\ref{fig: crit-overview})}
 \end{itemize}
 
-
+\end{tldr}
 
 
 \sect{Keys}
@@ -84,8 +84,9 @@ In addition to the base stat, there are also ``base pairs,'' which augment the b
 An example plot of base pairs vs.\ Physical Attack may be seen below in Figure~\ref{fig: base-pairs-plot}. 
 
 \graphic{filename=base-pairs-vs-attack-plot,
-		caption={Base pair count vs.\ the Physical Attack stat for a Monster at level 100 with an average base Physical Attack (100). The ``wiggles'' in the plot are from the way PhA is calculated (via floor function).},
-		label={fig: base-pairs-plot}
+		caption={Base pair count vs.\ the Physical Attack stat for a Monster at level 100 with an average base Physical Attack (100). The ``wiggles'' in the plot are from the way PhA is calculated (via floor function; see Eq.~\eqref{eqn: standard-stat}).},
+		label={fig: base-pairs-plot},
+		width=\textwidth
 }
 
 In Figure~\ref{fig: base-pairs-plot}, one may observe that the minimum is fairly forgiving, still yielding 1/3 of the full effect. The returns saturate at around 90 base pairs, which yield 97\% of the full effect. Therefore, if one desires a Monster with ``almost perfect'' (within 3\% of perfect) base pairs in 5 out of the 7 stat types, there is a $0.10^5 = 0.00001\% = 1/100,000$ chance. Is that too much grinding? Well, those numbers can be changed by talents and other methods mentioned in the ``grinding and difficulty'' section in another chapter.
@@ -100,7 +101,7 @@ Base pairs are generated uniformly by default. That is, every randomly-generated
 Similar to a Pok\'{e}mon's Nature \cite{pkmn-stats}, a Monster may have genetic mutations in its stats genome. It may be thought of as additional base pairs in a particular stat or a separate entity altogether; the concept is still in its infancy and will likely grow and change. However, the idea is that there should be another randomizer that may be pseudo-controlled by talents that makes a Monster unique. Below is a table of the current ideas.
 
 \graphic{filename=mutations-table,
-		caption={List of current mutations},
+		caption={List of current mutation ideas.},
 		label={tab: mutations},
 		width=0.5\textwidth
 }
@@ -148,11 +149,13 @@ Effectively, the stats nearly triple every ten levels. Therefore, a level~20 Mon
 
 The range of level 1--20 are especially important, as it is hoped that the player is ``hooked'' during this delicate time.
 
-Data for all levels and selected base pairs may be seen in Figure~\ref{fig: standard-stat}, which is also below. In this figure, it is important to note that a good (base stat 120) Monster with the maximum number of base pairs (100 base pairs) is similar to a specialst (base stat 150) with an average number of base pairs (50 base pairs). In practice, this may put an over-emphasis on getting good base pairs, but that data will only come with playtesting. For now, it is assumed that an informed player (i.e., level 30+) will understand this importance and grind accordingly as difficulty dictates.
+Data for all levels and selected base pairs may be seen in Figure~\ref{fig: standard-stat}, which is also below. In this figure, it is important to note that a good (base stat 120) Monster with the maximum number of base pairs (100 base pairs) is similar to a specialist (base stat 150) with an average number of base pairs (50 base pairs). In practice, this may put an over-emphasis on getting good base pairs, but that data will only come with playtesting. For now, it is assumed that an informed player (i.e., level 30+) will understand this importance and grind accordingly as difficulty dictates.
 
 \graphic{filename=Standard-stat-low-levels-100-plot, 
 			caption={The early game plot of a standard stat by level for a base pair value of 100.},
-			label={fig: standard-early-game}}
+			label={fig: standard-early-game},
+			width=\textwidth
+}
 			
 \graphic{filename=Standard-stat-low-levels-100-table, 
 			caption={The early game table of a standard stat by level for a base pair value of 100.},
@@ -259,13 +262,13 @@ The Critical Hit forumla is the most complicated of all, and hence may be the mo
 		\texttt{C}_{\floor{10}}
 \end{equation}
 
-\noindent where
+\noindent From this, it can be seen that Critical Hit is interpolated at 80\% (and based on level between two constants): $\texttt{C}_{\floor{10}}$ and $\texttt{C}_{\ceil{10}}$. These are called the \texttt{Sub-Crit} functions.
 
 \begin{align*}
-	\texttt{L}_{\floor{10}} &= 10\cdot \left\lfloor \frac{\texttt{level}+0.1}{10} \right\rfloor & \text{[The previous decalevel]} \\ 
-	\texttt{L}_{\ceil{10}} &= 10\cdot \left\lceil \frac{\texttt{level}+0.1}{10} \right\rceil & \text{[The next decalevel]}\\
 	\texttt{C}_{\floor{10}} &= \texttt{Sub-Crit} \text{ evaluated at } (\texttt{level} = \texttt{L}_{\floor{10}})\\
-	\texttt{C}_{\ceil{10}} &= \texttt{Sub-Crit} \text{ evaluated at } (\texttt{level} = \texttt{L}_{\ceil{10}})
+	\texttt{C}_{\ceil{10}} &= \texttt{Sub-Crit} \text{ evaluated at } (\texttt{level} = \texttt{L}_{\ceil{10}})\\
+	\texttt{L}_{\floor{10}} &= 10\cdot \left\lfloor \frac{\texttt{level}+0.1}{10} \right\rfloor & \text{[The previous decalevel]} \\ 
+	\texttt{L}_{\ceil{10}} &= 10\cdot \left\lceil \frac{\texttt{level}+0.1}{10} \right\rceil & \text{[The next decalevel]}
 \end{align*}
 
 \noindent The \texttt{Sub-Crit} function is defined as ``the Critical Hit every ten levels'', which is shown by Eq.~\eqref{eqn: sub-crit}:
