@@ -1,0 +1,361 @@
+\input{../preamble}
+
+\begin{tldr}
+	\begin{itemize}
+		\item{Some types have an immunity, but Electric is healed by other Electric Types instead of damaged}
+		\item{Attacking:
+			\begin{itemize}
+				\item{``Best'' attackers:
+					\begin{itemize}
+						\item{Fire}
+						\item{Electric}
+						\item{Ice}
+						\item{Earth}
+						\item{Void}
+					\end{itemize}
+				}
+				\item{``Worst'' attackers:
+					\begin{itemize}
+						\item{Toxic}
+						\item{Sound}
+						\item{Nature}
+						\item{Fire}
+					\end{itemize}
+				}
+			\end{itemize}
+			}
+		\item{Defending:
+			\begin{itemize}
+				\item{``Best'' defenders:
+					\begin{itemize}
+						\item{Metal}
+						\item{Earth}
+						\item{Void}
+						\item{Water}
+					\end{itemize}
+				}
+				\item{``Worst'' defenders:
+					\begin{itemize}
+						\item{Air}
+						\item{Nature}
+						\item{Water}
+						\item{Metal}
+					\end{itemize}
+				}
+			\end{itemize}
+		}
+		\item{Types can have \textit{traits} that are auras or abilities for balance purposes.}
+		\item{Several ``triads'' (rock-paper-scissors groups) exist, such as Earth/Toxic/Nature.}
+	\end{itemize}
+	Note: Types may be found, analyzed, and modified using an EditorUtilityWidget found under \texttt{Content/Editor/Type-Advantage}, right-clicking the \texttt{TypeAdvantages} widget, and selecting \texttt{Run Editor Utility Widget}.
+\end{tldr}
+
+\newpage
+
+\sect{Map from Pok\'{e}mon}
+
+\begin{figure}[H]
+\begin{center}
+	\includegraphics[scale=0.8]{map-from-pkmn}
+	\caption{The 18 Pok\'{e}mon types (left) approximately mapped to the 16 Gene Hunter Types (right).}
+\end{center}
+\end{figure}
+
+\newpage
+
+\sect{Overview}
+
+Figure~\ref{fig:ui} below displays a nifty little tool to display Type in summary. The best way to understand the Types is to play with it (but don't alter any data please!).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{ui-overview}
+	\caption{Overview of the user interface. Types may be found, analyzed, and modified using this EditorUtilityWidget found under \texttt{Content/Editor/Type-Advantage}, right-clicking the \texttt{TypeAdvantages} widget, and selecting \texttt{Run Editor Utility Widget}.}
+	\label{fig:ui}
+\end{figure}
+
+\sect{Data}
+The raw data acquired from the statistics tab of the type advantages UI (see Figure~\ref{fig:stats-ui}) can be found under the ``Type-Matchup-Statistics-Copy'' folder. They're formatted as .tex tables in case I ever wanted to print them, but they can be opened up with any text editor (think Notepad). As pictured, Typeless has been excluded in the analysis.gith
+
+I don't recommend parsing through it unless you're looking for something specific. For example, the 2v2 data has 126 entries. The full data is always available by running the UI as seen in the figure below.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=2]{statistics-ui}
+		\caption{The statistics UI (from which the data was acquired).}
+		\label{fig:stats-ui}
+	\end{center}
+\end{figure}
+
+The following sub-sections list data. The Type numbers in parentheses are the sum of advantages\footnote{or resists, or disadvantages, or whatever.} of single- and dual-Type defenders. For example, in the first sub-section, Fire has 4 single advantages and 68 dual advantages for a total of 72 Types.
+
+A minimum of five Types are listed, or more when there is a tie for fifth place.
+
+
+\subsect{Attacking}
+When attacking, ``best'' is defined as most effective and ``worst'' is defined as the most resisted. In practice, these may not so easily be defined.
+
+
+
+\subsubsect{Best Single-Type Attackers}
+
+\begin{itemize}
+	\item{Fire (72)}
+	\item{Electric (69)}
+	\item{Ice (69)}
+	\item{Earth (63)}
+	\item{Void (63)}
+\end{itemize}
+
+\subsubsect{Best Dual-Type Attackers}
+
+\begin{itemize}
+	\item{Earth + Ice (132)}
+	\item{Electric + Void (132)}
+	\item{Fire + Nature (129)}
+	\item{Earth + Electric (128)}
+	\item{Ice + Void (128)}
+\end{itemize}
+
+\noindent Note: not surprisingly, these are just combinations of the best single-Type attackers plus Nature.
+
+\subsubsect{Worst Single-Type Attackers}
+
+\begin{itemize}
+	\item{Toxic (92)}
+	\item{Sound (86)}
+	\item{Nature (80)}
+	\item{Fire (72)}
+	\item{Earth (69)}
+	\item{Martial (69)}
+\end{itemize}
+
+\subsubsect{Worst Dual-Type Attackers}
+\begin{itemize}
+	\item{Fire + Sound (53)}
+	\item{Fire + Martial (44)}
+	\item{Earth + Void (41)}
+	\item{Nature + Toxic (35)}
+	\item{Earth + Sound (34)}
+\end{itemize}
+
+\subsect{Defending}
+When defending, ``best'' is defined as most resists and ``worst'' is defined as the most weak to. In practice, these may not so easily be defined.
+
+\subsubsect{Best Single-Type Defenders}
+\begin{itemize}
+	\item{Earth (16$^*$)}
+	\item{Metal (16$^*$)}
+	\item{Void (16$^*$)}
+	\item{Nature (16)}
+	\item{Water (16)}
+\end{itemize}
+$^*$denotes at least one immunity.
+
+\subsubsect{Best Dual-Type Defenders}
+\begin{itemize}
+	\item{Electric$^{**}$ + Metal$^*$ (36)}
+	\item{Electric$^{**}$ + Void$^*$ (36)}
+	\item{Earth$^*$ + Magic (36)}
+	\item{Fire + Void$^*$ (36)}
+	\item{Ice + Metal$^*$ (36)}
+	\item{Magic + Water (36)}
+\end{itemize}
+$^*$denotes at least one immunity.\\
+$^{**}$denotes at least one healed-instead-of-damaged.
+
+\subsubsect{Worst Single-Type Defenders}
+\begin{itemize}
+	\item{Air (104)}
+	\item{Water (104)}
+	\item{Metal (104)}
+	\item{Nature (104)}
+	\item{Fire (81)}
+	\item{Void (81)}
+	\item{Earth (81)}
+\end{itemize}
+
+\subsubsect{Worst Dual-Type Defenders}
+\begin{itemize}
+	\item{Fire + Metal (144)}
+	\item{Void + Water (144)}
+	\item{Void + Fire (144)}
+
+
+	
+	\item{Void + Earth (125)}	
+
+	\item{Air + Ice (125)}	
+	\item{Air + Magic (125)}
+	\item{Air + Martial (125)}
+	\item{Air + Nature (125)}
+	\item{Air + Spirit (125)}
+	\item{Air + Void (125)}
+		
+	\item{Magic + Water (125)}
+
+	\item{Nature + Ice (125)}
+	\item{Nature + Light (125)}
+	\item{Nature + Sound (125)}
+	\item{Nature + Water (125)}
+	\item{Nature + Void (125)}	
+
+	
+	\item{Fire + Spirit (125)}
+
+	\item{Metal + Toxic (125)}
+
+
+\end{itemize}
+
+\newpage
+
+\sect{Type Traits}
+
+As an additional balancing tool, all Types will have traits (including Typeless). This is essential: we do not want to strike balance by doing the analysis as we've done above. For example, can you imagine how boring it would be if every Type had exactly 3~weaknesses and 3~resistances? It would be equally boring to have two or three Types be dominant and the rest to fall into F-tier. Instead each Type should have its own unique identity and balance should not be so black-and-white.\footnote{The old Pok\'{e}mon games promised that I could ``play with the Types I like,'' but that hope was crushed when Bug-types were found to be non-viable in OU (mostly). Scyther was almost saved with Scizor, and even Volcarona fell to UU before long. Why have these scrap types? For the sole purpose of pacing the early game? I found I had to throw away the Beedrill I fell in love with, and so this is my revenge!} Therefore, the following has been proposed:
+
+\begin{longtblr}[
+	caption = {Type Trait Suggestions},
+	label = {type-traits},
+]{
+	colspec= {c X[wd=15em]},
+	hline{1,Z} = {2pt},
+	hlines,
+	row{1} = {font=\bfseries},
+}
+
+	Type 	& Description\\
+	Air 	& Flight lowers the gravity scale and raises the jump height (maybe even flies one day?).\\
+	Ice		& Frost armor that regenerates when not taking damage.\\
+	Magic	& 5th attack slot for Magic-only utility moves (such as teleportation or cis/transdimensional portal). Magic's dis/advantages are too beige, and this gives the player an incentive to have at least a Magic dual-Type.\\
+	Martial	& A c-c-c-combo! meter that fills by damaging within a certain window or by using all moves in a certain order. The reward should be extra damage on the next attack or entering a berserk state. Martial \textit{really} needs something because it's so bland on paper.\\
+	Nature	& {Regrowth: HoT that starts when not taking damage and stops when taking damage\\
+				\\
+				Bark armor that prevents damage on switch for x seconds}\\
+	Typeless	& 2x STAB instead of 1.5x (tune as needed!)\\
+	
+	
+
+\end{longtblr}
+
+These are not complete, as I'm certain future team members will have better ideas than mine. 
+
+\sect{Type Groups}
+
+The Types fit nicely into two or three group schemes. The reason for these groups could be gym-esque leaders, talent tree options, or other game mechanics.
+
+\begin{longtblr}[
+	caption = {Type Scheme 1},
+	label = {type-scheme-1},
+]{
+	colspec = {Q[c,0.2\linewidth]Q[c,0.2\linewidth]},
+	hline{1,Z} = {2pt},
+	hlines,
+	row{1} = {font=\bfseries},
+}
+
+	Group Name	& Types\\
+	Arctic		& {Air\\Ice\\Water}\\
+	Desert		& {Earth\\Fire\\Metal}\\
+	Energy		& {Electric\\Light\\Sound}\\
+	Jungle		& {Martial\\Nature\\Toxic}\\
+	Paranormal	& {Magic\\Spirit\\Void}\\
+
+\end{longtblr}
+
+%----------------------------------------
+
+\begin{longtblr}[
+	caption = {Type Scheme 2},
+	label = {type-scheme-2},
+]{
+	colspec = {Q[c,0.2\linewidth]Q[c,0.2\linewidth]},
+	hline{1,Z} = {2pt},
+	hlines,
+	row{1} = {font=\bfseries},
+}
+
+	Group Name	& Types\\
+	Energy		& {Fire\\Light\\Sound}\\
+	Jungle		& {Air\\Nature\\Toxic}\\
+	Paranormal	& {Magic\\Spirit\\Void}\\
+	Planetary	& {Earth\\Ice\\Water}\\
+	Power		& {Electric\\Martial\\Metal\\(Typeless?)}\\
+
+\end{longtblr}
+
+%----------------------------------------
+
+\begin{longtblr}[
+	caption = {Type Scheme 3},
+	label = {type-scheme-3},
+]{
+	colspec = {Q[c,0.2\linewidth]Q[c,0.2\linewidth]},
+	hline{1,Z} = {2pt},
+	hlines,
+	row{1} = {font=\bfseries},
+}
+
+	Group Name	& Types\\
+	Arctic		& {Air\\Ice}\\
+	Combat		& {Martial\\Metal}\\
+	Energy		& {Electric\\Sound}\\
+	Island		& {Earth\\Water}\\
+	Jungle		& {Nature\\Toxic}\\
+	Null		& {Typeless\\Void}\\
+	Paranormal	& {Magic\\Spirit}\\
+	Solar		& {Fire\\Light}\\
+
+\end{longtblr}
+
+%----------------------------------------
+
+\sect{Triads}
+
+Triads are groups of three Types that form a rock-paper-scissors--style dynamic. One-way triads have an attacking advantage. For example, Air/Void/Fire form a one-way triad because attacking:
+\begin{itemize}
+	\item{Air $\rightarrow$ Void = 2x}
+	\item{Void $\rightarrow$ Fire = 2x}
+	\item{Fire $\rightarrow$ Air = 2x}
+\end{itemize}
+
+\noindent However, this triad is not \textit{two}-way because it doesn't also work with defending:
+
+\begin{itemize}
+	\item{Air $\leftarrow$ Void = 0.5x {\color{green}$\checkmark$}}
+	\item{Void $\leftarrow$ Fire = 0.5x {\color{green}$\checkmark$}}
+	\item{Fire $\leftarrow$ Air = 1x {\color{red}$\times$}}
+\end{itemize}
+
+\noindent Two-way triads are also one-way triads, and so are not reproduced again in the one-way section below.
+
+
+\begin{longtblr}[
+	caption = {Triads},
+	label = {triads},
+]{
+	colspec = {Q[c,0.1\linewidth]Q[c,0.1\linewidth]Q[c,0.1\linewidth]},
+	hline{1,Z} = {2pt},
+	hlines,
+}
+
+	\SetCell[c=3]{c} \textbf{Two-Way} \\
+	Air 	& Sound 	& Void\\
+	Earth	& Fire		& Nature\\
+	Earth	& Toxic		& Nature\\
+	Fire	& Ice		& Water\\
+	Fire	& Nature	& Water\\
+	
+	\\\hline
+	\SetCell[c=3]{c} \textbf{One-Way} \\
+	Air		& Void		& Fire\\
+	Earth	& Electric	& Metal\\
+	Earth	& Electric	& Water\\
+	Earth	& Fire		& Metal\\
+	Earth	& Toxic		& Water\\
+	Sound	& Spririt	& Void\\
+
+\end{longtblr}
+
+
+\input{../postamble}
