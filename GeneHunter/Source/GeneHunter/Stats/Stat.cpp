@@ -48,6 +48,27 @@ void UStat::UpdateCurrent(const int Level)
 	SetCurrentValue(CalculateValue(Level));
 }
 
+void UStat::ModifyValue(const float Modifier, const EStatGainType GainType, const EModificationMode ModifyMode)
+{
+	switch(GainType)
+	{
+	case EStatGainType::Current:
+		SetCurrentValue(ModifyValue(GetCurrentValue(), ModifyMode, Modifier));
+		break;
+	case EStatGainType::Permanent:
+		SetPermanentValue(ModifyValue(GetPermanentValue(), ModifyMode, Modifier));
+		break;
+	case EStatGainType::CurrentAndPermanent:
+		SetPermanentValue(ModifyValue(GetPermanentValue(), ModifyMode, Modifier));
+		SetCurrentValue(ModifyValue(GetCurrentValue(), ModifyMode, Modifier));
+		break;
+	default:
+		UE_LOG(LogTemp, Error, TEXT("ModifyMode not coded for in Stat::ModifyValue! Fix ASAP!"));
+		break;
+	}
+}
+
+
 #pragma endregion
 
 #pragma region Things that should be overridden!
@@ -84,5 +105,46 @@ FLinearColor const UStat::Color() const
 	const FLinearColor Color = FLinearColor{0, 0, 0};
 	return Color;
 }
+
+#pragma endregion
+
+#pragma region Private functions
+
+int UStat::ModifyValue(const int Original, const EModificationMode Mode, const float Modification)
+{
+
+	float Ret = 1;
+	switch(Mode)
+	{
+
+	// Addition
+	case EModificationMode::AddAbsolute:
+		Ret = Original + Modification;
+		break;
+	case EModificationMode::AddFraction:
+		Ret = Original + Original * Modification;
+		break;
+	case EModificationMode::AddPercentage:
+		Ret = ModifyValue(Original, EModificationMode::AddFraction, Modification/100);
+		break;
+
+	// Multiplication
+	case EModificationMode::MultiplyAbsolute:
+		Ret = Original * Modification;
+		break;
+	case EModificationMode::MultiplyPercentage:
+		Ret = Original * Modification/100;
+		break;
+
+	// Unhandled
+	default:
+		UE_LOG(LogTemp, Error, TEXT("EModificationMode not coded for in Stat::ModifyValue! Fix ASAP!"));
+		break;
+	}
+
+	// Round return value
+	return FMathf::Round(Ret);
+}
+
 
 #pragma endregion

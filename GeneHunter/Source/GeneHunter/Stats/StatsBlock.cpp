@@ -7,8 +7,7 @@ UStatsBlock::UStatsBlock()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 	
-}
-
+} 
 
 // Called when the game starts
 void UStatsBlock::BeginPlay()
@@ -31,36 +30,19 @@ void UStatsBlock::TickComponent(float DeltaTime, ELevelTick TickType, FActorComp
 #pragma endregion
 
 
-void UStatsBlock::GainStats(TMap<UStat*, int>& Gains, const EStatGainMode Mode)
+void UStatsBlock::ModifyStats(TMap<UStat*, int>& ValueMap, const EStatGainType GainType, const EModificationMode Mode)
 {
 	// Guard
-	if (!CheckGainsNum(Gains.Num()))
+	if (!CheckGainsNum(ValueMap.Num()))
 		return;
 
 	// Keys
 	TArray<UStat*> StatsArray;
-	Gains.GetKeys(StatsArray);
+	ValueMap.GetKeys(StatsArray);
 	
 	// Add stats
-	for(int i=0; i<Gains.Num(); i++)
-	{
-		switch(Mode)
-		{
-		case EStatGainMode::Current:
-			StatsArray[i]->SetCurrentValue(StatsArray[i]->GetCurrentValue() + Gains[StatsArray[i]]);
-			break;
-		case EStatGainMode::Permanent:
-			StatsArray[i]->SetPermanentValue(StatsArray[i]->GetPermanentValue() + Gains[StatsArray[i]]);
-			break;
-		case EStatGainMode::CurrentAndPermanent:
-			StatsArray[i]->SetPermanentValue(StatsArray[i]->GetPermanentValue() + Gains[StatsArray[i]]);
-			StatsArray[i]->SetCurrentValue(StatsArray[i]->GetCurrentValue() + Gains[StatsArray[i]]);
-			break;
-		default:
-			UE_LOG(LogTemp, Error, TEXT("Mode not coded for in StatsBlock::GainStats! Fix ASAP!"));
-			break;
-		}
-	}
+	for(int i=0; i<ValueMap.Num(); i++)
+		StatsArray[i]->ModifyValue(ValueMap[StatsArray[i]], GainType, Mode);
 }
 
 bool UStatsBlock::CheckGainsNum(const int Length)
@@ -81,12 +63,12 @@ bool UStatsBlock::CheckGainsNum(const int Length)
 void UStatsBlock::StatsArray(TArray<UStat*>& Array)
 {
 	Array = {
-		&Health,
-		&PhysicalAttack,
-		&PhysicalDefense,
-		&SpecialAttack,
-		&SpecialDefense,
-		&Haste,
-		&CriticalHit
+		Health,
+		PhysicalAttack,
+		PhysicalDefense,
+		SpecialAttack,
+		SpecialDefense,
+		Haste,
+		CriticalHit
 	};
 }

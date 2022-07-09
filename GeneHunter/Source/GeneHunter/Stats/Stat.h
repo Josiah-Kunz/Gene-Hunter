@@ -6,6 +6,8 @@
 #include "GeneHunter/UI/SupportingText.h"
 #include "UObject/Object.h"
 #include "MathUtil.h" // For inherited classes using, e.g., FMathf::Floor
+#include "GeneHunter/Stats/ModificationMode.h"
+#include "GeneHunter/Stats/StatGainType.h"
 #include "Stat.generated.h"
 
 /**
@@ -16,9 +18,9 @@ class GENEHUNTER_API UStat : public UObject
 {
 	GENERATED_BODY()
 
-public:
-
 #pragma region Public variables
+
+public:
 
 	/**
 	 * The "base" from which to calculate the CurrentValue or PermanentValue.
@@ -40,9 +42,9 @@ public:
 
 #pragma endregion
 
-protected:
-
 #pragma region Protected variables for setters/getters
+
+protected:
 
 	/**
 	 * The current value of this Stat that can be increased or decreased. CurrentValue reverts to PermanentValue, e.g.,
@@ -61,10 +63,10 @@ protected:
 
 #pragma endregion
 
-public:
-
 #pragma region Public functions for setters/getters
 
+public:
+	
 	/**
 	 * The current value of this Stat that can be increased or decreased. CurrentValue reverts to PermanentValue, e.g.,
 	 * at the start and end of a battle.
@@ -97,6 +99,8 @@ public:
 
 #pragma region Public functions
 
+public:
+	
 	/**
 	 * Updates the PermanentValue based on the input level.
 	 * @param Level The level (always positive).
@@ -112,9 +116,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void UpdateCurrent(const int Level);
 
+	UFUNCTION(BlueprintCallable)
+	virtual void ModifyValue(const float Modifier, const EStatGainType GainType, const EModificationMode ModifyMode);
+
 #pragma endregion
 
 #pragma region Things that should be overridden!
+
+public:
 	
 	/**
 	 * Calculates the value of this Stat based on a unique formula. See the Stats document for relevant equations.
@@ -146,6 +155,13 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	virtual FLinearColor const Color() const;
+
+#pragma endregion
+
+#pragma region Private functions
+
+private:
+	static int ModifyValue(const int Original, const EModificationMode Mode, const float Modification);
 
 #pragma endregion
 	

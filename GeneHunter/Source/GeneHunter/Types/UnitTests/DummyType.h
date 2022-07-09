@@ -18,9 +18,9 @@ class GENEHUNTER_API UDummyType : public UType
 public:
 
 	/**
-		 * A macro to get "dummy" Types. These are of type UDummyType and inherit from UType. These are independent of
-		 *	in-game data (and hence are good for unit tests).
-		 */
+	 * A macro to get "dummy" Types. These are of type UDummyType and inherit from UType. These are independent of
+	 *	in-game data (and hence are good for unit tests).
+	 */
 	#define GET_DUMMY_TYPES() \
 		TArray<UDummyType*> AllDummyTypes; \
 		UDummyType::GetAllDummyTypes(AllDummyTypes); \

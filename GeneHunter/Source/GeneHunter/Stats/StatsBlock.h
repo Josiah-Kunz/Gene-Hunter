@@ -11,8 +11,6 @@
 #include "GeneHunter/Stats/Haste.h"
 #include "GeneHunter/Stats/CriticalHit.h"
 
-#include "GeneHunter/Stats/StatGainMode.h"
-
 #include "StatsBlock.generated.h"
 
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
@@ -42,16 +40,29 @@ public:
 public:
 
 	// The Stats
-	UHealth Health;
-	UPhysicalAttack PhysicalAttack;
-	UPhysicalDefense PhysicalDefense;
-	USpecialAttack SpecialAttack;
-	USpecialDefense SpecialDefense;
-	UHaste Haste;
-	UCriticalHit CriticalHit;
+	UPROPERTY()
+	UHealth* Health;
+	
+	UPROPERTY()
+	UPhysicalAttack* PhysicalAttack;
+
+	UPROPERTY()
+	UPhysicalDefense* PhysicalDefense;
+
+	UPROPERTY()
+	USpecialAttack* SpecialAttack;
+
+	UPROPERTY()
+	USpecialDefense* SpecialDefense;
+
+	UPROPERTY()
+	UHaste* Haste;
+
+	UPROPERTY()
+	UCriticalHit* CriticalHit;
 
 	UFUNCTION(BlueprintCallable)
-	void GainStats(TMap<UStat*, int>& Gains, const EStatGainMode Mode);
+	void ModifyStats(TMap<UStat*, int>& ValueMap, const EStatGainType GainType, const EModificationMode Mode);
 
 private:
 
