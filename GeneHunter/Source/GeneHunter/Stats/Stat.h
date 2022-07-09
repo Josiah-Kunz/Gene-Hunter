@@ -76,7 +76,7 @@ public:
 	 * The current value of this Stat that can be increased or decreased. CurrentValue reverts to PermanentValue, e.g.,
 	 * at the start and end of a battle.
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UFUNCTION(BlueprintCallable)
 	void SetCurrentValue(const float NewValue);
 
 	/**
@@ -88,7 +88,7 @@ public:
 	/**
 	 * The default value of this Stat, e.g., when a battle starts. Only modify outside of battle (e.g., on level).
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UFUNCTION(BlueprintCallable)
 	void SetPermanentValue(const float NewValue);
 
 	
@@ -127,25 +127,25 @@ public:
 		 * This Stat's description and such.
 		 */
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	virtual FSupportingText const* SupportingText() const;
+	virtual FSupportingText const SupportingText() const;
 	
 	/**
 	 * The name of this Stat to be displayed (such as "Physical Attack").
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	virtual FString const* Name() const;
+	virtual FString const Name() const;
 
 	/**
 	 * A shorter version of Name (such as "PhA" for "Physical Attack").
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	virtual FString const* Abbreviation() const;
+	virtual FString const Abbreviation() const;
 
 	/**
 	 * The color associated with this Stat.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	virtual FLinearColor const* Color() const;
+	virtual FLinearColor const Color() const;
 
 #pragma endregion
 	

@@ -1,7 +1,5 @@
 #include "StatsBlock.h"
 
-#include "CrashReportCore/Public/Android/AndroidErrorReport.h"
-
 #pragma region Standard stuff
 
 // Sets default values for this component's properties
@@ -32,55 +30,38 @@ void UStatsBlock::TickComponent(float DeltaTime, ELevelTick TickType, FActorComp
 
 #pragma endregion
 
-void UStatsBlock::GainStats(TArray<int>& Gains, const EStatGainMode Mode)
+
+void UStatsBlock::GainStats(TMap<UStat*, int>& Gains, const EStatGainMode Mode)
 {
-
-	// Construct Map
-	TArray<UStat*> Array;
-	StatsArray(Array);
-	GainStatsInternal(Array, Gains, Mode);
-	
-}
-
-void UStatsBlock::GainStats(const TMap<UStat*, int> Gains, const EStatGainMode Mode)
-{
-	TArray<UStat*> StatsArray;
-	TArray<int> GainsArray;
-	Gains.GetKeys(StatsArray);
-	Gains.GenerateValueArray(GainsArray);
-	GainStatsInternal(StatsArray, GainsArray, Mode);
-}
-
-void UStatsBlock::GainStatsInternal(TArray<UStat*>& StatsArray, TArray<int>& Gains, const EStatGainMode Mode)
-{
-
 	// Guard
-	if (!CheckGainsNum(StatsArray.Num()) || !CheckGainsNum(Gains.Num()))
+	if (!CheckGainsNum(Gains.Num()))
 		return;
 
+	// Keys
+	TArray<UStat*> StatsArray;
+	Gains.GetKeys(StatsArray);
+	
 	// Add stats
 	for(int i=0; i<Gains.Num(); i++)
 	{
 		switch(Mode)
 		{
 		case EStatGainMode::Current:
-			StatsArray[i]->SetCurrentValue(StatsArray[i]->GetCurrentValue() + Gains[i]);
+			StatsArray[i]->SetCurrentValue(StatsArray[i]->GetCurrentValue() + Gains[StatsArray[i]]);
 			break;
 		case EStatGainMode::Permanent:
-			StatsArray[i]->SetPermanentValue(StatsArray[i]->GetPermanentValue() + Gains[i]);
+			StatsArray[i]->SetPermanentValue(StatsArray[i]->GetPermanentValue() + Gains[StatsArray[i]]);
 			break;
 		case EStatGainMode::CurrentAndPermanent:
-			StatsArray[i]->SetPermanentValue(StatsArray[i]->GetPermanentValue() + Gains[i]);
-			StatsArray[i]->SetCurrentValue(StatsArray[i]->GetCurrentValue() + Gains[i]);
+			StatsArray[i]->SetPermanentValue(StatsArray[i]->GetPermanentValue() + Gains[StatsArray[i]]);
+			StatsArray[i]->SetCurrentValue(StatsArray[i]->GetCurrentValue() + Gains[StatsArray[i]]);
 			break;
 		default:
-			UE_LOG(LogTemp, Error, TEXT("Mode not coded for in StatsBlock::GainStatsInternal! Fix ASAP!"));
+			UE_LOG(LogTemp, Error, TEXT("Mode not coded for in StatsBlock::GainStats! Fix ASAP!"));
 			break;
 		}
 	}
-		
 }
-
 
 bool UStatsBlock::CheckGainsNum(const int Length)
 {

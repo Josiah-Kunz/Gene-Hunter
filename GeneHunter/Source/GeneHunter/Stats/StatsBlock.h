@@ -51,17 +51,12 @@ public:
 	UCriticalHit CriticalHit;
 
 	UFUNCTION(BlueprintCallable)
-	void GainStats(TArray<int>& Gains, const EStatGainMode Mode);
-
-	UFUNCTION(BlueprintCallable)
-	void GainStats(const TMap<UStat*, int> Gains, const EStatGainMode Mode);
+	void GainStats(TMap<UStat*, int>& Gains, const EStatGainMode Mode);
 
 private:
 
 	bool CheckGainsNum(int Length);
 	
 	void StatsArray(TArray<UStat*>& Array);
-
-	void GainStatsInternal(TArray<UStat*>& StatsArray, TArray<int>& Gains, const EStatGainMode Mode);
 	
 };

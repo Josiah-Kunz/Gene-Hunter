@@ -13,27 +13,27 @@ float UCriticalHit::CalculateValue(const int Level)
 	return 0.8f * (NextSubCrit - PrevSubCrit) * (Level- PrevDecaLevel)/10.0f + PrevSubCrit;
 }
 
-FString const* UCriticalHit::Name() const
+FString const UCriticalHit::Name() const
 {
-	const FString* Name = new FString{"Haste"};
+	const FString Name = FString{"Haste"};
 	return Name;
 }
 
-FString const* UCriticalHit::Abbreviation() const
+FString const UCriticalHit::Abbreviation() const
 {
-	const FString* Abbrev = new FString{"Hst"};
+	const FString Abbrev = FString{"Hst"};
 	return Abbrev;
 }
 
-FLinearColor const* UCriticalHit::Color() const
+FLinearColor const UCriticalHit::Color() const
 {
-	const FLinearColor* Color = new FLinearColor{0, 1, 1};
+	const FLinearColor Color = FLinearColor{0, 1, 1};
 	return Color;
 }
 
-FSupportingText const* UCriticalHit::SupportingText() const
+FSupportingText const UCriticalHit::SupportingText() const
 {
-	const FSupportingText* SupportingText = new FSupportingText{
+	const FSupportingText SupportingText = FSupportingText{
 		FText::FromString(""),
 		FText::FromString("The higher this stat, the faster the Monster can use moves."),
 		FText::FromString("")

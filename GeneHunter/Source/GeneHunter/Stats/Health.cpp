@@ -6,9 +6,9 @@ float UHealth::CalculateValue(const int Level)
 		StatJump(Level); 
 }
 
-FSupportingText const* UHealth::SupportingText() const
+FSupportingText const UHealth::SupportingText() const
 {
-	const FSupportingText* SupportingText = new FSupportingText{
+	const FSupportingText SupportingText = FSupportingText{
 		FText::FromString(""),
 		FText::FromString("The amount of damage a Monster can take."),
 		FText::FromString("Blood for the blood god!")
@@ -16,20 +16,20 @@ FSupportingText const* UHealth::SupportingText() const
 	return SupportingText;
 }
 
-FString const* UHealth::Name() const
+FString const UHealth::Name() const
 {
-	const FString* Name = new FString{"Health"};
+	const FString Name = FString{"Health"};
 	return Name;
 }
 
-FString const* UHealth::Abbreviation() const
+FString const UHealth::Abbreviation() const
 {
-	const FString* Abbrev = new FString{"HP"};
+	const FString Abbrev = FString{"HP"};
 	return Abbrev;
 }
 
-FLinearColor const* UHealth::Color() const
+FLinearColor const UHealth::Color() const
 {
-	const FLinearColor* Color = new FLinearColor{1, 0.5f, 1};
+	const FLinearColor Color = FLinearColor{1, 0.5f, 1};
 	return Color;
 }

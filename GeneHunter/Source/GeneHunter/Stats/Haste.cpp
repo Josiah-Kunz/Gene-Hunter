@@ -10,27 +10,27 @@ float UHaste::CalculateValue(const int Level)
 	);
 }
 
-FString const* UHaste::Name() const
+FString const UHaste::Name() const
 {
-	const FString* Name = new FString{"Haste"};
+	const FString Name = FString{"Haste"};
 	return Name;
 }
 
-FString const* UHaste::Abbreviation() const
+FString const UHaste::Abbreviation() const
 {
-	const FString* Abbrev = new FString{"Hst"};
+	const FString Abbrev = FString{"Hst"};
 	return Abbrev;
 }
 
-FLinearColor const* UHaste::Color() const
+FLinearColor const UHaste::Color() const
 {
-	const FLinearColor* Color = new FLinearColor{0, 1, 1};
+	const FLinearColor Color = FLinearColor{0, 1, 1};
 	return Color;
 }
 
-FSupportingText const* UHaste::SupportingText() const
+FSupportingText const UHaste::SupportingText() const
 {
-	const FSupportingText* SupportingText = new FSupportingText{
+	const FSupportingText SupportingText = FSupportingText{
 		FText::FromString(""),
 		FText::FromString("The higher this stat, the faster the Monster can use moves."),
 		FText::FromString("")

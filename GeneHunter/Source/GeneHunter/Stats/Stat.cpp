@@ -57,9 +57,9 @@ float UStat::CalculateValue(const int Level)
 	return 1; // Override this!
 }
 
-FSupportingText const* UStat::SupportingText() const
+FSupportingText const UStat::SupportingText() const
 {
-	const FSupportingText* SupportingText = new FSupportingText{
+	FSupportingText SupportingText = FSupportingText{
 		FText::FromString(""),
 		FText::FromString("???"),
 		FText::FromString("Oh no, the lazy devs forgot about this one!")
@@ -67,21 +67,21 @@ FSupportingText const* UStat::SupportingText() const
 	return SupportingText;
 }
 
-FString const* UStat::Name() const
+FString const UStat::Name() const
 {
-	const FString* Name = new FString{"???"};
+	const FString Name = FString{"???"};
 	return Name;
 }
 
-FString const* UStat::Abbreviation() const
+FString const UStat::Abbreviation() const
 {
-	const FString* Abbrev = new FString{"???"};
+	const FString Abbrev = FString{"???"};
 	return Abbrev;
 }
 
-FLinearColor const* UStat::Color() const
+FLinearColor const UStat::Color() const
 {
-	const FLinearColor* Color = new FLinearColor{0, 0, 0};
+	const FLinearColor Color = FLinearColor{0, 0, 0};
 	return Color;
 }
 
