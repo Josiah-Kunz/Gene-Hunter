@@ -2,11 +2,11 @@
 
 #include "GeneHunter/Stats/UnitTests/StatUnitTestUtilities.h" 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_ManipulateCurrentAndPermanent,
-	"UStat.Manipulate Current & Permanent",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_Stat_ManipulateCurrentAndPermanent,
+	"UStat.Stat.Manipulate Current & Permanent",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FUStat_ManipulateCurrentAndPermanent::RunTest(const FString& Parameters)
+bool FUStat_Stat_ManipulateCurrentAndPermanent::RunTest(const FString& Parameters)
 {
 
 	// Set up

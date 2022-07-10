@@ -1,7 +1,7 @@
 #pragma once
 
 UENUM(BlueprintType)
-enum class EStatGainType : uint8
+enum class EStatValueType : uint8
 {
 	Current			UMETA(Tooltip="Only adds to current, non-permanent stats (e.g., in battle)."),
 	Permanent		UMETA(Tooltip="Only adds to permanent stats, but not current stats."),

@@ -9,4 +9,6 @@ enum class EModificationMode : uint8
 
 	MultiplyAbsolute	UMETA(Tooltip="E.g., | 100 & 1.5 => 100 * 1.5 => 150 | 100 & -10 => 100 * -10 => -1000 |"),
 	MultiplyPercentage	UMETA(Tooltip="E.g., | 200 & 1.5 => 200 * 1.5% => 3 | 30 & 50 => 30 * 50% => 15 |"),
+
+	SetDirectly			UMETA(Tooltip="Simply sets the value directly (100 & 1.5 => 1.5)."),
 };

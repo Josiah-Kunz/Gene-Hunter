@@ -7,7 +7,7 @@
 #include "UObject/Object.h"
 #include "MathUtil.h" // For inherited classes using, e.g., FMathf::Floor
 #include "GeneHunter/Stats/ModificationMode.h"
-#include "GeneHunter/Stats/StatGainType.h"
+#include "GeneHunter/Stats/StatValueType.h"
 #include "Stat.generated.h"
 
 /**
@@ -21,7 +21,7 @@ class GENEHUNTER_API UStat : public UObject
 #pragma region Public variables
 
 public:
-
+	
 	/**
 	 * The "base" from which to calculate the CurrentValue or PermanentValue.
 	 */
@@ -100,6 +100,8 @@ public:
 #pragma region Public functions
 
 public:
+
+	UStat();
 	
 	/**
 	 * Updates the PermanentValue based on the input level.
@@ -117,7 +119,7 @@ public:
 	virtual void UpdateCurrent(const int Level);
 
 	UFUNCTION(BlueprintCallable)
-	virtual void ModifyValue(const float Modifier, const EStatGainType GainType, const EModificationMode ModifyMode);
+	virtual void ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode);
 
 #pragma endregion
 

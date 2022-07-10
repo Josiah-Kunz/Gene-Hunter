@@ -2,11 +2,11 @@
 
 #include "GeneHunter/Stats/UnitTests/StatUnitTestUtilities.h" 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_ModifyStat,
-	"UStat.ModifyStat",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_Stat_ModifyStat,
+	"UStat.Stat.ModifyStat",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FUStat_ModifyStat::RunTest(const FString& Parameters)
+bool FUStat_Stat_ModifyStat::RunTest(const FString& Parameters)
 {
 	
 	// Set up
@@ -16,7 +16,7 @@ bool FUStat_ModifyStat::RunTest(const FString& Parameters)
 	// Do tests (afaik, can't make ths a function because we only have access to the .cpp file)
 #define DO_TEST(InitialValue, Modifier, Mode, GainText, Expected) \
 	DummyStat->SetCurrentValue(InitialValue); \
-	DummyStat->ModifyValue(Modifier, EStatGainType::Current, Mode); \
+	DummyStat->ModifyValue(Modifier, EStatValueType::Current, Mode); \
 	GainFString = GainText; \
 	TestEqual( \
 			"UStat::GetModification " + GainFString, \

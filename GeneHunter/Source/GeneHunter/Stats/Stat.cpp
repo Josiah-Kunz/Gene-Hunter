@@ -36,6 +36,13 @@ void UStat::SetPermanentValue(const float NewValue)
 
 #pragma region Public functions
 
+UStat::UStat()
+{
+	SetCurrentValue(1);
+	SetPermanentValue(1);
+}
+
+
 void UStat::UpdatePermanent(const int Level, const bool ResetCurrent)
 {
 	SetPermanentValue(CalculateValue(Level));
@@ -48,17 +55,17 @@ void UStat::UpdateCurrent(const int Level)
 	SetCurrentValue(CalculateValue(Level));
 }
 
-void UStat::ModifyValue(const float Modifier, const EStatGainType GainType, const EModificationMode ModifyMode)
+void UStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode)
 {
-	switch(GainType)
+	switch(ModifyType)
 	{
-	case EStatGainType::Current:
+	case EStatValueType::Current:
 		SetCurrentValue(GetModification(GetCurrentValue(), ModifyMode, Modifier));
 		break;
-	case EStatGainType::Permanent:
+	case EStatValueType::Permanent:
 		SetPermanentValue(GetModification(GetPermanentValue(), ModifyMode, Modifier));
 		break;
-	case EStatGainType::CurrentAndPermanent:
+	case EStatValueType::CurrentAndPermanent:
 		SetPermanentValue(GetModification(GetPermanentValue(), ModifyMode, Modifier));
 		SetCurrentValue(GetModification(GetCurrentValue(), ModifyMode, Modifier));
 		break;
@@ -118,20 +125,20 @@ float UStat::GetModification(const int Original, const EModificationMode Mode, c
 	// Addition
 	case EModificationMode::AddAbsolute:
 		return Original + Modification;
-		break;
 	case EModificationMode::AddFraction:
 		return Original + Original * Modification;
-		break;
 	case EModificationMode::AddPercentage:
 		return GetModification(Original, EModificationMode::AddFraction, Modification/100);
-		break;
 
 	// Multiplication
 	case EModificationMode::MultiplyAbsolute:
 		return Original * Modification;
-		break;
 	case EModificationMode::MultiplyPercentage:
 		return Original * Modification/100;
+		
+	// Set directly
+	case EModificationMode::SetDirectly:
+		return Modification;
 
 	// Unhandled
 	default:

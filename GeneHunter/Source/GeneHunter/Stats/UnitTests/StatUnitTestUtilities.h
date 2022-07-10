@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "GeneHunter/Stats/Stat.h"
+#include "GeneHunter/Stats/StatsBlock.h"
 #include "StatUnitTestUtilities.generated.h"
 
 UCLASS()
@@ -10,5 +10,4 @@ public:
 	GENERATED_BODY()
 	
 	constexpr static float TOLERANCE = 0.1F;
-	
 };

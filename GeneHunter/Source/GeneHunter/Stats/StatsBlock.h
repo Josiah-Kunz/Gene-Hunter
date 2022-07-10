@@ -16,7 +16,6 @@
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class GENEHUNTER_API UStatsBlock : public UActorComponent
 {
-
 #pragma region Standard stuff
 	
 	GENERATED_BODY()
@@ -33,7 +32,7 @@ protected:
 public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-	                           FActorComponentTickFunction* ThisTickFunction) override;
+							   FActorComponentTickFunction* ThisTickFunction) override;
 
 #pragma endregion
 	
@@ -41,33 +40,38 @@ public:
 
 	// The Stats
 	UPROPERTY()
-	UHealth* Health;
+	UHealth* Health = NewObject<UHealth>();
 	
 	UPROPERTY()
-	UPhysicalAttack* PhysicalAttack;
+	UPhysicalAttack* PhysicalAttack = NewObject<UPhysicalAttack>();
 
 	UPROPERTY()
-	UPhysicalDefense* PhysicalDefense;
+	UPhysicalDefense* PhysicalDefense = NewObject<UPhysicalDefense>();
 
 	UPROPERTY()
-	USpecialAttack* SpecialAttack;
+	USpecialAttack* SpecialAttack = NewObject<USpecialAttack>();
 
 	UPROPERTY()
-	USpecialDefense* SpecialDefense;
+	USpecialDefense* SpecialDefense = NewObject<USpecialDefense>();
 
 	UPROPERTY()
-	UHaste* Haste;
+	UHaste* Haste = NewObject<UHaste>();
 
 	UPROPERTY()
-	UCriticalHit* CriticalHit;
+	UCriticalHit* CriticalHit = NewObject<UCriticalHit>();
+
+	/**
+	 * Modifies (that is, increases, decreases, or sets) the Stats in this StatsBlock.
+	 */
+	UFUNCTION(BlueprintCallable)
+	void ModifyStats(TMap<UStat*, int>& ValueMap, const EStatValueType ValueType, const EModificationMode Mode);
 
 	UFUNCTION(BlueprintCallable)
-	void ModifyStats(TMap<UStat*, int>& ValueMap, const EStatGainType GainType, const EModificationMode Mode);
+	void ModifyStatsUniformly(const float UniformMod, const EStatValueType ValueType, const EModificationMode Mode);
 
-private:
+	UFUNCTION(BlueprintCallable)
+	bool IsEqual(UStatsBlock* Other, const EStatValueType ValueType, const float Tolerance = 0.1f);
 
-	bool CheckGainsNum(int Length);
-	
-	void StatsArray(TArray<UStat*>& Array);
+	void GetStatsArray(TArray<UStat*>& Array);
 	
 };
