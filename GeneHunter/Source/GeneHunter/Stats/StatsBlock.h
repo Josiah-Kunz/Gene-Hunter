@@ -35,10 +35,10 @@ public:
 							   FActorComponentTickFunction* ThisTickFunction) override;
 
 #pragma endregion
-	
-public:
 
-	// The Stats
+#pragma region The Stat variables
+public:
+	
 	UPROPERTY()
 	UHealth* Health = NewObject<UHealth>();
 	
@@ -60,18 +60,53 @@ public:
 	UPROPERTY()
 	UCriticalHit* CriticalHit = NewObject<UCriticalHit>();
 
+#pragma endregion
+
+	/**
+	 * Randomizes the Stats uniformly by randomizing the BaseStats and BasePairs between Min and Max (inclusive).
+	 * If any max is greater than its corresponding min, it will be ignored.
+	 */
+	UFUNCTION(BlueprintCallable)
+	void RandomizeStats(
+		const int Level = 1,
+		const int MinBaseStat = 50, const int MaxBaseStat = 150,
+		const int MinBasePairs = 1, const int MaxBasePairs = 100);
+
+	UFUNCTION(BlueprintCallable)
+	void RandomizeBasePairs(const int Level = 1, const int MinBasePairs = 1, const int MaxBasePairs = 100);
+	
+	UFUNCTION(BlueprintCallable)
+	void RandomizeBaseStats(const int Level = 1, const int MinBaseStats = 1, const int MaxBaseStats = 100);
+	
 	/**
 	 * Modifies (that is, increases, decreases, or sets) the Stats in this StatsBlock.
 	 */
 	UFUNCTION(BlueprintCallable)
 	void ModifyStats(TMap<UStat*, int>& ValueMap, const EStatValueType ValueType, const EModificationMode Mode);
 
+	/**
+	 * Modifies (that is, increases, decreases, or sets) all Stats in this StatsBlock by the given amount.
+	 */
 	UFUNCTION(BlueprintCallable)
 	void ModifyStatsUniformly(const float UniformMod, const EStatValueType ValueType, const EModificationMode Mode);
 
+#pragma endregion
+
+#pragma region Utilities
+
+public:
+	
+	/**
+	 *
+	 */
 	UFUNCTION(BlueprintCallable)
 	bool IsEqual(UStatsBlock* Other, const EStatValueType ValueType, const float Tolerance = 0.1f);
 
+	/**
+	 * Gets the array of Stats, e.g., {Health, PhysicalAttack, ...}.
+	 */
 	void GetStatsArray(TArray<UStat*>& Array);
+
+#pragma endregion
 	
 };

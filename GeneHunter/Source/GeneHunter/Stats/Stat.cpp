@@ -42,6 +42,11 @@ UStat::UStat()
 	SetPermanentValue(1);
 }
 
+void UStat::Update(const int Level)
+{
+	UpdatePermanent(Level, true);
+}
+
 
 void UStat::UpdatePermanent(const int Level, const bool ResetCurrent)
 {
@@ -73,6 +78,25 @@ void UStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, c
 		UE_LOG(LogTemp, Error, TEXT("ModifyMode not coded for in Stat::GetModification! Fix ASAP!"));
 		break;
 	}
+}
+
+FString UStat::ToString(const bool Inline)
+{
+	if (Inline)
+	return FString::Printf(TEXT("%s | %s/%s | BaseStat: %s | BasePairs: %s |"),
+		*Name(),
+		*FString::FromInt(GetCurrentValue()),
+		*FString::FromInt(GetPermanentValue()),
+		*FString::FromInt(BaseStat),
+		*FString::FromInt(BasePairs)
+		);
+	return FString::Printf(TEXT("%s\n\t%s/%s\n\tBaseStat: %s\n\tBasePairs: %s"),
+		*Name(),
+		*FString::FromInt(GetCurrentValue()),
+		*FString::FromInt(GetPermanentValue()),
+		*FString::FromInt(BaseStat),
+		*FString::FromInt(BasePairs)
+		);
 }
 
 

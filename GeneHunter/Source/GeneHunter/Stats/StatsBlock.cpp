@@ -6,6 +6,7 @@
 UStatsBlock::UStatsBlock()
 {
 	PrimaryComponentTick.bCanEverTick = false;
+	RandomizeStats();
 }
 
 // Called when the game starts
@@ -27,6 +28,32 @@ void UStatsBlock::TickComponent(float DeltaTime, ELevelTick TickType, FActorComp
 }
 
 #pragma endregion
+
+void UStatsBlock::RandomizeStats(const int Level, const int MinBaseStat, const int MaxBaseStat, const int MinBasePairs,
+	const int MaxBasePairs)
+{
+	TArray<UStat*> StatsArray;
+	GetStatsArray(StatsArray);
+	for(UStat* Stat : StatsArray)
+	{
+		if (MaxBaseStat > MinBaseStat)
+			Stat->BaseStat = FMath::RandRange(MinBaseStat, MaxBaseStat);
+		if (MaxBasePairs > MinBasePairs)
+			Stat->BasePairs = FMath::RandRange(MinBasePairs, MaxBasePairs);
+		Stat->Update(Level);
+	}
+}
+
+void UStatsBlock::RandomizeBasePairs(const int Level, const int MinBasePairs, const int MaxBasePairs)
+{
+	RandomizeStats(Level, 0, -1, MinBasePairs, MaxBasePairs);
+}
+
+void UStatsBlock::RandomizeBaseStats(const int Level, const int MinBaseStats, const int MaxBaseStats)
+{
+	RandomizeStats(Level, MinBaseStats, MaxBaseStats, 0, -1);
+}
+
 
 
 void UStatsBlock::ModifyStats(TMap<UStat*, int>& ValueMap, const EStatValueType ValueType, const EModificationMode Mode)

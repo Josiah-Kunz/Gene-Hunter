@@ -43,8 +43,8 @@ FSupportingText const UCriticalHit::SupportingText() const
 
 float UCriticalHit::SubCrit(const int Level)
 {
-	return BaseStatScaling * FMathf::Pow(BaseStat, BaseStatExponent) *
+	return BaseStatScaling * FMathf::Pow(BaseStat*1.0f, BaseStatExponent) *
 		FMathf::Ceil(Level/10.0f) *
-			FMathf::Pow(BasePairs/100, 0.25f) +
+			FMathf::Pow(BasePairs/100.0f, 0.25f) +
 				LevelScaling * FMathf::Floor(Level/10.0f);
 }

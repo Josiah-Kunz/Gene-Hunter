@@ -102,6 +102,12 @@ public:
 public:
 
 	UStat();
+
+	/**
+	 * Updates both PermanentValue and CurrentValue (in that order) based on the level.
+	 */
+	UFUNCTION(BlueprintCallable)
+	virtual void Update(const int Level);
 	
 	/**
 	 * Updates the PermanentValue based on the input level.
@@ -120,6 +126,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FString ToString(const bool Inline = true);
 
 #pragma endregion
 

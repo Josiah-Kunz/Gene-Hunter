@@ -5,8 +5,8 @@ float UHaste::CalculateValue(const int Level)
 	const float BaseStatScaling = 0.00002f;
 	const float LevelScaling = 0.017f;
 	return Level * (
-		BaseStatScaling * FMathf::Pow(BaseStat, 2) * FMathf::Pow(BasePairs/100, 0.25f) +
-		LevelScaling * FMathf::Floor(Level/10)
+		BaseStatScaling * FMathf::Pow(BaseStat, 2) * FMathf::Pow(BasePairs/100.0f, 0.25f) +
+		LevelScaling * FMathf::Floor(Level/10.0f)
 	);
 }
 
