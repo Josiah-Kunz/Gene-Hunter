@@ -53,17 +53,17 @@ void UStat::ModifyValue(const float Modifier, const EStatGainType GainType, cons
 	switch(GainType)
 	{
 	case EStatGainType::Current:
-		SetCurrentValue(ModifyValue(GetCurrentValue(), ModifyMode, Modifier));
+		SetCurrentValue(GetModification(GetCurrentValue(), ModifyMode, Modifier));
 		break;
 	case EStatGainType::Permanent:
-		SetPermanentValue(ModifyValue(GetPermanentValue(), ModifyMode, Modifier));
+		SetPermanentValue(GetModification(GetPermanentValue(), ModifyMode, Modifier));
 		break;
 	case EStatGainType::CurrentAndPermanent:
-		SetPermanentValue(ModifyValue(GetPermanentValue(), ModifyMode, Modifier));
-		SetCurrentValue(ModifyValue(GetCurrentValue(), ModifyMode, Modifier));
+		SetPermanentValue(GetModification(GetPermanentValue(), ModifyMode, Modifier));
+		SetCurrentValue(GetModification(GetCurrentValue(), ModifyMode, Modifier));
 		break;
 	default:
-		UE_LOG(LogTemp, Error, TEXT("ModifyMode not coded for in Stat::ModifyValue! Fix ASAP!"));
+		UE_LOG(LogTemp, Error, TEXT("ModifyMode not coded for in Stat::GetModification! Fix ASAP!"));
 		break;
 	}
 }
@@ -110,40 +110,34 @@ FLinearColor const UStat::Color() const
 
 #pragma region Private functions
 
-int UStat::ModifyValue(const int Original, const EModificationMode Mode, const float Modification)
+float UStat::GetModification(const int Original, const EModificationMode Mode, const float Modification)
 {
-
-	float Ret = 1;
 	switch(Mode)
 	{
 
 	// Addition
 	case EModificationMode::AddAbsolute:
-		Ret = Original + Modification;
+		return Original + Modification;
 		break;
 	case EModificationMode::AddFraction:
-		Ret = Original + Original * Modification;
+		return Original + Original * Modification;
 		break;
 	case EModificationMode::AddPercentage:
-		Ret = ModifyValue(Original, EModificationMode::AddFraction, Modification/100);
+		return GetModification(Original, EModificationMode::AddFraction, Modification/100);
 		break;
 
 	// Multiplication
 	case EModificationMode::MultiplyAbsolute:
-		Ret = Original * Modification;
+		return Original * Modification;
 		break;
 	case EModificationMode::MultiplyPercentage:
-		Ret = Original * Modification/100;
-		break;
+		return Original * Modification/100;
 
 	// Unhandled
 	default:
-		UE_LOG(LogTemp, Error, TEXT("EModificationMode not coded for in Stat::ModifyValue! Fix ASAP!"));
-		break;
+		UE_LOG(LogTemp, Error, TEXT("EModificationMode not coded for in Stat::GetModification! Fix ASAP!"));
+		return Original;
 	}
-
-	// Round return value
-	return FMathf::Round(Ret);
 }
 
 

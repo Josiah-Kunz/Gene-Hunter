@@ -161,7 +161,7 @@ public:
 #pragma region Private functions
 
 private:
-	static int ModifyValue(const int Original, const EModificationMode Mode, const float Modification);
+	static float GetModification(const int Original, const EModificationMode Mode, const float Modification);
 
 #pragma endregion
 	
