@@ -6,7 +6,7 @@ float UHaste::CalculateValue(const int Level)
 	const float LevelScaling = 0.017f;
 	return Level * (
 		BaseStatScaling * FMathf::Pow(BaseStat, 2) * FMathf::Pow(BasePairs/100.0f, 0.25f) +
-		LevelScaling * FMathf::Floor(Level/10.0f)
+		LevelScaling * FMathf::Floor( UGeneHunterBPLibrary::RoundToDecimals(Level/10.0f, 3))
 	);
 }
 

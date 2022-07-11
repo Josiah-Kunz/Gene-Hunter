@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Components/PanelWidget.h"
+#include "MathUtil.h"
 #include "GeneHunterBPLibrary.generated.h"
 
 
@@ -43,16 +44,30 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static bool SaveLoadedAssetFromAnywhere(UObject* Asset, const bool bOnlyIfDirty = true);
 
+	/**
+	 * Works exactly like ClearChildren, but gives the option to exclude certain children.
+	 */
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
 	static void ClearChildrenExcept(UPanelWidget* Widget, const TArray<UWidget*> Exclude);
 
+	/**
+	 * Calls DuplicateObject with Outer as Original->GetOuter() (see official docs for further explanation).
+	 */
 	UFUNCTION(BlueprintCallable)
 	static UWidget* Duplicate(const UWidget* Original);
 
+	/**
+	 *	Gets the first UWidget* of the specified class among the Parent's children.
+	 *	Usage:
+	 *		UButton* Button = Cast<UButton>(UGeneHunterBPLibrary::GetChildOfType(this, UButton::StaticClass()));
+	 */
 	UFUNCTION(BlueprintCallable)
 	static UWidget* GetChildOfType(const UUserWidget* Parent, const TSubclassOf<UWidget> WidgetClass);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static void RangeToString(UPARAM(ref) const FFloatRange& Range, FString& Out);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static float RoundToDecimals(const float Original, const int NumDecimals);
 	
 };

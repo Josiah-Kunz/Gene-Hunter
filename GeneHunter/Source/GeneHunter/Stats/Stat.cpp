@@ -3,9 +3,9 @@
 
 #include "Stat.h"
 
-float UStat::StatJump(int Level)
+float UStat::StatJump(const int Level)
 {
-	return FMathf::Pow(3, FMathf::Floor(Level/10.0f));
+	return FMathf::Pow(3.0f, FMathf::Floor(Level/10.0f));
 }
 
 #pragma region Public functions for setters/getters

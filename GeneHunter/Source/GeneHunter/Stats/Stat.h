@@ -6,6 +6,7 @@
 #include "GeneHunter/UI/SupportingText.h"
 #include "UObject/Object.h"
 #include "MathUtil.h" // For inherited classes using, e.g., FMathf::Floor
+#include "GeneHunter/GeneHunterBPLibrary.h" // For inherited classes using, e.g., RoundToDecimal
 #include "GeneHunter/Stats/ModificationMode.h"
 #include "GeneHunter/Stats/StatValueType.h"
 #include "Stat.generated.h"
@@ -59,7 +60,7 @@ protected:
 	UPROPERTY()
 	float PermanentValue;
 
-	virtual float StatJump(int Level);
+	virtual float StatJump(const int Level);
 
 #pragma endregion
 

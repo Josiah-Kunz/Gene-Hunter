@@ -4,8 +4,8 @@ float UCriticalHit::CalculateValue(const int Level)
 {
 
 	// Get prev- and next-decalevel data
-	const float PrevDecaLevel = 10 * FMathf::Floor((Level + 0.1f)/10.0f);
-	const float NextDecaLevel = 10 * FMathf::Ceil((Level + 0.1f)/10.0f);
+	const float PrevDecaLevel = 10 * FMathf::Floor(UGeneHunterBPLibrary::RoundToDecimals((Level + 0.1f)/10.0f, 3));
+	const float NextDecaLevel = 10 * FMathf::Ceil(UGeneHunterBPLibrary::RoundToDecimals((Level + 0.1f)/10.0f, 3));
 	const float PrevSubCrit = SubCrit(PrevDecaLevel);
 	const float NextSubCrit = SubCrit(NextDecaLevel);
 
@@ -44,7 +44,7 @@ FSupportingText const UCriticalHit::SupportingText() const
 float UCriticalHit::SubCrit(const int Level)
 {
 	return BaseStatScaling * FMathf::Pow(BaseStat*1.0f, BaseStatExponent) *
-		FMathf::Ceil(Level/10.0f) *
+		FMathf::Ceil( UGeneHunterBPLibrary::RoundToDecimals(Level/10.0f, 3)) *
 			FMathf::Pow(BasePairs/100.0f, 0.25f) +
-				LevelScaling * FMathf::Floor(Level/10.0f);
+				LevelScaling * FMathf::Floor( UGeneHunterBPLibrary::RoundToDecimals(Level/10.0f, 3));
 }

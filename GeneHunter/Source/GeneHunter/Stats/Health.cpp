@@ -2,8 +2,10 @@
 
 float UHealth::CalculateValue(const int Level)
 {
-	return FMathf::Floor(2 * BaseStat * FMathf::Pow(BasePairs/100.0f, 0.25f) * Level/100.0f + 10) *
-		StatJump(Level); 
+	return FMathf::Floor(
+		UGeneHunterBPLibrary::RoundToDecimals(
+			2 * BaseStat * FMathf::Pow(BasePairs/100.0f, 0.25f) * Level/100.0f + 10, 3)
+			) * StatJump(Level); 
 }
 
 FSupportingText const UHealth::SupportingText() const
