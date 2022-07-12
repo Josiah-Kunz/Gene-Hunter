@@ -4,21 +4,21 @@ FSupportingText const UPhysicalDefense::SupportingText() const
 {
 	const FSupportingText SupportingText = FSupportingText{
 		FText::FromString(""),
-		FText::FromString("The amount of physical damage a Monster can deal."),
-		FText::FromString("Me strong krug!")
+		FText::FromString("The amount of physical toughness a Monster has."),
+		FText::FromString("")
 	};
 	return SupportingText;
 }
 
 FString const UPhysicalDefense::Name() const
 {
-	const FString Name = FString{"Physical Attack"};
+	const FString Name = FString{"Physical Defense"};
 	return Name;
 }
 
 FString const UPhysicalDefense::Abbreviation() const
 {
-	const FString Abbrev = FString{"PhA"};
+	const FString Abbrev = FString{"PhD"};
 	return Abbrev;
 }
 

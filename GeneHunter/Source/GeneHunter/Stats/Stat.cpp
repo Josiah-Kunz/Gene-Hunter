@@ -74,6 +74,12 @@ void UStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, c
 		SetPermanentValue(GetModification(GetPermanentValue(), ModifyMode, Modifier));
 		SetCurrentValue(GetModification(GetCurrentValue(), ModifyMode, Modifier));
 		break;
+	case EStatValueType::BaseStat:
+		BaseStat = GetModification(BaseStat, ModifyMode, Modifier);
+		break;
+	case EStatValueType::BasePairs:
+		BasePairs = GetModification(BasePairs, ModifyMode, Modifier);
+		break;
 	default:
 		UE_LOG(LogTemp, Error, TEXT("ModifyMode not coded for in Stat::GetModification! Fix ASAP!"));
 		break;

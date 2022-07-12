@@ -63,6 +63,10 @@ public:
 
 #pragma endregion
 
+#pragma region Stat manipulation
+
+public:
+
 	/**
 	 * Randomizes the Stats uniformly by randomizing the BaseStats and BasePairs between Min and Max (inclusive).
 	 * If any max is greater than its corresponding min, it will be ignored.
@@ -106,7 +110,24 @@ public:
 	/**
 	 * Gets the array of Stats, e.g., {Health, PhysicalAttack, ...}.
 	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	void GetStatsArray(TArray<UStat*>& Array);
+
+	/**
+	 * Gets the raw sum of all BaseStats. (In Pokemon, the BST seems to be important, although I've never thought so. Are personal feelings allowed in comments?)
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float BaseStatTotal();
+
+	/**
+	 * Calculates the "effective average" of the BaseStats. That is, all Stats are included, except if the attack
+	 * (physical or special) is "non-ideal" (less than 10% of the other attack). Defenses are not treated the same way
+	 * since both PhysicalDefense and SpecialDefense are always relevant.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float BaseStatEffectiveAverage();
+
+	
 
 #pragma endregion
 	

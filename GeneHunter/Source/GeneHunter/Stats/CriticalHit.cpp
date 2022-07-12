@@ -15,19 +15,19 @@ float UCriticalHit::CalculateValue(const int Level)
 
 FString const UCriticalHit::Name() const
 {
-	const FString Name = FString{"Haste"};
+	const FString Name = FString{"Critical Hit"};
 	return Name;
 }
 
 FString const UCriticalHit::Abbreviation() const
 {
-	const FString Abbrev = FString{"Hst"};
+	const FString Abbrev = FString{"Crt"};
 	return Abbrev;
 }
 
 FLinearColor const UCriticalHit::Color() const
 {
-	const FLinearColor Color = FLinearColor{0, 1, 1};
+	const FLinearColor Color = FLinearColor{0.957f, 0.784f, 0.443f};
 	return Color;
 }
 
@@ -35,7 +35,7 @@ FSupportingText const UCriticalHit::SupportingText() const
 {
 	const FSupportingText SupportingText = FSupportingText{
 		FText::FromString(""),
-		FText::FromString("The higher this stat, the faster the Monster can use moves."),
+		FText::FromString("The chance a Monster has to deal extra damage. If over 100%, this stat instead increases the critical damage."),
 		FText::FromString("")
 	};
 	return SupportingText;

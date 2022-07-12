@@ -34,12 +34,6 @@ public:
 	 */
 	UPROPERTY()
 	int BasePairs = 1;
-	
-	/**
-	 * If true, this Stat is reset when switched out of battle.
-	 */
-	UPROPERTY()
-	bool ResetOnSwitch;
 
 #pragma endregion
 

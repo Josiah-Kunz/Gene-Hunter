@@ -77,19 +77,6 @@ void UStatsBlock::ModifyStatsUniformly(const float UniformMod, const EStatValueT
 		Stat->ModifyValue(UniformMod, ValueType, Mode);
 }
 
-void UStatsBlock::GetStatsArray(TArray<UStat*>& Array)
-{
-	Array = {
-		Health,
-		PhysicalAttack,
-		PhysicalDefense,
-		SpecialAttack,
-		SpecialDefense,
-		Haste,
-		CriticalHit
-	};
-}
-
 bool UStatsBlock::IsEqual(UStatsBlock* Other, const EStatValueType ValueType, const float Tolerance)
 {
 
@@ -121,3 +108,71 @@ bool UStatsBlock::IsEqual(UStatsBlock* Other, const EStatValueType ValueType, co
 	return true;
 }
 
+
+void UStatsBlock::GetStatsArray(TArray<UStat*>& Array)
+{
+	Array = {
+		Health,
+		PhysicalAttack,
+		PhysicalDefense,
+		SpecialAttack,
+		SpecialDefense,
+		Haste,
+		CriticalHit
+	};
+}
+
+float UStatsBlock::BaseStatTotal()
+{
+	float Ret = 0;
+	TArray<UStat*> StatsArray;
+	GetStatsArray(StatsArray);
+	for(const UStat* Stat : StatsArray)
+		Ret += Stat->BaseStat;
+	return Ret;
+}
+
+float UStatsBlock::BaseStatEffectiveAverage()
+{
+
+	// Determine if we're using one or both
+	const bool bUsePhA = PhysicalAttack->BaseStat > 0.9f * SpecialAttack->BaseStat;
+	const bool bUseSpA = SpecialAttack->BaseStat > 0.9f * PhysicalAttack->BaseStat;
+
+	// Get array
+	TArray<UStat*> StatsArray;
+	GetStatsArray(StatsArray);
+
+	// Count 'em up
+	int Count = 0;
+	float Total = 0;
+	for(UStat* Stat : StatsArray)
+	{
+		const UPhysicalAttack* PhA = dynamic_cast<UPhysicalAttack*>(Stat);
+		const USpecialAttack* SpA = dynamic_cast<USpecialAttack*>(Stat);
+		if (PhA)
+		{
+			if (bUsePhA)
+			{
+				Total += Stat->BaseStat;
+				Count++;
+			}
+		} else if (SpA)
+		{
+			if (bUseSpA)
+			{
+				Total += Stat->BaseStat;
+				Count++;
+			}
+		} else
+		{
+			Total += Stat->BaseStat;
+			Count++;
+		}
+	}
+
+	// Return
+	if (Count==0)
+		return 0;
+	return Total/Count;
+}
