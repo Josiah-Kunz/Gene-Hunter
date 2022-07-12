@@ -14,7 +14,7 @@
 #include "StatsBlock.generated.h"
 
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
-class GENEHUNTER_API UStatsBlock : public UActorComponent
+class GENEHUNTER_API UStatsBlock : public USceneComponent
 {
 #pragma region Standard stuff
 	
@@ -39,8 +39,9 @@ public:
 #pragma region The Stat variables
 public:
 	
-	UPROPERTY()
-	UHealth* Health = NewObject<UHealth>();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category = "Stats")
+	UHealth* Health = CreateDefaultSubobject<UHealth>("Health");
+	//UHealth* Health = NewObject<UHealth>();
 	
 	UPROPERTY()
 	UPhysicalAttack* PhysicalAttack = NewObject<UPhysicalAttack>();

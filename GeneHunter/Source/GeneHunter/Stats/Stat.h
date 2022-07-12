@@ -14,7 +14,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable, EditInlineNew)
 class GENEHUNTER_API UStat : public UObject
 {
 	GENERATED_BODY()
@@ -26,7 +26,7 @@ public:
 	/**
 	 * The "base" from which to calculate the CurrentValue or PermanentValue.
 	 */
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int BaseStat = 1;
 
 	/**
