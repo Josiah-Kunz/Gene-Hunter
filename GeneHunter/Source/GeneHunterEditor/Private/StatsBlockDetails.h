@@ -18,6 +18,8 @@ public:
 
 	FReply EditObjects();
 
+	FReply PrintBST();
+
 private:
 
 	TArray<TWeakObjectPtr<UObject>> ObjectsToEdit;

@@ -26,6 +26,18 @@ void FStatsBlockDetails::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 				.Text(LOCTEXT("ButtonText", "Shuffle"))
 				.OnClicked_Raw(this, &FStatsBlockDetails::EditObjects)
 			];
+
+	StatsCat.AddCustomRow(LOCTEXT("Keyword", "Print BST"))
+		.NameContent()[
+			SNew(STextBlock)
+				.Text(LOCTEXT("NameText", "Print BST"))
+				.Font(IDetailLayoutBuilder::GetDetailFont())
+			]
+		.ValueContent()[
+			SNew(SButton)
+				.Text(LOCTEXT("ButtonText", "Print BST"))
+				.OnClicked_Raw(this, &FStatsBlockDetails::PrintBST)
+			];
 }
 
 FReply FStatsBlockDetails::EditObjects()
@@ -44,6 +56,27 @@ FReply FStatsBlockDetails::EditObjects()
 
 		// Do stuff
 		UE_LOG(LogTemp, Warning, TEXT("YAY!"))
+	}
+	
+	return FReply::Handled();
+}
+
+FReply FStatsBlockDetails::PrintBST()
+{
+
+	for(TWeakObjectPtr<UObject> Object : ObjectsToEdit)
+	{
+		// Guard
+		if (!Object.IsValid()) continue;
+
+		// Get
+		UStatsBlock* StatsBlock = Cast<UStatsBlock>(Object.Get());
+
+		// Gaurd again
+		if (!StatsBlock) continue;;
+
+		// Do stuff
+		StatsBlock->PrintBST();
 	}
 	
 	return FReply::Handled();

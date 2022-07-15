@@ -128,7 +128,8 @@ float UStatsBlock::BaseStatTotal()
 	TArray<UStat*> StatsArray;
 	GetStatsArray(StatsArray);
 	for(const UStat* Stat : StatsArray)
-		Ret += Stat->BaseStat;
+		if (Stat)
+			Ret += Stat->BaseStat;
 	return Ret;
 }
 
@@ -175,4 +176,9 @@ float UStatsBlock::BaseStatEffectiveAverage()
 	if (Count==0)
 		return 0;
 	return Total/Count;
+}
+
+void UStatsBlock::PrintBST()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Base Stat total is [%s]."), *FString::SanitizeFloat(BaseStatTotal()));
 }
