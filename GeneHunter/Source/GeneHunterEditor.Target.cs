@@ -10,6 +10,6 @@ public class GeneHunterEditorTarget : TargetRules
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 
-		ExtraModuleNames.AddRange( new string[] { "GeneHunter" } );
+		ExtraModuleNames.AddRange( new string[] { "GeneHunter", "GeneHunterEditor" } );
 	}
 }

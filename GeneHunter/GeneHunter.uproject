@@ -12,6 +12,14 @@
 				"Engine",
 				"UMG"
 			]
+		},
+		{
+			"Name": "GeneHunterEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit",
+			"AdditionalDependencies": [
+				"CoreUObject"
+			]
 		}
 	],
 	"Plugins": [
