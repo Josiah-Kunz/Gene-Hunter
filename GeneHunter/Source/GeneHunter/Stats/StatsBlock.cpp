@@ -177,8 +177,3 @@ float UStatsBlock::BaseStatEffectiveAverage()
 		return 0;
 	return Total/Count;
 }
-
-void UStatsBlock::PrintBST()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Base Stat total is [%s]."), *FString::SanitizeFloat(BaseStatTotal()));
-}

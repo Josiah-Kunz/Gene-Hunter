@@ -127,9 +127,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float BaseStatEffectiveAverage();
 
-	void PrintBST();
-	
-
 #pragma endregion
 	
 };
