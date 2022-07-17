@@ -29,8 +29,13 @@ void UStatsBlock::TickComponent(float DeltaTime, ELevelTick TickType, FActorComp
 
 #pragma endregion
 
+void UStatsBlock::TestPrint()
+{
+	UE_LOG(LogTemp, Warning, TEXT("HUZZAH! BUTTON PRESSED!"));
+}
+
 void UStatsBlock::RandomizeStats(const int Level, const int MinBaseStat, const int MaxBaseStat, const int MinBasePairs,
-	const int MaxBasePairs)
+                                 const int MaxBasePairs)
 {
 	TArray<UStat*> StatsArray;
 	GetStatsArray(StatsArray);

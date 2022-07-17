@@ -75,8 +75,6 @@ FReply FStatsBlockDetails::PrintBST()
 		// Gaurd again
 		if (!StatsBlock) continue;;
 
-		// Do stuff
-		StatsBlock->PrintBST();
 	}
 	
 	return FReply::Handled();

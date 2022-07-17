@@ -11,10 +11,12 @@
 #include "GeneHunter/Stats/Haste.h"
 #include "GeneHunter/Stats/CriticalHit.h"
 
+#include "DetailsPanelArchitect/Public/DPAButton.h"
+
 #include "StatsBlock.generated.h"
 
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
-class GENEHUNTER_API UStatsBlock : public USceneComponent
+class GENEHUNTER_API UStatsBlock : public UActorComponent
 {
 #pragma region Standard stuff
 	
@@ -41,7 +43,6 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category = "Stats")
 	UHealth* Health = CreateDefaultSubobject<UHealth>("Health");
-	//UHealth* Health = NewObject<UHealth>();
 	
 	UPROPERTY()
 	UPhysicalAttack* PhysicalAttack = NewObject<UPhysicalAttack>();
@@ -60,6 +61,24 @@ public:
 
 	UPROPERTY()
 	UCriticalHit* CriticalHit = NewObject<UCriticalHit>();
+
+
+
+
+
+
+
+	/*
+	FDPAButton* Button = new FDPAButton(
+		FText::FromString("Button Label"),
+		self());
+
+	UStatsBlock* self(){return this;};*/
+	
+	/*= new FDPAButton(
+		FText::FromString("Button Label"),
+		this->TestPrint);*/
+	void TestPrint();
 
 #pragma endregion
 
