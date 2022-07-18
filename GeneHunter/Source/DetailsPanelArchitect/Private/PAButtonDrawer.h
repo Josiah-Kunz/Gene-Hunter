@@ -5,7 +5,7 @@
 #include "DPAButton.h"
 #include "DetailWidgetRow.h"
 
-class FDPAButtonDrawer : public IDetailCustomization
+class DPAButtonDrawer : public IDetailCustomization
 {
 
 #pragma region Boilerplate
@@ -24,9 +24,9 @@ private:
 
 private:
 
-	FDPAButton* DPAButton;
+	UDPAButton* DPAButton;
 
-	FDPAButton* GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder);
+	UDPAButton* GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder);
 
 	FReply InvokeOnClickedRaw() const;
 

@@ -2,22 +2,7 @@
 
 #define LOCTEXT_NAMESPACE "DPAButton"
 
-/*
-FDPAButton::FDPAButton(FText LabelText, TFunction<void> OnClicked_Raw)
-{
-	this->LabelText = LabelText;
-	this->OnClicked_Raw = OnClicked_Raw;
-	ConstructDefaultValues();
-}*/
-
-FDPAButton::FDPAButton(FText LabelText, UObject* BoundObject)
-{
-	this->LabelText = LabelText;
-	this->Object = BoundObject;
-	ConstructDefaultValues();
-}
-
-void FDPAButton::ConstructDefaultValues()
+void UDPAButton::ConstructDefaultValues()
 {
 
 	// Texts n such
@@ -29,7 +14,7 @@ void FDPAButton::ConstructDefaultValues()
 	
 }
 
-void FDPAButton::ConstructDefaultFText(FText& Text, const FString LocText1, const FString LocText2)
+void UDPAButton::ConstructDefaultFText(FText& Text, const FString LocText1, const FString LocText2)
 {
 	/*
 	if (Text.IsEmptyOrWhitespace())

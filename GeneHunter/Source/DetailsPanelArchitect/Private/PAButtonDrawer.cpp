@@ -1,13 +1,13 @@
-#include "DPAButtonDrawer.h"
+#include "PAButtonDrawer.h"
 
 #define LOCTEXT_NAMESPACE "DPAButtonDrawer"
 
-TSharedRef<IDetailCustomization> FDPAButtonDrawer::MakeInstance()
+TSharedRef<IDetailCustomization> DPAButtonDrawer::MakeInstance()
 {
-	return MakeShareable(new FDPAButtonDrawer);
+	return MakeShareable(new DPAButtonDrawer);
 }
 
-void FDPAButtonDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
+void DPAButtonDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 
 	// Get das button
@@ -31,11 +31,11 @@ void FDPAButtonDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 		.ValueContent()[
 			SNew(SButton)
 				.Text(DPAButton->ButtonText)
-				.OnClicked_Raw(this, &FDPAButtonDrawer::InvokeOnClickedRaw)
+				.OnClicked_Raw(this, &DPAButtonDrawer::InvokeOnClickedRaw)
 			];
 }
 
-FDPAButton* FDPAButtonDrawer::GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder)
+UDPAButton* DPAButtonDrawer::GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder)
 {
 	// Get object from array
 	DetailBuilder.GetObjectsBeingCustomized(ObjectsToEdit);
@@ -46,7 +46,7 @@ FDPAButton* FDPAButtonDrawer::GetCurrentDPAButton(IDetailLayoutBuilder& DetailBu
 	if (!Object.IsValid()) return nullptr;
 
 	// Get
-	FDPAButton* Button = Cast<FDPAButton>(Object.Get());
+	UDPAButton* Button = Cast<UDPAButton>(Object.Get());
 
 	// Guard again
 	if (!Button) return nullptr;
@@ -55,7 +55,7 @@ FDPAButton* FDPAButtonDrawer::GetCurrentDPAButton(IDetailLayoutBuilder& DetailBu
 	return Button;
 }
 
-FReply FDPAButtonDrawer::InvokeOnClickedRaw() const
+FReply DPAButtonDrawer::InvokeOnClickedRaw() const
 {
 	DPAButton->OnClicked_Raw->operator()();
 	return FReply::Handled();

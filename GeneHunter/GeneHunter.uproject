@@ -24,7 +24,10 @@
 		{
 			"Name": "DetailsPanelArchitect",
 			"Type": "Editor",
-			"LoadingPhase": "PostEngineInit"
+			"LoadingPhase": "PostEngineInit",
+			"AdditionalDependencies": [
+				"CoreUObject"
+			]
 		}
 	],
 	"Plugins": [
@@ -52,11 +55,5 @@
 	],
 	"TargetPlatforms": [
 		"Windows"
-	],
-	"PreBuildSteps":
-	{
-		"Win64": [
-			"echo Exported Server file successfully!"
-		]
-	}
+	]
 }

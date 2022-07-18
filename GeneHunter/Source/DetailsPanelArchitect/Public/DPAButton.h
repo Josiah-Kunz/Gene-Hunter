@@ -2,9 +2,14 @@
 
 #include "DetailCategoryBuilder.h"
 #include "DetailLayoutBuilder.h"
+#include "DPAButton.generated.h"
 
-class FDPAButton
+UCLASS()
+class UDPAButton : public UObject
 {
+
+	GENERATED_BODY()
+	
 #pragma region Required public variables
 
 public:
@@ -54,12 +59,6 @@ public:
 #pragma region Public functions
 
 public:
-	//FDPAButton(FText LabelText, TFunction<void> OnClicked_Raw);
-
-
-	UObject* Object;
-	FDPAButton(FText LabelText, UObject* BoundObject);
-	
 	
 	void ConstructDefaultValues();
 
