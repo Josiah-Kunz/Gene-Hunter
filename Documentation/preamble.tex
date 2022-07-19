@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[12pt]{report}
 
 % Packages
 % ========
@@ -17,6 +17,7 @@
 \usepackage{array}				% For extended column definitions
 \usepackage{tabularray}			% For \begin{longtblr} tables that span multiple columns and pages
 \usepackage{amssymb}			% For $\checkmark$
+\usepackage{etoc}				% For \localtableofcontents
 
 
 % Bibliography
@@ -28,6 +29,16 @@
 \hypersetup{colorlinks=true, allcolors=black, urlcolor=blue}
 \addbibresource{../sources.bib}
 
+% etoc setup
+% ==========
+
+\etocsetstyle{section}{}{}{\etocsavedchaptertocline{\numberline{}\etocname}{\etocpage}}{}
+\etocsetstyle{subsection}{}{}{\etocsavedsectiontocline{\numberline{}\etocname}{\etocpage}}{}
+\etocsetstyle{subsubsection}{}{}{\etocsavedsubsectiontocline{\numberline{}\etocname}{\etocpage}}{}
+\etocsetstyle{paragraph}{}{}{\etocsavedsubsubsectiontocline{\numberline{}\etocname}{\etocpage}}{}
+\etocsetstyle{subparagraph}{}{}{\etocsavedparagraphtocline{\numberline{}\etocname}{\etocpage}}{}
+
+
 % Simple custom commands
 % ======================
 \makeatletter
@@ -36,11 +47,27 @@
 
 \def\todo#1{\selectfont{\color{red}\texttt{\textbf{TODO:} #1}}}
 
+% Sections 'n' such
+% =================
+
+\definecolor{chaptColor}{RGB}{0, 83, 161}
+
+\def\chapt#1{
+%
+	% Default chapter behavior
+	\begingroup\color{chaptColor}
+	\chapter{#1}
+	\endgroup
+	
+	% Label
+	\label{chp:#1}
+}
+
 \definecolor{sectColor}{rgb}{0, 0.5, 0.0}
 \def\sect#1{\textcolor{sectColor}{\section{#1}}}
 
 \definecolor{subsectColor}{rgb}{0, 0.5, 0.5}
-\def\subsect#1{\textcolor{subsectColor}{\subsection{#1}}}
+\def\subsect#1{\textcolor{subsectColor}{\subsection{#1}}\noindent}
 
 \definecolor{subsubsectColor}{rgb}{0.747, 0.458, 0}
 \def\subsubsect#1{\textcolor{subsubsectColor}{\subsubsection{#1}}}
