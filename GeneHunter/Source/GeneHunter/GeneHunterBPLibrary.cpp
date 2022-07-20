@@ -97,11 +97,6 @@ bool UGeneHunterBPLibrary::SaveLoadedAssetFromAnywhere(UObject* Asset, const boo
 	
 }
 
-/*
- *	Gets the first UWidget* of the specified class among the Parent's children.
- *	Usage:
- *		UButton* Button = Cast<UButton>(UGeneHunterBPLibrary::GetChildOfType(this, UButton::StaticClass()));
- */
 UWidget* UGeneHunterBPLibrary::GetChildOfType(const UUserWidget* Parent, const TSubclassOf<UWidget> WidgetClass)
 {
 	TArray<UWidget*> Children;
@@ -114,9 +109,6 @@ UWidget* UGeneHunterBPLibrary::GetChildOfType(const UUserWidget* Parent, const T
 	return nullptr;
 }
 
-/*
- * Works exactly like ClearChildren, but gives the option to exclude certain children.
- */
 void UGeneHunterBPLibrary::ClearChildrenExcept(UPanelWidget* Widget, const TArray<UWidget*> Exclude)
 {
 	for(int i=Widget->GetChildrenCount() - 1; i>=0; i--)
@@ -127,9 +119,6 @@ void UGeneHunterBPLibrary::ClearChildrenExcept(UPanelWidget* Widget, const TArra
 		
 }
 
-/*
- * Calls DuplicateObject with Outer as Original->GetOuter() (see official docs for further explanation).
- */
 UWidget* UGeneHunterBPLibrary::Duplicate(const UWidget* Original)
 {
 	return DuplicateObject(Original, Original->GetOuter());
@@ -157,4 +146,10 @@ void UGeneHunterBPLibrary::RangeToString(const FFloatRange& Range, FString& Out)
 		*UpperParenthetical,
 		*UpperParen
 		);
+}
+
+float UGeneHunterBPLibrary::RoundToDecimals(const float Original, const int NumDecimals)
+{
+	const float PowerOfTen = FMathf::Pow(10, NumDecimals);
+	return FMathf::Round( PowerOfTen * Original) / PowerOfTen;
 }
