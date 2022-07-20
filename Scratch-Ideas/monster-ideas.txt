@@ -1,0 +1,4 @@
+Cow-like beast:
+	- Teemox
+	- Binox
+	- Aurox
