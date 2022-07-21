@@ -61,4 +61,23 @@ public:
 	FSlateFontInfo LabelFont = IDetailLayoutBuilder::GetDetailFont();
 
 #pragma endregion
+
+#pragma region Public functions
+
+public:
+	
+	void ConstructDefaultValues();
+
+#pragma endregion
+
+#pragma region Private utility functions
+
+private:
+	
+	/**
+	 * If Text is empty or whitespace, formats it to LOCTEXT(LocText1, LocText2).
+	 */
+	static void ConstructDefaultFText(FText& Text, const FString LocText1, const FString LocText2);
+
+#pragma endregion
 };
