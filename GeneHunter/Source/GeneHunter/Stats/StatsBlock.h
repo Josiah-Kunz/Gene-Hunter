@@ -65,9 +65,10 @@ public:
 
 
 
-	//UPROPERTY()
-	//FDPAButton Button = new FDPAButton{std::bind(&UStatsBlock::TestPrint, this)};//FDPAButton(std::bind(&UStatsBlock::TestPrint, this));
+	UPROPERTY(EditAnywhere, Category = "Stats")
+	FDPAButton Button = FDPAButton{FText::FromString("OK"), std::bind(&UStatsBlock::TestPrint, this)};//FDPAButton(std::bind(&UStatsBlock::TestPrint, this));
 
+	FString tmp = "tmp";
 	/*
 	
 	UStatsBlock* self(){return this;};*/

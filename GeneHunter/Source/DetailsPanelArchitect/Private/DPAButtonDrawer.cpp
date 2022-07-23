@@ -1,9 +1,13 @@
 #include "DPAButtonDrawer.h"
 
+#include "IDetailChildrenBuilder.h"
+#include "IHeadMountedDisplay.h"
+
 #define LOCTEXT_NAMESPACE "DPAButtonDrawer"
 
 TSharedRef<IPropertyTypeCustomization> DPAButtonDrawer::MakeInstance()
 {
+	UE_LOG(LogTemp, Warning, TEXT("MADEeeeeeeeeeeeeeeeeeeeeeee"));
 	return MakeShared<DPAButtonDrawer>();
 }
 
@@ -33,7 +37,9 @@ void DPAButtonDrawer::CustomizeHeader(TSharedRef<IPropertyHandle> StructProperty
 				.OnClicked_Raw(this, &DPAButtonDrawer::InvokeOnClickedRaw)
 			];*/
 
+	UE_LOG(LogTemp, Warning, TEXT("HEADERrrrrrrrrrrrrrrrrrrrr"));
 	HeaderRow
+	.OverrideResetToDefault(FResetToDefaultOverride::Hide())
 		.NameContent()[
 			SNew(STextBlock)
 				.Text(FText::FromString("OY"))
@@ -47,6 +53,17 @@ void DPAButtonDrawer::CustomizeHeader(TSharedRef<IPropertyHandle> StructProperty
 void DPAButtonDrawer::CustomizeChildren(TSharedRef<IPropertyHandle> StructPropertyHandle,
 	IDetailChildrenBuilder& ChildBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
+	UE_LOG(LogTemp, Warning, TEXT("CHILDdddddddddddddddd"));
+	ChildBuilder.AddCustomRow(FText::FromString("OK999"))
+	.OverrideResetToDefault(FResetToDefaultOverride::Hide())
+	.NameContent()[
+			SNew(STextBlock)
+				.Text(FText::FromString("OY456"))
+			]
+		.ValueContent()[
+			SNew(SButton)
+				.Text(FText::FromString("3head789"))
+			];
 }
 
 /*

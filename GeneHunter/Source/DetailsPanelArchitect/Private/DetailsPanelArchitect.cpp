@@ -4,7 +4,8 @@ void FDPAModule::StartupModule()
 {
 
 	// Get module
-	FPropertyEditorModule& PropertyEdModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	FPropertyEditorModule& PropertyEdModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	//FPropertyEditorModule& PropertyEdModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
 
 	PropertyEdModule.RegisterCustomPropertyTypeLayout("DPAButton",
 		FOnGetPropertyTypeCustomizationInstance::CreateStatic(&DPAButtonDrawer::MakeInstance));
