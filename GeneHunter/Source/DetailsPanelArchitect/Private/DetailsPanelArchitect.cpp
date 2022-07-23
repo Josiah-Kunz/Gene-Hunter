@@ -5,6 +5,9 @@ void FDPAModule::StartupModule()
 
 	// Get module
 	FPropertyEditorModule& PropertyEdModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
+
+	PropertyEdModule.RegisterCustomPropertyTypeLayout("DPAButton",
+		FOnGetPropertyTypeCustomizationInstance::CreateStatic(&DPAButtonDrawer::MakeInstance));
 	
 
 	// Register the specific custom class layouts (based on their names, e.g., UStatsBlock and FStatsBlockDetails)

@@ -1,17 +1,55 @@
-/*
 #include "DPAButtonDrawer.h"
-
-#include <windows.foundation.collections.h>
-
-#include "DetailLayoutBuilder.h"
 
 #define LOCTEXT_NAMESPACE "DPAButtonDrawer"
 
-TSharedRef<IDetailCustomization> DPAButtonDrawer::MakeInstance()
+TSharedRef<IPropertyTypeCustomization> DPAButtonDrawer::MakeInstance()
 {
-	return MakeShareable(new DPAButtonDrawer);
+	return MakeShared<DPAButtonDrawer>();
 }
 
+void DPAButtonDrawer::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow,
+	IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+{
+/*
+	// Get das button
+	DPAButton B;
+	StructPropertyHandle->GetValueData()
+	if (!Button) return;
+
+	// Ensure non-nonsense
+	Button->ConstructDefaultValues();
+
+	// Slate
+	
+	HeaderRow
+		.NameContent()[
+			SNew(STextBlock)
+				.Text(Button->LabelText)
+				.Font(Button->LabelFont)
+			]
+		.ValueContent()[
+			SNew(SButton)
+				.Text(Button->ButtonText)
+				.OnClicked_Raw(this, &DPAButtonDrawer::InvokeOnClickedRaw)
+			];*/
+
+	HeaderRow
+		.NameContent()[
+			SNew(STextBlock)
+				.Text(FText::FromString("OY"))
+			]
+		.ValueContent()[
+			SNew(SButton)
+				.Text(FText::FromString("3head"))
+			];
+}
+
+void DPAButtonDrawer::CustomizeChildren(TSharedRef<IPropertyHandle> StructPropertyHandle,
+	IDetailChildrenBuilder& ChildBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+{
+}
+
+/*
 void DPAButtonDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 
@@ -40,6 +78,9 @@ void DPAButtonDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 			];
 }
 
+*/
+
+/*
 DPAButton* DPAButtonDrawer::GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder)
 {
 	// Get object from array
@@ -58,7 +99,7 @@ DPAButton* DPAButtonDrawer::GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuil
 
 	// Return
 	return Ret;
-}
+}*/
 
 FReply DPAButtonDrawer::InvokeOnClickedRaw() const
 {
@@ -66,4 +107,4 @@ FReply DPAButtonDrawer::InvokeOnClickedRaw() const
 	return FReply::Handled();
 }
 
-#undef LOCTEXT_NAMESPACE*/
+#undef LOCTEXT_NAMESPACE

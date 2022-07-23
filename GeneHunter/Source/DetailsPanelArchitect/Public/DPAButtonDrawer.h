@@ -1,21 +1,25 @@
-/*
+
 #pragma once
 
 #include "CoreMinimal.h"
 #include "PropertyEditor/Public/IDetailCustomization.h"
 #include "DetailsPanelArchitect/Public/DPAButton.h"
+#include "DetailLayoutBuilder.h"
 #include "DetailWidgetRow.h"
 
-class DPAButtonDrawer : public IDetailCustomization
+class DPAButtonDrawer : public IPropertyTypeCustomization
 {
 
 #pragma region Boilerplate
 	
 public:
 
-	static TSharedRef<IDetailCustomization> MakeInstance();
+	static TSharedRef<IPropertyTypeCustomization> MakeInstance();
 
-	virtual void CustomizeDetails(IDetailLayoutBuilder& DetailBuilder) override;
+	//~ Begin IPropertyTypeCustomization
+	virtual void CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils) override;
+	virtual void CustomizeChildren(TSharedRef<IPropertyHandle> StructPropertyHandle, IDetailChildrenBuilder& ChildBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils) override;
+	//~ End IPropertyTypeCustomization
 
 private:
 
@@ -27,8 +31,8 @@ private:
 
 	DPAButton* Button;
 
-	DPAButton* GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder);
+	//DPAButton* GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder);
 
 	FReply InvokeOnClickedRaw() const;
 
-};*/
+};
