@@ -1,8 +1,8 @@
-﻿#include "DPAButton.h"
+﻿#include "FDPAButton.h"
 
-#define LOCTEXT_NAMESPACE "DPAButton"
+#define LOCTEXT_NAMESPACE "FDPAButton"
 
-void DPAButton::ConstructDefaultValues()
+void FDPAButton::ConstructDefaultValues()
 {
 
 	LabelFont =  IDetailLayoutBuilder::GetDetailFont();
@@ -16,7 +16,7 @@ void DPAButton::ConstructDefaultValues()
 	
 }
 
-void DPAButton::ConstructDefaultFText(FText& Text, const FString LocText1, const FString LocText2)
+void FDPAButton::ConstructDefaultFText(FText& Text, const FString LocText1, const FString LocText2)
 {
 	/*
 	if (Text.IsEmptyOrWhitespace())

@@ -10,7 +10,8 @@
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Engine",
-				"UMG"
+				"UMG",
+				"DetailsPanelArchitect"
 			]
 		}
 		,{
@@ -19,8 +20,7 @@
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Engine",
-				"UMG",
-				"GeneHunter"
+				"UMG"
 			]
 		}
 	],

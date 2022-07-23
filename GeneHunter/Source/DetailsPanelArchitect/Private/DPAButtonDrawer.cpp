@@ -12,7 +12,7 @@ void DPAButtonDrawer::CustomizeHeader(TSharedRef<IPropertyHandle> StructProperty
 {
 /*
 	// Get das button
-	DPAButton B;
+	FDPAButton B;
 	StructPropertyHandle->GetValueData()
 	if (!Button) return;
 
@@ -81,7 +81,7 @@ void DPAButtonDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 */
 
 /*
-DPAButton* DPAButtonDrawer::GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder)
+FDPAButton* DPAButtonDrawer::GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder)
 {
 	// Get object from array
 	DetailBuilder.GetObjectsBeingCustomized(ObjectsToEdit);
@@ -92,7 +92,7 @@ DPAButton* DPAButtonDrawer::GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuil
 	if (!Object.IsValid()) return nullptr;
 
 	// Get
-	DPAButton* Ret = Cast<DPAButton>(Object.Get());
+	FDPAButton* Ret = Cast<FDPAButton>(Object.Get());
 
 	// Guard again
 	if (!Ret) return nullptr;

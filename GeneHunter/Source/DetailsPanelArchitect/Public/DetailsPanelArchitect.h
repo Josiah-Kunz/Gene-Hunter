@@ -3,7 +3,7 @@
 #include "CoreUObject.h"
 #include "Modules/ModuleManager.h"
 #include "PropertyEditor/Public/PropertyEditorModule.h"
-#include "DetailsPanelArchitect/Public/DPAButton.h"
+#include "DetailsPanelArchitect/Public/FDPAButton.h"
 #include "DPAButtonDrawer.h"
 
 class FDPAModule : public IModuleInterface{

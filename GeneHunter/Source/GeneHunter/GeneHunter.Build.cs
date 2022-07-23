@@ -8,7 +8,10 @@ public class GeneHunter : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AppFramework" });
+		PublicDependencyModuleNames.AddRange(new string[]{
+			"Core", "CoreUObject", "Engine", "InputCore", "AppFramework"
+			, "DetailsPanelArchitect"
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]{ "EditorScriptingUtilities",  "Slate", "SlateCore", "AITestSuite" });
 

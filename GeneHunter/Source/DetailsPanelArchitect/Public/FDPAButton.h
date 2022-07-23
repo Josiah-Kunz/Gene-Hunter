@@ -8,9 +8,13 @@
 #include <functional>
 #include "Fonts/SlateFontInfo.h"
 #include "DetailLayoutBuilder.h"
+#include "FDPAButton.generated.h"
 
-struct DPAButton 
+USTRUCT()
+struct FDPAButton 
 {
+
+	GENERATED_BODY()
 
 	
 #pragma region Required public variables
@@ -20,9 +24,9 @@ public:
 	/**
 	 * The label that appears on the left side of the column. Suggested constructor is LOCTEXT("ButtonLabel", "YourLabelHere").
 	 */
-	FText LabelText;
+	FText LabelText = FText::FromString("LUL");
 
-	std::function<void()> OnClicked_Raw;
+	std::function<void()> OnClicked_Raw = nullptr;
 
 #pragma endregion 
 
@@ -62,11 +66,11 @@ public:
 #pragma region Public functions
 
 public:
-
+/*
 	template <typename F>
-	DPAButton(F Callback) 
+	FDPAButton(F Callback) 
 	: OnClicked_Raw(Callback)
-	{ }
+	{ }*/
 	
 	void ConstructDefaultValues();
 

@@ -3,7 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "PropertyEditor/Public/IDetailCustomization.h"
-#include "DetailsPanelArchitect/Public/DPAButton.h"
+#include "DetailsPanelArchitect/Public/FDPAButton.h"
 #include "DetailLayoutBuilder.h"
 #include "DetailWidgetRow.h"
 
@@ -29,9 +29,9 @@ private:
 
 private:
 
-	DPAButton* Button;
+	FDPAButton* Button;
 
-	//DPAButton* GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder);
+	//FDPAButton* GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder);
 
 	FReply InvokeOnClickedRaw() const;
 

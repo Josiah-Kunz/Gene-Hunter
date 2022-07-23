@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 
-#include "DetailsPanelArchitect/Public/DPAButton.h"
+#include "DetailsPanelArchitect/Public/FDPAButton.h"
 
 #include "GeneHunter/Stats/Health.h"
 #include "GeneHunter/Stats/PhysicalAttack.h"
@@ -65,8 +65,8 @@ public:
 
 
 
-
-	DPAButton Button = DPAButton(std::bind(&UStatsBlock::TestPrint, this));
+	//UPROPERTY()
+	//FDPAButton Button = new FDPAButton{std::bind(&UStatsBlock::TestPrint, this)};//FDPAButton(std::bind(&UStatsBlock::TestPrint, this));
 
 	/*
 	
