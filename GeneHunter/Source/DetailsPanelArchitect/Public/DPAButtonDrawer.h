@@ -1,8 +1,9 @@
+/*
 #pragma once
 
 #include "CoreMinimal.h"
 #include "PropertyEditor/Public/IDetailCustomization.h"
-#include "DPAButton.h"
+#include "DetailsPanelArchitect/Public/DPAButton.h"
 #include "DetailWidgetRow.h"
 
 class DPAButtonDrawer : public IDetailCustomization
@@ -24,10 +25,10 @@ private:
 
 private:
 
-	UDPAButton* DPAButton;
+	DPAButton* Button;
 
-	UDPAButton* GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder);
+	DPAButton* GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder);
 
 	FReply InvokeOnClickedRaw() const;
 
-};
+};*/

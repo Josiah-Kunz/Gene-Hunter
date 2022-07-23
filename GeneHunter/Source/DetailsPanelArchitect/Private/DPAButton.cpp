@@ -2,8 +2,10 @@
 
 #define LOCTEXT_NAMESPACE "DPAButton"
 
-void UDPAButton::ConstructDefaultValues()
+void DPAButton::ConstructDefaultValues()
 {
+
+	LabelFont =  IDetailLayoutBuilder::GetDetailFont();
 
 	// Texts n such
 	if (CategoryName.IsEqual(""))
@@ -14,7 +16,7 @@ void UDPAButton::ConstructDefaultValues()
 	
 }
 
-void UDPAButton::ConstructDefaultFText(FText& Text, const FString LocText1, const FString LocText2)
+void DPAButton::ConstructDefaultFText(FText& Text, const FString LocText1, const FString LocText2)
 {
 	/*
 	if (Text.IsEmptyOrWhitespace())

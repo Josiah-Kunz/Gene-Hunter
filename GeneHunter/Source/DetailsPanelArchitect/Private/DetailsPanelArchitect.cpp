@@ -5,6 +5,7 @@ void FDPAModule::StartupModule()
 
 	// Get module
 	FPropertyEditorModule& PropertyEdModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	
 
 	// Register the specific custom class layouts (based on their names, e.g., UStatsBlock and FStatsBlockDetails)
 	/*PropertyEdModule.RegisterCustomClassLayout(

@@ -14,10 +14,10 @@ public class DetailsPanelArchitect : ModuleRules
 
 		PublicDependencyModuleNames.AddRange(new string[]{
 			// Base
-			"Core", "CoreUObject", "Engine", "InputCore", "AppFramework",
+			"Core", "CoreUObject", "Engine", "InputCore", "AppFramework", "GeneHunter"
 			
 			// Custom editor
-			"UnrealEd", "DetailCustomizations", "PropertyEditor", "EditorStyle"
+			, "UnrealEd", "DetailCustomizations", "PropertyEditor", "EditorStyle"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]{ "EditorScriptingUtilities",  "Slate", "SlateCore", "AITestSuite" });

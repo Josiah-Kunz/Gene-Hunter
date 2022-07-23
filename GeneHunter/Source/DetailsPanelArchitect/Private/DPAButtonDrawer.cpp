@@ -1,4 +1,9 @@
+/*
 #include "DPAButtonDrawer.h"
+
+#include <windows.foundation.collections.h>
+
+#include "DetailLayoutBuilder.h"
 
 #define LOCTEXT_NAMESPACE "DPAButtonDrawer"
 
@@ -11,31 +16,31 @@ void DPAButtonDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 
 	// Get das button
-	DPAButton = GetCurrentDPAButton(DetailBuilder);
-	if (!DPAButton) return;
+	Button = GetCurrentDPAButton(DetailBuilder);
+	if (!Button) return;
 
 	// Ensure non-nonsense
-	DPAButton->ConstructDefaultValues();
+	Button->ConstructDefaultValues();
 	
 	// Modify category slate-style
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
-		DPAButton->CategoryName, DPAButton->LocalizedDisplayName, DPAButton->CategoryPriority);
+		Button->CategoryName, Button->LocalizedDisplayName, Button->CategoryPriority);
 
 	// Visuals slate-style
-	Category.AddCustomRow(DPAButton->RowFilterString)
+	Category.AddCustomRow(Button->RowFilterString)
 		.NameContent()[
 			SNew(STextBlock)
-				.Text(DPAButton->LabelText)
-				.Font(DPAButton->LabelFont)
+				.Text(Button->LabelText)
+				.Font(Button->LabelFont)
 			]
 		.ValueContent()[
 			SNew(SButton)
-				.Text(DPAButton->ButtonText)
+				.Text(Button->ButtonText)
 				.OnClicked_Raw(this, &DPAButtonDrawer::InvokeOnClickedRaw)
 			];
 }
 
-UDPAButton* DPAButtonDrawer::GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder)
+DPAButton* DPAButtonDrawer::GetCurrentDPAButton(IDetailLayoutBuilder& DetailBuilder)
 {
 	// Get object from array
 	DetailBuilder.GetObjectsBeingCustomized(ObjectsToEdit);
@@ -46,19 +51,19 @@ UDPAButton* DPAButtonDrawer::GetCurrentDPAButton(IDetailLayoutBuilder& DetailBui
 	if (!Object.IsValid()) return nullptr;
 
 	// Get
-	UDPAButton* Button = Cast<UDPAButton>(Object.Get());
+	DPAButton* Ret = Cast<DPAButton>(Object.Get());
 
 	// Guard again
-	if (!Button) return nullptr;
+	if (!Ret) return nullptr;
 
 	// Return
-	return Button;
+	return Ret;
 }
 
 FReply DPAButtonDrawer::InvokeOnClickedRaw() const
 {
-	DPAButton->OnClicked_Raw->operator()();
+	Button->OnClicked_Raw();
 	return FReply::Handled();
 }
 
-#undef LOCTEXT_NAMESPACE
+#undef LOCTEXT_NAMESPACE*/

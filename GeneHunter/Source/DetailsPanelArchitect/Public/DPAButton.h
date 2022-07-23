@@ -4,18 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
-#include "DetailCategoryBuilder.h"
+
+#include <functional>
+#include "Fonts/SlateFontInfo.h"
 #include "DetailLayoutBuilder.h"
-#include "DPAButton.generated.h"
 
-/**
- * 
- */
-UCLASS()
-class DETAILSPANELARCHITECT_API UDPAButton : public UObject
+struct DPAButton 
 {
-	GENERATED_BODY()
 
+	
 #pragma region Required public variables
 
 public:
@@ -24,8 +21,8 @@ public:
 	 * The label that appears on the left side of the column. Suggested constructor is LOCTEXT("ButtonLabel", "YourLabelHere").
 	 */
 	FText LabelText;
-	
-	std::function<void(void)>* OnClicked_Raw;
+
+	std::function<void()> OnClicked_Raw;
 
 #pragma endregion 
 
@@ -58,13 +55,18 @@ public:
 	 */
 	FText RowFilterString;
 
-	FSlateFontInfo LabelFont = IDetailLayoutBuilder::GetDetailFont();
+	FSlateFontInfo LabelFont;
 
 #pragma endregion
 
 #pragma region Public functions
 
 public:
+
+	template <typename F>
+	DPAButton(F Callback) 
+	: OnClicked_Raw(Callback)
+	{ }
 	
 	void ConstructDefaultValues();
 
@@ -80,4 +82,6 @@ private:
 	static void ConstructDefaultFText(FText& Text, const FString LocText1, const FString LocText2);
 
 #pragma endregion
+
+	
 };
