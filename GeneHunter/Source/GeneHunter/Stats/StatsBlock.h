@@ -63,13 +63,11 @@ public:
 	UCriticalHit* CriticalHit = NewObject<UCriticalHit>();
 
 
-
-
 	UPROPERTY(EditAnywhere, Category = "Stats")
 	FDPAButton Button = FDPAButton{FText::FromString("StatsBlock Label 1"), std::bind(&UStatsBlock::TestPrint, this)};
 
 	UPROPERTY(EditAnywhere, Category = "Stats")
-	FDPAButton Button2 = FDPAButton{FText::FromString("StatsBlock Label 2"), std::bind(&UStatsBlock::TestPrint2, this)};
+	FDPAButton Button2 = FDPAButton{FText::FromString(""), std::bind(&UStatsBlock::TestPrint2, this)};
 
 	/*
 	

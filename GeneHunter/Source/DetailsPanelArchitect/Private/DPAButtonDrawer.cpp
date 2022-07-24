@@ -28,7 +28,7 @@ void DPAButtonDrawer::CustomizeHeader(TSharedRef<IPropertyHandle> StructProperty
 	// Set defaults (if not handled already; this just really ensures no nonsense)
 	Button->ConstructDefaultValues();
 
-
+/*
 	HeaderRow
 			.OverrideResetToDefault(FResetToDefaultOverride::Hide())
 				.NameContent()[
@@ -41,9 +41,7 @@ void DPAButtonDrawer::CustomizeHeader(TSharedRef<IPropertyHandle> StructProperty
 					.Text(Button->ButtonText) 
 					.OnClicked_Raw(this, &DPAButtonDrawer::InvokeOnClickedRaw)
 					];
-
-
-/*
+	*/
 	
 	
 	// NameContent may or may not be used
@@ -62,12 +60,12 @@ void DPAButtonDrawer::CustomizeHeader(TSharedRef<IPropertyHandle> StructProperty
 	if (Button->LabelText.IsEmptyOrWhitespace())
 		HeaderRow
 		.OverrideResetToDefault(FResetToDefaultOverride::Hide())
-			.ValueContent()[VALUE_CONTENT()];
+			.WholeRowContent()[VALUE_CONTENT().HAlign(HAlign_Center)];
 	else
 		HeaderRow
 		.OverrideResetToDefault(FResetToDefaultOverride::Hide())
 			.NameContent()[NAME_CONTENT()]
-			.ValueContent()[VALUE_CONTENT()];*/
+			.ValueContent()[VALUE_CONTENT()];
 }
 
 void DPAButtonDrawer::CustomizeChildren(TSharedRef<IPropertyHandle> StructPropertyHandle,
