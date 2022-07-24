@@ -66,11 +66,6 @@ public:
 #pragma region Public functions
 
 public:
-/*
-	template <typename F>
-	FDPAButton(F Callback) 
-	: OnClicked_Raw(Callback)
-	{ }*/
 	
 	void ConstructDefaultValues();
 
@@ -83,7 +78,7 @@ private:
 	/**
 	 * If Text is empty or whitespace, formats it to LOCTEXT(LocText1, LocText2).
 	 */
-	static void ConstructDefaultFText(FText& Text, const FString LocText1, const FString LocText2);
+	static void ConstructDefaultFText(FText& Text, const FString DefaultValue);
 
 #pragma endregion
 

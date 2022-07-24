@@ -66,9 +66,11 @@ public:
 
 
 	UPROPERTY(EditAnywhere, Category = "Stats")
-	FDPAButton Button = FDPAButton{FText::FromString("OK"), std::bind(&UStatsBlock::TestPrint, this)};//FDPAButton(std::bind(&UStatsBlock::TestPrint, this));
+	FDPAButton Button = FDPAButton{FText::FromString("StatsBlock Label 1"), std::bind(&UStatsBlock::TestPrint, this)};
 
-	FString tmp = "tmp";
+	UPROPERTY(EditAnywhere, Category = "Stats")
+	FDPAButton Button2 = FDPAButton{FText::FromString("StatsBlock Label 2"), std::bind(&UStatsBlock::TestPrint2, this)};
+
 	/*
 	
 	UStatsBlock* self(){return this;};*/
@@ -77,6 +79,8 @@ public:
 		FText::FromString("Button Label"),
 		this->TestPrint);*/
 	void TestPrint();
+
+	void TestPrint2();
 
 #pragma endregion
 
@@ -137,13 +141,13 @@ public:
 	float BaseStatTotal();
 
 	/**
-	 * Calculates the "effective average" of the BaseStats. That is, all Stats are included, except if the attack
-	 * (physical or special) is "non-ideal" (less than 10% of the other attack). Defenses are not treated the same way
-	 * since both PhysicalDefense and SpecialDefense are always relevant.
-	 */
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	float BaseStatEffectiveAverage();
+     * Calculates the "effective average" of the BaseStats. That is, all Stats are included, except if the attack
+     * (physical or special) is "non-ideal" (less than 10% of the other attack). Defenses are not treated the same way
+     * since both PhysicalDefense and SpecialDefense are always relevant.
+     */
+    UFUNCTION(BlueprintCallable, BlueprintPure)
+    float BaseStatEffectiveAverage();
 
 #pragma endregion
-	
+    
 };

@@ -10,17 +10,15 @@ void FDPAButton::ConstructDefaultValues()
 	// Texts n such
 	if (CategoryName.IsEqual(""))
 		CategoryName = "Buttons";
-	ConstructDefaultFText(ButtonText, "ButtonText", "Go!");
-	ConstructDefaultFText(LocalizedDisplayName, "CatName", CategoryName.ToString());
-	ConstructDefaultFText(RowFilterString, "Keyword", ButtonText.ToString());
-	
+	ConstructDefaultFText(ButtonText, "Go!");
+	ConstructDefaultFText(LocalizedDisplayName, CategoryName.ToString());
+	ConstructDefaultFText(RowFilterString, ButtonText.ToString());
 }
 
-void FDPAButton::ConstructDefaultFText(FText& Text, const FString LocText1, const FString LocText2)
+void FDPAButton::ConstructDefaultFText(FText& Text, const FString DefaultValue)
 {
-	/*
 	if (Text.IsEmptyOrWhitespace())
-		Text =  FText::Format(LOCTEXT("{0}", "{1}"), LocText1, LocText2);*/
+		Text =  FText::FromString(DefaultValue);
 }
 
 #undef LOCTEXT_NAMESPACE

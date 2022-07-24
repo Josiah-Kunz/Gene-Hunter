@@ -7,63 +7,74 @@
 
 TSharedRef<IPropertyTypeCustomization> DPAButtonDrawer::MakeInstance()
 {
-	UE_LOG(LogTemp, Warning, TEXT("MADEeeeeeeeeeeeeeeeeeeeeeee"));
 	return MakeShared<DPAButtonDrawer>();
 }
 
 void DPAButtonDrawer::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow,
 	IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
-/*
-	// Get das button
-	FDPAButton B;
-	StructPropertyHandle->GetValueData()
-	if (!Button) return;
 
-	// Ensure non-nonsense
+	// Get button
+	if (!StructPropertyHandle->IsValidHandle() || !StructPropertyHandle->GetProperty())
+		return;
+	TArray<void*> RawStructData;
+	StructPropertyHandle->AccessRawData(RawStructData);
+	if (RawStructData.Num() <= 0)
+		return;
+	Button = static_cast<FDPAButton*>(RawStructData[0]);
+	if (!Button)
+		return;
+
+	// Set defaults (if not handled already; this just really ensures no nonsense)
 	Button->ConstructDefaultValues();
 
-	// Slate
-	
-	HeaderRow
-		.NameContent()[
-			SNew(STextBlock)
-				.Text(Button->LabelText)
-				.Font(Button->LabelFont)
-			]
-		.ValueContent()[
-			SNew(SButton)
-				.Text(Button->ButtonText)
-				.OnClicked_Raw(this, &DPAButtonDrawer::InvokeOnClickedRaw)
-			];*/
 
-	UE_LOG(LogTemp, Warning, TEXT("HEADERrrrrrrrrrrrrrrrrrrrr"));
 	HeaderRow
-	.OverrideResetToDefault(FResetToDefaultOverride::Hide())
-		.NameContent()[
-			SNew(STextBlock)
-				.Text(FText::FromString("OY"))
-			]
-		.ValueContent()[
-			SNew(SButton)
-				.Text(FText::FromString("3head"))
-			];
+			.OverrideResetToDefault(FResetToDefaultOverride::Hide())
+				.NameContent()[
+				SNew(STextBlock)
+					.Text(Button->LabelText)
+					.Font(Button->LabelFont)
+					]
+				.ValueContent()[
+				SNew(SButton)
+					.Text(Button->ButtonText) 
+					.OnClicked_Raw(this, &DPAButtonDrawer::InvokeOnClickedRaw)
+					];
+
+
+/*
+	
+	
+	// NameContent may or may not be used
+#define NAME_CONTENT() \
+	SNew(STextBlock) \
+			.Text(Button->LabelText) \
+			.Font(Button->LabelFont)
+
+	// ValueContent will be used fo sho
+#define VALUE_CONTENT() \
+	SNew(SButton) \
+			.Text(Button->ButtonText) \
+			.OnClicked_Raw(this, &DPAButtonDrawer::InvokeOnClickedRaw)
+
+	// Slate
+	if (Button->LabelText.IsEmptyOrWhitespace())
+		HeaderRow
+		.OverrideResetToDefault(FResetToDefaultOverride::Hide())
+			.ValueContent()[VALUE_CONTENT()];
+	else
+		HeaderRow
+		.OverrideResetToDefault(FResetToDefaultOverride::Hide())
+			.NameContent()[NAME_CONTENT()]
+			.ValueContent()[VALUE_CONTENT()];*/
 }
 
 void DPAButtonDrawer::CustomizeChildren(TSharedRef<IPropertyHandle> StructPropertyHandle,
 	IDetailChildrenBuilder& ChildBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
-	UE_LOG(LogTemp, Warning, TEXT("CHILDdddddddddddddddd"));
-	ChildBuilder.AddCustomRow(FText::FromString("OK999"))
-	.OverrideResetToDefault(FResetToDefaultOverride::Hide())
-	.NameContent()[
-			SNew(STextBlock)
-				.Text(FText::FromString("OY456"))
-			]
-		.ValueContent()[
-			SNew(SButton)
-				.Text(FText::FromString("3head789"))
-			];
+	// TODO:
+	// Function call options here?
 }
 
 /*
@@ -120,6 +131,11 @@ FDPAButton* DPAButtonDrawer::GetCurrentDPAButton(IDetailLayoutBuilder& DetailBui
 
 FReply DPAButtonDrawer::InvokeOnClickedRaw() const
 {
+	if (!Button)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Button does not exist!"));
+		return FReply::Unhandled();
+	}
 	Button->OnClicked_Raw();
 	return FReply::Handled();
 }

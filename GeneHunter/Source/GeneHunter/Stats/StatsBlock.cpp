@@ -34,6 +34,11 @@ void UStatsBlock::TestPrint()
 	UE_LOG(LogTemp, Warning, TEXT("HUZZAH! BUTTON PRESSED!"));
 }
 
+void UStatsBlock::TestPrint2()
+{
+	UE_LOG(LogTemp, Warning, TEXT("HUZZAH! BUTTON2 PRESSED!"));
+}
+
 void UStatsBlock::RandomizeStats(const int Level, const int MinBaseStat, const int MaxBaseStat, const int MinBasePairs,
                                  const int MaxBasePairs)
 {
