@@ -29,13 +29,9 @@ void UStatsBlock::TickComponent(float DeltaTime, ELevelTick TickType, FActorComp
 
 #pragma endregion
 
-void UStatsBlock::TestPrint()
-{
-	UE_LOG(LogTemp, Warning, TEXT("HUZZAH! BUTTON PRESSED!"));
-}
-
-void UStatsBlock::RandomizeStats(const int Level, const int MinBaseStat, const int MaxBaseStat, const int MinBasePairs,
-                                 const int MaxBasePairs)
+void UStatsBlock::RandomizeStats(
+	const int MinBaseStat, const int MaxBaseStat,
+	const int MinBasePairs, const int MaxBasePairs)
 {
 	TArray<UStat*> StatsArray;
 	GetStatsArray(StatsArray);
@@ -49,14 +45,14 @@ void UStatsBlock::RandomizeStats(const int Level, const int MinBaseStat, const i
 	}
 }
 
-void UStatsBlock::RandomizeBasePairs(const int Level, const int MinBasePairs, const int MaxBasePairs)
+void UStatsBlock::RandomizeBasePairs(const int MinBasePairs, const int MaxBasePairs)
 {
-	RandomizeStats(Level, 0, -1, MinBasePairs, MaxBasePairs);
+	RandomizeStats(0, -1, MinBasePairs, MaxBasePairs);
 }
 
-void UStatsBlock::RandomizeBaseStats(const int Level, const int MinBaseStats, const int MaxBaseStats)
+void UStatsBlock::RandomizeBaseStats(const int MinBaseStats, const int MaxBaseStats)
 {
-	RandomizeStats(Level, MinBaseStats, MaxBaseStats, 0, -1);
+	RandomizeStats(MinBaseStats, MaxBaseStats, 0, -1);
 }
 
 
@@ -80,6 +76,22 @@ void UStatsBlock::ModifyStatsUniformly(const float UniformMod, const EStatValueT
 	GetStatsArray(StatsArray);
 	for(UStat* Stat : StatsArray)
 		Stat->ModifyValue(UniformMod, ValueType, Mode);
+}
+
+void UStatsBlock::RandomizeStats_DetailsPanel()
+{
+	RandomizeStats( MinBaseStats_DetailsPanel, MaxBaseStats_DetailsPanel,
+		MinBasePairs_DetailsPanel, MaxBasePairs_DetailsPanel);
+}
+
+void UStatsBlock::RandomizeBasePairs_DetailsPanel()
+{
+	RandomizeBasePairs(MinBasePairs_DetailsPanel, MaxBasePairs_DetailsPanel);
+}
+
+void UStatsBlock::RandomizeBaseStats_DetailsPanel()
+{
+	RandomizeBaseStats(MinBaseStats_DetailsPanel, MaxBaseStats_DetailsPanel);
 }
 
 bool UStatsBlock::IsEqual(UStatsBlock* Other, const EStatValueType ValueType, const float Tolerance)

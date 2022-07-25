@@ -38,6 +38,19 @@ public:
 
 #pragma region The Stat variables
 public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	int Level = 1;
+	
+	UFUNCTION(CallInEditor)
+	void SetLevel(int Value)
+	{
+		Level = Value;
+		TArray<UStat*> StatsArray;
+		GetStatsArray(StatsArray);
+		for(UStat* Stat : StatsArray)
+			Stat->Update(Level);
+	}
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category = "Stats")
 	UHealth* Health = CreateDefaultSubobject<UHealth>("Health");
@@ -60,45 +73,26 @@ public:
 	UPROPERTY()
 	UCriticalHit* CriticalHit = NewObject<UCriticalHit>();
 
-
-
-
-
-
-
-	/*
-	FDPAButton* Button = new FDPAButton(
-		FText::FromString("Button Label"),
-		self());
-
-	UStatsBlock* self(){return this;};*/
-	
-	/*= new FDPAButton(
-		FText::FromString("Button Label"),
-		this->TestPrint);*/
-	void TestPrint();
-
 #pragma endregion
 
 #pragma region Stat manipulation
 
 public:
-
+	
 	/**
 	 * Randomizes the Stats uniformly by randomizing the BaseStats and BasePairs between Min and Max (inclusive).
 	 * If any max is greater than its corresponding min, it will be ignored.
 	 */
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
 	void RandomizeStats(
-		const int Level = 1,
 		const int MinBaseStat = 50, const int MaxBaseStat = 150,
 		const int MinBasePairs = 1, const int MaxBasePairs = 100);
 
-	UFUNCTION(BlueprintCallable)
-	void RandomizeBasePairs(const int Level = 1, const int MinBasePairs = 1, const int MaxBasePairs = 100);
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	void RandomizeBasePairs(const int MinBasePairs = 1, const int MaxBasePairs = 100);
 	
-	UFUNCTION(BlueprintCallable)
-	void RandomizeBaseStats(const int Level = 1, const int MinBaseStats = 1, const int MaxBaseStats = 100);
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	void RandomizeBaseStats(const int MinBaseStats = 50, const int MaxBaseStats = 150);
 	
 	/**
 	 * Modifies (that is, increases, decreases, or sets) the Stats in this StatsBlock.
@@ -111,6 +105,33 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	void ModifyStatsUniformly(const float UniformMod, const EStatValueType ValueType, const EModificationMode Mode);
+
+#pragma endregion
+
+#pragma region Details panel buttons
+
+public:
+	
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Randomize Stats", meta=(DisplayName="Randomize Everything"))
+	void RandomizeStats_DetailsPanel();
+
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Randomize Stats", meta=(DisplayName="Randomize Base Pairs Only"))
+	void RandomizeBasePairs_DetailsPanel();
+
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Randomize Stats", meta=(DisplayName="Randomize Base Stats Only"))
+	void RandomizeBaseStats_DetailsPanel();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Randomize Stats", meta=(DisplayName="Min Base Pairs"))
+	int MinBasePairs_DetailsPanel = 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Randomize Stats", meta=(DisplayName="Max Base Pairs"))
+	int MaxBasePairs_DetailsPanel = 100;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Randomize Stats", meta=(DisplayName="Min Base Stats"))
+	int MinBaseStats_DetailsPanel = 50;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Randomize Stats", meta=(DisplayName="Max Base Stats"))
+	int MaxBaseStats_DetailsPanel = 150;
 
 #pragma endregion
 
