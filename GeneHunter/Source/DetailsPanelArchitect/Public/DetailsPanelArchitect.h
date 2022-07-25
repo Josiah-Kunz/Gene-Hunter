@@ -16,5 +16,14 @@ public:
 	virtual void ShutdownModule() override;
 
 #pragma endregion
+
+#pragma region Macros
+
+/*
+#define DPA_BUTTON(Cat, ...) \
+	UPROPERTY(EditAnywhere, Category = Cat) \
+	FDPAButton Button##__LINE__ = FDPAButton(##__VA_ARGS__)
+*/
+#pragma endregion
 	
 };

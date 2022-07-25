@@ -67,6 +67,10 @@ public:
 
 public:
 	
+	FDPAButton(){};
+	
+	FDPAButton(const std::function<void()> OnClick, const FString ButtonText, const FString LabelText = "");
+
 	void ConstructDefaultValues();
 
 #pragma endregion

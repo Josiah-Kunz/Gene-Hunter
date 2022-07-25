@@ -2,6 +2,13 @@
 
 #define LOCTEXT_NAMESPACE "FDPAButton"
 
+FDPAButton::FDPAButton(const std::function<void()> OnClick, const FString ButtonText, const FString LabelText)
+{
+	this->OnClicked_Raw = OnClick;
+	this->ButtonText = FText::FromString(ButtonText);
+	this->LabelText = FText::FromString(LabelText);
+}
+
 void FDPAButton::ConstructDefaultValues()
 {
 
