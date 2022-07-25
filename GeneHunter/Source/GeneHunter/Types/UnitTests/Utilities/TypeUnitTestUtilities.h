@@ -1,4 +1,7 @@
 ﻿#pragma once
+
+#include "Misc/FileHelper.h"
+#include "Misc/AutomationTest.h"
 #include "GeneHunter/Types/TypeArray2D.h"
 #include "TypeUnitTestUtilities.generated.h"
 

@@ -11,8 +11,6 @@
 #include "GeneHunter/Stats/Haste.h"
 #include "GeneHunter/Stats/CriticalHit.h"
 
-#include "DetailsPanelArchitect/Public/DPAButton.h"
-
 #include "StatsBlock.generated.h"
 
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))

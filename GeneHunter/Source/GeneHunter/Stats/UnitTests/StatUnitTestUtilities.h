@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "GeneHunter/Stats/StatsBlock.h"
+#include "Misc/AutomationTest.h"
 #include "StatUnitTestUtilities.generated.h"
 
 UCLASS()

@@ -8,9 +8,16 @@ public class GeneHunter : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AppFramework" });
-
-		PrivateDependencyModuleNames.AddRange(new string[]{ "EditorScriptingUtilities",  "Slate", "SlateCore", "AITestSuite" });
+		PublicDependencyModuleNames.AddRange(new string[]{
+			// Base
+			"Core", "CoreUObject", "Engine", "InputCore", "AppFramework"
+			
+			// Custom editor
+			, "UnrealEd", "DetailCustomizations", "PropertyEditor", "EditorStyle"
+			  
+			  // Should these be private?
+			, "EditorScriptingUtilities",  "Slate", "SlateCore", "AITestSuite"
+		});
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
