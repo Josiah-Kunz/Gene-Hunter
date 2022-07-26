@@ -10,7 +10,7 @@ bool FUStat_StatsBlock_Scaling_Haste::RunTest(const FString& Parameters)
 {
 	
 	// Set up
-	UHaste* Haste = NewObject<UHaste>();
+	FHaste* Haste = {};
 
 	// Loop over base pairs [1, 50, 100], base stat [0, 50, 100, 120, 150, 200], and levels [20, 50, 100]
 	TArray<float> Expected = {

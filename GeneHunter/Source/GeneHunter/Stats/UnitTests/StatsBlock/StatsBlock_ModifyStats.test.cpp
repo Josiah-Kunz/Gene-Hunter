@@ -3,7 +3,7 @@
 #include "GeneHunter/Stats/UnitTests/StatUnitTestUtilities.h" 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsBlock_ModifyStats,
-	"UStat.StatsBlock.ModifyStats",
+	"FStat.StatsBlock.ModifyStats",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FUStat_StatsBlock_ModifyStats::RunTest(const FString& Parameters)
@@ -23,11 +23,11 @@ bool FUStat_StatsBlock_ModifyStats::RunTest(const FString& Parameters)
 		Actual->IsEqual(Expected, EStatValueType::Current));
 
 	// Non-uniformly actual
-	TMap<UStat*, int> Mods = {
+	TArray<FStatModStruct> Mods = {
 		{Actual->Health, -10},
 		{Actual->PhysicalDefense, -10},
 		{Actual->SpecialDefense, -10}
-	};
+	}; 
 	Actual->ModifyStats(Mods, EStatValueType::Current, EModificationMode::AddAbsolute);
 
 	// Non-uniformly expected

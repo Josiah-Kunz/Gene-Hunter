@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "StatModStruct.h"
 #include "Components/ActorComponent.h"
 
 #include "GeneHunter/Stats/Health.h"
@@ -43,35 +44,28 @@ public:
 	int Level = 1;
 	
 	UFUNCTION(CallInEditor)
-	void SetLevel(int Value)
-	{
-		Level = Value;
-		TArray<UStat*> StatsArray;
-		GetStatsArray(StatsArray);
-		for(UStat* Stat : StatsArray)
-			Stat->Update(Level);
-	}
+	void SetLevel(const int Value);
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category = "Stats")
-	UHealth* Health = CreateDefaultSubobject<UHealth>("Health");
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	FHealth Health;
 	
 	UPROPERTY()
-	UPhysicalAttack* PhysicalAttack = NewObject<UPhysicalAttack>();
+	FPhysicalAttack PhysicalAttack;
 
 	UPROPERTY()
-	UPhysicalDefense* PhysicalDefense = NewObject<UPhysicalDefense>();
+	FPhysicalDefense PhysicalDefense;
 
 	UPROPERTY()
-	USpecialAttack* SpecialAttack = NewObject<USpecialAttack>();
+	FSpecialAttack SpecialAttack;
 
 	UPROPERTY()
-	USpecialDefense* SpecialDefense = NewObject<USpecialDefense>();
+	FSpecialDefense SpecialDefense;
 
 	UPROPERTY()
-	UHaste* Haste = NewObject<UHaste>();
+	FHaste Haste;
 
 	UPROPERTY()
-	UCriticalHit* CriticalHit = NewObject<UCriticalHit>();
+	FCriticalHit CriticalHit;
 
 #pragma endregion
 
@@ -97,8 +91,7 @@ public:
 	/**
 	 * Modifies (that is, increases, decreases, or sets) the Stats in this StatsBlock.
 	 */
-	UFUNCTION(BlueprintCallable)
-	void ModifyStats(TMap<UStat*, int>& ValueMap, const EStatValueType ValueType, const EModificationMode Mode);
+	void ModifyStats(TArray<FStatModStruct>& ValueMap, const EStatValueType ValueType, const EModificationMode Mode);
 
 	/**
 	 * Modifies (that is, increases, decreases, or sets) all Stats in this StatsBlock by the given amount.
@@ -149,7 +142,7 @@ public:
 	 * Gets the array of Stats, e.g., {Health, PhysicalAttack, ...}.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	void GetStatsArray(TArray<UStat*>& Array);
+	void GetStatsArray(TArray<FStat>& Stats);
 
 	/**
 	 * Gets the raw sum of all BaseStats. (In Pokemon, the BST seems to be important, although I've never thought so. Are personal feelings allowed in comments?)

@@ -5,11 +5,8 @@
 #include "GeneHunter/Stats/StandardStat.h"
 #include "SpecialDefense.generated.h"
 
-/**
- * 
- */
-UCLASS()
-class GENEHUNTER_API USpecialDefense : public UStandardStat
+USTRUCT(Blueprintable)
+struct GENEHUNTER_API FSpecialDefense : public FStandardStat
 {
 	GENERATED_BODY()
 

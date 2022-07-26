@@ -1,6 +1,6 @@
 #include "SpecialDefense.h"
 
-FSupportingText const USpecialDefense::SupportingText() const
+FSupportingText const FSpecialDefense::SupportingText() const
 {
 	const FSupportingText SupportingText = FSupportingText{
 		FText::FromString(""),
@@ -10,19 +10,19 @@ FSupportingText const USpecialDefense::SupportingText() const
 	return SupportingText;
 }
 
-FString const USpecialDefense::Name() const
+FString const FSpecialDefense::Name() const
 {
 	const FString Name = FString{"Special Defense"};
 	return Name;
 }
 
-FString const USpecialDefense::Abbreviation() const
+FString const FSpecialDefense::Abbreviation() const
 {
 	const FString Abbrev = FString{"SpD"};
 	return Abbrev;
 }
 
-FLinearColor const USpecialDefense::Color() const
+FLinearColor const FSpecialDefense::Color() const
 {
 	const FLinearColor Color = FLinearColor{0.456f, 0.791f, 0.281f};
 	return Color;

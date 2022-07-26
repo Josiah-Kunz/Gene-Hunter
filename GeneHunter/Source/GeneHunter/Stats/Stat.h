@@ -1,5 +1,3 @@
-// 
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -14,8 +12,8 @@
 /**
  * 
  */
-UCLASS(Blueprintable, EditInlineNew)
-class GENEHUNTER_API UStat : public UObject
+USTRUCT(Blueprintable)
+struct GENEHUNTER_API FStat
 {
 	GENERATED_BODY()
 
@@ -32,7 +30,7 @@ public:
 	/**
 	 * The DNA base pair count that augment this Stat. See the Stats document for relevant equations.
 	 */
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int BasePairs = 1;
 
 #pragma endregion
@@ -66,29 +64,23 @@ public:
 	 * The current value of this Stat that can be increased or decreased. CurrentValue reverts to PermanentValue, e.g.,
 	 * at the start and end of a battle.
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetCurrentValue();
 
 	/**
 	 * The current value of this Stat that can be increased or decreased. CurrentValue reverts to PermanentValue, e.g.,
 	 * at the start and end of a battle.
 	 */
-	UFUNCTION(BlueprintCallable)
 	void SetCurrentValue(const float NewValue);
 
 	/**
 	 * The default value of this Stat, e.g., when a battle starts. Only modify outside of battle (e.g., on level).
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetPermanentValue();
 
 	/**
 	 * The default value of this Stat, e.g., when a battle starts. Only modify outside of battle (e.g., on level).
 	 */
-	UFUNCTION(BlueprintCallable)
 	void SetPermanentValue(const float NewValue);
-
-	
 
 #pragma endregion
 
@@ -96,12 +88,11 @@ public:
 
 public:
 
-	UStat();
+	FStat();
 
 	/**
 	 * Updates both PermanentValue and CurrentValue (in that order) based on the level.
 	 */
-	UFUNCTION(BlueprintCallable)
 	virtual void Update(const int Level);
 	
 	/**
@@ -109,20 +100,16 @@ public:
 	 * @param Level The level (always positive).
 	 * @param ResetCurrent If true, CurrentValue will match PermanentValue after the calculation is done.
 	 */
-	UFUNCTION(BlueprintCallable)
 	virtual void UpdatePermanent(const int Level, const bool ResetCurrent = true);
 
 	/**
 	 * Updates the CurrentValue based on the input level.
 	 * @param Level The level (always positive).
 	 */
-	UFUNCTION(BlueprintCallable)
 	virtual void UpdateCurrent(const int Level);
 
-	UFUNCTION(BlueprintCallable)
 	virtual void ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FString ToString(const bool Inline = true);
 
 #pragma endregion
@@ -135,31 +122,26 @@ public:
 	 * Calculates the value of this Stat based on a unique formula. See the Stats document for relevant equations.
 	 * @param Level The level (always positive).
 	 */
-	UFUNCTION(BlueprintCallable)
 	virtual float CalculateValue(const int Level);
 
 	/**
-		 * This Stat's description and such.
-		 */
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+	 * This Stat's description and such.
+	 */
 	virtual FSupportingText const SupportingText() const;
 	
 	/**
 	 * The name of this Stat to be displayed (such as "Physical Attack").
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintPure)
 	virtual FString const Name() const;
 
 	/**
 	 * A shorter version of Name (such as "PhA" for "Physical Attack").
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintPure)
 	virtual FString const Abbreviation() const;
 
 	/**
 	 * The color associated with this Stat.
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintPure)
 	virtual FLinearColor const Color() const;
 
 #pragma endregion

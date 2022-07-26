@@ -1,6 +1,6 @@
 #include "PhysicalDefense.h"
 
-FSupportingText const UPhysicalDefense::SupportingText() const
+FSupportingText const FPhysicalDefense::SupportingText() const
 {
 	const FSupportingText SupportingText = FSupportingText{
 		FText::FromString(""),
@@ -10,19 +10,19 @@ FSupportingText const UPhysicalDefense::SupportingText() const
 	return SupportingText;
 }
 
-FString const UPhysicalDefense::Name() const
+FString const FPhysicalDefense::Name() const
 {
 	const FString Name = FString{"Physical Defense"};
 	return Name;
 }
 
-FString const UPhysicalDefense::Abbreviation() const
+FString const FPhysicalDefense::Abbreviation() const
 {
 	const FString Abbrev = FString{"PhD"};
 	return Abbrev;
 }
 
-FLinearColor const UPhysicalDefense::Color() const
+FLinearColor const FPhysicalDefense::Color() const
 {
 	const FLinearColor Color = FLinearColor{0.4f, 0.546f, 1};
 	return Color;

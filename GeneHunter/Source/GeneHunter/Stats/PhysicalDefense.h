@@ -5,11 +5,8 @@
 #include "GeneHunter/Stats/StandardStat.h"
 #include "PhysicalDefense.generated.h"
 
-/**
- * 
- */
-UCLASS()
-class GENEHUNTER_API UPhysicalDefense : public UStandardStat
+USTRUCT(Blueprintable)
+struct GENEHUNTER_API FPhysicalDefense : public FStandardStat
 {
 	GENERATED_BODY()
 

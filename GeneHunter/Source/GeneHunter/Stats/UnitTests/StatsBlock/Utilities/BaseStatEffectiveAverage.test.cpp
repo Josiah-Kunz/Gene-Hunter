@@ -3,7 +3,7 @@
 #include "GeneHunter/Stats/UnitTests/StatUnitTestUtilities.h" 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsBlock_Utilities_BaseStatEffectiveAverage,
-	"UStat.StatsBlock.Utilities.Base Stat Effective Average",
+	"FStat.StatsBlock.Utilities.Base Stat Effective Average",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FUStat_StatsBlock_Utilities_BaseStatEffectiveAverage::RunTest(const FString& Parameters)

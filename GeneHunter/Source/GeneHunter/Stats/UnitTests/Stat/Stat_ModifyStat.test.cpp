@@ -3,14 +3,14 @@
 #include "GeneHunter/Stats/UnitTests/StatUnitTestUtilities.h" 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_Stat_ModifyStat,
-	"UStat.Stat.ModifyStat",
+	"FStat.Stat.ModifyStat",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FUStat_Stat_ModifyStat::RunTest(const FString& Parameters)
 {
 	
 	// Set up
-	UStat* DummyStat = NewObject<UStat>();
+	FStat* DummyStat = {};
 	FString GainFString;
 
 	// Do tests (afaik, can't make ths a function because we only have access to the .cpp file)
@@ -19,7 +19,7 @@ bool FUStat_Stat_ModifyStat::RunTest(const FString& Parameters)
 	DummyStat->ModifyValue(Modifier, EStatValueType::Current, Mode); \
 	GainFString = GainText; \
 	TestEqual( \
-			"UStat::GetModification " + GainFString, \
+			"FStat::GetModification " + GainFString, \
 			DummyStat->GetCurrentValue(), \
 			Expected, \
 			UStatUnitTestUtilities::TOLERANCE);

@@ -10,7 +10,7 @@ bool FUStat_StatsBlock_Scaling_StandardStat::RunTest(const FString& Parameters)
 {
 	
 	// Set up
-	UStandardStat* StandardStat = NewObject<UStandardStat>();
+	FStandardStat* StandardStat = {};
 
 	// Loop over base pairs [1, 50, 100], base stat [0, 50, 100, 120, 150, 200], and levels [20, 50, 100]
 	TArray<float> Expected = {

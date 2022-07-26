@@ -5,11 +5,8 @@
 #include "GeneHunter/Stats/Stat.h"
 #include "Haste.generated.h"
 
-/**
- * 
- */
-UCLASS()
-class GENEHUNTER_API UHaste : public UStat
+USTRUCT(Blueprintable)
+struct GENEHUNTER_API FHaste : public FStat
 {
 	GENERATED_BODY()
 

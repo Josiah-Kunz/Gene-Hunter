@@ -3,30 +3,30 @@
 
 #include "Stat.h"
 
-float UStat::StatJump(const int Level)
+float FStat::StatJump(const int Level)
 {
 	return FMathf::Pow(3.0f, FMathf::Floor(Level/10.0f));
 }
 
 #pragma region Public functions for setters/getters
 
-float UStat::GetCurrentValue()
+float FStat::GetCurrentValue()
 {
 	return CurrentValue;
 }
 
-void UStat::SetCurrentValue(const float NewValue)
+void FStat::SetCurrentValue(const float NewValue)
 {
 	if (NewValue > 0)
 		CurrentValue = NewValue;
 }
 
-float UStat::GetPermanentValue()
+float FStat::GetPermanentValue()
 {
 	return PermanentValue;
 }
 
-void UStat::SetPermanentValue(const float NewValue)
+void FStat::SetPermanentValue(const float NewValue)
 {
 	if (NewValue > 0)
 		PermanentValue = NewValue;
@@ -36,31 +36,31 @@ void UStat::SetPermanentValue(const float NewValue)
 
 #pragma region Public functions
 
-UStat::UStat()
+FStat::FStat()
 {
 	SetCurrentValue(1);
 	SetPermanentValue(1);
 }
 
-void UStat::Update(const int Level)
+void FStat::Update(const int Level)
 {
 	UpdatePermanent(Level, true);
 }
 
 
-void UStat::UpdatePermanent(const int Level, const bool ResetCurrent)
+void FStat::UpdatePermanent(const int Level, const bool ResetCurrent)
 {
 	SetPermanentValue(CalculateValue(Level));
 	if (ResetCurrent)
 		SetCurrentValue(PermanentValue);
 }
 
-void UStat::UpdateCurrent(const int Level)
+void FStat::UpdateCurrent(const int Level)
 {
 	SetCurrentValue(CalculateValue(Level));
 }
 
-void UStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode)
+void FStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode)
 {
 	switch(ModifyType)
 	{
@@ -86,7 +86,7 @@ void UStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, c
 	}
 }
 
-FString UStat::ToString(const bool Inline)
+FString FStat::ToString(const bool Inline)
 {
 	if (Inline)
 	return FString::Printf(TEXT("%s | %s/%s | BaseStat: %s | BasePairs: %s |"),
@@ -110,12 +110,12 @@ FString UStat::ToString(const bool Inline)
 
 #pragma region Things that should be overridden!
 
-float UStat::CalculateValue(const int Level)
+float FStat::CalculateValue(const int Level)
 {
 	return 1; // Override this!
 }
 
-FSupportingText const UStat::SupportingText() const
+FSupportingText const FStat::SupportingText() const
 {
 	FSupportingText SupportingText = FSupportingText{
 		FText::FromString(""),
@@ -125,19 +125,19 @@ FSupportingText const UStat::SupportingText() const
 	return SupportingText;
 }
 
-FString const UStat::Name() const
+FString const FStat::Name() const
 {
 	const FString Name = FString{"???"};
 	return Name;
 }
 
-FString const UStat::Abbreviation() const
+FString const FStat::Abbreviation() const
 {
 	const FString Abbrev = FString{"???"};
 	return Abbrev;
 }
 
-FLinearColor const UStat::Color() const
+FLinearColor const FStat::Color() const
 {
 	const FLinearColor Color = FLinearColor{0, 0, 0};
 	return Color;
@@ -147,7 +147,7 @@ FLinearColor const UStat::Color() const
 
 #pragma region Private functions
 
-float UStat::GetModification(const int Original, const EModificationMode Mode, const float Modification)
+float FStat::GetModification(const int Original, const EModificationMode Mode, const float Modification)
 {
 	switch(Mode)
 	{

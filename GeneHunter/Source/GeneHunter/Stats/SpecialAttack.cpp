@@ -1,6 +1,6 @@
 #include "SpecialAttack.h"
 
-FSupportingText const USpecialAttack::SupportingText() const
+FSupportingText const FSpecialAttack::SupportingText() const
 {
 	const FSupportingText SupportingText = FSupportingText{
 		FText::FromString(""),
@@ -10,19 +10,19 @@ FSupportingText const USpecialAttack::SupportingText() const
 	return SupportingText;
 }
 
-FString const USpecialAttack::Name() const
+FString const FSpecialAttack::Name() const
 {
 	const FString Name = FString{"Special Attack"};
 	return Name;
 }
 
-FString const USpecialAttack::Abbreviation() const
+FString const FSpecialAttack::Abbreviation() const
 {
 	const FString Abbrev = FString{"SpA"};
 	return Abbrev;
 }
 
-FLinearColor const USpecialAttack::Color() const
+FLinearColor const FSpecialAttack::Color() const
 {
 	const FLinearColor Color = FLinearColor{0.718f, 0.443f, 0.957f};
 	return Color;

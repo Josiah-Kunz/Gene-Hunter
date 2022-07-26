@@ -3,7 +3,7 @@
 #include "GeneHunter/Stats/UnitTests/StatUnitTestUtilities.h" 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsBlock_Utilities_BaseStatTotal,
-	"UStat.StatsBlock.Utilities.Base Stat Total",
+	"FStat.StatsBlock.Utilities.Base Stat Total",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FUStat_StatsBlock_Utilities_BaseStatTotal::RunTest(const FString& Parameters)

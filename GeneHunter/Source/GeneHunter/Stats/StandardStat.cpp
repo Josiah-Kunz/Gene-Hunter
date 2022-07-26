@@ -1,6 +1,6 @@
 #include "StandardStat.h"
 
-float UStandardStat::CalculateValue(const int Level)
+float FStandardStat::CalculateValue(const int Level)
 {
 	return FMathf::Floor(
 		UGeneHunterBPLibrary::RoundToDecimals(

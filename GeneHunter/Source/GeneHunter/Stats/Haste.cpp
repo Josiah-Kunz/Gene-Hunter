@@ -1,6 +1,6 @@
 #include "Haste.h"
 
-float UHaste::CalculateValue(const int Level)
+float FHaste::CalculateValue(const int Level)
 {
 	const float BaseStatScaling = 0.00002f;
 	const float LevelScaling = 0.017f;
@@ -10,25 +10,25 @@ float UHaste::CalculateValue(const int Level)
 	);
 }
 
-FString const UHaste::Name() const
+FString const FHaste::Name() const
 {
 	const FString Name = FString{"Haste"};
 	return Name;
 }
 
-FString const UHaste::Abbreviation() const
+FString const FHaste::Abbreviation() const
 {
 	const FString Abbrev = FString{"Hst"};
 	return Abbrev;
 }
 
-FLinearColor const UHaste::Color() const
+FLinearColor const FHaste::Color() const
 {
 	const FLinearColor Color = FLinearColor{0, 1, 1};
 	return Color;
 }
 
-FSupportingText const UHaste::SupportingText() const
+FSupportingText const FHaste::SupportingText() const
 {
 	const FSupportingText SupportingText = FSupportingText{
 		FText::FromString(""),

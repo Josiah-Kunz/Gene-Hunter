@@ -1,6 +1,6 @@
 #include "Health.h"
 
-float UHealth::CalculateValue(const int Level)
+float FHealth::CalculateValue(const int Level)
 {
 	return FMathf::Floor(
 		UGeneHunterBPLibrary::RoundToDecimals(
@@ -8,7 +8,7 @@ float UHealth::CalculateValue(const int Level)
 			) * StatJump(Level); 
 }
 
-FSupportingText const UHealth::SupportingText() const
+FSupportingText const FHealth::SupportingText() const
 {
 	const FSupportingText SupportingText = FSupportingText{
 		FText::FromString(""),
@@ -18,19 +18,19 @@ FSupportingText const UHealth::SupportingText() const
 	return SupportingText;
 }
 
-FString const UHealth::Name() const
+FString const FHealth::Name() const
 {
 	const FString Name = FString{"Health"};
 	return Name;
 }
 
-FString const UHealth::Abbreviation() const
+FString const FHealth::Abbreviation() const
 {
 	const FString Abbrev = FString{"HP"};
 	return Abbrev;
 }
 
-FLinearColor const UHealth::Color() const
+FLinearColor const FHealth::Color() const
 {
 	const FLinearColor Color = FLinearColor{1, 0.5f, 1};
 	return Color;

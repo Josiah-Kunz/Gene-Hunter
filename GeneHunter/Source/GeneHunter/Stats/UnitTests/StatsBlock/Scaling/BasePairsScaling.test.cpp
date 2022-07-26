@@ -14,7 +14,7 @@ bool FUStat_StatsBlock_Scaling_BasePairsScaling::RunTest(const FString& Paramete
 	const float Tolerance = 0.1e6;
 	
 	// Set up
-	UPhysicalAttack* PhA = NewObject<UPhysicalAttack>();
+	FPhysicalAttack* PhA = {};
 	PhA->BaseStat = 100;
 	const int Level = 100;
 

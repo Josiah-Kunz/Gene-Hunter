@@ -1,6 +1,6 @@
 #include "CriticalHit.h"
 
-float UCriticalHit::CalculateValue(const int Level)
+float FCriticalHit::CalculateValue(const int Level)
 {
 
 	// Get prev- and next-decalevel data
@@ -13,25 +13,25 @@ float UCriticalHit::CalculateValue(const int Level)
 	return 0.8f * (NextSubCrit - PrevSubCrit) * (Level- PrevDecaLevel)/10.0f + PrevSubCrit;
 }
 
-FString const UCriticalHit::Name() const
+FString const FCriticalHit::Name() const
 {
 	const FString Name = FString{"Critical Hit"};
 	return Name;
 }
 
-FString const UCriticalHit::Abbreviation() const
+FString const FCriticalHit::Abbreviation() const
 {
 	const FString Abbrev = FString{"Crt"};
 	return Abbrev;
 }
 
-FLinearColor const UCriticalHit::Color() const
+FLinearColor const FCriticalHit::Color() const
 {
 	const FLinearColor Color = FLinearColor{0.957f, 0.784f, 0.443f};
 	return Color;
 }
 
-FSupportingText const UCriticalHit::SupportingText() const
+FSupportingText const FCriticalHit::SupportingText() const
 {
 	const FSupportingText SupportingText = FSupportingText{
 		FText::FromString(""),
@@ -41,7 +41,7 @@ FSupportingText const UCriticalHit::SupportingText() const
 	return SupportingText;
 }
 
-float UCriticalHit::SubCrit(const int Level)
+float FCriticalHit::SubCrit(const int Level)
 {
 	return BaseStatScaling * FMathf::Pow(BaseStat*1.0f, BaseStatExponent) *
 		FMathf::Ceil( UGeneHunterBPLibrary::RoundToDecimals(Level/10.0f, 3)) *

@@ -8,8 +8,8 @@
 /**
  * 
  */
-UCLASS()
-class GENEHUNTER_API UHealth : public UStat
+USTRUCT(Blueprintable)
+struct GENEHUNTER_API FHealth : public FStat
 {
 	GENERATED_BODY()
 

@@ -5,21 +5,17 @@
 #include "GeneHunter/Stats/Stat.h"
 #include "CriticalHit.generated.h"
 
-/**
- * 
- */
-UCLASS()
-class GENEHUNTER_API UCriticalHit : public UStat
+USTRUCT(Blueprintable)
+struct GENEHUNTER_API FCriticalHit : public FStat
 {
 	GENERATED_BODY()
 
 	
 
 public:
-
-	const float BaseStatScaling = 3.6e-9;
-	const float BaseStatExponent = 4.2f;
-	const float LevelScaling = 0.625f;
+	inline static constexpr float BaseStatScaling = 3.6e-9;
+	inline static constexpr float BaseStatExponent = 4.2f;
+	inline static constexpr float LevelScaling = 0.625f;
 	
 	/**
 	 * Calculates the value of this Stat based on a unique formula. See the Stats document for relevant equations.
