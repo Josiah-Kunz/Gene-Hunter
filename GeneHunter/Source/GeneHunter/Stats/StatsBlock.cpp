@@ -32,25 +32,21 @@ void UStatsBlock::TickComponent(float DeltaTime, ELevelTick TickType, FActorComp
 void UStatsBlock::SetLevel(const int Value)
 {
 	Level = Value;
-	TArray<FStat> StatsArray;
-	GetStatsArray(StatsArray);
-	for(FStat& Stat : StatsArray)
-		Stat.Update(Level);
+	for(FStat* Stat : StatsArray)
+		Stat->Update(Level);
 }
 
 void UStatsBlock::RandomizeStats(
 	const int MinBaseStat, const int MaxBaseStat,
 	const int MinBasePairs, const int MaxBasePairs)
 {
-	TArray<FStat> StatsArray;
-	GetStatsArray(StatsArray);
-	for(FStat& Stat : StatsArray)
+	for(FStat* Stat : StatsArray)
 	{
 		if (MaxBaseStat > MinBaseStat)
-			Stat.BaseStat = FMath::RandRange(MinBaseStat, MaxBaseStat);
+			Stat->BaseStat = FMath::RandRange(MinBaseStat, MaxBaseStat);
 		if (MaxBasePairs > MinBasePairs)
-			Stat.BasePairs = FMath::RandRange(MinBasePairs, MaxBasePairs);
-		Stat.Update(Level);
+			Stat->BasePairs = FMath::RandRange(MinBasePairs, MaxBasePairs);
+		Stat->Update(Level);
 	}
 }
 
@@ -75,10 +71,8 @@ void UStatsBlock::ModifyStats(TArray<FStatModStruct>& ValueMap, const EStatValue
 void UStatsBlock::ModifyStatsUniformly(const float UniformMod, const EStatValueType ValueType,
 	const EModificationMode Mode)
 {
-	TArray<FStat> StatsArray;
-	GetStatsArray(StatsArray);
-	for(FStat& Stat :StatsArray)
-		Stat.ModifyValue(UniformMod, ValueType, Mode);
+	for(FStat* Stat : StatsArray)
+		Stat->ModifyValue(UniformMod, ValueType, Mode);
 }
 
 void UStatsBlock::RandomizeStats_DetailsPanel()
@@ -104,19 +98,16 @@ bool UStatsBlock::IsEqual(UStatsBlock* Other, const EStatValueType ValueType, co
 	if (ValueType == EStatValueType::CurrentAndPermanent)
 		return IsEqual(Other, EStatValueType::Current, Tolerance) && IsEqual(Other, EStatValueType::Permanent, Tolerance);
 	
-	TArray<FStat> StatsArray, OtherStatsArray;
-	GetStatsArray(StatsArray);
-	Other->GetStatsArray(OtherStatsArray);
 	for(int i=0; i<StatsArray.Num(); i++)
 	{
 		switch(ValueType)
 		{
 		case EStatValueType::Current:
-			if (FMathf::Abs(StatsArray[i].GetCurrentValue() - OtherStatsArray[i].GetCurrentValue() > Tolerance))
+			if (FMathf::Abs(StatsArray[i]->GetCurrentValue() - Other->StatsArray[i]->GetCurrentValue() > Tolerance))
 				return false;
 			break;
 		case EStatValueType::Permanent:
-			if (FMathf::Abs(StatsArray[i].GetPermanentValue() - OtherStatsArray[i].GetPermanentValue() > Tolerance))
+			if (FMathf::Abs(StatsArray[i]->GetPermanentValue() - Other->StatsArray[i]->GetPermanentValue() > Tolerance))
 				return false;
 			break;
 		default:
@@ -128,27 +119,11 @@ bool UStatsBlock::IsEqual(UStatsBlock* Other, const EStatValueType ValueType, co
 	return true;
 }
 
-
-void UStatsBlock::GetStatsArray(TArray<FStat>& Stats)
-{
-	Stats = {
-		Health,
-		PhysicalAttack,
-		PhysicalDefense,
-		SpecialAttack,
-		SpecialDefense,
-		Haste,
-		CriticalHit
-	};
-}
-
 float UStatsBlock::BaseStatTotal()
 {
 	float Ret = 0;
-	TArray<FStat> StatsArray;
-	GetStatsArray(StatsArray);
-	for(const FStat& Stat : StatsArray)
-		Ret += Stat.BaseStat;
+	for(const FStat* Stat : StatsArray)
+		Ret += Stat->BaseStat;
 	return Ret;
 }
 
@@ -162,33 +137,26 @@ float UStatsBlock::BaseStatEffectiveAverage()
 	// Count 'em up
 	int Count = 0;
 	float Total = 0;
-	TArray<FStat> StatsArray;
-	GetStatsArray(StatsArray);
-	for(FStat Stat : StatsArray)
+	for(FStat* Stat : StatsArray)
 	{
-		/*
-		const FPhysicalAttack* PhA = dynamic_cast<FPhysicalAttack>(Stat);
-		const FSpecialAttack* SpA = dynamic_cast<FSpecialAttack>(Stat);
-		*/
 
-		if (FPhysicalAttack* PhA = static_cast<FPhysicalAttack*>(&Stat))
+		if (FPhysicalAttack* PhA = static_cast<FPhysicalAttack*>(Stat))
 		{
 			if (bUsePhA)
 			{
-				Total += Stat.BaseStat;
+				Total += Stat->BaseStat;
 				Count++;
 			}
-		/*} else if (Cast<FSpecialAttack>(&Stat))
+		} else if (FSpecialAttack* SpA = static_cast<FSpecialAttack*>(Stat))
 		{
 			if (bUseSpA)
 			{
-				Total += Stat.BaseStat;
+				Total += Stat->BaseStat;
 				Count++;
 			}
-			*/
 		} else
 		{
-			Total += Stat.BaseStat;
+			Total += Stat->BaseStat;
 			Count++;
 		}
 	}

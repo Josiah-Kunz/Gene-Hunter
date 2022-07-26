@@ -67,6 +67,8 @@ public:
 	UPROPERTY()
 	FCriticalHit CriticalHit;
 
+	TArray<FStat*> StatsArray = {&Health};
+
 #pragma endregion
 
 #pragma region Stat manipulation
@@ -137,12 +139,6 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	bool IsEqual(UStatsBlock* Other, const EStatValueType ValueType, const float Tolerance = 0.1f);
-
-	/**
-	 * Gets the array of Stats, e.g., {Health, PhysicalAttack, ...}.
-	 */
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	void GetStatsArray(TArray<FStat>& Stats);
 
 	/**
 	 * Gets the raw sum of all BaseStats. (In Pokemon, the BST seems to be important, although I've never thought so. Are personal feelings allowed in comments?)
