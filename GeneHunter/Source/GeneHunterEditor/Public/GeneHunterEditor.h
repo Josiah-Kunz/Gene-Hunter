@@ -2,7 +2,7 @@
 
 #include "CoreUObject.h"
 #include "Modules/ModuleManager.h"
-#include "GeneHunter/Stats/StatsBlock.h"
+#include "GeneHunter/StatsBlock/StatsBlock.h"
 #include "PropertyEditor/Public/PropertyEditorModule.h"
 #include "StatsBlockDetails.h"
 

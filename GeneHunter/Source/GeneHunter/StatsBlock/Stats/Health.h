@@ -2,13 +2,25 @@
 
 #pragma once
 
-#include "GeneHunter/Stats/StandardStat.h"
-#include "PhysicalDefense.generated.h"
+#include "GeneHunter/StatsBlock/Stats/Stat.h"
+#include "Health.generated.h"
 
+/**
+ * 
+ */
 USTRUCT(Blueprintable)
-struct GENEHUNTER_API FPhysicalDefense : public FStandardStat
+struct GENEHUNTER_API FHealth : public FStat
 {
 	GENERATED_BODY()
+
+	
+
+public:
+	/**
+	 * Calculates the value of this Stat based on a unique formula. See the Stats document for relevant equations.
+	 * @param Level The level (always positive).
+	 */
+	virtual float CalculateValue(const int Level) override;
 
 	/**
 	 * This Stat's description and such.
@@ -29,4 +41,5 @@ struct GENEHUNTER_API FPhysicalDefense : public FStandardStat
 	 * The color associated with this Stat.
 	 */
 	virtual FLinearColor const Color() const override;
+	
 };

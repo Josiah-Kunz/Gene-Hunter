@@ -6,7 +6,7 @@ public class GeneHunterEditor : GeneHunter
 {
 	public GeneHunterEditor(ReadOnlyTargetRules Target) : base(Target){
 
-
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicIncludePaths.Add("GeneHunterEditor/Public");
 		PrivateIncludePaths.Add("GeneHunterEditor/Private");

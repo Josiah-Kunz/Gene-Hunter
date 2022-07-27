@@ -1,5 +1,8 @@
 #pragma once
 
+/**
+ * This tells certain functions how to modify a Stat.
+ */
 UENUM(BlueprintType)
 enum class EModificationMode : uint8
 {

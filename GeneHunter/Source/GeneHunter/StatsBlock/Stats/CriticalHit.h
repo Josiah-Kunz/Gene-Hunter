@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "GeneHunter/Stats/Stat.h"
+#include "GeneHunter/StatsBlock/Stats/Stat.h"
 #include "CriticalHit.generated.h"
 
 USTRUCT(Blueprintable)

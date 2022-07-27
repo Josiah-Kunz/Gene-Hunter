@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "GeneHunter/Stats/StandardStat.h"
-#include "PhysicalAttack.generated.h"
+#include "GeneHunter/StatsBlock/Stats/StandardStat.h"
+#include "PhysicalDefense.generated.h"
 
 USTRUCT(Blueprintable)
-struct GENEHUNTER_API FPhysicalAttack : public FStandardStat
+struct GENEHUNTER_API FPhysicalDefense : public FStandardStat
 {
 	GENERATED_BODY()
 

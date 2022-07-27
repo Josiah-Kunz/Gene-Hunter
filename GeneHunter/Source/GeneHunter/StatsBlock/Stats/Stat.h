@@ -5,8 +5,8 @@
 #include "UObject/Object.h"
 #include "MathUtil.h" // For inherited classes using, e.g., FMathf::Floor
 #include "GeneHunter/GeneHunterBPLibrary.h" // For inherited classes using, e.g., RoundToDecimal
-#include "GeneHunter/Stats/ModificationMode.h"
-#include "GeneHunter/Stats/StatValueType.h"
+#include "GeneHunter/StatsBlock/ModificationMode.h"
+#include "GeneHunter/StatsBlock/StatValueType.h"
 #include "Stat.generated.h"
 
 /**

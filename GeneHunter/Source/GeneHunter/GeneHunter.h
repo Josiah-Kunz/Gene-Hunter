@@ -3,6 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Modules/ModuleManager.h"
+#include "GeneHunter/StatsBlock/StatsBlock.h"
+#include "GeneHunter/StatsBlock/StatsBlockDetailsPanel.h"
 
 class FGeneHunterModule : public IModuleInterface{
 

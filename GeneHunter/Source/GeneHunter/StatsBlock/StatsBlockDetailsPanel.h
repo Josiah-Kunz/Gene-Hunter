@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "PropertyEditor/Public/IDetailCustomization.h"
@@ -7,7 +7,7 @@
 #include "DetailWidgetRow.h"
 #include "GeneHunter/StatsBlock/StatsBlock.h"
 
-class FStatsBlockDetails : public IDetailCustomization
+class FStatsBlockDetailsPanel : public IDetailCustomization
 {
 
 public:

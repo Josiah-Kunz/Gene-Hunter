@@ -4,13 +4,13 @@
 #include "StatModStruct.h"
 #include "Components/ActorComponent.h"
 
-#include "GeneHunter/Stats/Health.h"
-#include "GeneHunter/Stats/PhysicalAttack.h"
-#include "GeneHunter/Stats/PhysicalDefense.h"
-#include "GeneHunter/Stats/SpecialAttack.h"
-#include "GeneHunter/Stats/SpecialDefense.h"
-#include "GeneHunter/Stats/Haste.h"
-#include "GeneHunter/Stats/CriticalHit.h"
+#include "GeneHunter/StatsBlock/Stats/Health.h"
+#include "GeneHunter/StatsBlock/Stats/PhysicalAttack.h"
+#include "GeneHunter/StatsBlock/Stats/PhysicalDefense.h"
+#include "GeneHunter/StatsBlock/Stats/SpecialAttack.h"
+#include "GeneHunter/StatsBlock/Stats/SpecialDefense.h"
+#include "GeneHunter/StatsBlock/Stats/Haste.h"
+#include "GeneHunter/StatsBlock/Stats/CriticalHit.h"
 
 #include "StatsBlock.generated.h"
 
