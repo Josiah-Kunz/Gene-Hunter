@@ -1,27 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GeneHunter.h"
-
-
-void FGeneHunterModule::StartupModule()
-{
-
-	// Get module
-	FPropertyEditorModule& PropertyEdModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
-
-	// Register the specific custom class layouts (based on their names, e.g., UStatsBlock and FStatsBlockDetailsPanel)
-	PropertyEdModule.RegisterCustomClassLayout(
-		UStatsBlock::StaticClass()->GetFName(),
-		FOnGetDetailCustomizationInstance::CreateStatic(FStatsBlockDetailsPanel::MakeInstance)
-		);
-	
-	UE_LOG(LogTemp, Warning, TEXT("GeneHunter loaded! HELLO! =)"))
-}
-
-void FGeneHunterModule::ShutdownModule()
-{
-	UE_LOG(LogTemp, Display, TEXT("GeneHunter unloaded---bye =("))
-}
+#include "Modules/ModuleManager.h"
 
 IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, GeneHunter, "GeneHunter" );
-
+ 

@@ -7,37 +7,38 @@
 		{
 			"Name": "GeneHunter",
 			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine",
-				"UMG"
-			]
+			"LoadingPhase": "Default"
+		}
+
+
+
+		, {
+			"Name": "BPLibraries",
+			"Type": "Runtime"
+		}
+		, {
+			"Name": "Monster",
+			"Type": "Runtime"
+		}
+		, {
+			"Name": "UI",
+			"Type": "Runtime"
+		}
+		
+		
+		
+		, {
+			"Name": "DetailsPanelArchitect",
+			"Type": "Editor"
 		}
 	],
 	"Plugins": [
 		{
-			"Name": "DataRegistry",
-			"Enabled": true
-		},
-		{
-			"Name": "EditorTests",
-			"Enabled": true
-		},
-		{
-			"Name": "FunctionalTestingEditor",
-			"Enabled": true
-		},
-		{
-			"Name": "Bridge",
+			"Name": "ModelingToolsEditorMode",
 			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Mac",
-				"Linux"
+			"TargetAllowList": [
+				"Editor"
 			]
 		}
-	],
-	"TargetPlatforms": [
-		"Windows"
 	]
 }

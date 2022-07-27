@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 using UnrealBuildTool;
 
@@ -7,24 +7,14 @@ public class GeneHunter : ModuleRules
 	public GeneHunter(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
+
 		PublicDependencyModuleNames.AddRange(new string[]{
-			// Base
-			"Core", "CoreUObject", "Engine", "InputCore", "AppFramework"
 			
-			// Custom editor
-			, "UnrealEd", "DetailCustomizations", "PropertyEditor", "EditorStyle"
-			  
-			  // Should these be private?
-			, "EditorScriptingUtilities",  "Slate", "SlateCore", "AITestSuite"
+			// Basic
+			"Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay"
+			
+			// Modules
+			, "BPLibraries", "Monster", "UI"
 		});
-
-		// Uncomment if you are using Slate UI
-		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-		
-		// Uncomment if you are using online features
-		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
-
-		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
 	}
 }
