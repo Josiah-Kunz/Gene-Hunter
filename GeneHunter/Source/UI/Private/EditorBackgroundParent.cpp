@@ -1,7 +1,7 @@
 
 #include "EditorBackgroundParent.h"
-#include "GeneHunter/GeneHunterBPLibrary.h"
 #include "Blueprint/WidgetTree.h"
+#include "BPLibraries/Public/WidgetFunctionLibrary.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Engine/Canvas.h"
 
@@ -23,7 +23,7 @@ bool UEditorBackgroundParent::Initialize()
 	Width = 480;
 
 	// Auto-assign ClickOffButton
-	ClickOffButton = Cast<UButton>(UGeneHunterBPLibrary::GetChildOfType(this, UButton::StaticClass()));
+	ClickOffButton = Cast<UButton>(UWidgetFunctionLibrary::GetChildOfType(this, UButton::StaticClass()));
 
 	return bRet;
 }

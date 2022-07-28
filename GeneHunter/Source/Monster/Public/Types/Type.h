@@ -16,7 +16,7 @@
  * Like Types in Pokemon, this class is the building block for a system of advantages and disadvantages in combat. Types may be assigned to Monsters or Moves.
  */
 UCLASS()
-class GENEHUNTER_API UType : public UPrimaryDataAsset
+class MONSTER_API UType : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 

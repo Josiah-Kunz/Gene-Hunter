@@ -8,7 +8,7 @@
  * A library just for custom constants.
  */
 UCLASS()
-class GENEHUNTER_API UConstLibrary : public UBlueprintFunctionLibrary
+class BPLIBRARIES_API UConstLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 

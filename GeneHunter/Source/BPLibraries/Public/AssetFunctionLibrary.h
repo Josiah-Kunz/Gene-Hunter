@@ -7,14 +7,13 @@
 #include <locale>
 #include "ConstLibrary.h"
 #include "AssetRegistry/AssetData.h"
-#include "EditorAssetLibrary.h"
 #include "AssetFunctionLibrary.generated.h"
 
 /**
  * A library for the manipulation of assets.
  */
 UCLASS()
-class GENEHUNTER_API UAssetFunctionLibrary : public UBlueprintFunctionLibrary
+class BPLIBRARIES_API UAssetFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "GeneHunter/Types/UnitTests/Utilities/TypeUnitTestUtilities.h"
+#include "UnitTests/Utilities/TypeUnitTestUtilities.h"
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_MultiType_Immune,

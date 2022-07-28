@@ -11,7 +11,7 @@
  * class that we can run through unit tests. This class serves to give reproducibility in such tests. 
  */
 UCLASS()
-class GENEHUNTER_API UDummyType : public UType
+class MONSTER_API UDummyType : public UType
 {
 	GENERATED_BODY()
 

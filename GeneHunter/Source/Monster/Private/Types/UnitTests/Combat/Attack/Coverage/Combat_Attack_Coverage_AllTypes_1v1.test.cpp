@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "GeneHunter/Types/UnitTests/Utilities/TypeUnitTestUtilities.h"
-#include "GeneHunter/Types/UnitTests/DummyType.h"
+#include "UnitTests/Utilities/TypeUnitTestUtilities.h"
+#include "UnitTests/DummyType.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Attack_Coverage_AllTypes_1v1,
 	"UType.Combat.Attack.Coverage.All Types.1v1",

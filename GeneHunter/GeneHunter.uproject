@@ -40,5 +40,13 @@
 				"Editor"
 			]
 		}
+		,{
+			"Name": "EditorScriptingUtilities",
+			"Enabled": true,
+			"TargetAllowList": [
+				"Runtime",
+				"Editor"
+			]
+		}
 	]
 }

@@ -11,7 +11,7 @@
  * A class to augment the EditorBackground class. Mostly used to give the dev access to the width of the "right menu".
  */
 UCLASS()
-class GENEHUNTER_API UEditorBackgroundParent : public UUserWidget
+class UI_API UEditorBackgroundParent : public UUserWidget
 {
 	GENERATED_BODY()
 

@@ -1,7 +1,9 @@
 ﻿#pragma once
 
+#include "Blueprint/WidgetTree.h"
 #include "CoreMinimal.h"
 #include "Components/Widget.h"
+#include "Components/PanelWidget.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "WidgetFunctionLibrary.generated.h"
 
@@ -9,7 +11,7 @@
  * A library just for custom constants.
  */
 UCLASS()
-class GENEHUNTER_API UWidgetFunctionLibrary : public UBlueprintFunctionLibrary
+class BPLIBRARIES_API UWidgetFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 
@@ -30,7 +32,7 @@ public:
 	/**
 	 *	Gets the first UWidget* of the specified class among the Parent's children.
 	 *	Usage:
-	 *		UButton* Button = Cast<UButton>(UGeneHunterBPLibrary::GetChildOfType(this, UButton::StaticClass()));
+	 *		UButton* Button = Cast<UButton>(GetChildOfType(this, UButton::StaticClass()));
 	 */
 	UFUNCTION(BlueprintCallable)
 	static UWidget* GetChildOfType(const UUserWidget* Parent, const TSubclassOf<UWidget> WidgetClass);

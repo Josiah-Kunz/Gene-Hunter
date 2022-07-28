@@ -3,6 +3,13 @@
 public class UI : ModuleRules{
 
 	public UI(ReadOnlyTargetRules Target) : base(Target){
-		PrivateDependencyModuleNames.AddRange(new string[] {"Core", "CoreUObject", "Engine"}); 
+		PublicDependencyModuleNames.AddRange(new string[]{
+			
+			// Basics
+			"Core", "CoreUObject", "Engine"
+			
+			// Specifics
+			, "AppFramework", "Slate", "SlateCore", "BPLibraries", "UMG"
+		}); 
 	}
 }

@@ -14,7 +14,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEditableTextChangedInteractiveEve
  * A class that custom-expands EditableText (e.g., splits OnTextChanged into OnChangedByCode and OnChangedByUser).
  */
 UCLASS(meta=(DisplayName="EditableText+"))
-class GENEHUNTER_API UEditableTextPlus : public UEditableText
+class UI_API UEditableTextPlus : public UEditableText
 {
 	GENERATED_BODY()
 	

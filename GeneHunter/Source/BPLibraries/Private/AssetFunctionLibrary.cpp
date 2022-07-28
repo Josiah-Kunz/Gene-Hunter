@@ -1,4 +1,5 @@
 ﻿#include "AssetFunctionLibrary.h"
+#include "EditorAssetLibrary.h"
 
 void UAssetFunctionLibrary::EnsureValidAssetName(const FString Filename, const FString Path, FString& SafeFilename, FString& AbsolutePath, const FString Ext, const FString OldFilename)
 {

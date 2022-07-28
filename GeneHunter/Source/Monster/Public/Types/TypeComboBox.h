@@ -12,7 +12,7 @@
  * 
  */
 UCLASS()
-class GENEHUNTER_API UTypeComboBox : public UComboBoxString
+class MONSTER_API UTypeComboBox : public UComboBoxString
 {
 	GENERATED_BODY()
 	

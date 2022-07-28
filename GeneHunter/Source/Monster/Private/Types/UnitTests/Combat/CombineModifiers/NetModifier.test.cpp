@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "GeneHunter/Types/UnitTests/Utilities/TypeUnitTestUtilities.h"
-#include "GeneHunter/Types/UnitTests/DummyType.h"
+#include "UnitTests/Utilities/TypeUnitTestUtilities.h"
+#include "UnitTests/DummyType.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_NetModifier,
 	"UType.Combat.CombineModifiers.NetModifier",
