@@ -17,9 +17,10 @@
 			"Type": "Runtime"
 		}
 		, {
-			"Name": "Monster",
+			"Name": "GHTypes",
 			"Type": "Runtime"
 		}
+
 		, {
 			"Name": "UI",
 			"Type": "Runtime"
@@ -31,6 +32,11 @@
 			"Name": "DetailsPanelArchitect",
 			"Type": "Editor"
 		}
+		, {
+			"Name": "TypesUnitTests",
+			"Type": "Editor"
+		}
+
 	],
 	"Plugins": [
 		{

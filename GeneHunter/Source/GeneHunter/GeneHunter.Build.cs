@@ -14,7 +14,7 @@ public class GeneHunter : ModuleRules
 			"Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay"
 			
 			// Modules
-			, "BPLibraries", "Monster", "UI"
+			, "BPLibraries", "DetailsPanelArchitect", "GHTypes", "TypesUnitTests", "UI"
 		});
 	}
 }
