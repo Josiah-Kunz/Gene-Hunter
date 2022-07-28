@@ -1,4 +1,8 @@
 ﻿#include "AssetFunctionLibrary.h"
+#include "Engine/Engine.h"
+#include "Misc/Paths.h"
+#include <locale>
+#include "ConstLibrary.h"
 #include "EditorAssetLibrary.h"
 
 void UAssetFunctionLibrary::EnsureValidAssetName(const FString Filename, const FString Path, FString& SafeFilename, FString& AbsolutePath, const FString Ext, const FString OldFilename)

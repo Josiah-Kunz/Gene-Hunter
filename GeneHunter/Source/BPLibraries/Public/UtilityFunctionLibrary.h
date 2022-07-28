@@ -2,8 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "ConstLibrary.h"
-#include "MathUtil.h"
 #include "UtilityFunctionLibrary.generated.h"
 
 /**

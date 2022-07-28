@@ -3,7 +3,6 @@
 #include "Blueprint/WidgetTree.h"
 #include "CoreMinimal.h"
 #include "Components/Widget.h"
-#include "Components/PanelWidget.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "WidgetFunctionLibrary.generated.h"
 

@@ -2,10 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "Engine/Engine.h"
-#include "Misc/Paths.h"
-#include <locale>
-#include "ConstLibrary.h"
 #include "AssetRegistry/AssetData.h"
 #include "AssetFunctionLibrary.generated.h"
 

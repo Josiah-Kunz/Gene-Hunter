@@ -9,13 +9,16 @@ public class BPLibraries : ModuleRules{
 		
 		PublicIncludePaths.Add("BPLibraries/Public");
 		
-		PublicDependencyModuleNames.AddRange(new string[]{ "UMG" });
+		//PublicDependencyModuleNames.AddRange(new string[]{ "UMG" });
 		PrivateDependencyModuleNames.AddRange(new string[]{
 			// Basic
-			"Core", "CoreUObject", "Engine"
+			"Core"			// for FStrings (in, e.g., sorting assets)
+		  , "CoreUObject"	// for UObjects
+		  , "Engine"		// for UBlueprintFunctionLibrary
 			
 			// Editor
-			, "Slate", "SlateCore", "EditorScriptingUtilities"
+			, "EditorScriptingUtilities"	// AssetFunctionLibrary needs EditorAssetLibrary.h
+			, "UMG"							// for WidgetFunctionLibrary
 		});
 	}
 }
