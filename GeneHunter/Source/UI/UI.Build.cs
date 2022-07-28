@@ -8,13 +8,17 @@ public class UI : ModuleRules{
 		
 		PublicIncludePaths.Add("UI/Public");
 		
-		PublicDependencyModuleNames.AddRange(new string[]{
+		PrivateDependencyModuleNames.AddRange(new string[]{
 			
 			// Basics
-			"Core", "CoreUObject", "Engine"
+			"Core",			// for basic types
+			"CoreUObject"	// fe use UObjects
 			
-			// Specifics
-			, "AppFramework", "Slate", "SlateCore", "BPLibraries", "UMG"
+			// All for Rama
+			, "AppFramework", "Slate", "SlateCore", "UMG"
+			
+			// Other modules
+			, "BPLibraries"	// for the WidgetFunctionLibrary
 		}); 
 	}
 }

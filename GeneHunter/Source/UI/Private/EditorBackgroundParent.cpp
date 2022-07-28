@@ -1,4 +1,3 @@
-
 #include "EditorBackgroundParent.h"
 #include "Blueprint/WidgetTree.h"
 #include "BPLibraries/Public/WidgetFunctionLibrary.h"

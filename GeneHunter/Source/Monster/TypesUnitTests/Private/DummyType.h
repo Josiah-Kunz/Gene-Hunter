@@ -1,9 +1,9 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "BPLibraries/Public/AssetFunctionLibrary.h"
+#include "AssetFunctionLibrary.h"
 #include "AssetRegistry/AssetRegistryModule.h"
-#include "Types/Public/Type.h"
+#include "Type.h"
 #include "DummyType.generated.h"
 
 /**

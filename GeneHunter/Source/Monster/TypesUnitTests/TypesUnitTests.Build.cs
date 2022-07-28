@@ -7,7 +7,11 @@ public class TypesUnitTests : ModuleRules{
 		PrivateIncludePaths.Add("Monster/TypesUnitTests/Private");
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
-			"Core", "CoreUObject", "Engine", "BPLibraries", "Types"
+			"Core"			// for FString
+		  , "CoreUObject"	// for UObjects (and their initializations)
+		  , "Engine"		// for UPrimaryDataAsset
+		  , "BPLibraries"	// for RangeToString
+		  , "Types"			// for UType
 		});
 	}
 }

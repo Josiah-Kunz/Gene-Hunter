@@ -1,8 +1,5 @@
 
 #include "EditableTextPlus.h"
-
-#include <string>
-
 #include "Widgets/Input/SEditableText.h"
 #include "Components/EditableText.h"
 
@@ -21,7 +18,7 @@ TSharedRef<SWidget> UEditableTextPlus::RebuildWidget()
 		.RevertTextOnEscape( RevertTextOnEscape )
 		.ClearKeyboardFocusOnCommit( ClearKeyboardFocusOnCommit )
 		.SelectAllTextOnCommit( SelectAllTextOnCommit )
-		.OnTextChanged( BIND_UOBJECT_DELEGATE( FOnTextChanged, HandleOnTextChangedOverride ) ) // This is the only line that's changed from EditableText.h
+		.OnTextChanged( BIND_UOBJECT_DELEGATE( FOnTextChanged, HandleOnTextChangedOverride ) ) // <--- This is the only line that's changed from EditableText.h
 		.OnTextCommitted( BIND_UOBJECT_DELEGATE( FOnTextCommitted, HandleOnTextCommitted ) )
 		.VirtualKeyboardType( EVirtualKeyboardType::AsKeyboardType( KeyboardType.GetValue() ) )
 		.VirtualKeyboardOptions(VirtualKeyboardOptions)

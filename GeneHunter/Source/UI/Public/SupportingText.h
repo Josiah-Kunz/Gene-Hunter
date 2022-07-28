@@ -1,15 +1,10 @@
-
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "SupportingText.generated.h"
 
-/**
- * 
- */
 USTRUCT(Blueprintable)
-struct FSupportingText
+struct UI_API FSupportingText
 {
 	GENERATED_BODY()
 public:
