@@ -7,16 +7,15 @@
 #include "Engine/DataAsset.h"
 #include "AttackModifier.h"
 #include "AttackModifierMode.h"
-#include <algorithm>
-#include "UI/Public/SupportingText.h"
-#include "BPLibraries/Public/AssetFunctionLibrary.h"
+#include "SupportingText.h"
+#include "AssetFunctionLibrary.h"
 #include "Type.generated.h"
 
 /**
  * Like Types in Pokemon, this class is the building block for a system of advantages and disadvantages in combat. Types may be assigned to Monsters or Moves.
  */
 UCLASS()
-class GHTYPES_API UType : public UPrimaryDataAsset
+class TYPES_API UType : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 

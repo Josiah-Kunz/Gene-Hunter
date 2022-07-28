@@ -1,11 +1,10 @@
 ﻿#pragma once
 
-#include <algorithm>
 #include "Type.h"
 #include "TypeArray1D.generated.h"
 
 USTRUCT(BlueprintType)
-struct GHTYPES_API FTypeArray1D
+struct TYPES_API FTypeArray1D
 {
 
 	GENERATED_USTRUCT_BODY()

@@ -3,6 +3,11 @@
 public class UI : ModuleRules{
 
 	public UI(ReadOnlyTargetRules Target) : base(Target){
+		
+		PrivateIncludePaths.Add("UI/Private");
+		
+		PublicIncludePaths.Add("UI/Public");
+		
 		PublicDependencyModuleNames.AddRange(new string[]{
 			
 			// Basics

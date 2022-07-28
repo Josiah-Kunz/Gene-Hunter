@@ -1,4 +1,5 @@
-#include "GHTypes/Public/TypeArray2D.h"
+#include "Types/Public/TypeArray2D.h"
+#include <algorithm>
 
 bool FTypeArray2D::Contains(const TArray<FTypeArray2D*>& Container, const FTypeArray2D* SearchTarget,
                             FString& Description)

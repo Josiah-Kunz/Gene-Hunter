@@ -1,5 +1,5 @@
 #include "TypeArray1D.h"
-#include "GHTypes/Public/TypeArray1D.h"
+#include <algorithm>
 
 
 bool FTypeArray1D::Contains(const TArray<FTypeArray1D*>& Container, const FTypeArray1D* SearchTarget,

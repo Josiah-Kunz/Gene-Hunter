@@ -6,20 +6,8 @@ public class TypesUnitTests : ModuleRules{
 		
 		PrivateIncludePaths.Add("Monster/TypesUnitTests/Private");
 		
-		PublicDependencyModuleNames.AddRange(new string[]{
-			
-			// Basics
-			"Core", "CoreUObject", "Engine"
-			
-			// Specifics
-			, "UMG"
-			
-			// Other modules
-			, "BPLibraries", "UI", "GHTypes"
-		}); 
-		
 		PrivateDependencyModuleNames.AddRange(new string[]{
-			"Core", "CoreUObject", "Engine", "AITestSuite", "BPLibraries", "GHTypes"
+			"Core", "CoreUObject", "Engine", "BPLibraries", "Types"
 		});
 	}
 }

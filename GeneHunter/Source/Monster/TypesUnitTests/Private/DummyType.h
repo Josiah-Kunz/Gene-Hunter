@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "BPLibraries/Public/AssetFunctionLibrary.h"
 #include "AssetRegistry/AssetRegistryModule.h"
-#include "GHTypes/Public/Type.h"
+#include "Types/Public/Type.h"
 #include "DummyType.generated.h"
 
 /**

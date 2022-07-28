@@ -12,7 +12,7 @@
  * 
  */
 UCLASS()
-class GHTYPES_API UTypeComboBox : public UComboBoxString
+class TYPES_API UTypeComboBox : public UComboBoxString
 {
 	GENERATED_BODY()
 	

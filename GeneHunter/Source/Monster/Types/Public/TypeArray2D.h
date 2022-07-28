@@ -3,7 +3,7 @@
 #include "TypeArray2D.generated.h"
 
 USTRUCT(BlueprintType)
-struct GHTYPES_API FTypeArray2D : public FTypeArray1D
+struct TYPES_API FTypeArray2D : public FTypeArray1D
 {
 
 	GENERATED_USTRUCT_BODY()

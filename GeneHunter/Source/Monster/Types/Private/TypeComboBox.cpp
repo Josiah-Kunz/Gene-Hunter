@@ -1,5 +1,4 @@
-#include "GHTypes/Public/TypeComboBox.h"
-
+#include "Types/Public/TypeComboBox.h"
 #include "Widgets/Input/STextComboBox.h"
 
 TSharedRef<SWidget> UTypeComboBox::RebuildWidget()

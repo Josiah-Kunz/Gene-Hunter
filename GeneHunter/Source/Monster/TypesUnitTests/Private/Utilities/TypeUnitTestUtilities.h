@@ -2,7 +2,7 @@
 
 #include "Misc/FileHelper.h"
 #include "Misc/AutomationTest.h"
-#include "GHTypes/Public/TypeArray2D.h"
+#include "Types/Public/TypeArray2D.h"
 #include "TypeUnitTestUtilities.generated.h"
 
 UCLASS()
