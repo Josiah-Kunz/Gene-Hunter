@@ -123,7 +123,7 @@ bool FUType_Combat_Attack_Coverage_DualDefender::RunTest(const FString& Paramete
 			new FTypeArray1D{{Steel, Ice}},
 			new FTypeArray1D{{Steel, Water}},
 	};
-	
+
 	// Do the tests
 	FString Desc = "";
 	const bool bPass = UTypeUnitTestUtilities::TestCombatAnalysis(AllTypes, {Flying, Ground}, 2,
@@ -132,7 +132,7 @@ bool FUType_Combat_Attack_Coverage_DualDefender::RunTest(const FString& Paramete
 	"Flying/Ground coverage effective attack vs dual-Typed defenders " + Desc,
 	bPass, true
 	);
-
-	return true;
+	
+	return bPass;
 	
 }
