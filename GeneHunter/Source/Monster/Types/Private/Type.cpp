@@ -248,6 +248,20 @@ bool UType::Contains(const TArray<UType*>& Container, const UType* SearchTarget,
 {
 	return std::any_of(std::begin(Container), std::end(Container),
 								[&](const UType* Test) {
+\
+									// Guards
+									if (Test == nullptr)
+									{
+										UE_LOG(LogTemp, Warning, TEXT("Container element is nullptr in UType::Contains. Surely this is a bug."))
+										return false;
+									}
+									if (SearchTarget == nullptr)
+									{
+										UE_LOG(LogTemp, Warning, TEXT("Search Type is nullptr in UType::Contains. Surely this is a bug."))
+										return false;
+									}
+									
+									// Actual check
 									if (bByName)
 										return Test->GetName() == SearchTarget->GetName();
 									return Test == SearchTarget;

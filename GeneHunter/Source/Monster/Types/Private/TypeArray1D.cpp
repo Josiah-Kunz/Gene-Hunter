@@ -7,16 +7,27 @@ bool FTypeArray1D::Contains(const TArray<FTypeArray1D*>& Container, const FTypeA
 {
 	return std::any_of(std::begin(Container), std::end(Container),
 								[&](const FTypeArray1D* Test) {
+
 									bool bFound = true;
-									for(const UType* Type : SearchTarget->Array)
+
+									// Guard
+									if (Test == nullptr)
 									{
-										if (Type)
+										UE_LOG(LogTemp, Warning, TEXT("Container element is nullptr in FTypeArray1D::Contains. Surely this is a bug."))
+									} else
+									{
+										for(const UType* Type : SearchTarget->Array)
 										{
-											bFound = true;
-											if (!UType::Contains(Test->Array, Type, bByName))
+											if (Type == nullptr)
 											{
-												bFound = false;
-												break;
+												UE_LOG(LogTemp, Warning, TEXT("Search Type is nullptr in FTypeArray1D::Contains. Surely this is a bug."))
+											} else {
+												bFound = true;
+												if (!UType::Contains(Test->Array, Type, bByName))
+												{
+													bFound = false;
+													break;
+												}
 											}
 										}
 									}

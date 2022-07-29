@@ -8,10 +8,11 @@ bool UTypeUnitTestUtilities::TestCombatAnalysis(const TArray<UType*>& AllTypes, 
                                                 const int NumOpponentTypes, const FFloatRange Range, const bool bAtk, const EAttackModifierMode Mode,
                                                 const TArray<FTypeArray1D*>& Expected, FString& Description, const bool bDebug)
 {
+
 	// Get array of FTypeArray1D (either defenders or attackers)
 	TArray<FTypeArray1D> OpponentTypes;
 	GetAllTypeCombinations(AllTypes, NumOpponentTypes, OpponentTypes);
-	
+
 	// Get the UTypes (actual) that fall within the given range
 	TArray<FTypeArray1D> Analysis;
 	Analyze(TypesToAnalyze, OpponentTypes,
@@ -21,7 +22,7 @@ bool UTypeUnitTestUtilities::TestCombatAnalysis(const TArray<UType*>& AllTypes, 
 				bAtk,
 				bDebug
 			);
-
+	
 	// Convert to pointer
 	TArray<FTypeArray1D*> AnalysisPointers = {};
 	for(FTypeArray1D TypeArray1D : Analysis)
