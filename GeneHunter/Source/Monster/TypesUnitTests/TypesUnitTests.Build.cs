@@ -4,6 +4,7 @@ public class TypesUnitTests : ModuleRules{
 	
 	public TypesUnitTests(ReadOnlyTargetRules Target) : base(Target){
 		
+		PublicIncludePaths.Add("Monster/TypesUnitTests/Public");
 		PrivateIncludePaths.Add("Monster/TypesUnitTests/Private");
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
@@ -12,6 +13,7 @@ public class TypesUnitTests : ModuleRules{
 		  , "Engine"		// for UPrimaryDataAsset
 		  , "BPLibraries"	// for RangeToString
 		  , "Types"			// for UType
+		  , "UI"			// for SupportingText.h
 		});
 	}
 }

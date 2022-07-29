@@ -17,11 +17,6 @@ bool FUType_Combat_Attack_MultiType_DualDefender::RunTest(const FString& Paramet
 	// Get all types
 	GET_DUMMY_TYPES()
 
-	// Convert to UType* (for functions' sakes)
-	TArray<UType*> AllTypes = {};
-	for(UDummyType* DummyType : AllDummyTypes)
-		AllTypes.Add(DummyType);
-
 	// Define success 
 	const TArray<FTypeArray1D*> Expected =
 	{
@@ -84,7 +79,7 @@ bool FUType_Combat_Attack_MultiType_DualDefender::RunTest(const FString& Paramet
 	
 	// Do the tests
 	FString Desc = "";
-	const bool bPass = UTypeUnitTestUtilities::TestCombatAnalysis(AllTypes, {Flying, Ground}, 2,
+	const bool bPass = UTypeUnitTestUtilities::TestCombatAnalysis(AllDummyTypes, {Flying, Ground}, 2,
 		UType::Effective, true, EAttackModifierMode::MultiType, Expected, Desc, false);
 	TestEqual(
 	"Flying/Ground multi-Type effective attack vs dual-Typed defenders " + Desc,

@@ -16,11 +16,6 @@ bool FUType_Utilities_RockPaperScissors_OneWay::RunTest(const FString& Parameter
 	// Get all types
 	GET_DUMMY_TYPES()
 
-	// Convert to UType* (for functions' sakes)
-	TArray<UType*> AllTypes = {};
-	for(UDummyType* DummyType : AllDummyTypes)
-		AllTypes.Add(DummyType);
-
 	// Define success
 	// Note: for the dummy Types, not all dis/advantages are coded, but this one specifically is!
 	const TArray<FTypeArray1D*> Expected = {
@@ -30,7 +25,7 @@ bool FUType_Utilities_RockPaperScissors_OneWay::RunTest(const FString& Parameter
 
 	// Get actual
 	TArray<FTypeArray1D*> Actual;
-	UTypeUnitTestUtilities::GetRockPaperScissors(AllTypes, false, Actual);
+	UTypeUnitTestUtilities::GetRockPaperScissors(AllDummyTypes, false, Actual);
 		
 	// Do the test
 	FString Desc = "";

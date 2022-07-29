@@ -20,27 +20,35 @@ void UDummyType::GetAllDummyAssets(TArray<FAssetData>& TypeAssets, const bool bS
  * @param Exclude A list of Types to exclude from this list.
  * @param SortABC If true, sorts the Types alphabetically. Make false to improve performance.
  */
-void UDummyType::GetAllDummyTypes(TArray<UDummyType*>& Types, const TArray<UType*> Exclude, const bool bSortABC)
+void UDummyType::GetAllDummyTypes(TArray<UType*>& Types, const TArray<UType*> Exclude, const bool bSortABC)
 {
 	Types.Empty();
 	TArray<FAssetData> Assets;
 	GetAllDummyAssets(Assets, bSortABC);
 	for(FAssetData& Asset : Assets)
 	{
-		if (UDummyType* Type = Cast<UDummyType>(Asset.GetAsset()))
+		if (UType* Type = Cast<UType>(Asset.GetAsset()))
 		{
 			if (!Exclude.Contains(Type))
-				Types.Add(Type);
+			{
+				UType* NewType = NewObject<UType>();
+				NewType->AttackModifiers = Type->AttackModifiers;
+				Types.Add(NewType);
+			}
 		}
 	}
 }
 
-UDummyType* UDummyType::GetDummyTypeByName(const TArray<UDummyType*>& Pool, const FName Name)
+UType* UDummyType::GetDummyTypeByName(const TArray<UType*>& Pool, const FName Name)
 {
-	for(UDummyType* DummyType : Pool)
+	for(const UType* DummyType : Pool)
 	{
 		if (DummyType->GetFName() == Name)
-			return DummyType;
+		{
+			UType* NewType = NewObject<UType>();
+			NewType->AttackModifiers = DummyType->AttackModifiers;
+			return NewType;
+		}
 	}
 	return nullptr;
 }

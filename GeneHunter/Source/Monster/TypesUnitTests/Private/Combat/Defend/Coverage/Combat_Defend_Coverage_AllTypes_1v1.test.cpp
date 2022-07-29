@@ -17,11 +17,6 @@ bool FUType_Combat_Defend_Coverage_AllTypes_1v1::RunTest(const FString& Paramete
 	// Get all types
 	GET_DUMMY_TYPES()
 
-	// Convert to UType* (for functions' sakes)
-	TArray<UType*> AllTypes = {};
-	for(UDummyType* DummyType : AllDummyTypes)
-		AllTypes.Add(DummyType);
-
 	// Define success in alphabetical order
 	const TArray<FTypeArray2D*> Expected = {
 		new FTypeArray2D{{{Bug}}, {Ground}},
@@ -40,7 +35,7 @@ bool FUType_Combat_Defend_Coverage_AllTypes_1v1::RunTest(const FString& Paramete
 		
 	// Do the test
 	FString Desc = "";
-	const bool bPass = UTypeUnitTestUtilities::TestAnalyzeAll(AllTypes, 1, 1,
+	const bool bPass = UTypeUnitTestUtilities::TestAnalyzeAll(AllDummyTypes, 1, 1,
 		UType::Ineffective,
 		false, EAttackModifierMode::Coverage, Expected, Desc);
 	TestEqual(

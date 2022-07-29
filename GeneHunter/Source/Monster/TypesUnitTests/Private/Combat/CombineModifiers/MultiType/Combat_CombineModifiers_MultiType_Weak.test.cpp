@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "TypesUnitTests/Private/Utilities/TypeUnitTestUtilities.h"
+#include "Utilities/TypeUnitTestUtilities.h"
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_MultiType_Weak,

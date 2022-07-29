@@ -17,11 +17,6 @@ bool FUType_Combat_Defend_Coverage_SingleAttacker::RunTest(const FString& Parame
 	// Get all types
 	GET_DUMMY_TYPES()
 
-	// Convert to UType* (for functions' sakes)
-	TArray<UType*> AllTypes = {};
-	for(UDummyType* DummyType : AllDummyTypes)
-		AllTypes.Add(DummyType);
-
 	// Define success:
 	const TArray<FTypeArray1D*> Expected = {
 
@@ -48,7 +43,7 @@ bool FUType_Combat_Defend_Coverage_SingleAttacker::RunTest(const FString& Parame
 	
 	// Do the tests
 	FString Desc = "";
-	const bool bPass = UTypeUnitTestUtilities::TestCombatAnalysis(AllTypes, {Flying, Ground},
+	const bool bPass = UTypeUnitTestUtilities::TestCombatAnalysis(AllDummyTypes, {Flying, Ground},
 		1, UType::Ineffective, false, EAttackModifierMode::Coverage, Expected, Desc, false);
 	TestEqual(
 	"Flying/Ground resisted vs (multiType) single-Typed attackers " + Desc,
