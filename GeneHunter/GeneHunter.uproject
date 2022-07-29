@@ -8,35 +8,42 @@
 			"Name": "GeneHunter",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
-		}
-
-
-
-		, {
+		},
+		{
 			"Name": "BPLibraries",
-			"Type": "Runtime"
-		}
-		, {
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "Types",
-			"Type": "Runtime"
-		}
-
-		, {
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "StatsBlock",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "UI",
-			"Type": "Runtime"
-		}
-		
-		
-		
-		, {
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "DetailsPanelArchitect",
-			"Type": "Editor"
-		}
-		, {
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "TypesUnitTests",
-			"Type": "Editor"
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "StatsBlockUnitTests",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
 		}
-
 	],
 	"Plugins": [
 		{
@@ -45,14 +52,25 @@
 			"TargetAllowList": [
 				"Editor"
 			]
-		}
-		,{
+		},
+		{
 			"Name": "EditorScriptingUtilities",
 			"Enabled": true,
 			"TargetAllowList": [
-				"Runtime",
 				"Editor"
 			]
+		},
+		{
+			"Name": "EditorTests",
+			"Enabled": true
+		},
+		{
+			"Name": "FunctionalTestingEditor",
+			"Enabled": true
+		},
+		{
+			"Name": "RuntimeTests",
+			"Enabled": true
 		}
 	]
 }

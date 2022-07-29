@@ -14,8 +14,8 @@ bool FUStat_StatsBlock_Scaling_BasePairsScaling::RunTest(const FString& Paramete
 	const float Tolerance = 0.1e6;
 	
 	// Set up
-	FPhysicalAttack* PhA = {};
-	PhA->BaseStat = 100;
+	FPhysicalAttack PhA = {};
+	PhA.BaseStat = 100;
 	const int Level = 100;
 
 	// Map of <#BasePairs, ExpectedValue>
@@ -32,10 +32,10 @@ bool FUStat_StatsBlock_Scaling_BasePairsScaling::RunTest(const FString& Paramete
 	// Do the tests
 	for(const TPair<int, float>& ExpectedValue : ExpectedValues)
 	{
-		PhA->BasePairs = ExpectedValue.Key;
-		PhA->Update(Level);
+		PhA.BasePairs = ExpectedValue.Key;
+		PhA.Update(Level);
 		TestEqual(FString::Printf(TEXT("Physical Attack: %s BasePairs"), *FString::FromInt(ExpectedValue.Key)),
-			PhA->GetCurrentValue(), ExpectedValue.Value, Tolerance);
+			PhA.GetCurrentValue(), ExpectedValue.Value, Tolerance);
 	}
 	
 	// Return

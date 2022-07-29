@@ -10,7 +10,7 @@ bool FUStat_StatsBlock_Scaling_Health::RunTest(const FString& Parameters)
 {
 	
 	// Set up
-	FHealth* Health = {};
+	FHealth Health = {};
 
 	// Loop over base pairs [1, 50, 100], base stat [0, 50, 100, 120, 150, 200], and levels [20, 50, 100]
 	TArray<float> Expected = {
@@ -55,18 +55,18 @@ bool FUStat_StatsBlock_Scaling_Health::RunTest(const FString& Parameters)
 	// Do the test
 	for(int bp=0; bp<BasePairs.Num(); bp++)
 	{
-		Health->BasePairs = BasePairs[bp];
+		Health.BasePairs = BasePairs[bp];
 		for(int bs=0; bs<BaseStats.Num(); bs++)
 		{
-			Health->BaseStat = BaseStats[bs];
+			Health.BaseStat = BaseStats[bs];
 			for(int l=0; l<Levels.Num(); l++)
 			{
-				const float Actual = Health->CalculateValue(Levels[l]);
+				const float Actual = Health.CalculateValue(Levels[l]);
 				const float Tolerance = (Actual > 1e6 ? 0.1e6 : (Actual > 1e3 ? 0.1e3 : 1));
 				TestEqual(
 					FString::Printf(TEXT("BasePairs %s | BaseStat %s | Level %s"),
-							*FString::FromInt(Health->BasePairs),
-							*FString::FromInt(Health->BaseStat),
+							*FString::FromInt(Health.BasePairs),
+							*FString::FromInt(Health.BaseStat),
 							*FString::FromInt(Levels[l])),
 						Actual,
 						Expected[bp * (Levels.Num() * BaseStats.Num()) + bs * Levels.Num() + l],

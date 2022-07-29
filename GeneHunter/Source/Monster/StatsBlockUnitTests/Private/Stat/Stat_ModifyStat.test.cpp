@@ -10,17 +10,17 @@ bool FUStat_Stat_ModifyStat::RunTest(const FString& Parameters)
 {
 	
 	// Set up
-	FStat* DummyStat = {};
+	FStat DummyStat = {};
 	FString GainFString;
 
 	// Do tests (afaik, can't make ths a function because we only have access to the .cpp file)
 #define DO_TEST(InitialValue, Modifier, Mode, GainText, Expected) \
-	DummyStat->SetCurrentValue(InitialValue); \
-	DummyStat->ModifyValue(Modifier, EStatValueType::Current, Mode); \
+	DummyStat.SetCurrentValue(InitialValue); \
+	DummyStat.ModifyValue(Modifier, EStatValueType::Current, Mode); \
 	GainFString = GainText; \
 	TestEqual( \
 			"FStat::GetModification " + GainFString, \
-			DummyStat->GetCurrentValue(), \
+			DummyStat.GetCurrentValue(), \
 			Expected, \
 			UStatUnitTestUtilities::TOLERANCE);
 
