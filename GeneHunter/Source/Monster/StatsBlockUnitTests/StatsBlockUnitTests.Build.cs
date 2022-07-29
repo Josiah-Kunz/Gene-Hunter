@@ -10,7 +10,6 @@ public class StatsBlockUnitTests : ModuleRules{
 			"Core"			// for FString
 		  , "CoreUObject"	// for UObjects (and their initializations)
 		  , "Engine"		// for UBlueprintFuncitonLibrary in StatUnitTestUtilities.h
-		  //, "BPLibraries"	// for RangeToString
 		  , "StatsBlock"	// for the type that we're testing
 		});
 	}
