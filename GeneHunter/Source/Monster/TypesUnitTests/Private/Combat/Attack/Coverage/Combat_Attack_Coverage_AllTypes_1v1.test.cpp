@@ -40,7 +40,11 @@ bool FUType_Combat_Attack_Coverage_AllTypes_1v1::RunTest(const FString& Paramete
 	TestEqual(
 	"AnalzyeAll 1v1 (offensive) " + Desc,
 	bPass, true
-);
+	);
+
+	// Destroy world + dummy types
+	GC_DUMMY_TYPES()
+	
 	return true;
 	
 }

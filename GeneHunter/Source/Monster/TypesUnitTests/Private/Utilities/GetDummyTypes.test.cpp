@@ -34,6 +34,9 @@ bool FUType_Utilities_GetDummyTypes::RunTest(const FString& Parameters)
 	// Non-null types
 	TestNotNull("AllDummyTypes[0] non-null",
 		AllDummyTypes[0]);
+
+	// Destroy world + dummy types
+	GC_DUMMY_TYPES()
 	
 	// Done!
 	return true;

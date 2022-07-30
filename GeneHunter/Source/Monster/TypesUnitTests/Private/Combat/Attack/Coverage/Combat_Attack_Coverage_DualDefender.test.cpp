@@ -127,6 +127,9 @@ bool FUType_Combat_Attack_Coverage_DualDefender::RunTest(const FString& Paramete
 	"Flying/Ground coverage effective attack vs dual-Typed defenders " + Desc,
 	bPass, true
 	);
+
+	// Destroy world + dummy types
+	GC_DUMMY_TYPES()
 	
 	return bPass;
 	

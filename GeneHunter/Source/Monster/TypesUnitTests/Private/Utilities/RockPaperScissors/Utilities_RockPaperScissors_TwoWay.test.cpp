@@ -33,6 +33,10 @@ bool FUType_Utilities_RockPaperScissors_TwoWay::RunTest(const FString& Parameter
 	"Rock-Paper-Scissors (2-Way) " + Desc,
 	bPass, true
 	);
+
+	// Destroy world + dummy types
+	GC_DUMMY_TYPES()
+	
 	return true;
 	
 }

@@ -50,6 +50,9 @@ bool FUType_Combat_Defend_Coverage_SingleAttacker::RunTest(const FString& Parame
 	bPass, true
 	);
 
+	// Destroy world + dummy types
+	GC_DUMMY_TYPES()
+
 	return true;
 	
 }

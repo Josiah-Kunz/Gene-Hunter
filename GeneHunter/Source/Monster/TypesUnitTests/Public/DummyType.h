@@ -22,8 +22,9 @@ public:
 	 *	in-game data (and hence are good for unit tests).
 	 */
 	#define GET_DUMMY_TYPES() \
+		UWorld* World = UWorld::CreateWorld(EWorldType::Game, false); \
 		TArray<UType*> AllDummyTypes; \
-		UDummyType::GetAllDummyTypes(AllDummyTypes); \
+		UDummyType::GetAllDummyTypes(World, AllDummyTypes); \
 		UType* Bug = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Bug-Dummy"))); \
 		UType* Electric = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Electric-Dummy"))); \
 		UType* Fighting = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Fighting-Dummy"))); \
@@ -35,17 +36,16 @@ public:
 		UType* Poison = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Poison-Dummy"))); \
 		UType* Rock = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Rock-Dummy"))); \
 		UType* Steel = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Steel-Dummy"))); \
-		UType* Water = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Water-Dummy"))); 
+		UType* Water = UDummyType::GetDummyTypeByName(AllDummyTypes, FName(TEXT("Water-Dummy")));
+
+	#define GC_DUMMY_TYPES() \
+		World->DestroyWorld(false); \
+		CollectGarbage( GARBAGE_COLLECTION_KEEPFLAGS );
 	
 	static void GetAllDummyAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC = false);
 
-	static void GetAllDummyTypes(TArray<UType*>& Types, const TArray<UType*> Exclude = {}, const bool bSortABC = false);
+	static void GetAllDummyTypes(UWorld* World, TArray<UType*>& Types, const TArray<UType*> Exclude = {}, const bool bSortABC = false);
 
 	static UType* GetDummyTypeByName(const TArray<UType*>& Pool, const FName Name);
 
-	/**
-	 * Tests if the arrays of Type* and DummyType* are equal (by name).
-	 */
-	static bool TypesAndDummiesAreEqual(const TArray<UType*>& Actual, const TArray<UDummyType*>& Expected,
-		FString& Description);
 };

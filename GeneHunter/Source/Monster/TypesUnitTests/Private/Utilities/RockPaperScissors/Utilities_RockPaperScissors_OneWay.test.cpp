@@ -12,7 +12,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Utilities_RockPaperScissors_OneWay,
  */
 bool FUType_Utilities_RockPaperScissors_OneWay::RunTest(const FString& Parameters)
 {
-
+	
 	// Get all types
 	GET_DUMMY_TYPES()
 
@@ -34,6 +34,11 @@ bool FUType_Utilities_RockPaperScissors_OneWay::RunTest(const FString& Parameter
 	"Rock-Paper-Scissors (1-Way) " + Desc,
 	bPass, true
 	);
+
+	// Destroy tmp world and collect its garbage
+	GC_DUMMY_TYPES()
+
+	// Return
 	return true;
 	
 }

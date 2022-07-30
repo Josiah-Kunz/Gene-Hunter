@@ -221,6 +221,11 @@ bool UType::ArraysAreEqual(const TArray<UType*>& Actual, const TArray<UType*>& E
 		{
 			if (!Contains(Actual, ExpectedType))
 			{
+				if (ExpectedType == nullptr)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("ExpectedType is null in UType::ArraysAreEqual. Surely this is a bug."))
+					return false;
+				}
 				Description += " | Expected [" + ExpectedType->GetName() + "] not found!";
 				bPass = false;
 			}
@@ -237,7 +242,12 @@ FString UType::ArrayToFString(const TArray<UType*>& Array)
 {
 	FString Ret = "[";
 	for(const UType* Type : Array)
-		Ret += Type->GetName() + ", ";
+	{
+		if (Type == nullptr)
+			Ret += "NULLPTR, ";
+		else
+			Ret += Type->GetName() + ", ";
+	}
 	Ret += "]";
 	Ret = Ret.Replace(TEXT(", ]"), TEXT("]"));
 	return Ret;

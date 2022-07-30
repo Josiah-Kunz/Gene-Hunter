@@ -35,6 +35,9 @@ bool FUType_Combat_Attack_MultiType_SingleDefender::RunTest(const FString& Param
 	bPass, true
 	);
 
+	// Destroy world + dummy types
+	GC_DUMMY_TYPES()
+
 	return true;
 	
 }

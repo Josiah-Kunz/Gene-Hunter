@@ -54,5 +54,8 @@ bool FUType_Combat_NetModifier::RunTest(const FString& Parameters)
 		TestEqual("Type [Ground] is null!", true, false);
 	}
 
+	// Destroy world + dummy types
+	GC_DUMMY_TYPES()
+	
 	return true;
 }
