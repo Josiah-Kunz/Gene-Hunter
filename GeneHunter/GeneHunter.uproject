@@ -35,11 +35,6 @@
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "TypesUnitTests",
-			"Type": "Editor",
-			"LoadingPhase": "Default"
-		},
-		{
 			"Name": "StatsBlockUnitTests",
 			"Type": "Editor",
 			"LoadingPhase": "Default"

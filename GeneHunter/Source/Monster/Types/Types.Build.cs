@@ -5,6 +5,7 @@ public class Types : ModuleRules{
 	public Types(ReadOnlyTargetRules Target) : base(Target){
 		
 		PrivateIncludePaths.Add("Monster/Types/Private");
+		PrivateIncludePaths.Add("Monster/Types/Private/UnitTests");
 		
 		PublicIncludePaths.Add("Monster/Types/Public");
 		
@@ -16,12 +17,12 @@ public class Types : ModuleRules{
 			
 			// Basics
 			"Core"			// for FStrings and such
-			, "CoreUObject"	// for UObjects
-			, "Engine"		// for UPrimaryDataAsset
+		  , "CoreUObject"	// for UObjects
+		  , "Engine"		// for UPrimaryDataAsset
 			  
 			// Other modules
-			, "BPLibraries" // for SortAssetsAlphabetically
-			, "UMG"			// for UComboBoxString
+		  , "BPLibraries" // for SortAssetsAlphabetically
+		  , "UMG"			// for UComboBoxString
 		});
 	}
 }
