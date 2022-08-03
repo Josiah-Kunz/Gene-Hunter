@@ -14,6 +14,7 @@ public class TypesUnitTests : ModuleRules{
 		  , "BPLibraries"	// for RangeToString
 		  , "Types"			// for UType
 		  , "UI"			// for SupportingText.h
+		  , "UMG"
 		});
 	}
 }
