@@ -4,7 +4,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_Coverage_Immune,
-	"GeneHunter.UType.Combat.CombineModifiers.Coverage.Immune",
+	"__GeneHunter.UType.Combat.CombineModifiers.Coverage.Immune",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FUType_Combat_CombineModifiers_Coverage_Immune::RunTest(const FString& Parameters)

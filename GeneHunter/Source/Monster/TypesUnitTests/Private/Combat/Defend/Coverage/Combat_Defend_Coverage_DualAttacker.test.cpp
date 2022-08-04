@@ -4,7 +4,7 @@
 #include "Utilities/TypeUnitTestUtilities.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Defend_Coverage_DualAttacker,
-	"GeneHunter.UType.Combat.Defend.Coverage.Dual-Typed Defender",
+	"__GeneHunter.UType.Combat.Defend.Coverage.Dual-Typed Defender",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /**

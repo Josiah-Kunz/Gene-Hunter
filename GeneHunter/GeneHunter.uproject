@@ -20,7 +20,7 @@
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "StatsBlock",
+			"Name": "StatsComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
@@ -29,6 +29,9 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
+		
+		
+		
 		{
 			"Name": "DetailsPanelArchitect",
 			"Type": "Editor",
@@ -40,7 +43,7 @@
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "StatsBlockUnitTests",
+			"Name": "StatsComponentUnitTests",
 			"Type": "Editor",
 			"LoadingPhase": "Default"
 		}

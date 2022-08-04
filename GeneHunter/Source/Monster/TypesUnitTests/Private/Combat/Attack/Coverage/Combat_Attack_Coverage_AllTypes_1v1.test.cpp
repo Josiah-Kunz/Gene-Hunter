@@ -4,7 +4,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Attack_Coverage_AllTypes1v1,
-	"GeneHunter.UType.Combat.Attack.Coverage.All Types 1v1",
+	"__GeneHunter.UType.Combat.Attack.Coverage.All Types 1v1",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /**
