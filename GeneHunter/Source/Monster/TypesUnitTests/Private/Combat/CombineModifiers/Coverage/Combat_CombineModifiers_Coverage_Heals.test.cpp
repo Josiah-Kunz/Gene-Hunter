@@ -4,7 +4,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_Coverage_Heals,
-	"UType.Combat.CombineModifiers.Coverage.Heals",
+	"GeneHunter.UType.Combat.CombineModifiers.Coverage.Heals",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FUType_Combat_CombineModifiers_Coverage_Heals::RunTest(const FString& Parameters)

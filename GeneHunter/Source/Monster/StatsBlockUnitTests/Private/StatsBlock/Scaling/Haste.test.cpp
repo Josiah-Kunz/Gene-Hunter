@@ -3,7 +3,7 @@
 #include "StatUnitTestUtilities.h" 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsBlock_Scaling_Haste,
-	"UStat.StatsBlock.Scaling.Haste",
+	"GeneHunter.UStat.StatsBlock.Scaling.Haste",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FUStat_StatsBlock_Scaling_Haste::RunTest(const FString& Parameters)

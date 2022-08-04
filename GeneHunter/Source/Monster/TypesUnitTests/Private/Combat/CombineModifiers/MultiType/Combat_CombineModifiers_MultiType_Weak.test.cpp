@@ -3,7 +3,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_MultiType_Weak,
-	"UType.Combat.CombineModifiers.MultiType.Weak",
+	"GeneHunter.UType.Combat.CombineModifiers.MultiType.Weak",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /*

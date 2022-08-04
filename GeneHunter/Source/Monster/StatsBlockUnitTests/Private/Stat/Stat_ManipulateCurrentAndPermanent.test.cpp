@@ -3,7 +3,7 @@
 #include "StatUnitTestUtilities.h" 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_Stat_ManipulateCurrentAndPermanent,
-	"FStat.Stat.Manipulate Current & Permanent",
+	"GeneHunter.UStat.Stat.Manipulate Current & Permanent",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FUStat_Stat_ManipulateCurrentAndPermanent::RunTest(const FString& Parameters)

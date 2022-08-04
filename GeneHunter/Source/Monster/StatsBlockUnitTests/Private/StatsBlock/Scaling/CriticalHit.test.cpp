@@ -3,7 +3,7 @@
 #include "StatUnitTestUtilities.h" 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsBlock_Scaling_CriticalHit,
-	"UStat.StatsBlock.Scaling.Critical hit",
+	"GeneHunter.UStat.StatsBlock.Scaling.Critical hit",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FUStat_StatsBlock_Scaling_CriticalHit::RunTest(const FString& Parameters)

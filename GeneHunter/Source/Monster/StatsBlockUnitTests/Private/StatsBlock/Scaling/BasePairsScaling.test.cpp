@@ -3,7 +3,7 @@
 #include "StatUnitTestUtilities.h" 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsBlock_Scaling_BasePairsScaling,
-	"UStat.StatsBlock.Scaling.Base Pairs Scaling",
+	"GeneHunter.UStat.StatsBlock.Scaling.Base Pairs Scaling",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FUStat_StatsBlock_Scaling_BasePairsScaling::RunTest(const FString& Parameters)

@@ -4,7 +4,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_MultiType_Immune,
-	"UType.Combat.CombineModifiers.MultiType.Immune",
+	"GeneHunter.UType.Combat.CombineModifiers.MultiType.Immune",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /*

@@ -4,7 +4,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Utilities_RockPaperScissors_TwoWay,
-	"UType.Utilities.Rock-Paper-Scissors.2-Way",
+	"GeneHunter.UType.Utilities.Rock-Paper-Scissors.2-Way",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /**

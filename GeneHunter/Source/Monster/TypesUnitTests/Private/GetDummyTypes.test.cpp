@@ -4,7 +4,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_GetDummyTypes,
-	"UType.GetDummyTypes",
+	"GeneHunter.UType.GetDummyTypes",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /*

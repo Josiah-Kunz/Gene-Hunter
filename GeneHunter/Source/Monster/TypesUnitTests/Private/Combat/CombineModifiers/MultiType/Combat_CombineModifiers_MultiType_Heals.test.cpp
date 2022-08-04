@@ -4,7 +4,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_MultiType_Heals,
-	"UType.Combat.CombineModifiers.MultiType.Heals",
+	"GeneHunter.UType.Combat.CombineModifiers.MultiType.Heals",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FUType_Combat_CombineModifiers_MultiType_Heals::RunTest(const FString& Parameters)

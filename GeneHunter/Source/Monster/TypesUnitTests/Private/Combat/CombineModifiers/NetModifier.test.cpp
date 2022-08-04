@@ -10,7 +10,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_NetModifier,
-	"UType.Combat.CombineModifiers.NetModifier",
+	"GeneHunter.UType.Combat.CombineModifiers.NetModifier",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FUType_Combat_NetModifier::RunTest(const FString& Parameters)

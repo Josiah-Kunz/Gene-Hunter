@@ -4,7 +4,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_MultiType_Neutral,
-	"UType.Combat.CombineModifiers.MultiType.Neutral",
+	"GeneHunter.UType.Combat.CombineModifiers.MultiType.Neutral",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /*

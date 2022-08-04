@@ -4,7 +4,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Utilities_RockPaperScissors_OneWay,
-	"UType.Utilities.Rock-Paper-Scissors.1-Way",
+	"GeneHunter.UType.Utilities.Rock-Paper-Scissors.1-Way",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /**

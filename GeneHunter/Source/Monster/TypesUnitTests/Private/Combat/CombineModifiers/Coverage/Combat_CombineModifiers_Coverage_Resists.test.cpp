@@ -4,7 +4,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_Coverage_Resists,
-	"UType.Combat.CombineModifiers.Coverage.Resists",
+	"GeneHunter.UType.Combat.CombineModifiers.Coverage.Resists",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /*

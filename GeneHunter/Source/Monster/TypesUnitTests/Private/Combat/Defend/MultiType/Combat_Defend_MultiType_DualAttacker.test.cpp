@@ -4,7 +4,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Defend_MultiType_DualAttacker,
-	"UType.Combat.Defend.MultiType.Dual-Typed Defender",
+	"GeneHunter.UType.Combat.Defend.MultiType.Dual-Typed Defender",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /**

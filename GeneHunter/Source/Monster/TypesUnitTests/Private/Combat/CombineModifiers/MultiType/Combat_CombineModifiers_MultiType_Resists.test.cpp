@@ -4,7 +4,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_MultiType_Resists,
-	"UType.Combat.CombineModifiers.MultiType.Resists",
+	"GeneHunter.UType.Combat.CombineModifiers.MultiType.Resists",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /*

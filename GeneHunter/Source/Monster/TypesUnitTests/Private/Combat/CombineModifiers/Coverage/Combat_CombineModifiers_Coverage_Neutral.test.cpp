@@ -4,7 +4,7 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_Coverage_Neutral,
-	"UType.Combat.CombineModifiers.Coverage.Neutral",
+	"GeneHunter.UType.Combat.CombineModifiers.Coverage.Neutral",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FUType_Combat_CombineModifiers_Coverage_Neutral::RunTest(const FString& Parameters)
