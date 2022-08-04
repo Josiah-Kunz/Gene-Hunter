@@ -18,7 +18,7 @@ bool FUType_Combat_Defend_Coverage_DualAttacker::RunTest(const FString& Paramete
 	GET_DUMMY_TYPES()
 
 	// Define success:
-	const TArray<FTypeArray1D*> Expected = {
+	const TArray<FTypeArray1D> Expected = {
 
 		/* Flying singly resists:
 		 *	- Ground
@@ -35,22 +35,22 @@ bool FUType_Combat_Defend_Coverage_DualAttacker::RunTest(const FString& Paramete
 		 */
 
 		// Ground + others
-		new FTypeArray1D{{Ground, Bug}},
-		new FTypeArray1D{{Ground, Fighting}},
-		new FTypeArray1D{{Ground, Electric}},
-		new FTypeArray1D{{Ground, Poison}},
+		FTypeArray1D{{Ground, Bug}},
+		FTypeArray1D{{Ground, Fighting}},
+		FTypeArray1D{{Ground, Electric}},
+		FTypeArray1D{{Ground, Poison}},
 
 		// B.ug + others - Ground
-		new FTypeArray1D{{Bug, Fighting}},
-		new FTypeArray1D{{Bug, Electric}},
-		new FTypeArray1D{{Bug, Poison}},
+		FTypeArray1D{{Bug, Fighting}},
+		FTypeArray1D{{Bug, Electric}},
+		FTypeArray1D{{Bug, Poison}},
 
 		// Fighting + others - Ground - B.ug
-		new FTypeArray1D{{Fighting, Electric}},
-		new FTypeArray1D{{Fighting, Poison}},
+		FTypeArray1D{{Fighting, Electric}},
+		FTypeArray1D{{Fighting, Poison}},
 
 		// Electric + others - Ground/B.ug/Fighting
-		new FTypeArray1D{{Electric, Poison}},
+		FTypeArray1D{{Electric, Poison}},
 	};
 	
 	// Do the tests

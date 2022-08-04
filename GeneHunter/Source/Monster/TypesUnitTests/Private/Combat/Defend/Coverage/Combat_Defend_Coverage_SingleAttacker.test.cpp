@@ -18,7 +18,7 @@ bool FUType_Combat_Defend_Coverage_SingleAttacker::RunTest(const FString& Parame
 	GET_DUMMY_TYPES()
 
 	// Define success:
-	const TArray<FTypeArray1D*> Expected = {
+	const TArray<FTypeArray1D> Expected = {
 
 		/* Flying singly resists:
 		 *	- Ground
@@ -26,9 +26,9 @@ bool FUType_Combat_Defend_Coverage_SingleAttacker::RunTest(const FString& Parame
 		 *	- Fighting
 		 *	- Grass [no; Ground is weak to Grass]
 		 */ 
-		new FTypeArray1D{{Ground}},
-		new FTypeArray1D{{Bug}},
-		new FTypeArray1D{{Fighting}},
+		FTypeArray1D{{Ground}},
+		FTypeArray1D{{Bug}},
+		FTypeArray1D{{Fighting}},
 
 		/*
 		 * Ground singly resists:
@@ -36,8 +36,8 @@ bool FUType_Combat_Defend_Coverage_SingleAttacker::RunTest(const FString& Parame
 		 *  - Poison
 		 *  - Rock [no; Flying is weak to Rock]
 		 */
-		new FTypeArray1D{{Electric}},
-		new FTypeArray1D{{Poison}},
+		FTypeArray1D{{Electric}},
+		FTypeArray1D{{Poison}},
 		
 	};
 	

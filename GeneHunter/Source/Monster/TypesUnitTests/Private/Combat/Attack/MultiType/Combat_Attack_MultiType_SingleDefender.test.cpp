@@ -18,12 +18,12 @@ bool FUType_Combat_Attack_MultiType_SingleDefender::RunTest(const FString& Param
 	GET_DUMMY_TYPES()
 
 	// Define success 
-	const TArray<FTypeArray1D*> Expected =
+	const TArray<FTypeArray1D> Expected =
 		{
 			// Singly-Typed defenders
-			new FTypeArray1D{{Fire}},
-			new FTypeArray1D{{Fighting}},
-			new FTypeArray1D{{Poison}},
+			FTypeArray1D{{Fire}},
+			FTypeArray1D{{Fighting}},
+			FTypeArray1D{{Poison}},
 		};
 	
 	// Do the tests

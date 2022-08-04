@@ -2,32 +2,25 @@
 #include <algorithm>
 
 
-bool FTypeArray1D::Contains(const TArray<FTypeArray1D*>& Container, const FTypeArray1D* SearchTarget,
+bool FTypeArray1D::Contains(const TArray<FTypeArray1D>& Container, const FTypeArray1D& SearchTarget,
                             const bool bByName)
 {
 	return std::any_of(std::begin(Container), std::end(Container),
-								[&](const FTypeArray1D* Test) {
+								[&](const FTypeArray1D Test) {
 
 									bool bFound = true;
 
-									// Guard
-									if (Test == nullptr)
+									for(const UType* Type : SearchTarget.Array)
 									{
-										UE_LOG(LogTemp, Warning, TEXT("Container element is nullptr in FTypeArray1D::Contains. Surely this is a bug."))
-									} else
-									{
-										for(const UType* Type : SearchTarget->Array)
+										if (Type == nullptr)
 										{
-											if (Type == nullptr)
+											UE_LOG(LogTemp, Warning, TEXT("Search Type is nullptr in FTypeArray1D::Contains. Surely this is a bug."))
+										} else {
+											bFound = true;
+											if (!UType::Contains(Test.Array, Type, bByName))
 											{
-												UE_LOG(LogTemp, Warning, TEXT("Search Type is nullptr in FTypeArray1D::Contains. Surely this is a bug."))
-											} else {
-												bFound = true;
-												if (!UType::Contains(Test->Array, Type, bByName))
-												{
-													bFound = false;
-													break;
-												}
+												bFound = false;
+												break;
 											}
 										}
 									}
@@ -40,11 +33,11 @@ bool FTypeArray1D::TypeArray1DsAreEqual(const FTypeArray1D& Actual, const FTypeA
 	return UType::ArraysAreEqual(Actual.Array, Expected.Array, Description);
 }
 
-bool FTypeArray1D::ArrayOfTypeArray1DsAreEqual(const TArray<FTypeArray1D*>& Actual,
-	const TArray<FTypeArray1D*>& Expected, FString& Description)
+bool FTypeArray1D::ArrayOfTypeArray1DsAreEqual(const TArray<FTypeArray1D>& Actual,
+	const TArray<FTypeArray1D>& Expected, FString& Description)
 {
 	bool bFound = true;
-	for(const FTypeArray1D* TypeArray1D : Actual)
+	for(const FTypeArray1D TypeArray1D : Actual)
 	{
 		bFound = Contains(Expected, TypeArray1D);
 		if (!bFound)
@@ -58,15 +51,15 @@ bool FTypeArray1D::ArrayOfTypeArray1DsAreEqual(const TArray<FTypeArray1D*>& Actu
 	return bFound;
 }
 
-FString FTypeArray1D::TypeArray1DToFString(const FTypeArray1D* TypeArray1D)
+FString FTypeArray1D::TypeArray1DToFString(const FTypeArray1D& TypeArray1D)
 {
-	return UType::ArrayToFString(TypeArray1D->Array);
+	return UType::ArrayToFString(TypeArray1D.Array);
 }
 
-FString FTypeArray1D::ArrayOfTypeArray1DToFString(const TArray<FTypeArray1D*>& ArrayOfTypeArray1D)
+FString FTypeArray1D::ArrayOfTypeArray1DToFString(const TArray<FTypeArray1D>& ArrayOfTypeArray1D)
 {
 	FString Ret = "{";
-	for(const FTypeArray1D* TypeArray1D : ArrayOfTypeArray1D)
+	for(const FTypeArray1D TypeArray1D : ArrayOfTypeArray1D)
 		Ret += TypeArray1DToFString(TypeArray1D) + " ";
 	Ret += "}";
 	Ret = Ret.Replace(TEXT(", }"), TEXT("} "));

@@ -18,19 +18,19 @@ bool FUType_Combat_Attack_Coverage_SingleDefender::RunTest(const FString& Parame
 	GET_DUMMY_TYPES()
 
 	// Define success:
-	const TArray<FTypeArray1D*> Expected = {
+	const TArray<FTypeArray1D> Expected = {
 		
 		// Flying singly-Typed defenders 
-		new FTypeArray1D{{Bug}},
-		new FTypeArray1D{{Fighting}},
-		new FTypeArray1D{{Grass}},
+		FTypeArray1D{{Bug}},
+		FTypeArray1D{{Fighting}},
+		FTypeArray1D{{Grass}},
 
 		// Ground singly-Typed defenders 
-		new FTypeArray1D{{Electric}},
-		new FTypeArray1D{{Fire}},
-		new FTypeArray1D{{Poison}},
-		new FTypeArray1D{{Rock}},
-		new FTypeArray1D{{Steel}},
+		FTypeArray1D{{Electric}},
+		FTypeArray1D{{Fire}},
+		FTypeArray1D{{Poison}},
+		FTypeArray1D{{Rock}},
+		FTypeArray1D{{Steel}},
 		};
 		
 	// Do the test

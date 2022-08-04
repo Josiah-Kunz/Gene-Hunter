@@ -18,13 +18,13 @@ bool FUType_Utilities_RockPaperScissors_OneWay::RunTest(const FString& Parameter
 
 	// Define success
 	// Note: for the dummy Types, not all dis/advantages are coded, but this one specifically is!
-	const TArray<FTypeArray1D*> Expected = {
-		new FTypeArray1D{{Flying, Grass, Rock}},
-		new FTypeArray1D{{Flying, Fighting, Rock}}	// 2-way still counts!
+	const TArray<FTypeArray1D> Expected = {
+		FTypeArray1D{{Flying, Grass, Rock}},
+		FTypeArray1D{{Flying, Fighting, Rock}}	// 2-way still counts!
 	};
 
 	// Get actual
-	TArray<FTypeArray1D*> Actual;
+	TArray<FTypeArray1D> Actual;
 	UTypeUnitTestUtilities::GetRockPaperScissors(AllDummyTypes, false, Actual);
 		
 	// Do the test

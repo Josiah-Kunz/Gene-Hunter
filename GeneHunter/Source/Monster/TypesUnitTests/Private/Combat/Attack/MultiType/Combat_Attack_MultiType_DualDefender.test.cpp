@@ -18,7 +18,7 @@ bool FUType_Combat_Attack_MultiType_DualDefender::RunTest(const FString& Paramet
 	GET_DUMMY_TYPES()
 
 	// Define success 
-	const TArray<FTypeArray1D*> Expected =
+	const TArray<FTypeArray1D> Expected =
 	{
 		/* Doubly-Typed defenders
 		 *
@@ -44,37 +44,37 @@ bool FUType_Combat_Attack_MultiType_DualDefender::RunTest(const FString& Paramet
 		 */
 		
 		// (10) Fire + those listed above
-		new FTypeArray1D{{Fire, Bug}},
-		new FTypeArray1D{{Fire, Electric}},
-		new FTypeArray1D{{Fire, Grass}},
-		new FTypeArray1D{{Fire, Fighting}},
-		new FTypeArray1D{{Fire, Ground}},
-		new FTypeArray1D{{Fire, Ice}},
-		new FTypeArray1D{{Fire, Poison}},
-		new FTypeArray1D{{Fire, Rock}},
-		new FTypeArray1D{{Fire, Steel}},
-		new FTypeArray1D{{Fire, Water}},
+		FTypeArray1D{{Fire, Bug}},
+		FTypeArray1D{{Fire, Electric}},
+		FTypeArray1D{{Fire, Grass}},
+		FTypeArray1D{{Fire, Fighting}},
+		FTypeArray1D{{Fire, Ground}},
+		FTypeArray1D{{Fire, Ice}},
+		FTypeArray1D{{Fire, Poison}},
+		FTypeArray1D{{Fire, Rock}},
+		FTypeArray1D{{Fire, Steel}},
+		FTypeArray1D{{Fire, Water}},
 
 		// (9) Fighting + all - Fire
-		new FTypeArray1D{{Fighting, Bug}},
-		new FTypeArray1D{{Fighting, Electric}},
-		new FTypeArray1D{{Fighting, Grass}},
-		new FTypeArray1D{{Fighting, Ground}},
-		new FTypeArray1D{{Fighting, Ice}},
-		new FTypeArray1D{{Fighting, Poison}},
-		new FTypeArray1D{{Fighting, Rock}},
-		new FTypeArray1D{{Fighting, Steel}},
-		new FTypeArray1D{{Fighting, Water}},
+		FTypeArray1D{{Fighting, Bug}},
+		FTypeArray1D{{Fighting, Electric}},
+		FTypeArray1D{{Fighting, Grass}},
+		FTypeArray1D{{Fighting, Ground}},
+		FTypeArray1D{{Fighting, Ice}},
+		FTypeArray1D{{Fighting, Poison}},
+		FTypeArray1D{{Fighting, Rock}},
+		FTypeArray1D{{Fighting, Steel}},
+		FTypeArray1D{{Fighting, Water}},
 
 		// (8) Poison + all - Fire & Fighting
-		new FTypeArray1D{{Poison, Bug}},
-		new FTypeArray1D{{Poison, Electric}},
-		new FTypeArray1D{{Poison, Grass}},
-		new FTypeArray1D{{Poison, Ground}},
-		new FTypeArray1D{{Poison, Ice}},
-		new FTypeArray1D{{Poison, Rock}},
-		new FTypeArray1D{{Poison, Steel}},
-		new FTypeArray1D{{Poison, Water}},
+		FTypeArray1D{{Poison, Bug}},
+		FTypeArray1D{{Poison, Electric}},
+		FTypeArray1D{{Poison, Grass}},
+		FTypeArray1D{{Poison, Ground}},
+		FTypeArray1D{{Poison, Ice}},
+		FTypeArray1D{{Poison, Rock}},
+		FTypeArray1D{{Poison, Steel}},
+		FTypeArray1D{{Poison, Water}},
 	};
 	
 	// Do the tests

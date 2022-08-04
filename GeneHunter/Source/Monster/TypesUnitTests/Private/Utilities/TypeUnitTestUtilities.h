@@ -55,7 +55,7 @@ public:
 	 */
 	static bool TestCombatAnalysis(const TArray<UType*>& AllTypes, const TArray<UType*>& TypesToAnalyze, 
 	const int NumOpponentTypes, const FFloatRange Range, const bool bAtk, const EAttackModifierMode Mode,
-	const TArray<FTypeArray1D*>& Expected, FString& Description, const bool bDebug);
+	const TArray<FTypeArray1D>& Expected, FString& Description, const bool bDebug);
 
 	/**
 	 * Performs a test similar to TestCombatAnalysis, but for UType::AnalyzeAll.
@@ -131,7 +131,7 @@ public:
 	 * @param bTwoWay If true, the triad must be a two-way triad. For example, 2x attacking Fire > Grass > Water, but also 0.5x attacking Fire < Grass < Water.
 	 * @param Triads The returned array of possible triads, such as Pokemon's {{Fire, Grass, Water}, {Fighting, Dark, Psychic}}. 
 	 */
-	static void GetRockPaperScissors(const TArray<UType*>& Types, const bool bTwoWay, TArray<FTypeArray1D*>& Triads);
+	static void GetRockPaperScissors(const TArray<UType*>& Types, const bool bTwoWay, TArray<FTypeArray1D>& Triads);
 
 	/**
 	 * Prints all "rock-paper-scissors" Type triad, such as Pokemon's Fire > Grass > Water.

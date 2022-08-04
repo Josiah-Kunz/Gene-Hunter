@@ -18,7 +18,7 @@ public:
 	 *	- If ByName is true, only compares by name.
 	 *	- If ByName is false, compares via direct object comparison.
 	 */
-	static bool Contains(const TArray<FTypeArray1D*>& Container, const FTypeArray1D* SearchTarget,
+	static bool Contains(const TArray<FTypeArray1D>& Container, const FTypeArray1D& SearchTarget,
 		const bool bByName = true); 
 
 
@@ -36,17 +36,17 @@ public:
 	 * 
 	 *	- For example, [{A, B}, {a, b}] should equal [{b, a}, {A, B}]
 	 */ 
-	static bool ArrayOfTypeArray1DsAreEqual(const TArray<FTypeArray1D*>& Actual, const TArray<FTypeArray1D*>& Expected,
+	static bool ArrayOfTypeArray1DsAreEqual(const TArray<FTypeArray1D>& Actual, const TArray<FTypeArray1D>& Expected,
 		FString& Description);
 
 	/**
 	 * Returns, e.g., "[Air, Earth, Fire, Water]".
 	 */
-	static FString TypeArray1DToFString(const FTypeArray1D* TypeArray1D);
+	static FString TypeArray1DToFString(const FTypeArray1D& TypeArray1D);
 
 	/**
 	 * Returns, e.g., "{[Air, Earth], [Fire, Water]}".
 	 */
-	static FString ArrayOfTypeArray1DToFString(const TArray<FTypeArray1D*>& ArrayOfTypeArray1D);
+	static FString ArrayOfTypeArray1DToFString(const TArray<FTypeArray1D>& ArrayOfTypeArray1D);
 	
 };

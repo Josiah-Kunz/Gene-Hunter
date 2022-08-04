@@ -18,7 +18,7 @@ bool FUType_Combat_Defend_MultiType_DualAttacker::RunTest(const FString& Paramet
 	GET_DUMMY_TYPES()
 
 	// Define success:
-	const TArray<FTypeArray1D*> Expected = {
+	const TArray<FTypeArray1D> Expected = {
 
 		/* Flying singly resists:
 		 *	- Ground
@@ -35,37 +35,37 @@ bool FUType_Combat_Defend_MultiType_DualAttacker::RunTest(const FString& Paramet
 		 */
 
 		// Ground + all others (because immunity trumps effective attacks)
-		new FTypeArray1D{{Ground, Bug}},
-		new FTypeArray1D{{Ground, Fighting}},
-		new FTypeArray1D{{Ground, Grass}},
-		new FTypeArray1D{{Ground, Electric}},
-		new FTypeArray1D{{Ground, Poison}},
-		new FTypeArray1D{{Ground, Rock}},
+		FTypeArray1D{{Ground, Bug}},
+		FTypeArray1D{{Ground, Fighting}},
+		FTypeArray1D{{Ground, Grass}},
+		FTypeArray1D{{Ground, Electric}},
+		FTypeArray1D{{Ground, Poison}},
+		FTypeArray1D{{Ground, Rock}},
 
 		// B.ug + others
-		new FTypeArray1D{{Bug, Fighting}},
-		new FTypeArray1D{{Bug, Grass}}, // Ex: Flying vs [B.ug, Grass] -> 1/4x || Ground vs. [B.ug, Grass] -> 2x ==> Total is 1/2x
-		new FTypeArray1D{{Bug, Electric}},
-		new FTypeArray1D{{Bug, Poison}},
-		new FTypeArray1D{{Bug, Rock}}, // Flying vs [B.ug, Rock] -> 1x
+		FTypeArray1D{{Bug, Fighting}},
+		FTypeArray1D{{Bug, Grass}}, // Ex: Flying vs [B.ug, Grass] -> 1/4x || Ground vs. [B.ug, Grass] -> 2x ==> Total is 1/2x
+		FTypeArray1D{{Bug, Electric}},
+		FTypeArray1D{{Bug, Poison}},
+		FTypeArray1D{{Bug, Rock}}, // Flying vs [B.ug, Rock] -> 1x
 
 		// Fighting + others
-		new FTypeArray1D{{Fighting, Grass}},
-		new FTypeArray1D{{Fighting, Electric}},
-		new FTypeArray1D{{Fighting, Poison}},
-		new FTypeArray1D{{Fighting, Rock}},
+		FTypeArray1D{{Fighting, Grass}},
+		FTypeArray1D{{Fighting, Electric}},
+		FTypeArray1D{{Fighting, Poison}},
+		FTypeArray1D{{Fighting, Rock}},
 
 		// Grass + others
-		new FTypeArray1D{{Grass, Electric}},
-		new FTypeArray1D{{Grass, Poison}},
-		//new FTypeArray1D{{Grass, Rock}}, // Flying vs [Grass, Rock] -> 1x || Ground -> 1x
+		FTypeArray1D{{Grass, Electric}},
+		FTypeArray1D{{Grass, Poison}},
+		//FTypeArray1D{{Grass, Rock}}, // Flying vs [Grass, Rock] -> 1x || Ground -> 1x
 
 		// Electric + others
-		new FTypeArray1D{{Electric, Poison}},
-		new FTypeArray1D{{Electric, Rock}},
+		FTypeArray1D{{Electric, Poison}},
+		FTypeArray1D{{Electric, Rock}},
 
 		// Poison
-		new FTypeArray1D{{Poison, Rock}}, // Flying -> 2x || Ground -> 1/4x
+		FTypeArray1D{{Poison, Rock}}, // Flying -> 2x || Ground -> 1/4x
 
 		/* Neutrals + others -Grass -Rock
 		 *	- Fire
@@ -74,32 +74,32 @@ bool FUType_Combat_Defend_MultiType_DualAttacker::RunTest(const FString& Paramet
 		 */
 
 		// Fire
-		new FTypeArray1D{{Fire, Ground}},
-		new FTypeArray1D{{Fire, Bug}},
-		new FTypeArray1D{{Fire, Fighting}},
-		//new FTypeArray1D{{Fire, Grass}}, // Flying -> 1/2x || Ground -> 2x
-		new FTypeArray1D{{Fire, Electric}},
-		new FTypeArray1D{{Fire, Poison}},
+		FTypeArray1D{{Fire, Ground}},
+		FTypeArray1D{{Fire, Bug}},
+		FTypeArray1D{{Fire, Fighting}},
+		//FTypeArray1D{{Fire, Grass}}, // Flying -> 1/2x || Ground -> 2x
+		FTypeArray1D{{Fire, Electric}},
+		FTypeArray1D{{Fire, Poison}},
 
 		// Flying
-		new FTypeArray1D{{Flying, Ground}},
-		new FTypeArray1D{{Flying, Bug}},
-		new FTypeArray1D{{Flying, Fighting}},
-		new FTypeArray1D{{Flying, Electric}},
-		new FTypeArray1D{{Flying, Poison}},
+		FTypeArray1D{{Flying, Ground}},
+		FTypeArray1D{{Flying, Bug}},
+		FTypeArray1D{{Flying, Fighting}},
+		FTypeArray1D{{Flying, Electric}},
+		FTypeArray1D{{Flying, Poison}},
 
 		// Steel
-		new FTypeArray1D{{Steel, Ground}},
-		new FTypeArray1D{{Steel, Bug}},
-		new FTypeArray1D{{Steel, Fighting}},
-		new FTypeArray1D{{Steel, Electric}},
-		new FTypeArray1D{{Steel, Poison}},
+		FTypeArray1D{{Steel, Ground}},
+		FTypeArray1D{{Steel, Bug}},
+		FTypeArray1D{{Steel, Fighting}},
+		FTypeArray1D{{Steel, Electric}},
+		FTypeArray1D{{Steel, Poison}},
 
 		// Immunes get everything (even Ice!)
-		new FTypeArray1D{{Electric, Ice}},
-		new FTypeArray1D{{Electric, Water}},
-		new FTypeArray1D{{Ground, Ice}},
-		new FTypeArray1D{{Ground, Water}},
+		FTypeArray1D{{Electric, Ice}},
+		FTypeArray1D{{Electric, Water}},
+		FTypeArray1D{{Ground, Ice}},
+		FTypeArray1D{{Ground, Water}},
 
 	};
 	

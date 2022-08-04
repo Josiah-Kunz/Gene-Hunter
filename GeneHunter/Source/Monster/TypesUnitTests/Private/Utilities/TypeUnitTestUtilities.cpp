@@ -6,7 +6,7 @@
 
 bool UTypeUnitTestUtilities::TestCombatAnalysis(const TArray<UType*>& AllTypes, const TArray<UType*>& TypesToAnalyze,
                                                 const int NumOpponentTypes, const FFloatRange Range, const bool bAtk, const EAttackModifierMode Mode,
-                                                const TArray<FTypeArray1D*>& Expected, FString& Description, const bool bDebug)
+                                                const TArray<FTypeArray1D>& Expected, FString& Description, const bool bDebug)
 {
 
 	// Get array of FTypeArray1D (either defenders or attackers)
@@ -22,14 +22,9 @@ bool UTypeUnitTestUtilities::TestCombatAnalysis(const TArray<UType*>& AllTypes, 
 				bAtk,
 				bDebug
 			);
-	
-	// Convert to pointer
-	TArray<FTypeArray1D*> AnalysisPointers = {};
-	for(FTypeArray1D TypeArray1D : Analysis)
-		AnalysisPointers.Add(std::addressof(TypeArray1D));
 
 	// Test it
-	return FTypeArray1D::ArrayOfTypeArray1DsAreEqual(AnalysisPointers, Expected, Description);
+	return FTypeArray1D::ArrayOfTypeArray1DsAreEqual(Analysis, Expected, Description);
 }
 
 bool UTypeUnitTestUtilities::TestAnalyzeAll(TArray<UType*>& AllTypes, const int NumTestedTypes, const int NumUntestedTypes,
@@ -421,7 +416,7 @@ void UTypeUnitTestUtilities::AnalyzeAll(TArray<UType*>& Types, const int NumTest
 }
 
 void UTypeUnitTestUtilities::GetRockPaperScissors(const TArray<UType*>& Types, const bool bTwoWay,
-	TArray<FTypeArray1D*>& Triads)
+	TArray<FTypeArray1D>& Triads)
 {
 
 	// Using Pokemon's "Fire", "Grass", "Water" triad as example variables
@@ -444,7 +439,7 @@ void UTypeUnitTestUtilities::GetRockPaperScissors(const TArray<UType*>& Types, c
 				if (FormsTriadSide(Water, Fire, bTwoWay))
 				{
 					// Must be unique
-					FTypeArray1D* Triad = new FTypeArray1D{{Fire, Grass, Water}};
+					FTypeArray1D Triad = FTypeArray1D{{Fire, Grass, Water}};
 					if (!FTypeArray1D::Contains(Triads, Triad))
 						Triads.Add(Triad);
 				}
@@ -459,7 +454,7 @@ void UTypeUnitTestUtilities::PrintRockPaperScissors(const bool bTwoWay)
 	// Get data
 	TArray<UType*> Types;
 	UType::GetAllTypes(Types);
-	TArray<FTypeArray1D*> Triads;
+	TArray<FTypeArray1D> Triads;
 	GetRockPaperScissors(Types, bTwoWay, Triads);
 
 	// Print it
@@ -468,7 +463,7 @@ void UTypeUnitTestUtilities::PrintRockPaperScissors(const bool bTwoWay)
 				*UConstLibrary::LINE_SEPARATOR,
 				*TwoWay,
 				*UConstLibrary::LINE_SEPARATOR);
-	for(const FTypeArray1D* Triad : Triads)
+	for(const FTypeArray1D Triad : Triads)
 		UE_LOG(LogTemp, Display, TEXT("\t%s\n"),
 			*FTypeArray1D::TypeArray1DToFString(Triad)
 			);
