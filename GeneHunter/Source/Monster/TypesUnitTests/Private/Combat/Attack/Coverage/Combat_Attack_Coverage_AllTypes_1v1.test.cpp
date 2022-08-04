@@ -1,17 +1,17 @@
 ﻿#pragma once
 
 #include "Utilities/TypeUnitTestUtilities.h"
-#include "DummyType.h"
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Attack_Coverage_AllTypes_1v1,
-	"UType.Combat.Attack.Coverage.All Types.1v1",
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Attack_Coverage_AllTypes1v1,
+	"UType.Combat.Attack.Coverage.All Types 1v1",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /**
  * Tests all dummy Types vs all dummy Types in a single-Type vs single-Type combat.
  * Effective attacks are reported.
  */
-bool FUType_Combat_Attack_Coverage_AllTypes_1v1::RunTest(const FString& Parameters)
+bool FUType_Combat_Attack_Coverage_AllTypes1v1::RunTest(const FString& Parameters)
 {
 
 	// Get all types
@@ -32,19 +32,17 @@ bool FUType_Combat_Attack_Coverage_AllTypes_1v1::RunTest(const FString& Paramete
 		new FTypeArray2D{{{Steel}}, {}},
 		new FTypeArray2D{{{Water}}, {Ground}},
 		};
-		
+	
 	// Do the test
 	FString Desc = "";
 	const bool bPass = UTypeUnitTestUtilities::TestAnalyzeAll(AllDummyTypes, 1, 1,
 		UType::Effective, true, EAttackModifierMode::Coverage, Expected, Desc);
+	
 	TestEqual(
 	"AnalzyeAll 1v1 (offensive) " + Desc,
 	bPass, true
 	);
 
-	// Destroy world + dummy types
-	GC_DUMMY_TYPES()
-	
 	return true;
 	
 }

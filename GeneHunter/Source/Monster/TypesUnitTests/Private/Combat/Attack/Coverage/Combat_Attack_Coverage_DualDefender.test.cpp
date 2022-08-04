@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "Utilities/TypeUnitTestUtilities.h"
-#include "DummyType.h"
+
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Attack_Coverage_DualDefender,
 	"UType.Combat.Attack.Coverage.Dual-Typed Defender",
@@ -18,7 +18,7 @@ bool FUType_Combat_Attack_Coverage_DualDefender::RunTest(const FString& Paramete
 	GET_DUMMY_TYPES()
 
 	// Define success:
-	const TArray<FTypeArray1D*> Expected = {
+	TArray<FTypeArray1D*> Expected = {
 
 			/* Doubly-Typed defenders
 			 *
@@ -119,6 +119,8 @@ bool FUType_Combat_Attack_Coverage_DualDefender::RunTest(const FString& Paramete
 			new FTypeArray1D{{Steel, Water}},
 	};
 
+	
+
 	// Do the tests
 	FString Desc = "";
 	const bool bPass = UTypeUnitTestUtilities::TestCombatAnalysis(AllDummyTypes, {Flying, Ground}, 2,
@@ -128,8 +130,8 @@ bool FUType_Combat_Attack_Coverage_DualDefender::RunTest(const FString& Paramete
 	bPass, true
 	);
 
-	// Destroy world + dummy types
-	GC_DUMMY_TYPES()
+	
+	
 	
 	return bPass;
 	

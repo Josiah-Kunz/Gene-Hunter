@@ -7,7 +7,7 @@
 #pragma once
 
 #include "Utilities/TypeUnitTestUtilities.h"
-#include "DummyType.h"
+
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_NetModifier,
 	"UType.Combat.CombineModifiers.NetModifier",
@@ -54,8 +54,8 @@ bool FUType_Combat_NetModifier::RunTest(const FString& Parameters)
 		TestEqual("Type [Ground] is null!", true, false);
 	}
 
-	// Destroy world + dummy types
-	GC_DUMMY_TYPES()
+	
+	
 	
 	return true;
 }

@@ -38,7 +38,7 @@ bool FTypeArray2D::ArrayOfTypeArray2DsAreEqual(const TArray<FTypeArray2D*>& Actu
 		bFound = Contains(Expected, TypeArray2D, DummyString);
 		if (!bFound)
 		{
-			Description += "Did not find " + TypeArray2DToFString(TypeArray2D) + "in " + ArrayOfTypeArray2DToFString(Expected); 
+			Description += "Did not find (actual) " + TypeArray2DToFString(TypeArray2D) + "in (expected) " + ArrayOfTypeArray2DToFString(Expected); 
 			break;
 		}
 	}

@@ -150,25 +150,49 @@ void UType::GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC
 		UAssetFunctionLibrary::SortAssetsAlphabetically(TypeAssets, TypeAssets);
 }
 
-void UType::GetAllTypes(TArray<UType*>& Types, const bool bSortABC)
+void UType::GetAllTypes(TArray<UType*>& Types, const bool bSortABC, const bool bDummyTypes)
 {
-	GetAllTypes(Types, {}, bSortABC);
+	GetAllTypes(Types, {}, bSortABC, bDummyTypes);
 }
 
-void UType::GetAllTypes(TArray<UType*>& Types, const TArray<UType*>& Exclude, const bool bSortABC)
+void UType::GetAllTypes(TArray<UType*>& Types, const TArray<UType*>& Exclude, const bool bSortABC,
+	const bool bDummyTypes)
 {
 	Types.Empty();
 	TArray<FAssetData> Assets;
 	GetAllTypeAssets(Assets, bSortABC);
 	for(FAssetData& Asset : Assets)
 	{
+
+		// Check cast
 		if (UType* Type = Cast<UType>(Asset.GetAsset()))
 		{
-			if (!Exclude.Contains(Type))
+
+			// Check exclusions, nullptr
+			if (Type == nullptr || Exclude.Contains(Type))
+				continue;
+
+			// Dummy or nah?
+			if (bDummyTypes)
+			{
+				if (Type->GetName().Contains(DUMMY_IDENTIFIER))
+					Types.Add(Type);
+			} else
+			{
 				Types.Add(Type);
+			}
 		}
 	}
 }
+
+UType* UType::GetTypeByName(const TArray<UType*>& Pool, const FName Name)
+{
+	for(UType* Type : Pool)
+		if (Type->GetFName() == Name)
+			return Type;
+	return nullptr;
+}
+
 
 void UType::GetTypesInRange(const TArray<UType*>& AllTypes, const FFloatRange Range, TArray<UType*>& Defenders)
 {
@@ -243,7 +267,7 @@ FString UType::ArrayToFString(const TArray<UType*>& Array)
 	FString Ret = "[";
 	for(const UType* Type : Array)
 	{
-		if (Type == nullptr)
+		if (Type == nullptr || !IsValid(Type))
 			Ret += "NULLPTR, ";
 		else
 			Ret += Type->GetName() + ", ";

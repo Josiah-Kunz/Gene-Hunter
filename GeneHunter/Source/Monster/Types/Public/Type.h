@@ -31,6 +31,8 @@ public:
 		FFloatRangeBound::Open(),
 		FFloatRangeBound::Exclusive(1)
 	};
+
+	inline static const FString DUMMY_IDENTIFIER = "Dummy";
 	
 #pragma endregion
 
@@ -120,7 +122,7 @@ public:
 #pragma region Getting Types
 
 	/**
-	 * Gets the Type Assets (not the Types themselves).
+	 * Gets the Type Assets (not the Types themselves). Includes both Types and "dummy" Types.
 	 * @param bSortABC If true, sorts the Types alphabetically. Make false to improve performance.
 	 */
 	UFUNCTION(BlueprintCallable)
@@ -131,7 +133,7 @@ public:
 	 * @param Types The returned array filled with Types found in the assets (see GetAllTypeAssets).
 	 * @param SortABC If true, sorts the Types alphabetically. Make false to improve performance.
 	 */
-	static void GetAllTypes(TArray<UType*>& Types, const bool bSortABC = true);
+	static void GetAllTypes(TArray<UType*>& Types, const bool bSortABC = true, const bool bDummyTypes = false);
 	
 	/**
 	 * Gets all Types.
@@ -140,8 +142,12 @@ public:
 	 * @param bSortABC If true, sorts the Types alphabetically. Make false to improve performance.
 	 */
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
-	static void GetAllTypes(TArray<UType*>& Types, UPARAM(ref) const TArray<UType*>& Exclude, const bool bSortABC = true);
-
+	static void GetAllTypes(TArray<UType*>& Types, UPARAM(ref) const TArray<UType*>& Exclude,
+		const bool bSortABC = true, const bool bDummyTypes = false);
+	
+	UFUNCTION(BlueprintCallable)
+	static UType* GetTypeByName(UPARAM(ref) const TArray<UType*>& Pool, const FName Name);
+	
 	/**
 	 * Parses through this Type's AttackModifiers and returns the defenders who are within the specified range.
 	 */
@@ -155,7 +161,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void GetTypesInRangeDefending(UPARAM(ref) const TArray<UType*>& AllTypes, const FFloatRange Range,
 	                              TArray<UType*>& Attackers);
-	
+
 #pragma endregion
 
 #pragma region Utilities

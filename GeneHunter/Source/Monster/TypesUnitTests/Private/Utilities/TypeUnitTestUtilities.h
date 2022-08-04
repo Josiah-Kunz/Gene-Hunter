@@ -23,6 +23,26 @@ public:
 	constexpr static int MAX_LATEX_LINES = 38;
 
 	/**
+		 * A macro to get "dummy" Types. These are special, independent of
+		 *	in-game data (and hence are good for unit tests).
+		 */
+	#define GET_DUMMY_TYPES() \
+		TArray<UType*> AllDummyTypes; \
+		UType::GetAllTypes(AllDummyTypes, {}, true, true); \
+		UType* Bug = UType::GetTypeByName(AllDummyTypes, FName(TEXT("Bug-Dummy"))); \
+		UType* Electric = UType::GetTypeByName(AllDummyTypes, FName(TEXT("Electric-Dummy"))); \
+		UType* Fighting = UType::GetTypeByName(AllDummyTypes, FName(TEXT("Fighting-Dummy"))); \
+		UType* Fire = UType::GetTypeByName(AllDummyTypes, FName(TEXT("Fire-Dummy"))); \
+		UType* Flying = UType::GetTypeByName(AllDummyTypes, FName(TEXT("Flying-Dummy"))); \
+		UType* Grass = UType::GetTypeByName(AllDummyTypes, FName(TEXT("Grass-Dummy"))); \
+		UType* Ground = UType::GetTypeByName(AllDummyTypes, FName(TEXT("Ground-Dummy"))); \
+		UType* Ice = UType::GetTypeByName(AllDummyTypes, FName(TEXT("Ice-Dummy"))); \
+		UType* Poison = UType::GetTypeByName(AllDummyTypes, FName(TEXT("Poison-Dummy"))); \
+		UType* Rock = UType::GetTypeByName(AllDummyTypes, FName(TEXT("Rock-Dummy"))); \
+		UType* Steel = UType::GetTypeByName(AllDummyTypes, FName(TEXT("Steel-Dummy"))); \
+		UType* Water = UType::GetTypeByName(AllDummyTypes, FName(TEXT("Water-Dummy")));
+	
+	/**
 	 * Performs "UType::Analyze" depending on bAtk for unit tests. Returns if the result is equal to the expected
 	 * values.
 	 * For example:

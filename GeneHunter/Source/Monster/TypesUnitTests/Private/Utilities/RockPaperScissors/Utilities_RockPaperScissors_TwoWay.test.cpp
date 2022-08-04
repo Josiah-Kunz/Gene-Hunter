@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "Utilities/TypeUnitTestUtilities.h"
-#include "DummyType.h"
+
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Utilities_RockPaperScissors_TwoWay,
 	"UType.Utilities.Rock-Paper-Scissors.2-Way",
@@ -34,8 +34,8 @@ bool FUType_Utilities_RockPaperScissors_TwoWay::RunTest(const FString& Parameter
 	bPass, true
 	);
 
-	// Destroy world + dummy types
-	GC_DUMMY_TYPES()
+	
+	
 	
 	return true;
 	

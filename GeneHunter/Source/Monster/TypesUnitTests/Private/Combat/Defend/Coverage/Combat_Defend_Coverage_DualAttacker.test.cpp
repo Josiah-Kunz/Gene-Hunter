@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "DummyType.h"
+
 #include "Utilities/TypeUnitTestUtilities.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Defend_Coverage_DualAttacker,
@@ -62,8 +62,8 @@ bool FUType_Combat_Defend_Coverage_DualAttacker::RunTest(const FString& Paramete
 	bPass, true
 	);
 	
-	// Destroy world + dummy types
-	GC_DUMMY_TYPES()
+	
+	
 
 	return true;
 	

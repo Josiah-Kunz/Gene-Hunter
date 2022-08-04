@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "Utilities/TypeUnitTestUtilities.h"
-#include "DummyType.h"
+
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Utilities_RockPaperScissors_OneWay,
 	"UType.Utilities.Rock-Paper-Scissors.1-Way",
@@ -36,7 +36,7 @@ bool FUType_Utilities_RockPaperScissors_OneWay::RunTest(const FString& Parameter
 	);
 
 	// Destroy tmp world and collect its garbage
-	GC_DUMMY_TYPES()
+	
 
 	// Return
 	return true;
