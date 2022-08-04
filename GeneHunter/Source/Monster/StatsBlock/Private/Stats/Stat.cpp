@@ -9,7 +9,7 @@ float FStat::StatJump(const int Level)
 
 #pragma region Public functions for setters/getters
 
-float FStat::GetCurrentValue()
+float FStat::GetCurrentValue() const
 {
 	return CurrentValue;
 }
@@ -18,9 +18,11 @@ void FStat::SetCurrentValue(const float NewValue)
 {
 	if (NewValue > 0)
 		CurrentValue = NewValue;
+	else
+		CurrentValue = 0;
 }
 
-float FStat::GetPermanentValue()
+float FStat::GetPermanentValue() const
 {
 	return PermanentValue;
 }
@@ -29,17 +31,13 @@ void FStat::SetPermanentValue(const float NewValue)
 {
 	if (NewValue > 0)
 		PermanentValue = NewValue;
+	else
+		PermanentValue = 1;
 }
 
 #pragma endregion
 
 #pragma region Public functions
-
-FStat::FStat()
-{
-	SetCurrentValue(1);
-	SetPermanentValue(1);
-}
 
 void FStat::Update(const int Level)
 {
@@ -85,7 +83,7 @@ void FStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, c
 	}
 }
 
-FString FStat::ToString(const bool Inline)
+FString FStat::ToString(const bool Inline) const
 {
 	if (Inline)
 	return FString::Printf(TEXT("%s | %s/%s | BaseStat: %s | BasePairs: %s |"),

@@ -42,13 +42,13 @@ protected:
 	 * at the start and end of a battle.
 	 */
 	UPROPERTY()
-	float CurrentValue;
+	float CurrentValue = 0;
 
 	/**
 	 * The default value of this Stat, e.g., when a battle starts. Only modify outside of battle (e.g., on level).
 	 */
 	UPROPERTY()
-	float PermanentValue;
+	float PermanentValue = 1;
 
 	virtual float StatJump(const int Level);
 
@@ -62,7 +62,7 @@ public:
 	 * The current value of this Stat that can be increased or decreased. CurrentValue reverts to PermanentValue, e.g.,
 	 * at the start and end of a battle.
 	 */
-	float GetCurrentValue();
+	float GetCurrentValue() const;
 
 	/**
 	 * The current value of this Stat that can be increased or decreased. CurrentValue reverts to PermanentValue, e.g.,
@@ -73,7 +73,7 @@ public:
 	/**
 	 * The default value of this Stat, e.g., when a battle starts. Only modify outside of battle (e.g., on level).
 	 */
-	float GetPermanentValue();
+	float GetPermanentValue() const;
 
 	/**
 	 * The default value of this Stat, e.g., when a battle starts. Only modify outside of battle (e.g., on level).
@@ -85,8 +85,6 @@ public:
 #pragma region Public functions
 
 public:
-
-	FStat();
 
 	/**
 	 * Updates both PermanentValue and CurrentValue (in that order) based on the level.
@@ -108,7 +106,7 @@ public:
 
 	virtual void ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode);
 
-	FString ToString(const bool Inline = true);
+	FString ToString(const bool Inline = true) const;
 
 #pragma endregion
 
