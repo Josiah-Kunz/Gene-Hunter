@@ -1,0 +1,1 @@
+﻿class FDetailsPanelArchitect : public ILayoutDetails
