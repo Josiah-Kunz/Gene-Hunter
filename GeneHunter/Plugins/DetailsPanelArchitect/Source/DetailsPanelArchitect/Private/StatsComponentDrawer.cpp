@@ -1,9 +1,9 @@
-﻿#include "StatsComponentDrawer.h"
+﻿#define LOCTEXT_NAMESPACE "StatsComponentDrawer"
+
+#include "StatsComponentDrawer.h"
 
 #include "DetailCategoryBuilder.h"
-#include "DetailLayoutBuilder.h"
-
-#define LOCTEXT_NAMESPACE "StatsComponentDrawer"
+#include "DetailWidgetRow.h"
 
 TSharedRef<IDetailCustomization> StatsComponentDrawer::MakeInstance()
 {

@@ -31,12 +31,6 @@
 		},
 		
 		
-		
-		{
-			"Name": "DetailsPanelArchitect",
-			"Type": "Editor",
-			"LoadingPhase": "PostEngineInit"
-		},
 		{
 			"Name": "TypesUnitTests",
 			"Type": "Editor",

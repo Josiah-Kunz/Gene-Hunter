@@ -1,9 +1,7 @@
 ﻿#pragma once
-
-#include "CoreMinimal.h"
+#include "DetailLayoutBuilder.h"
 #include "PropertyEditor/Public/IDetailCustomization.h"
 #include "StatsComponent.h"
-#include "DetailWidgetRow.h"
 
 class StatsComponentDrawer : public IDetailCustomization
 {
