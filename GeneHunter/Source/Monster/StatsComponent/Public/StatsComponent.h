@@ -47,31 +47,34 @@ public:
 #pragma region The Stat variables
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+# define CATEGORY_NAME \
+	"Stats"
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
 	int Level = 1;
 	
 	UFUNCTION(CallInEditor)
 	void SetLevel(const int Value);
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
 	FHealth Health;
 	
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
 	FPhysicalAttack PhysicalAttack;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
 	FPhysicalDefense PhysicalDefense;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
 	FSpecialAttack SpecialAttack;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
 	FSpecialDefense SpecialDefense;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
 	FHaste Haste;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
 	FCriticalHit CriticalHit;
 
 	TArray<FStat*> StatsArray = {
