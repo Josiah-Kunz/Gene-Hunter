@@ -11,7 +11,7 @@ void FDetailsPanelArchitectModule::StartupModule()
 {
 	
 	// Say hello
-	UE_LOG(LogTemp, Warning, TEXT("DetailsPanelArchitect loaded. Hello! =)"))
+	UE_LOG(LogTemp, Display, TEXT("DetailsPanelArchitect loaded. Hello! =)"))
 
 	// Get module
 	FPropertyEditorModule& PropertyEdModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
@@ -27,7 +27,7 @@ void FDetailsPanelArchitectModule::ShutdownModule()
 {
 
 	// Say bye
-	UE_LOG(LogTemp, Warning, TEXT("DetailsPanelArchitect unloaded. Goodbye =("))
+	UE_LOG(LogTemp, Display, TEXT("DetailsPanelArchitect unloaded. Goodbye =("))
 
 	// Get module
 	FPropertyEditorModule& PropertyEdModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");

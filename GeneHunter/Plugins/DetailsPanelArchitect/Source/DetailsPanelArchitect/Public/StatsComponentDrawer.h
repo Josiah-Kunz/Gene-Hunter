@@ -20,6 +20,16 @@ private:
 
 #pragma endregion
 
+#pragma region Private functions
+	
+private:
+	
 	UStatsComponent* GetStatsComponent(IDetailLayoutBuilder& DetailBuilder);
+
+	static float MaxStat (const UStatsComponent* StatsComponent, const EStatValueType StatType, const bool bPercentage);
+
+	static void SetStatFromString(FStat* Stat, const FText Text, const EStatValueType StatType);
+
+#pragma endregion
 	
 };

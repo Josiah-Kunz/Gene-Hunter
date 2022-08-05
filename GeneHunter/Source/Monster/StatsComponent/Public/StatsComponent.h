@@ -77,6 +77,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
 	FCriticalHit CriticalHit;
 
+#pragma endregion
+
+#pragma region Stat arrays
+
+public:
+
 	TArray<FStat*> StatsArray = {
 		&Health,
 		&PhysicalAttack,
@@ -86,6 +92,20 @@ public:
 		&Haste,
 		&CriticalHit
 	};
+
+	TArray<FStat*> NonPercentageStats = {
+		&Health,
+		&PhysicalAttack,
+		&PhysicalDefense,
+		&SpecialAttack,
+		&SpecialDefense
+	};
+
+	TArray<FStat*> PercentageStats = {
+		&Haste,
+		&CriticalHit
+	};
+
 
 #pragma endregion
 

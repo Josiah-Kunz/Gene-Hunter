@@ -1,7 +1,7 @@
 #pragma once
 
 /**
- * This tells certain functions which part of the Stat to modify.
+ * This tells certain functions which part of the Stat to modify, such as "Current" or "BaseStat".
  */
 UENUM(BlueprintType)
 enum class EStatValueType : uint8
