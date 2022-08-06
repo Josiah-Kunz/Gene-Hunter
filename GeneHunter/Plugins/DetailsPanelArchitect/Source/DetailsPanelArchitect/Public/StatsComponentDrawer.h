@@ -6,6 +6,15 @@
 class StatsComponentDrawer : public IDetailCustomization
 {
 
+#pragma region Variables
+
+private:
+	const float Padding = 2;
+	const float MaxWidth = 125;
+	const float MaxHeight = 20;
+
+#pragma endregion
+
 #pragma region Boilerplate
 	
 public:
