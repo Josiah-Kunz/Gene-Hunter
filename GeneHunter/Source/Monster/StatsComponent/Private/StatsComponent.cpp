@@ -39,13 +39,15 @@ void UStatsComponent::SetCumulativeExp(const int NewCumulativeExp)
 	// Cache old (it's a surprise tool that will help us later!)
 	const int OldLevel = GetLevel();
 
-	// Add and clamp
-	CumulativeExp += NewCumulativeExp;
+	// Set and clamp exp
+	CumulativeExp = FMath::Clamp(NewCumulativeExp, 1, GetCumulativeExpFromLevel(MaxLevel()));
+
+	// Clamp level
 	int NewLevel = GetLevel();
 	if (NewLevel < 0)
 	{
 		NewLevel = 0;
-		CumulativeExp = 0;
+		CumulativeExp = 1;
 	}
 	if (NewLevel > MaxLevel())
 	{

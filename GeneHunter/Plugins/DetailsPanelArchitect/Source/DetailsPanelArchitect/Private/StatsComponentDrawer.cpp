@@ -61,7 +61,7 @@ void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 						.OnTextCommitted_Lambda(
 								[this, &DetailBuilder](const FText& InText, ETextCommit::Type InTextCommit)
 								{
-									StatsComponent->SetLevel(FCString::Atoi(*InText.ToString()));
+									StatsComponent->SetLevel(UUtilityFunctionLibrary::FromSI(InText));
 									DetailBuilder.ForceRefreshDetails();
 								}
 							)
@@ -169,11 +169,11 @@ void StatsComponentDrawer::BuildStat(IDetailLayoutBuilder& DetailBuilder, TShare
 				// EditableText (does nothing right now)
 				+SCanvas::Slot()[
 					SNew(SEditableTextBox)
-						.Text(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), 2))
+						.Text(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), 3))
 						.OnTextCommitted_Lambda(
 							[&TargetStat, StatValueType, &DetailBuilder](const FText& InText, ETextCommit::Type InTextCommit)
 								{
-									TargetStat.ModifyValue(FCString::Atoi(*InText.ToString()), StatValueType, EModificationMode::SetDirectly);
+									TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
 									DetailBuilder.ForceRefreshDetails();
 								}
 						)

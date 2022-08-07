@@ -14,8 +14,8 @@ class BPLIBRARIES_API UConstLibrary : public UBlueprintFunctionLibrary
 
 public:
 
-	static constexpr int MAX_ITERATIONS = 10000;
-	inline static const FString LINE_SEPARATOR = "=================================";
+	static constexpr int MaxIterations = 10000;
+	inline static const FString LineSeparator = "=================================";
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FString GetInfinityText(){return TEXT("∞");}

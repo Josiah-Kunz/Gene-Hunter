@@ -46,7 +46,7 @@ void UAssetFunctionLibrary::EnsureValidAssetName(const FString Filename, const F
 			GEngine->AddOnScreenDebugMessage(-1, DisplayTime, FColor::Cyan, TEXT("Was it found at ")
 				+ (AbsolutePath + "/" + NewFilename + "." + Ext) + TEXT("? " + (bFoundFile ? "Yes" : "No")));
 		}
-		while (bFoundFile && i< UConstLibrary::MAX_ITERATIONS)
+		while (bFoundFile && i< UConstLibrary::MaxIterations)
 		{
 			i += 1;
 			NewFilename = SafeFilename + "_" + FString::FromInt(i);

@@ -95,7 +95,7 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 
 	// Print header in console
 	FString ConsoleText = "";
-	ConsoleText += UConstLibrary::LINE_SEPARATOR;
+	ConsoleText += UConstLibrary::LineSeparator;
 	ConsoleText += "\n";
 	ConsoleText += "Analysis when ";
 	AttackingText = bAtk ? "attacking" : "defending";
@@ -135,7 +135,7 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 	ConsoleText += FString::Printf(TEXT("\t%s\n"), *RangeText);
 	
 	// Last line for header
-	ConsoleText += UConstLibrary::LINE_SEPARATOR;
+	ConsoleText += UConstLibrary::LineSeparator;
 	ConsoleText += "\n\n";
 	
 	// Print results
@@ -193,7 +193,7 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 	}
 
 	// End
-	ConsoleText += UConstLibrary::LINE_SEPARATOR;
+	ConsoleText += UConstLibrary::LineSeparator;
 	LaTeXText += "\\end{longtblr}\n";
 	LaTeXText += "\\onecolumn\n";
 
@@ -223,14 +223,14 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 		if (bSaved)
 		{
 			UE_LOG(LogTemp, Display, TEXT("\n%s\nSaved @ %s\n%s"),
-				*UConstLibrary::LINE_SEPARATOR,
+				*UConstLibrary::LineSeparator,
 				*FileName,
-				*UConstLibrary::LINE_SEPARATOR);
+				*UConstLibrary::LineSeparator);
 		}else
 			UE_LOG(LogTemp, Warning, TEXT("\n%s\nFailed to save @ %s\n%s"),
-				*UConstLibrary::LINE_SEPARATOR,
+				*UConstLibrary::LineSeparator,
 				*FileName,
-				*UConstLibrary::LINE_SEPARATOR);
+				*UConstLibrary::LineSeparator);
 	}
 	
 }
@@ -251,7 +251,7 @@ void UTypeUnitTestUtilities::GetAllTypeCombinations(const TArray<UType*>& Types,
 
 	// Loop until options are exhausted
 	int Failsafe = 0;
-	while (Failsafe < UConstLibrary::MAX_ITERATIONS && Indices[0] <= Types.Num() - NumTypes)
+	while (Failsafe < UConstLibrary::MaxIterations && Indices[0] <= Types.Num() - NumTypes)
 	{
 
 		// Populate TypeInfo
@@ -283,7 +283,7 @@ void UTypeUnitTestUtilities::Analyze(const TArray<UType*>& TypesToAnalyze,
 
 		// Debug
 		if (bDebug)
-			UE_LOG(LogTemp, Display, TEXT("%s"), *UConstLibrary::LINE_SEPARATOR);
+			UE_LOG(LogTemp, Display, TEXT("%s"), *UConstLibrary::LineSeparator);
 
 		// Rely on another function
 		const float Modifier = UType::GetNetModifier(bAtk ? TypesToAnalyze : AgainstInfo.Array,
@@ -368,7 +368,7 @@ void UTypeUnitTestUtilities::AnalyzeAll(TArray<UType*>& Types, const int NumTest
 	
 	// Loop until all options are exhausted
 	int Failsafe1 = 0, Failsafe2;
-	while (Failsafe1 < UConstLibrary::MAX_ITERATIONS && TestedIndices[0] <= Types.Num() - NumTestedTypes)
+	while (Failsafe1 < UConstLibrary::MaxIterations && TestedIndices[0] <= Types.Num() - NumTestedTypes)
 	{
 
 		// Get the attacking Type combination based on current indices
@@ -384,7 +384,7 @@ void UTypeUnitTestUtilities::AnalyzeAll(TArray<UType*>& Types, const int NumTest
 		
 		// Test this combination's effectiveness against all other Types
 		Failsafe2 = 0;
-		while (Failsafe2 < UConstLibrary::MAX_ITERATIONS && UntestedIndices[0] <= Types.Num() - NumUntestedTypes)
+		while (Failsafe2 < UConstLibrary::MaxIterations && UntestedIndices[0] <= Types.Num() - NumUntestedTypes)
 		{
 
 			// Get the attacking Type combination based on indices
@@ -460,14 +460,14 @@ void UTypeUnitTestUtilities::PrintRockPaperScissors(const bool bTwoWay)
 	// Print it
 	const FString TwoWay = bTwoWay ? "Two-Way" : "One-Way";
 	UE_LOG(LogTemp, Warning, TEXT(" \n%s\nTriads (%s)\n%s"),
-				*UConstLibrary::LINE_SEPARATOR,
+				*UConstLibrary::LineSeparator,
 				*TwoWay,
-				*UConstLibrary::LINE_SEPARATOR);
+				*UConstLibrary::LineSeparator);
 	for(const FTypeArray1D Triad : Triads)
 		UE_LOG(LogTemp, Display, TEXT("\t%s\n"),
 			*FTypeArray1D::TypeArray1DToFString(Triad)
 			);
-	UE_LOG(LogTemp, Warning, TEXT(" \n%s"), *UConstLibrary::LINE_SEPARATOR);
+	UE_LOG(LogTemp, Warning, TEXT(" \n%s"), *UConstLibrary::LineSeparator);
 }
 
 void UTypeUnitTestUtilities::ArrayOfTypeArray1DToArrayOfTypes(const TArray<FTypeArray1D>& Original,

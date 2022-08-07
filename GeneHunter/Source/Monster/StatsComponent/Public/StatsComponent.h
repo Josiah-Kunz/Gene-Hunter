@@ -51,7 +51,7 @@ private:
 	/**
 	 * The total experience accumulated points across all levels.
 	 */
-	int CumulativeExp = 0;
+	int CumulativeExp = 1;
 
 public:
 
