@@ -29,14 +29,78 @@ void UStatsComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	// ...
 }
 
-#pragma endregion
-
-void UStatsComponent::SetLevel(const int Value)
+int UStatsComponent::GetCumulativeExp() const
 {
-	Level = Value;
-	for(FStat* Stat : StatsArray)
-		Stat->Update(Level);
+	return CumulativeExp;
 }
+
+void UStatsComponent::SetCumulativeExp(const int NewCumulativeExp)
+{
+	// Cache old (it's a surprise tool that will help us later!)
+	const int OldLevel = GetLevel();
+
+	// Add and clamp
+	CumulativeExp += NewCumulativeExp;
+	int NewLevel = GetLevel();
+	if (NewLevel < 0)
+	{
+		NewLevel = 0;
+		CumulativeExp = 0;
+	}
+	if (NewLevel > MaxLevel())
+	{
+		NewLevel = MaxLevel();
+		CumulativeExp = GetCumulativeExpFromLevel(MaxLevel());
+	}
+
+	// Did it change?
+	if (NewLevel != OldLevel)
+		RecalculateStats();
+}
+
+void UStatsComponent::AddCumulativeExp(const int AddedCumulativeExp)
+{
+	SetCumulativeExp(GetCumulativeExp() + AddedCumulativeExp);
+}
+
+int UStatsComponent::GetLevel() const
+{
+	return FMath::Floor(FMathf::Pow(GetCumulativeExp(), 1/ExpExponent()));
+}
+
+void UStatsComponent::SetLevel(const int NewLevel)
+{
+	const int Level = FMathf::Clamp(NewLevel, 1, MaxLevel());
+	SetCumulativeExp(FMathf::Pow(Level, ExpExponent()));
+	for(FStat* Stat : StatsArray)
+		Stat->Update(GetLevel());
+}
+
+void UStatsComponent::AddLevels(const int AddedLevels)
+{
+	SetLevel(GetLevel() + AddedLevels);
+}
+
+float UStatsComponent::GetCumulativeExpFromLevel(const int TargetLevel)
+{
+	return FMathf::Pow(TargetLevel, ExpExponent());
+}
+
+float UStatsComponent::GetExpToLevel()
+{
+	if (GetLevel() == MaxLevel())
+		return 0;
+	const float ThisLevelExp = GetCumulativeExpFromLevel(GetLevel());
+	const float NextLevelExp = GetCumulativeExpFromLevel(GetLevel() + 1);
+	return NextLevelExp - ThisLevelExp;
+}
+
+float UStatsComponent::GetExp()
+{
+	return GetCumulativeExp() - GetCumulativeExpFromLevel(GetLevel());
+}
+
+#pragma endregion
 
 void UStatsComponent::RandomizeStats(
 	const int MinBaseStat, const int MaxBaseStat,
@@ -48,7 +112,7 @@ void UStatsComponent::RandomizeStats(
 			Stat->BaseStat = FMath::RandRange(MinBaseStat, MaxBaseStat);
 		if (MaxBasePairs > MinBasePairs)
 			Stat->BasePairs = FMath::RandRange(MinBasePairs, MaxBasePairs);
-		Stat->Update(Level);
+		Stat->Update(GetLevel());
 	}
 }
 
@@ -75,6 +139,12 @@ void UStatsComponent::ModifyStatsUniformly(const float UniformMod, const EStatVa
 {
 	for(FStat* Stat : StatsArray)
 		Stat->ModifyValue(UniformMod, ValueType, Mode);
+}
+
+void UStatsComponent::RecalculateStats()
+{
+	for(FStat* Stat : StatsArray)
+		Stat->Update(GetLevel());
 }
 
 void UStatsComponent::RandomizeStats_DetailsPanel()

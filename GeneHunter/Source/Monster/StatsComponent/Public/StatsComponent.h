@@ -44,37 +44,102 @@ public:
 
 #pragma endregion
 
-#pragma region The Stat variables
+#pragma region Level variables and functions
+
+private:
+
+	/**
+	 * The total experience accumulated points across all levels.
+	 */
+	int CumulativeExp = 0;
+
 public:
 
-# define CATEGORY_NAME \
-	"Stats"
+	/**
+	 * Gets the total experience accumulated points across all levels.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
+	int GetCumulativeExp() const;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
-	int Level = 1;
+	/**
+	 * Sets the total experience accumulated points across all levels.
+	 */
+	UFUNCTION(BlueprintCallable, Category="Level")
+	void SetCumulativeExp(const int NewCumulativeExp);
+
+	/**
+	 * Adds to the total experience accumulated points across all levels.
+	 */
+	UFUNCTION(BlueprintCallable, Category="Level")
+	void AddCumulativeExp(const int AddedCumulativeExp);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
+	int GetLevel() const;
 	
-	UFUNCTION(CallInEditor)
-	void SetLevel(const int Value);
+	UFUNCTION(BlueprintCallable, Category="Level")
+	void SetLevel(const int NewLevel);
+
+	/**
+	 * Adds to the current level.
+	 */
+	UFUNCTION(BlueprintCallable, Category="Level")
+	void AddLevels(const int AddedLevels);
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
+	/**
+	 * The maximum level. Overrideable.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
+	virtual int MaxLevel(){return 100;}
+
+	/**
+	* The relationship between level and cumulativeExp is:
+	*	CumulativeExp = Level ^ ExpExponent
+	*/
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
+	static float ExpExponent(){return 3;}
+
+	/**
+	 * Retrieves the minimum amount of (cumulative) experience points required for the target level.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
+	static float GetCumulativeExpFromLevel(const int TargetLevel);
+
+	/**
+	 * Gets the experience points required for the next level.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
+	float GetExpToLevel();
+
+	/**
+	 * Gets the amount of (non-cumulative) experience points into this level. Useful for display purposes.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
+	float GetExp();
+
+#pragma endregion
+
+#pragma region Stat variables
+public:
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	FHealth Health;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	FPhysicalAttack PhysicalAttack;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	FPhysicalDefense PhysicalDefense;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	FSpecialAttack SpecialAttack;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	FSpecialDefense SpecialDefense;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	FHaste Haste;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY_NAME)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	FCriticalHit CriticalHit;
 
 #pragma endregion
@@ -138,6 +203,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	void ModifyStatsUniformly(const float UniformMod, const EStatValueType ValueType, const EModificationMode Mode);
+
+	/**
+	 * Recalculates all stats based on the current level and resets current stats.
+	 */
+	UFUNCTION(BlueprintCallable)
+	void RecalculateStats();
 
 #pragma endregion
 

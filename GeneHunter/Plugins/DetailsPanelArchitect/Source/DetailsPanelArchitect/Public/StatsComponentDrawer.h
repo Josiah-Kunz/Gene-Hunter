@@ -34,7 +34,16 @@ private:
 
 #pragma endregion
 
-#pragma region Private functions
+#pragma region Private customization functions
+
+private:
+	virtual void CustomizeLevelDetails(IDetailLayoutBuilder& DetailBuilder);
+
+	virtual void CustomizeStatsDetails(IDetailLayoutBuilder& DetailBuilder);
+
+#pragma endregion
+
+#pragma region Private utility functions
 	
 private:
 	

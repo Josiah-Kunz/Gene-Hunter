@@ -22,9 +22,22 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 	StatsComponent = GetStatsComponent(DetailBuilder);
 
 	// Level
-	const TSharedPtr<IPropertyHandle> LevelHandle = DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, Level));
-	IDetailPropertyRow* LevelRow = DetailBuilder.EditDefaultProperty(LevelHandle);
-	LevelRow->CustomWidget()
+	CustomizeLevelDetails(DetailBuilder);
+
+	// Stats
+	CustomizeStatsDetails(DetailBuilder);
+	
+}
+
+void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBuilder)
+{
+
+	FString CategoryName = "Level";
+	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
+		FName(CategoryName),
+		FText::FromString(CategoryName),
+		ECategoryPriority::Important);
+	Category.AddCustomRow(LOCTEXT("Keyword", "Level"))
 
 		// Name
 		.NameContent()[
@@ -44,12 +57,12 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 				// EditableText (does nothing right now)
 				+SCanvas::Slot()[
 					SNew(SEditableTextBox)
-						.Text(FText::FromString(FString::FromInt(StatsComponent->Level)))
-						.OnTextChanged_Lambda(
-								[this](const FText& InText)
+						.Text(FText::FromString(FString::FromInt(StatsComponent->GetLevel())))
+						.OnTextCommitted_Lambda(
+								[this, &DetailBuilder](const FText& InText, ETextCommit::Type InTextCommit)
 								{
-									// TODO
-									StatsComponent->Level = FCString::Atoi(*InText.ToString());
+									StatsComponent->SetLevel(FCString::Atoi(*InText.ToString()));
+									DetailBuilder.ForceRefreshDetails();
 								}
 							)
 				] 
@@ -78,23 +91,29 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 					SNew(SColorBlock) 
 						.Color(FLinearColor::Green)
 						.Clipping(EWidgetClipping::ClipToBounds)
-						.ToolTipText(FText::FromString("The higher the level, the stronger the stats! The max level is 100."))
+						.ToolTipText(FText::FromString(FString::Printf(TEXT(
+							"The higher the level, the stronger the stats! The max level is %s."),
+							*FString::FromInt(StatsComponent->MaxLevel()
+						))))
 				]
 				.Position(FVector2D{Padding, 0})
-				.Size(FVector2D{(ValueMaxWidth - 2*Padding) * StatsComponent->Level/100, MaxHeight - 2*Padding})
+				.Size(FVector2D{(ValueMaxWidth - 2*Padding) * StatsComponent->GetLevel()/StatsComponent->MaxLevel(), MaxHeight - 2*Padding})
 				.HAlign(HAlign_Left)
 				.VAlign(VAlign_Center)
 	];
-	;
-	
+}
+
+void StatsComponentDrawer::CustomizeStatsDetails(IDetailLayoutBuilder& DetailBuilder)
+{
+
 	// Get useful limits
 	const float MaxStatValue = MaxStat(StatsComponent, EStatValueType::Current, false);
 	const float MaxPercentValue = MaxStat(StatsComponent, EStatValueType::Current, true);
 	
 	// Define macro (if not for GET_MEMBER_NAME_CHECKED, you could do this as a function
 	#define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax) \
-		const TSharedPtr<IPropertyHandle> Handle##TargetStat = DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetStat)); \
-		BuildStat(DetailBuilder, Handle##TargetStat, StatsComponent->TargetStat, EStatValueType::Current, ValueMax);
+	const TSharedPtr<IPropertyHandle> Handle##TargetStat = DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetStat)); \
+	BuildStat(DetailBuilder, Handle##TargetStat, StatsComponent->TargetStat, EStatValueType::Current, ValueMax);
 	
 	CURRENT_STAT_PROPERTY(Health, GetCurrentValue(), MaxStatValue)
 	CURRENT_STAT_PROPERTY(PhysicalAttack, GetCurrentValue(), MaxStatValue)
@@ -103,27 +122,7 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 	CURRENT_STAT_PROPERTY(SpecialDefense, GetCurrentValue(), MaxStatValue)
 	CURRENT_STAT_PROPERTY(Haste, GetCurrentValue(), MaxPercentValue)
 	CURRENT_STAT_PROPERTY(CriticalHit, GetCurrentValue(), MaxPercentValue)
-				
-				
-
 	
-	// Modify category slate-style
-	FString CategoryName = UTF8_TO_TCHAR(CATEGORY_NAME);
-	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
-		FName(CategoryName),
-		FText::FromString(CategoryName),
-		ECategoryPriority::Important);
-
-	// Visuals slate-style
-	Category.AddCustomRow(LOCTEXT("Keyword", "Stats"))
-		.NameContent()[
-			SNew(STextBlock)
-				.Text(FText::FromString("OK"))
-			]
-		.ValueContent()[
-			SNew(SButton)
-				.Text(FText::FromString("KOOOOO"))
-			];
 }
 
 UStatsComponent* StatsComponentDrawer::GetStatsComponent(IDetailLayoutBuilder& DetailBuilder)
@@ -174,7 +173,6 @@ void StatsComponentDrawer::BuildStat(IDetailLayoutBuilder& DetailBuilder, TShare
 						.OnTextCommitted_Lambda(
 							[&TargetStat, StatValueType, &DetailBuilder](const FText& InText, ETextCommit::Type InTextCommit)
 								{
-									// TODO
 									TargetStat.ModifyValue(FCString::Atoi(*InText.ToString()), StatValueType, EModificationMode::SetDirectly);
 									DetailBuilder.ForceRefreshDetails();
 								}
