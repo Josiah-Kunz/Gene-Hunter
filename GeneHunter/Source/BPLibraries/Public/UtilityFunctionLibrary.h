@@ -19,5 +19,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static float RoundToDecimals(const float Original, const int NumDecimals);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static FText ToSI(const float Value, const int NumDecimals);
 	
 };

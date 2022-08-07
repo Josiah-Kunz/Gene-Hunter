@@ -5,69 +5,10 @@
 #include "DetailCategoryBuilder.h"
 #include "DetailWidgetRow.h"
 #include "MathUtil.h"
+#include "BPLibraries/Public/UtilityFunctionLibrary.h"
 #include "Widgets/SCanvas.h"
 #include "Widgets/Colors/SColorBlock.h"
 #include "Widgets/Input/SEditableTextBox.h"
-
-#define STAT_SLOT() \
-	+SCanvas::Slot()
-
-#define STAT_BACKGROUND() \
-	STAT_SLOT() [ \
-		SNew(SColorBlock) \
-		.Color(FLinearColor::Black) \
-		.Size(FVector2D{MaxWidth, MaxHeight}) \
-	]
-
-#define STAT_SIMPLETEXT(StringText, BGColor) \
-	SNew(STextBlock) \
-		.Text(FText::FromString(StringText)) \
-		.Justification(ETextJustify::Center) \
-		.ColorAndOpacity(BGColor) 
-
-#define STAT_TEXTBLOCK(StringText, BGColor) \
-	STAT_SLOT() [ \
-		STAT_SIMPLETEXT(StringText, BGColor) \
-	] \
-	.Size(FVector2D{MaxWidth, MaxHeight})
-	
-#define STAT_BAR(StatPointer, ValueMember, ValueMax) \
-	STAT_SLOT() [ \
-		SNew(SColorBlock) \
-			.Color(StatPointer.Color()) \
-			.Size(FVector2D{MaxWidth * StatPointer.ValueMember / ValueMax, MaxHeight}) \
-			.Clipping(EWidgetClipping::ClipToBounds) \
-	] \
-		.HAlign(HAlign_Left) \
-		.Size(FVector2D{MaxWidth - 2*Padding, MaxHeight - 2*Padding}) \
-		.Position(FVector2D{Padding, Padding}) \
-	STAT_SLOT()[ \
-		STAT_SIMPLETEXT(StatsComponent->Health.Name(), FLinearColor::White) \
-	] 
-
-#define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax) \
-	TSharedPtr<IPropertyHandle> Handle##TargetStat = DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetStat)); \
-	IDetailPropertyRow* Row##TargetStat = DetailBuilder.EditDefaultProperty(Handle##TargetStat); \
-	Row##TargetStat->CustomWidget() \
-		.NameContent()[ \
-			SNew(SCanvas) \
-				STAT_SLOT()[ \
-					SNew(STextBlock) \
-						.Text(FText::FromString(StatsComponent->TargetStat.Abbreviation())) \
-				] \
-				.Size(FVector2D{MaxWidth, MaxHeight}) \
-				STAT_SLOT()[ \
-					SNew(SEditableTextBox) \
-						.Text(FText::FromString(FString::SanitizeFloat(StatsComponent->TargetStat.ValueMember))) \
-				] \
-				.Size(FVector2D{MaxWidth, MaxHeight}) \
-				.HAlign(HAlign_Right) \
-		] \
-		.ValueContent()[ \
-			SNew(SCanvas) \
-				STAT_BACKGROUND() \
-				STAT_BAR(StatsComponent->TargetStat, ValueMember, ValueMax) \
-			];
 
 TSharedRef<IDetailCustomization> StatsComponentDrawer::MakeInstance()
 {
@@ -78,33 +19,83 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 	
 	// Get object
-	UStatsComponent* StatsComponent = GetStatsComponent(DetailBuilder);
-	SNew(SCanvas) \
-					STAT_SLOT()[ \
-						SNew(STextBlock) \
-							.Text(FText::FromString(StatsComponent->Health.Abbreviation())) \
-					].Size(FVector2D{MaxWidth, MaxHeight}) \
+	StatsComponent = GetStatsComponent(DetailBuilder);
+
+	// Level
+	const TSharedPtr<IPropertyHandle> LevelHandle = DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, Level));
+	IDetailPropertyRow* LevelRow = DetailBuilder.EditDefaultProperty(LevelHandle);
+	LevelRow->CustomWidget()
+
+		// Name
+		.NameContent()[
+			SNew(SCanvas)
+
+				// Text
+				+SCanvas::Slot()[
+					SNew(STextBlock)
+						.Text(FText::FromString("Lv."))
+						.ToolTipText( FText::FromString("Level"))
+				]
+				.Size(FVector2D{StatAbbrevMaxWidth, MaxHeight})
+				.Position(FVector2D{0, 0})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+
+				// EditableText (does nothing right now)
+				+SCanvas::Slot()[
+					SNew(SEditableTextBox)
+						.Text(FText::FromString(FString::FromInt(StatsComponent->Level)))
+						.OnTextChanged_Lambda(
+								[this](const FText& InText)
+								{
+									// TODO
+									StatsComponent->Level = FCString::Atoi(*InText.ToString());
+								}
+							)
+				] 
+				.Size(FVector2D{StatInputWidth, MaxHeight})
+				.Position(FVector2D{StatAbbrevMaxWidth, 0})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+		]
+
+		// Level bar
+		.ValueContent()[
+			SNew(SCanvas)
+
+				// Background
+				+SCanvas::Slot()[
+					SNew(SColorBlock) 
+						.Color(FLinearColor::Black)
+				]
+				.Position(FVector2D{0, 0})
+				.Size(FVector2D{ValueMaxWidth, MaxHeight})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+				
+				// Stat bar
+				+SCanvas::Slot()[
+					SNew(SColorBlock) 
+						.Color(FLinearColor::Green)
+						.Clipping(EWidgetClipping::ClipToBounds)
+						.ToolTipText(FText::FromString("The higher the level, the stronger the stats! The max level is 100."))
+				]
+				.Position(FVector2D{Padding, 0})
+				.Size(FVector2D{(ValueMaxWidth - 2*Padding) * StatsComponent->Level/100, MaxHeight - 2*Padding})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+	];
 	;
+	
 	// Get useful limits
-	float MaxStatValue = MaxStat(StatsComponent, EStatValueType::Current, false);
-	float MaxPercentValue = MaxStat(StatsComponent, EStatValueType::Current, true);
+	const float MaxStatValue = MaxStat(StatsComponent, EStatValueType::Current, false);
+	const float MaxPercentValue = MaxStat(StatsComponent, EStatValueType::Current, true);
 	
 	// Define macro (if not for GET_MEMBER_NAME_CHECKED, you could do this as a function
-	SNew(SCanvas)
-	+SCanvas::Slot()[
-		SNew(SColorBlock) 
-			.Color(StatsComponent->Health.Color()) 
-			.Size(FVector2D{10, 10}) 
-			.Clipping(EWidgetClipping::ClipToBounds)
-			
-	]
-	.Size(FVector2D{MaxWidth - 2*Padding, MaxHeight - 2*Padding}) 
-	.Position(FVector2D{Padding, Padding})
-	+SCanvas::Slot()[
-				STAT_SIMPLETEXT(StatsComponent->Health.Name(), FLinearColor::White)
-			] 
-	;
-
+	#define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax) \
+		const TSharedPtr<IPropertyHandle> Handle##TargetStat = DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetStat)); \
+		BuildStat(DetailBuilder, Handle##TargetStat, StatsComponent->TargetStat, EStatValueType::Current, ValueMax);
+	
 	CURRENT_STAT_PROPERTY(Health, GetCurrentValue(), MaxStatValue)
 	CURRENT_STAT_PROPERTY(PhysicalAttack, GetCurrentValue(), MaxStatValue)
 	CURRENT_STAT_PROPERTY(PhysicalDefense, GetCurrentValue(), MaxStatValue)
@@ -146,14 +137,83 @@ UStatsComponent* StatsComponentDrawer::GetStatsComponent(IDetailLayoutBuilder& D
 	if (!Object.IsValid()) return nullptr;
 
 	// Get
-	UStatsComponent* StatsComponent = Cast<UStatsComponent>(Object.Get());
+	UStatsComponent* Ret = Cast<UStatsComponent>(Object.Get());
 
 	// Guard again
-	if (!StatsComponent) return nullptr;
+	if (!Ret) return nullptr;
 
 	// Return
-	return StatsComponent;
+	return Ret;
 }
+
+void StatsComponentDrawer::BuildStat(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
+	FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue)
+{
+	IDetailPropertyRow* Row = DetailBuilder.EditDefaultProperty(PropertyHandle);
+	Row->CustomWidget()
+
+		// "Name" content
+		.NameContent()[ 
+			SNew(SCanvas)
+
+				// Abbreviation
+				+SCanvas::Slot()[
+					SNew(STextBlock)
+						.Text(FText::FromString(TargetStat.Abbreviation()))
+						.ToolTipText( FText::FromString(TargetStat.Name()))
+				]
+				.Size(FVector2D{StatAbbrevMaxWidth, MaxHeight})
+				.Position(FVector2D{0, 0})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+
+				// EditableText (does nothing right now)
+				+SCanvas::Slot()[
+					SNew(SEditableTextBox)
+						.Text(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), 2))
+						.OnTextCommitted_Lambda(
+							[&TargetStat, StatValueType, &DetailBuilder](const FText& InText, ETextCommit::Type InTextCommit)
+								{
+									// TODO
+									TargetStat.ModifyValue(FCString::Atoi(*InText.ToString()), StatValueType, EModificationMode::SetDirectly);
+									DetailBuilder.ForceRefreshDetails();
+								}
+						)
+				] 
+				.Size(FVector2D{StatInputWidth, MaxHeight})
+				.Position(FVector2D{StatAbbrevMaxWidth, 0})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+		]
+
+		// "Value" content
+		.ValueContent()[
+			SNew(SCanvas)
+
+				// Background
+				+SCanvas::Slot()[
+					SNew(SColorBlock) 
+						.Color(FLinearColor::Black)
+				]
+				.Position(FVector2D{0, 0})
+				.Size(FVector2D{ValueMaxWidth, MaxHeight})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+				
+				// Stat bar
+				+SCanvas::Slot()[
+					SNew(SColorBlock) 
+						.Color(TargetStat.Color())
+						.Clipping(EWidgetClipping::ClipToBounds)
+						.ToolTipText(TargetStat.SupportingText().Description)
+				]
+				.Position(FVector2D{Padding, 0})
+				.Size(FVector2D{(ValueMaxWidth - 2*Padding) * TargetStat.GetValue(StatValueType) / MaxValue, MaxHeight - 2*Padding})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+	];
+}
+
 
 float StatsComponentDrawer::MaxStat(const UStatsComponent* StatsComponent, const EStatValueType StatType, const bool bPercentage)
 {

@@ -9,9 +9,14 @@ class StatsComponentDrawer : public IDetailCustomization
 #pragma region Variables
 
 private:
-	const float Padding = 2;
-	const float MaxWidth = 125;
-	const float MaxHeight = 20;
+	inline constexpr static float Padding = 2;
+	inline constexpr static float StatInputWidth = 50;
+	inline constexpr static float StatAbbrevMaxWidth = 30;
+	inline constexpr static float ValueMaxWidth = 125;
+	inline constexpr static float MaxHeight = 20;
+
+	UStatsComponent* StatsComponent = nullptr;
+
 
 #pragma endregion
 
@@ -34,6 +39,9 @@ private:
 private:
 	
 	UStatsComponent* GetStatsComponent(IDetailLayoutBuilder& DetailBuilder);
+
+	void BuildStat(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
+		FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue);
 
 	static float MaxStat (const UStatsComponent* StatsComponent, const EStatValueType StatType, const bool bPercentage);
 

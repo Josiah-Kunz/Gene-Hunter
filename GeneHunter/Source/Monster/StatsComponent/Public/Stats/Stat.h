@@ -106,6 +106,11 @@ public:
 
 	virtual void ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode);
 
+	/**
+	 * Gets a "value" associated with this Stat (e.g., BaseStat, PermanentValue, etc.). Useful for, e.g., modular drawers.
+	 */
+	virtual float GetValue(const EStatValueType ModifyType);
+
 	FString ToString(const bool Inline = true) const;
 
 #pragma endregion

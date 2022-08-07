@@ -29,7 +29,9 @@ public class DetailsPanelArchitect : ModuleRules
 				"Core",
 				
 				// Editor specific
-				"PropertyEditor", // IDetailLayoutBuilder
+				"PropertyEditor",	// IDetailLayoutBuilder
+				"BPLibraries",		// ToSI functionality
+				"UI",				// SupportingText
 
 				// Types to customize
 				"StatsComponent",

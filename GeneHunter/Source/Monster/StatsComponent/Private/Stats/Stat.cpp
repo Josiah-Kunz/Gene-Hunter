@@ -83,6 +83,26 @@ void FStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, c
 	}
 }
 
+float FStat::GetValue(const EStatValueType ModifyType)
+{
+	switch(ModifyType)
+	{
+	case EStatValueType::Current:
+		return GetCurrentValue();
+	case EStatValueType::Permanent:
+		return GetPermanentValue();
+	case EStatValueType::CurrentAndPermanent:
+		UE_LOG(LogTemp, Warning, TEXT("Problem in FStat::GetValue! \"CurrentAndPermanent\" not well defined!"))
+		return GetCurrentValue();
+	case EStatValueType::BaseStat:
+		return BaseStat;
+	case EStatValueType::BasePairs:
+		return BasePairs;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Problem in FStat::GetValue! Enum value not defined!"))
+	return GetCurrentValue();
+}
+
 FString FStat::ToString(const bool Inline) const
 {
 	if (Inline)
