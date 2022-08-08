@@ -75,8 +75,7 @@ private:
 		FTextWidgetParameters LabelWidgetParameters,
 		FEditableTextBoxWidgetParameters EditableTextBoxWidgetParameters,
 		FTextWidgetParameters MaxWidgetParameters,
-		FBarWidgetParameters BarWidgetParameters,
-		TFunction<void (const FText& InText, const ETextCommit::Type InTextCommit)> OnTextCommitted
+		FBarWidgetParameters BarWidgetParameters
 	);
 
 #pragma endregion

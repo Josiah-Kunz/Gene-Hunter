@@ -135,8 +135,13 @@ void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 				UUtilityFunctionLibrary::ToSI(StatsComponent->GetCumulativeExp(), SigFigs),
 				FText::GetEmpty(),
 				FVector2D{StatInputWidth, MaxHeight},
-				FVector2D{StatAbbrevMaxWidth, 0}
-			}
+				FVector2D{StatAbbrevMaxWidth, 0},
+			},
+			[this, &DetailBuilder](const FText& InText, ETextCommit::Type& CommitType)
+								{
+									StatsComponent->SetCumulativeExp(UUtilityFunctionLibrary::FromSI(InText));
+									DetailBuilder.ForceRefreshDetails();
+								}
 		},
 		FTextWidgetParameters{
 			UUtilityFunctionLibrary::ToSI(StatsComponent->GetMaxExp(), SigFigs),
@@ -154,13 +159,7 @@ void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 			FLinearColor::Black,
 			FLinearColor{0.7f, 0, 0.7f},
 			StatsComponent->GetCumulativeExp()/StatsComponent->GetMaxExp()
-		},
-		[this, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
-								{
-									StatsComponent->SetCumulativeExp(UUtilityFunctionLibrary::FromSI(InText));
-									DetailBuilder.ForceRefreshDetails();
-			UE_LOG(LogTemp, Warning, TEXT("HULLO!"))
-								}
+		}
 	);
 	
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
@@ -385,8 +384,7 @@ void StatsComponentDrawer::BuildStat(IDetailLayoutBuilder& DetailBuilder, TShare
 
 void StatsComponentDrawer::BarWidgetFromNew(IDetailLayoutBuilder& DetailBuilder, const FString CategoryName,
 	FTextWidgetParameters LabelWidgetParameters, FEditableTextBoxWidgetParameters EditableTextBoxWidgetParameters,
-	FTextWidgetParameters MaxWidgetParameters, FBarWidgetParameters BarWidgetParameters,
-	TFunction<void (const FText& InText, const ETextCommit::Type InTextCommit)> OnTextCommitted)
+	FTextWidgetParameters MaxWidgetParameters, FBarWidgetParameters BarWidgetParameters)
 {
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
 		FName(CategoryName),
@@ -414,11 +412,7 @@ void StatsComponentDrawer::BarWidgetFromNew(IDetailLayoutBuilder& DetailBuilder,
 				SNew(SEditableTextBox)
 					.Text(EditableTextBoxWidgetParameters.Text)
 					.ToolTipText(EditableTextBoxWidgetParameters.Tooltip)
-					.OnTextCommitted_Lambda( 
-						[this, &OnTextCommitted](const FText& InText, const ETextCommit::Type InTextCommit)
-						{
-							OnTextCommitted(InText, InTextCommit);
-						})
+					.OnTextCommitted_Lambda(EditableTextBoxWidgetParameters.OnTextCommitted)
 			] 
 			.Size(EditableTextBoxWidgetParameters.WidgetSize)
 			.Position(EditableTextBoxWidgetParameters.WidgetPosition)

@@ -9,5 +9,4 @@ public:
 	FVector2D WidgetPosition = FVector2D{0, 0};
 	EHorizontalAlignment WidgetHAlign = HAlign_Left;
 	EVerticalAlignment WidgetVAlign = VAlign_Center;
-
 };
