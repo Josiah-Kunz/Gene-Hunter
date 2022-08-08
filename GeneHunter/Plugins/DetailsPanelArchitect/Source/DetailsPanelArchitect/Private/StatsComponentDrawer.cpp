@@ -56,7 +56,7 @@ void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 					SNew(SEditableTextBox)
 						.Text(FText::FromString(FString::FromInt(StatsComponent->GetLevel())))
 						.OnTextCommitted_Lambda(
-								[this, &DetailBuilder](const FText& InText, ETextCommit::Type InTextCommit)
+								[this, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
 								{
 									StatsComponent->SetLevel(UUtilityFunctionLibrary::FromSI(InText));
 									DetailBuilder.ForceRefreshDetails();
@@ -148,16 +148,18 @@ void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 			{
 				FText::GetEmpty(),
 				FText::FromString("Change in exp = change in level"),
-				FVector2D{ValueMaxWidth, MaxHeight}
+				FVector2D{ValueMaxWidth, MaxHeight},
+				FVector2D{StatAbbrevMaxWidth + StatInputWidth + SlashWidth + StatInputWidth, 0}
 			},
 			FLinearColor::Black,
 			FLinearColor{0.7f, 0, 0.7f},
 			StatsComponent->GetCumulativeExp()/StatsComponent->GetMaxExp()
 		},
-		[this, &DetailBuilder](const FText& InText, ETextCommit::Type InTextCommit)
+		[this, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
 								{
 									StatsComponent->SetCumulativeExp(UUtilityFunctionLibrary::FromSI(InText));
 									DetailBuilder.ForceRefreshDetails();
+			UE_LOG(LogTemp, Warning, TEXT("HULLO!"))
 								}
 	);
 	
@@ -187,7 +189,7 @@ void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 					SNew(SEditableTextBox)
 						.Text(FText::FromString(FString::FromInt(StatsComponent->GetLevel())))
 						.OnTextCommitted_Lambda(
-								[this, &DetailBuilder](const FText& InText, ETextCommit::Type InTextCommit)
+								[this, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
 								{
 									StatsComponent->SetLevel(UUtilityFunctionLibrary::FromSI(InText));
 									DetailBuilder.ForceRefreshDetails();
@@ -320,7 +322,7 @@ void StatsComponentDrawer::BuildStat(IDetailLayoutBuilder& DetailBuilder, TShare
 					SNew(SEditableTextBox)
 						.Text(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs))
 						.OnTextCommitted_Lambda(
-							[&TargetStat, StatValueType, &DetailBuilder](const FText& InText, ETextCommit::Type InTextCommit)
+							[&TargetStat, StatValueType, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
 								{
 									TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
 									DetailBuilder.ForceRefreshDetails();
@@ -381,16 +383,19 @@ void StatsComponentDrawer::BuildStat(IDetailLayoutBuilder& DetailBuilder, TShare
 	];
 }
 
-template <typename F>
 void StatsComponentDrawer::BarWidgetFromNew(IDetailLayoutBuilder& DetailBuilder, const FString CategoryName,
 	FTextWidgetParameters LabelWidgetParameters, FEditableTextBoxWidgetParameters EditableTextBoxWidgetParameters,
-	FTextWidgetParameters MaxWidgetParameters, FBarWidgetParameters BarWidgetParameters, F&& OnTextCommitted_Lambda)
+	FTextWidgetParameters MaxWidgetParameters, FBarWidgetParameters BarWidgetParameters,
+	TFunction<void (const FText& InText, const ETextCommit::Type InTextCommit)> OnTextCommitted)
 {
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
 		FName(CategoryName),
 		FText::FromString(CategoryName),
 		ECategoryPriority::Important);
-	Category.AddCustomRow(LOCTEXT("Keyword", "BarWidget")).WholeRowContent()[
+	Category.AddCustomRow(LOCTEXT("Keyword", "BarWidget")).WholeRowContent()
+		.VAlign(VAlign_Center)
+		.HAlign(HAlign_Left)
+	[
 		SNew(SCanvas)
 
 			// Text
@@ -408,8 +413,12 @@ void StatsComponentDrawer::BarWidgetFromNew(IDetailLayoutBuilder& DetailBuilder,
 			+SCanvas::Slot()[
 				SNew(SEditableTextBox)
 					.Text(EditableTextBoxWidgetParameters.Text)
-					.ToolTip(EditableTextBoxWidgetParameters.Tooltip)
-					.OnTextCommitted_Lambda(OnTextCommitted_Lambda)
+					.ToolTipText(EditableTextBoxWidgetParameters.Tooltip)
+					.OnTextCommitted_Lambda( 
+						[this, &OnTextCommitted](const FText& InText, const ETextCommit::Type InTextCommit)
+						{
+							OnTextCommitted(InText, InTextCommit);
+						})
 			] 
 			.Size(EditableTextBoxWidgetParameters.WidgetSize)
 			.Position(EditableTextBoxWidgetParameters.WidgetPosition)
@@ -430,7 +439,7 @@ void StatsComponentDrawer::BarWidgetFromNew(IDetailLayoutBuilder& DetailBuilder,
 			+SCanvas::Slot()[
 				SNew(STextBlock)
 					.Text(MaxWidgetParameters.Text)
-					.ToolTip(MaxWidgetParameters.Tooltip)
+					.ToolTipText(MaxWidgetParameters.Tooltip)
 			]
 			.Size(MaxWidgetParameters.WidgetSize)
 			.Position(MaxWidgetParameters.WidgetPosition)
@@ -454,7 +463,10 @@ void StatsComponentDrawer::BarWidgetFromNew(IDetailLayoutBuilder& DetailBuilder,
 					.Clipping(EWidgetClipping::ClipToBounds)
 					.ToolTipText(BarWidgetParameters.Tooltip)
 			]
-			.Position(BarWidgetParameters.WidgetPosition)
+			.Position(FVector2D{
+				BarWidgetParameters.WidgetPosition.X + BarWidgetParameters.Padding,
+				BarWidgetParameters.WidgetPosition.Y
+				})
 			.Size(FVector2D{
 				BarWidgetParameters.BarFraction * BarWidgetParameters.WidgetSize.X - 2*BarWidgetParameters.Padding,
 				BarWidgetParameters.WidgetSize.Y - 2*BarWidgetParameters.Padding
@@ -462,7 +474,6 @@ void StatsComponentDrawer::BarWidgetFromNew(IDetailLayoutBuilder& DetailBuilder,
 			.HAlign(BarWidgetParameters.WidgetHAlign)
 			.VAlign(BarWidgetParameters.WidgetVAlign)
 	];
-		
 }
 
 

@@ -67,8 +67,7 @@ private:
 	void BuildStat(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
 		FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue);
 
-
-	template <typename F>
+	
 	void BarWidgetFromNew(
 
 		// Getting the category
@@ -77,7 +76,7 @@ private:
 		FEditableTextBoxWidgetParameters EditableTextBoxWidgetParameters,
 		FTextWidgetParameters MaxWidgetParameters,
 		FBarWidgetParameters BarWidgetParameters,
-		F&& OnTextCommitted_Lambda
+		TFunction<void (const FText& InText, const ETextCommit::Type InTextCommit)> OnTextCommitted
 	);
 
 #pragma endregion
