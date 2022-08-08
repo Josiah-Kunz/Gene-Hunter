@@ -21,21 +21,18 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 	// Get object
 	StatsComponent = GetStatsComponent(DetailBuilder);
 
-	// Level
+	// Details
 	CustomizeLevelDetails(DetailBuilder);
-
-	// Stats
+	CustomizeExpDetails(DetailBuilder);
 	CustomizeStatsDetails(DetailBuilder);
 	
 }
 
 void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBuilder)
 {
-
-	FString CategoryName = "Level";
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
-		FName(CategoryName),
-		FText::FromString(CategoryName),
+		FName(LevelCategoryName),
+		FText::FromString(LevelCategoryName),
 		ECategoryPriority::Important);
 	Category.AddCustomRow(LOCTEXT("Keyword", "Level"))
 
@@ -54,7 +51,7 @@ void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 				.HAlign(HAlign_Left)
 				.VAlign(VAlign_Center)
 
-				// EditableText (does nothing right now)
+				// Current (EditableText)
 				+SCanvas::Slot()[
 					SNew(SEditableTextBox)
 						.Text(FText::FromString(FString::FromInt(StatsComponent->GetLevel())))
@@ -68,6 +65,26 @@ void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 				] 
 				.Size(FVector2D{StatInputWidth, MaxHeight})
 				.Position(FVector2D{StatAbbrevMaxWidth, 0})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+
+				// Slash
+				+SCanvas::Slot()[
+					SNew(STextBlock)
+						.Text(FText::FromString("/"))
+				]
+				.Size(FVector2D{SlashWidth, MaxHeight})
+				.Position(FVector2D{StatAbbrevMaxWidth + StatInputWidth, 0})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+
+				// Max
+				+SCanvas::Slot()[
+					SNew(STextBlock)
+						.Text(FText::FromString(FString::FromInt(StatsComponent->MaxLevel())))
+				]
+				.Size(FVector2D{StatInputWidth, MaxHeight})
+				.Position(FVector2D{StatAbbrevMaxWidth + StatInputWidth + SlashWidth, 0})
 				.HAlign(HAlign_Left)
 				.VAlign(VAlign_Center)
 		]
@@ -103,6 +120,138 @@ void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 	];
 }
 
+void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuilder)
+{
+	
+	BarWidgetFromNew(
+			DetailBuilder, "Level",
+		FTextWidgetParameters{
+			FText::FromString("Exp"),
+			FText::FromString("Cumulative experience points"),
+			FVector2D{StatAbbrevMaxWidth, MaxHeight}
+		},
+		FEditableTextBoxWidgetParameters{
+			{
+				UUtilityFunctionLibrary::ToSI(StatsComponent->GetCumulativeExp(), SigFigs),
+				FText::GetEmpty(),
+				FVector2D{StatInputWidth, MaxHeight},
+				FVector2D{StatAbbrevMaxWidth, 0}
+			}
+		},
+		FTextWidgetParameters{
+			UUtilityFunctionLibrary::ToSI(StatsComponent->GetMaxExp(), SigFigs),
+			FText::GetEmpty(),
+			FVector2D{StatInputWidth, MaxHeight},
+			FVector2D{StatAbbrevMaxWidth + StatInputWidth + SlashWidth, 0}
+		},
+		FBarWidgetParameters{
+			{
+				FText::GetEmpty(),
+				FText::FromString("Change in exp = change in level"),
+				FVector2D{ValueMaxWidth, MaxHeight}
+			},
+			FLinearColor::Black,
+			FLinearColor{0.7f, 0, 0.7f},
+			StatsComponent->GetCumulativeExp()/StatsComponent->GetMaxExp()
+		},
+		[this, &DetailBuilder](const FText& InText, ETextCommit::Type InTextCommit)
+								{
+									StatsComponent->SetCumulativeExp(UUtilityFunctionLibrary::FromSI(InText));
+									DetailBuilder.ForceRefreshDetails();
+								}
+	);
+	
+	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
+		FName(LevelCategoryName),
+		FText::FromString(LevelCategoryName),
+		ECategoryPriority::Important);
+	Category.AddCustomRow(LOCTEXT("Keyword", "Level"))
+
+		// Name
+		.NameContent()[
+			SNew(SCanvas)
+
+				// Text
+				+SCanvas::Slot()[
+					SNew(STextBlock)
+						.Text(FText::FromString("Exp."))
+						.ToolTipText( FText::FromString("(Non-cumulative) experience points"))
+				]
+				.Size(FVector2D{StatAbbrevMaxWidth, MaxHeight})
+				.Position(FVector2D{0, 0})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+
+				// Current (EditableText)
+				+SCanvas::Slot()[
+					SNew(SEditableTextBox)
+						.Text(FText::FromString(FString::FromInt(StatsComponent->GetLevel())))
+						.OnTextCommitted_Lambda(
+								[this, &DetailBuilder](const FText& InText, ETextCommit::Type InTextCommit)
+								{
+									StatsComponent->SetLevel(UUtilityFunctionLibrary::FromSI(InText));
+									DetailBuilder.ForceRefreshDetails();
+								}
+							)
+				] 
+				.Size(FVector2D{StatInputWidth, MaxHeight})
+				.Position(FVector2D{StatAbbrevMaxWidth, 0})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+
+				// Slash
+				+SCanvas::Slot()[
+					SNew(STextBlock)
+						.Text(FText::FromString("/"))
+				]
+				.Size(FVector2D{SlashWidth, MaxHeight})
+				.Position(FVector2D{StatAbbrevMaxWidth + StatInputWidth, 0})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+
+				// Max
+				+SCanvas::Slot()[
+					SNew(STextBlock)
+						.Text(FText::FromString(FString::FromInt(StatsComponent->MaxLevel())))
+				]
+				.Size(FVector2D{StatInputWidth, MaxHeight})
+				.Position(FVector2D{StatAbbrevMaxWidth + StatInputWidth + SlashWidth, 0})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+		]
+
+		// Level bar
+		.ValueContent()[
+			SNew(SCanvas)
+
+				// Background
+				+SCanvas::Slot()[
+					SNew(SColorBlock) 
+						.Color(FLinearColor::Black)
+				]
+				.Position(FVector2D{0, 0})
+				.Size(FVector2D{ValueMaxWidth, MaxHeight})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+				
+				// Stat bar
+				+SCanvas::Slot()[
+					SNew(SColorBlock) 
+						.Color(FLinearColor::Green)
+						.Clipping(EWidgetClipping::ClipToBounds)
+						.ToolTipText(FText::FromString(FString::Printf(TEXT(
+							"The higher the level, the stronger the stats! The max level is %s."),
+							*FString::FromInt(StatsComponent->MaxLevel()
+						))))
+				]
+				.Position(FVector2D{Padding, 0})
+				.Size(FVector2D{(ValueMaxWidth - 2*Padding) * StatsComponent->GetLevel()/StatsComponent->MaxLevel(), MaxHeight - 2*Padding})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+	];
+}
+
+
 void StatsComponentDrawer::CustomizeStatsDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 
@@ -111,7 +260,7 @@ void StatsComponentDrawer::CustomizeStatsDetails(IDetailLayoutBuilder& DetailBui
 	const float MaxPercentValue = MaxStat(StatsComponent, EStatValueType::Current, true);
 	
 	// Define macro (if not for GET_MEMBER_NAME_CHECKED, you could do this as a function
-	#define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax) \
+#define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax) \
 	const TSharedPtr<IPropertyHandle> Handle##TargetStat = DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetStat)); \
 	BuildStat(DetailBuilder, Handle##TargetStat, StatsComponent->TargetStat, EStatValueType::Current, ValueMax);
 	
@@ -166,10 +315,10 @@ void StatsComponentDrawer::BuildStat(IDetailLayoutBuilder& DetailBuilder, TShare
 				.HAlign(HAlign_Left)
 				.VAlign(VAlign_Center)
 
-				// EditableText (does nothing right now)
+				// Current (EditableText)
 				+SCanvas::Slot()[
 					SNew(SEditableTextBox)
-						.Text(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), 3))
+						.Text(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs))
 						.OnTextCommitted_Lambda(
 							[&TargetStat, StatValueType, &DetailBuilder](const FText& InText, ETextCommit::Type InTextCommit)
 								{
@@ -180,6 +329,26 @@ void StatsComponentDrawer::BuildStat(IDetailLayoutBuilder& DetailBuilder, TShare
 				] 
 				.Size(FVector2D{StatInputWidth, MaxHeight})
 				.Position(FVector2D{StatAbbrevMaxWidth, 0})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+
+				// Slash
+				+SCanvas::Slot()[
+					SNew(STextBlock)
+						.Text(FText::FromString("/"))
+				]
+				.Size(FVector2D{SlashWidth, MaxHeight})
+				.Position(FVector2D{StatAbbrevMaxWidth + StatInputWidth, 0})
+				.HAlign(HAlign_Left)
+				.VAlign(VAlign_Center)
+
+				// Max
+				+SCanvas::Slot()[
+					SNew(STextBlock)
+						.Text(UUtilityFunctionLibrary::ToSI(TargetStat.GetPermanentValue(), SigFigs))
+				]
+				.Size(FVector2D{StatInputWidth, MaxHeight})
+				.Position(FVector2D{StatAbbrevMaxWidth + StatInputWidth + SlashWidth, 0})
 				.HAlign(HAlign_Left)
 				.VAlign(VAlign_Center)
 		]
@@ -210,6 +379,90 @@ void StatsComponentDrawer::BuildStat(IDetailLayoutBuilder& DetailBuilder, TShare
 				.HAlign(HAlign_Left)
 				.VAlign(VAlign_Center)
 	];
+}
+
+template <typename F>
+void StatsComponentDrawer::BarWidgetFromNew(IDetailLayoutBuilder& DetailBuilder, const FString CategoryName,
+	FTextWidgetParameters LabelWidgetParameters, FEditableTextBoxWidgetParameters EditableTextBoxWidgetParameters,
+	FTextWidgetParameters MaxWidgetParameters, FBarWidgetParameters BarWidgetParameters, F&& OnTextCommitted_Lambda)
+{
+	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
+		FName(CategoryName),
+		FText::FromString(CategoryName),
+		ECategoryPriority::Important);
+	Category.AddCustomRow(LOCTEXT("Keyword", "BarWidget")).WholeRowContent()[
+		SNew(SCanvas)
+
+			// Text
+			+SCanvas::Slot()[
+				SNew(STextBlock)
+					.Text(LabelWidgetParameters.Text)
+					.ToolTipText(LabelWidgetParameters.Tooltip)
+			]
+			.Size(LabelWidgetParameters.WidgetSize)
+			.Position(LabelWidgetParameters.WidgetPosition)
+			.HAlign(LabelWidgetParameters.WidgetHAlign)
+			.VAlign(LabelWidgetParameters.WidgetVAlign)
+
+			// Current (EditableText)
+			+SCanvas::Slot()[
+				SNew(SEditableTextBox)
+					.Text(EditableTextBoxWidgetParameters.Text)
+					.ToolTip(EditableTextBoxWidgetParameters.Tooltip)
+					.OnTextCommitted_Lambda(OnTextCommitted_Lambda)
+			] 
+			.Size(EditableTextBoxWidgetParameters.WidgetSize)
+			.Position(EditableTextBoxWidgetParameters.WidgetPosition)
+			.HAlign(EditableTextBoxWidgetParameters.WidgetHAlign)
+			.VAlign(EditableTextBoxWidgetParameters.WidgetVAlign)
+
+			// Slash
+			+SCanvas::Slot()[
+				SNew(STextBlock)
+					.Text(FText::FromString("/"))
+			]
+			.Size(FVector2D{SlashWidth, EditableTextBoxWidgetParameters.WidgetSize.Y})
+			.Position(FVector2D{EditableTextBoxWidgetParameters.WidgetPosition.X + EditableTextBoxWidgetParameters.WidgetSize.X, 0})
+			.HAlign(HAlign_Left)
+			.VAlign(VAlign_Center)
+
+			// Max
+			+SCanvas::Slot()[
+				SNew(STextBlock)
+					.Text(MaxWidgetParameters.Text)
+					.ToolTip(MaxWidgetParameters.Tooltip)
+			]
+			.Size(MaxWidgetParameters.WidgetSize)
+			.Position(MaxWidgetParameters.WidgetPosition)
+			.HAlign(MaxWidgetParameters.WidgetHAlign)
+			.VAlign(MaxWidgetParameters.WidgetVAlign)
+
+			// Background
+			+SCanvas::Slot()[
+				SNew(SColorBlock) 
+					.Color(BarWidgetParameters.BackgroundColor)
+			]
+			.Position(BarWidgetParameters.WidgetPosition)
+			.Size(BarWidgetParameters.WidgetSize)
+			.HAlign(BarWidgetParameters.WidgetHAlign)
+			.VAlign(BarWidgetParameters.WidgetVAlign)
+
+			// Stat bar
+			+SCanvas::Slot()[
+				SNew(SColorBlock) 
+					.Color(BarWidgetParameters.BarColor)
+					.Clipping(EWidgetClipping::ClipToBounds)
+					.ToolTipText(BarWidgetParameters.Tooltip)
+			]
+			.Position(BarWidgetParameters.WidgetPosition)
+			.Size(FVector2D{
+				BarWidgetParameters.BarFraction * BarWidgetParameters.WidgetSize.X - 2*BarWidgetParameters.Padding,
+				BarWidgetParameters.WidgetSize.Y - 2*BarWidgetParameters.Padding
+			})
+			.HAlign(BarWidgetParameters.WidgetHAlign)
+			.VAlign(BarWidgetParameters.WidgetVAlign)
+	];
+		
 }
 
 

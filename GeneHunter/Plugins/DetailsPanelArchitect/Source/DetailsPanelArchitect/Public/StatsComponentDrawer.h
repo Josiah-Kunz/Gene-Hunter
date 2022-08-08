@@ -3,6 +3,11 @@
 #include "PropertyEditor/Public/IDetailCustomization.h"
 #include "StatsComponent.h"
 
+#include "WidgetParameters/BarWidgetParameters.h"
+#include "WidgetParameters/EditableTextBoxWidgetParameters.h"
+#include "WidgetParameters/TextWidgetParameters.h"
+
+
 class StatsComponentDrawer : public IDetailCustomization
 {
 
@@ -12,9 +17,13 @@ private:
 	inline constexpr static float Padding = 2;
 	inline constexpr static float StatInputWidth = 50;
 	inline constexpr static float StatAbbrevMaxWidth = 30;
+	inline constexpr static float SlashWidth = 10;
 	inline constexpr static float ValueMaxWidth = 125;
 	inline constexpr static float MaxHeight = 20;
+	inline constexpr static int SigFigs = 3;
 
+	const FString LevelCategoryName = "Level";
+	
 	UStatsComponent* StatsComponent = nullptr;
 
 
@@ -39,6 +48,8 @@ private:
 private:
 	virtual void CustomizeLevelDetails(IDetailLayoutBuilder& DetailBuilder);
 
+	virtual void CustomizeExpDetails(IDetailLayoutBuilder& DetailBuilder);
+
 	virtual void CustomizeStatsDetails(IDetailLayoutBuilder& DetailBuilder);
 
 #pragma endregion
@@ -49,12 +60,25 @@ private:
 	
 	UStatsComponent* GetStatsComponent(IDetailLayoutBuilder& DetailBuilder);
 
-	void BuildStat(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
-		FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue);
-
 	static float MaxStat (const UStatsComponent* StatsComponent, const EStatValueType StatType, const bool bPercentage);
 
 	static void SetStatFromString(FStat* Stat, const FText Text, const EStatValueType StatType);
+
+	void BuildStat(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
+		FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue);
+
+
+	template <typename F>
+	void BarWidgetFromNew(
+
+		// Getting the category
+		IDetailLayoutBuilder& DetailBuilder, const FString CategoryName,
+		FTextWidgetParameters LabelWidgetParameters,
+		FEditableTextBoxWidgetParameters EditableTextBoxWidgetParameters,
+		FTextWidgetParameters MaxWidgetParameters,
+		FBarWidgetParameters BarWidgetParameters,
+		F&& OnTextCommitted_Lambda
+	);
 
 #pragma endregion
 	

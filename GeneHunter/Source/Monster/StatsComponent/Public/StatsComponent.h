@@ -116,6 +116,12 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
 	float GetExp();
 
+	/**
+	 * Gets the amount of cumulative exp at max level.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
+	float GetMaxExp();
+
 #pragma endregion
 
 #pragma region Stat variables

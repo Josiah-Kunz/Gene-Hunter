@@ -40,7 +40,7 @@ void UStatsComponent::SetCumulativeExp(const int NewCumulativeExp)
 	const int OldLevel = GetLevel();
 
 	// Set and clamp exp
-	CumulativeExp = FMath::Clamp(NewCumulativeExp, 1, GetCumulativeExpFromLevel(MaxLevel()));
+	CumulativeExp = FMath::Clamp(NewCumulativeExp, 1, GetMaxExp());
 
 	// Clamp level
 	int NewLevel = GetLevel();
@@ -100,6 +100,11 @@ float UStatsComponent::GetExpToLevel()
 float UStatsComponent::GetExp()
 {
 	return GetCumulativeExp() - GetCumulativeExpFromLevel(GetLevel());
+}
+
+float UStatsComponent::GetMaxExp()
+{
+	return GetCumulativeExpFromLevel(MaxLevel());
 }
 
 #pragma endregion
