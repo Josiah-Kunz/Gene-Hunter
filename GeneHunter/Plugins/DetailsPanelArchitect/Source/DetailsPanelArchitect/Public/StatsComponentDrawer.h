@@ -61,18 +61,18 @@ private:
 
 	static void SetStatFromString(FStat* Stat, const FText Text, const EStatValueType StatType);
 
-	void BuildStat(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
-		FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue);
-
 	static bool UserCommitted(const ETextCommit::Type CommitType);
 	
 	void BarWidgetFromNew( IDetailLayoutBuilder& DetailBuilder, const FString CategoryName,
 		FEditableBarWidgetParameters Params);
 
-	void BarWidgetFromExisting( IDetailLayoutBuilder& DetailBuilder, const FString CategoryName,
+	void BarWidgetFromExisting( IDetailLayoutBuilder& DetailBuilder, 
 		TSharedPtr<IPropertyHandle> PropertyHandle, FEditableBarWidgetParameters Params);
 
-	void BarWidgetBase(FDetailWidgetDecl& Widget);
+	void BarWidgetBase(FDetailWidgetDecl& Widget, FEditableBarWidgetParameters Params);
+
+	void StatWidget(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
+			FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue);
 
 #pragma endregion
 	

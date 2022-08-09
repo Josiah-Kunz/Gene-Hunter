@@ -140,7 +140,7 @@ void StatsComponentDrawer::CustomizeStatsDetails(IDetailLayoutBuilder& DetailBui
 	// Define macro (if not for GET_MEMBER_NAME_CHECKED, you could do this as a function
 #define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax) \
 	const TSharedPtr<IPropertyHandle> Handle##TargetStat = DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetStat)); \
-	BuildStat(DetailBuilder, Handle##TargetStat, StatsComponent->TargetStat, EStatValueType::Current, ValueMax);
+	StatWidget(DetailBuilder, Handle##TargetStat, StatsComponent->TargetStat, EStatValueType::Current, ValueMax);
 	
 	CURRENT_STAT_PROPERTY(Health, GetCurrentValue(), MaxStatValue)
 	CURRENT_STAT_PROPERTY(PhysicalAttack, GetCurrentValue(), MaxStatValue)
@@ -172,94 +172,6 @@ UStatsComponent* StatsComponentDrawer::GetStatsComponent(IDetailLayoutBuilder& D
 	return Ret;
 }
 
-void StatsComponentDrawer::BuildStat(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
-	FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue)
-{
-	IDetailPropertyRow* Row = DetailBuilder.EditDefaultProperty(PropertyHandle);
-	Row->CustomWidget()
-
-		// "Name" content
-		.NameContent()[ 
-			SNew(SCanvas)
-
-				// Abbreviation
-				+SCanvas::Slot()[
-					SNew(STextBlock)
-						.Text(FText::FromString(TargetStat.Abbreviation()))
-						.ToolTipText( FText::FromString(TargetStat.Name()))
-				]
-				.Size(FVector2D{StatAbbrevMaxWidth, MaxHeight})
-				.Position(FVector2D{0, 0})
-				.HAlign(HAlign_Left)
-				.VAlign(VAlign_Center)
-
-				// Current (EditableText)
-				+SCanvas::Slot()[
-					SNew(SEditableTextBox)
-						.Text(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs))
-						.OnTextCommitted_Lambda(
-							[&TargetStat, StatValueType, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
-								{
-									if (UserCommitted(InTextCommit))
-										TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
-									DetailBuilder.ForceRefreshDetails();
-								}
-						)
-				] 
-				.Size(FVector2D{StatInputWidth, MaxHeight})
-				.Position(FVector2D{StatAbbrevMaxWidth, 0})
-				.HAlign(HAlign_Left)
-				.VAlign(VAlign_Center)
-
-				// Slash
-				+SCanvas::Slot()[
-					SNew(STextBlock)
-						.Text(FText::FromString("/"))
-				]
-				.Size(FVector2D{SlashWidth, MaxHeight})
-				.Position(FVector2D{StatAbbrevMaxWidth + StatInputWidth, 0})
-				.HAlign(HAlign_Left)
-				.VAlign(VAlign_Center)
-
-				// Max
-				+SCanvas::Slot()[
-					SNew(STextBlock)
-						.Text(UUtilityFunctionLibrary::ToSI(TargetStat.GetPermanentValue(), SigFigs))
-				]
-				.Size(FVector2D{StatInputWidth, MaxHeight})
-				.Position(FVector2D{StatAbbrevMaxWidth + StatInputWidth + SlashWidth, 0})
-				.HAlign(HAlign_Left)
-				.VAlign(VAlign_Center)
-		]
-
-		// "Value" content
-		.ValueContent()[
-			SNew(SCanvas)
-
-				// Background
-				+SCanvas::Slot()[
-					SNew(SColorBlock) 
-						.Color(FLinearColor::Black)
-				]
-				.Position(FVector2D{0, 0})
-				.Size(FVector2D{ValueMaxWidth, MaxHeight})
-				.HAlign(HAlign_Left)
-				.VAlign(VAlign_Center)
-				
-				// Stat bar
-				+SCanvas::Slot()[
-					SNew(SColorBlock) 
-						.Color(TargetStat.Color())
-						.Clipping(EWidgetClipping::ClipToBounds)
-						.ToolTipText(TargetStat.SupportingText().Description)
-				]
-				.Position(FVector2D{Padding, 0})
-				.Size(FVector2D{(ValueMaxWidth - 2*Padding) * TargetStat.GetValue(StatValueType) / MaxValue, MaxHeight - 2*Padding})
-				.HAlign(HAlign_Left)
-				.VAlign(VAlign_Center)
-	];
-}
-
 bool StatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
 {
 
@@ -273,10 +185,41 @@ void StatsComponentDrawer::BarWidgetFromNew(IDetailLayoutBuilder& DetailBuilder,
 		FName(CategoryName),
 		FText::FromString(CategoryName),
 		ECategoryPriority::Important);
-	Category.AddCustomRow(LOCTEXT("Keyword", "BarWidget")).WholeRowContent()
-		.VAlign(VAlign_Center)
-		.HAlign(HAlign_Left)
-	[
+
+	BarWidgetBase(
+		Category
+			.AddCustomRow(LOCTEXT("Keyword", "BarWidget"))
+			.WholeRowContent()
+		, Params);
+}
+
+void StatsComponentDrawer::BarWidgetFromExisting(IDetailLayoutBuilder& DetailBuilder,
+	TSharedPtr<IPropertyHandle> PropertyHandle, FEditableBarWidgetParameters Params)
+{
+	IDetailPropertyRow* Row = DetailBuilder.EditDefaultProperty(PropertyHandle);
+
+	// TODO:
+	/*
+	Row->OverrideResetToDefault(
+		FResetToDefaultOverride::Create(
+			TAttribute<bool>::CreateLambda([]()
+			{
+				return false;
+			}),
+			FSimpleDelegate::CreateLambda([]()
+			{
+				UE_LOG(LogTemp, Warning, TEXT("123454321"))
+			})
+		)
+	);
+	*/
+	BarWidgetBase(Row->CustomWidget().WholeRowContent(), Params);
+	
+}
+
+void StatsComponentDrawer::BarWidgetBase(FDetailWidgetDecl& Widget, FEditableBarWidgetParameters Params)
+{
+	Widget.operator[](
 		SNew(SCanvas)
 
 			// Text
@@ -350,21 +293,59 @@ void StatsComponentDrawer::BarWidgetFromNew(IDetailLayoutBuilder& DetailBuilder,
 			})
 			.HAlign(Params.BarHAlign)
 			.VAlign(Params.BarVAlign)
-	];
+	);
+	Widget.HAlign(HAlign_Left);
+	Widget.VAlign(VAlign_Center);
 }
 
-void StatsComponentDrawer::BarWidgetFromExisting(IDetailLayoutBuilder& DetailBuilder, const FString CategoryName,
-	TSharedPtr<IPropertyHandle> PropertyHandle, FEditableBarWidgetParameters Params)
+
+void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
+	FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue)
 {
+
+	// Content
+	BarWidgetFromExisting(DetailBuilder, PropertyHandle, FEditableBarWidgetParameters{
+
+		// Label
+		FText::FromString(TargetStat.Abbreviation()),
+		FText::FromString(TargetStat.Name()),
+
+		// EditableText
+		UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs),
+		[&TargetStat, StatValueType, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
+			{
+				if (UserCommitted(InTextCommit))
+					TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
+				DetailBuilder.ForceRefreshDetails();
+			},
+
+		// Max
+		UUtilityFunctionLibrary::ToSI(TargetStat.GetPermanentValue(), SigFigs),
+		FText::FromString("Max values are calculated via functions in the script and are permanent. If you'd like to calculate them differently, create your own C++ class."),
+
+		// Bar
+		TargetStat.Color(),
+		TargetStat.GetValue(StatValueType) / MaxValue,
+		TargetStat.SupportingText().Description
+	});
+
+	// Reset button
+	/*
 	IDetailPropertyRow* Row = DetailBuilder.EditDefaultProperty(PropertyHandle);
-	BarWidgetBase(Row->CustomWidget().WholeRowContent());
-}
-
-void StatsComponentDrawer::BarWidgetBase(FDetailWidgetDecl& Widget)
-{
-	Widget.operator[](
-		SNew(SCanvas)
-		);
+	Row->OverrideResetToDefault(
+		FResetToDefaultOverride::Create(
+			TAttribute<bool>::CreateLambda([]()
+			{
+				return false;
+			}),
+			FSimpleDelegate::CreateLambda([&DetailBuilder, &TargetStat]()
+			{
+				TargetStat.SetCurrentValue(TargetStat.GetPermanentValue());
+				DetailBuilder.ForceRefreshDetails();
+				UE_LOG(LogTemp, Warning, TEXT("OKKKKK"))
+			})
+		)
+	);*/
 }
 
 
