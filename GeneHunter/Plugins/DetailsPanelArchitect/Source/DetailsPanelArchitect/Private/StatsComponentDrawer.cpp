@@ -42,8 +42,11 @@ void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 				FText::FromString(FString::FromInt(StatsComponent->GetLevel())),
 				[this, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
 					{
+						const int NewLevel = UUtilityFunctionLibrary::FromSI(InText);
+						if (NewLevel == StatsComponent->GetLevel())
+							return;
 						if (UserCommitted(InTextCommit))
-							StatsComponent->SetLevel(UUtilityFunctionLibrary::FromSI(InText));
+							StatsComponent->SetLevel(NewLevel);
 						DetailBuilder.ForceRefreshDetails();
 					},
 
@@ -89,14 +92,20 @@ void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 				[this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
 					{
 
+						// Check if anything happened
+						const int DiffXP = UUtilityFunctionLibrary::FromSI(InText) - StatsComponent->GetExp();
+						if (DiffXP == 0)
+							return;
+
+						// Check to see if anything changed (avoids rounding errors)
+						if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetExp(), SigFigs)))
+							return;
+
 						// Use did something
 						if (UserCommitted(CommitType))
-						{
-							const int DiffXP = UUtilityFunctionLibrary::FromSI(InText) - StatsComponent->GetExp();
 							StatsComponent->AddCumulativeExp(DiffXP);
-						}
 
-						// User cancelled; revert changes
+						// Refresh either way
 						DetailBuilder.ForceRefreshDetails();
 					},
 
@@ -132,8 +141,16 @@ void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 			UUtilityFunctionLibrary::ToSI(StatsComponent->GetCumulativeExp(), SigFigs),
 			[this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
 				{
+
+					// Check to see if anything changed (avoids rounding errors)
+					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetCumulativeExp(), SigFigs)))
+						return;
+
+					// Change depending on commit type (might have hit "esc", so no changes)
 					if (UserCommitted(CommitType))
 						StatsComponent->SetCumulativeExp(UUtilityFunctionLibrary::FromSI(InText));
+
+					// Refresh either way
 					DetailBuilder.ForceRefreshDetails();
 				},
 
@@ -348,7 +365,14 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, TShar
 		TargetStat.GetValue(StatValueType) / MaxValue,
 		TargetStat.SupportingText().Description,
 
-		// Reset button (TODO)!
+		// Reset button
+			true,
+			{[this, &DetailBuilder, &TargetStat]()
+				{
+					TargetStat.SetCurrentValue(TargetStat.GetPermanentValue());
+					DetailBuilder.ForceRefreshDetails();
+				},
+			},
 	});
 }
 
