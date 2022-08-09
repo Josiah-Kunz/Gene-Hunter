@@ -54,10 +54,21 @@ void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 				// Bar
 				FLinearColor::Green,
 				(1.0f * StatsComponent->GetLevel())/StatsComponent->MaxLevel(),
-				FText::FromString(FString::Printf(TEXT(
-							"The higher the level, the stronger the stats! The max level is %s."),
-							*FString::FromInt(StatsComponent->MaxLevel())
-							))
+				FText::FromString(
+					FString::Printf(TEXT(
+					"The higher the level, the stronger the stats! The max level is %s."),
+					*FString::FromInt(StatsComponent->MaxLevel())
+					)
+				),
+
+				// Reset button
+				true,
+				{[this, &DetailBuilder]()
+					{
+						StatsComponent->SetLevel(1);
+						DetailBuilder.ForceRefreshDetails();
+					},
+				},
 			}
 		);
 }
@@ -96,13 +107,22 @@ void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 				// Bar
 				FLinearColor{0.9f, 0, 0.9f},
 				StatsComponent->GetExp()/StatsComponent->GetTotalExpThisLevel(),
-				FText::FromString("Change in exp = change in level")
+				FText::FromString("Change in exp = change in level"),
+
+				// Reset button
+				true,
+				{[this, &DetailBuilder]()
+					{
+						StatsComponent->SetCumulativeExp(StatsComponent->GetCumulativeExpFromLevel(StatsComponent->GetLevel()));
+						DetailBuilder.ForceRefreshDetails();
+					},
+				},
 			}
 		);
 	
 	// Cumulative
 	BarWidgetFromNew(
-			DetailBuilder, "Level", FEditableBarWidgetParameters{
+		DetailBuilder, "Level", FEditableBarWidgetParameters{
 
 			// Label
 			FText::FromString("CXP"),
@@ -124,7 +144,16 @@ void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 			// Bar
 			FLinearColor{0.7f, 0, 0.7f},
 			StatsComponent->GetCumulativeExp()/StatsComponent->GetMaxExp(),
-			FText::FromString("Change in exp = change in level")
+			FText::FromString("Change in exp = change in level"),
+				
+			// Reset button
+			true,
+			{[this, &DetailBuilder]()
+				{
+					StatsComponent->SetCumulativeExp(0);
+					DetailBuilder.ForceRefreshDetails();
+				},
+			},
 		}
 	);
 }
@@ -136,11 +165,6 @@ void StatsComponentDrawer::CustomizeStatsDetails(IDetailLayoutBuilder& DetailBui
 	// Get useful limits
 	const float MaxStatValue = MaxStat(StatsComponent, EStatValueType::Current, false);
 	const float MaxPercentValue = MaxStat(StatsComponent, EStatValueType::Current, true);
-	
-	// Define macro (if not for GET_MEMBER_NAME_CHECKED, you could do this as a function
-#define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax) \
-	const TSharedPtr<IPropertyHandle> Handle##TargetStat = DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetStat)); \
-	StatWidget(DetailBuilder, Handle##TargetStat, StatsComponent->TargetStat, EStatValueType::Current, ValueMax);
 	
 	CURRENT_STAT_PROPERTY(Health, GetCurrentValue(), MaxStatValue)
 	CURRENT_STAT_PROPERTY(PhysicalAttack, GetCurrentValue(), MaxStatValue)
@@ -197,24 +221,7 @@ void StatsComponentDrawer::BarWidgetFromExisting(IDetailLayoutBuilder& DetailBui
 	TSharedPtr<IPropertyHandle> PropertyHandle, FEditableBarWidgetParameters Params)
 {
 	IDetailPropertyRow* Row = DetailBuilder.EditDefaultProperty(PropertyHandle);
-
-	// TODO:
-	/*
-	Row->OverrideResetToDefault(
-		FResetToDefaultOverride::Create(
-			TAttribute<bool>::CreateLambda([]()
-			{
-				return false;
-			}),
-			FSimpleDelegate::CreateLambda([]()
-			{
-				UE_LOG(LogTemp, Warning, TEXT("123454321"))
-			})
-		)
-	);
-	*/
 	BarWidgetBase(Row->CustomWidget().WholeRowContent(), Params);
-	
 }
 
 void StatsComponentDrawer::BarWidgetBase(FDetailWidgetDecl& Widget, FEditableBarWidgetParameters Params)
@@ -293,7 +300,20 @@ void StatsComponentDrawer::BarWidgetBase(FDetailWidgetDecl& Widget, FEditableBar
 			})
 			.HAlign(Params.BarHAlign)
 			.VAlign(Params.BarVAlign)
-	);
+	)
+	.OverrideResetToDefault(
+		FResetToDefaultOverride::Create( 
+			TAttribute<bool>::CreateLambda([Params]() 
+			{ 
+				return Params.bShowReset; 
+			}), 
+			FSimpleDelegate::CreateLambda([Params]() 
+			{ 
+				Params.OnReset();
+			}) 
+		)
+	)
+	;
 	Widget.HAlign(HAlign_Left);
 	Widget.VAlign(VAlign_Center);
 }
@@ -326,26 +346,10 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, TShar
 		// Bar
 		TargetStat.Color(),
 		TargetStat.GetValue(StatValueType) / MaxValue,
-		TargetStat.SupportingText().Description
-	});
+		TargetStat.SupportingText().Description,
 
-	// Reset button
-	/*
-	IDetailPropertyRow* Row = DetailBuilder.EditDefaultProperty(PropertyHandle);
-	Row->OverrideResetToDefault(
-		FResetToDefaultOverride::Create(
-			TAttribute<bool>::CreateLambda([]()
-			{
-				return false;
-			}),
-			FSimpleDelegate::CreateLambda([&DetailBuilder, &TargetStat]()
-			{
-				TargetStat.SetCurrentValue(TargetStat.GetPermanentValue());
-				DetailBuilder.ForceRefreshDetails();
-				UE_LOG(LogTemp, Warning, TEXT("OKKKKK"))
-			})
-		)
-	);*/
+		// Reset button (TODO)!
+	});
 }
 
 

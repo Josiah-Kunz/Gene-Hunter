@@ -33,6 +33,10 @@ public:
 
 #pragma region Default values
 
+	// Reset button
+	bool bShowReset = false;
+	TFunction<void()> OnReset = [](){};
+
 	// Label
 	FVector2D LabelSize = FVector2D{30, 20};
 	FVector2D LabelPosition = FVector2D{0, 0};

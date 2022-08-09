@@ -71,6 +71,11 @@ private:
 
 	void BarWidgetBase(FDetailWidgetDecl& Widget, FEditableBarWidgetParameters Params);
 
+	// Macro for stats (if not for GET_MEMBER_NAME_CHECKED, you could do this as a function
+	#define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax) \
+		const TSharedPtr<IPropertyHandle> Handle##TargetStat = DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetStat)); \
+		StatWidget(DetailBuilder, Handle##TargetStat, StatsComponent->TargetStat, EStatValueType::Current, ValueMax);
+
 	void StatWidget(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
 			FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue);
 
