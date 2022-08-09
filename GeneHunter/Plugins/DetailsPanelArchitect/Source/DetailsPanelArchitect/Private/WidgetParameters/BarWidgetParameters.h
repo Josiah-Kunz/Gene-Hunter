@@ -5,9 +5,9 @@ struct FBarWidgetParameters : public FTextWidgetParameters
 {
 public:
 	
-	FLinearColor BackgroundColor;
 	FLinearColor BarColor;
 	float BarFraction;
+	FLinearColor BackgroundColor = FLinearColor::Black;
 	float Padding = 2;
 
 };

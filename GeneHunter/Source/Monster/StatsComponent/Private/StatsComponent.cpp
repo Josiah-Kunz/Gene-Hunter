@@ -92,6 +92,14 @@ float UStatsComponent::GetExpToLevel()
 {
 	if (GetLevel() == MaxLevel())
 		return 0;
+	const float NextLevelExp = GetCumulativeExpFromLevel(GetLevel() + 1);
+	return NextLevelExp - GetExp();
+}
+
+float UStatsComponent::GetTotalExpThisLevel()
+{
+	if (GetLevel() == MaxLevel())
+		return 0;
 	const float ThisLevelExp = GetCumulativeExpFromLevel(GetLevel());
 	const float NextLevelExp = GetCumulativeExpFromLevel(GetLevel() + 1);
 	return NextLevelExp - ThisLevelExp;

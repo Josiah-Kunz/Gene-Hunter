@@ -2,10 +2,7 @@
 #include "DetailLayoutBuilder.h"
 #include "PropertyEditor/Public/IDetailCustomization.h"
 #include "StatsComponent.h"
-
-#include "WidgetParameters/BarWidgetParameters.h"
-#include "WidgetParameters/EditableTextBoxWidgetParameters.h"
-#include "WidgetParameters/TextWidgetParameters.h"
+#include "WidgetParameters/EditableBarWidgetParameters .h"
 
 
 class StatsComponentDrawer : public IDetailCustomization
@@ -67,16 +64,15 @@ private:
 	void BuildStat(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
 		FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue);
 
+	static bool UserCommitted(const ETextCommit::Type CommitType);
 	
-	void BarWidgetFromNew(
+	void BarWidgetFromNew( IDetailLayoutBuilder& DetailBuilder, const FString CategoryName,
+		FEditableBarWidgetParameters Params);
 
-		// Getting the category
-		IDetailLayoutBuilder& DetailBuilder, const FString CategoryName,
-		FTextWidgetParameters LabelWidgetParameters,
-		FEditableTextBoxWidgetParameters EditableTextBoxWidgetParameters,
-		FTextWidgetParameters MaxWidgetParameters,
-		FBarWidgetParameters BarWidgetParameters
-	);
+	void BarWidgetFromExisting( IDetailLayoutBuilder& DetailBuilder, const FString CategoryName,
+		TSharedPtr<IPropertyHandle> PropertyHandle, FEditableBarWidgetParameters Params);
+
+	void BarWidgetBase(FDetailWidgetDecl& Widget);
 
 #pragma endregion
 	

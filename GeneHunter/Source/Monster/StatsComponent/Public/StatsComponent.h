@@ -68,7 +68,7 @@ public:
 	void SetCumulativeExp(const int NewCumulativeExp);
 
 	/**
-	 * Adds to the total experience accumulated points across all levels.
+	 * Adds to the total accumulated experience points across all levels.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Level")
 	void AddCumulativeExp(const int AddedCumulativeExp);
@@ -105,10 +105,16 @@ public:
 	static float GetCumulativeExpFromLevel(const int TargetLevel);
 
 	/**
-	 * Gets the experience points required for the next level.
+	 * Gets the additional experience points required for the next level, taking current exp into account.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
 	float GetExpToLevel();
+
+	/**
+	 * Gets the experience points required from the previous level to the next level. Useful for display purposes.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
+	float GetTotalExpThisLevel();
 
 	/**
 	 * Gets the amount of (non-cumulative) experience points into this level. Useful for display purposes.
