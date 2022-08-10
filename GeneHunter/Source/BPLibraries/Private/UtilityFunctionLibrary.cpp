@@ -132,22 +132,33 @@ FString UUtilityFunctionLibrary::FloatSigFigs(const float Value, const int NumSi
 }
 
 
-FText UUtilityFunctionLibrary::ToSI(const float Value, const int NumSigFigs)
+FText UUtilityFunctionLibrary::ToSI(const float Value, const int NumSigFigs, const bool bIntegerOnly)
 {
-	FString StringValue = FString::SanitizeFloat(Value);
+
+	// Set up values
+	const float Val = bIntegerOnly ? FMath::RoundToInt(Value) : Value;
+	FString StringValue = FString::SanitizeFloat(Val);
 
 	// Trivial case
 	if (StringValue == "0.0")
+	{
+		if (bIntegerOnly)
+			return FText::FromString("0");
 		return FText::FromString(StringValue);
+	}
 
 	// Degree: 10^(3*Degree)
 	// Scaled: just the number
-	int Degree = FMath::RoundToInt(FMath::Floor(FMath::LogX(10, FMath::Abs(Value))/3));
-	float Scaled = Value * FMathf::Pow(1000, -Degree);
+	int Degree = FMath::RoundToInt(FMath::Floor(FMath::LogX(10, FMath::Abs(Val))/3));
+	float Scaled = Val * FMathf::Pow(1000, -Degree);
 
 	// No prefix
-	if (0.001f < Value && Value < 1000)
-		return FText::FromString(FloatSigFigs(Value, NumSigFigs));
+	if (0.001f < Val && Val < 1000)
+	{
+		if (bIntegerOnly)
+			return FText::FromString(FString::FromInt(FMath::RoundToInt(Value)));
+		return FText::FromString(FloatSigFigs(Val, NumSigFigs));
+	}
 
 	// Prefixes! YAY!
 	FString Prefix = "";
@@ -169,18 +180,9 @@ FText UUtilityFunctionLibrary::ToSI(const float Value, const int NumSigFigs)
 		return FText::FromString("0");
 	}
 
-	// Round depending on number of sig figs
-	int NumDecimals = 0;
-	if (Scaled < 1)
-		NumDecimals = NumSigFigs;
-	else if (Scaled < 10)
-		NumDecimals = NumSigFigs - 1;
-	else
-		NumDecimals = NumSigFigs - 2; // If > 999, another prefix takes over
-	
+	// Return
 	return FText::FromString(
 		FString::Printf(TEXT("%s%s"),
-				//*FString::SanitizeFloat(RoundToDecimals(Scaled, NumDecimals)),
 				*FloatSigFigs(Scaled, NumSigFigs),
 				*Prefix
 			)

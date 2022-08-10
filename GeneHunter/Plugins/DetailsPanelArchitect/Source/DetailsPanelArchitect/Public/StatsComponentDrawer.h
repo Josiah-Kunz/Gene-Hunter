@@ -62,6 +62,8 @@ private:
 	static void SetStatFromString(FStat* Stat, const FText Text, const EStatValueType StatType);
 
 	static bool UserCommitted(const ETextCommit::Type CommitType);
+
+	static FText FloatToFText(const float Value, const bool bIntegerOnly);
 	
 	void BarWidgetFromNew( IDetailLayoutBuilder& DetailBuilder, const FString CategoryName,
 		FEditableBarWidgetParameters Params);
@@ -72,12 +74,12 @@ private:
 	void BarWidgetBase(FDetailWidgetDecl& Widget, FEditableBarWidgetParameters Params);
 
 	// Macro for stats (if not for GET_MEMBER_NAME_CHECKED, you could do this as a function
-	#define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax) \
+	#define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax, bPercentage) \
 		const TSharedPtr<IPropertyHandle> Handle##TargetStat = DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetStat)); \
-		StatWidget(DetailBuilder, Handle##TargetStat, StatsComponent->TargetStat, EStatValueType::Current, ValueMax);
+		StatWidget(DetailBuilder, Handle##TargetStat, StatsComponent->TargetStat, EStatValueType::Current, ValueMax, bPercentage);
 
 	void StatWidget(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
-			FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue);
+			FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue, const bool bPercentage = false);
 
 #pragma endregion
 	

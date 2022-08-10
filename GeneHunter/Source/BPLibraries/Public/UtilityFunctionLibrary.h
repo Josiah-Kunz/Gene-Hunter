@@ -26,7 +26,7 @@ public:
 	static FString FloatSigFigs(const float Value, const int NumSigFigs);
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static FText ToSI(const float Value, const int NumSigFigs);
+	static FText ToSI(const float Value, const int NumSigFigs, const bool bIntegerOnly = false);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static float FromSI(FText Text);

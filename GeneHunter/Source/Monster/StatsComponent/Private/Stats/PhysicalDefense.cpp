@@ -24,6 +24,6 @@ FString const FPhysicalDefense::Abbreviation() const
 
 FLinearColor const FPhysicalDefense::Color() const
 {
-	const FLinearColor Color = FLinearColor{0.4f, 0.546f, 1};
+	const FLinearColor Color = FLinearColor{0.957f, 0.443f, 0.443f};
 	return Color;
 }
