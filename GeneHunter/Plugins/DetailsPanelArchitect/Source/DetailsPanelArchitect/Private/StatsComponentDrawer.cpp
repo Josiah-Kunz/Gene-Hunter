@@ -351,8 +351,15 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, TShar
 		UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs),
 		[&TargetStat, StatValueType, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
 			{
+				// Check to see if anything changed (avoids rounding errors)
+				if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(TargetStat.GetCurrentValue(), SigFigs)))
+					return;
+
+				// Check commit method
 				if (UserCommitted(InTextCommit))
 					TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
+
+				// Refresh regardless
 				DetailBuilder.ForceRefreshDetails();
 			},
 
