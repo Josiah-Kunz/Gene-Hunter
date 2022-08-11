@@ -251,6 +251,7 @@ void StatsComponentDrawer::BarWidgetFromNew(IDetailLayoutBuilder& DetailBuilder,
 		FText::FromString(CategoryName),
 		ECategoryPriority::Important);
 
+
 	BarWidgetBase(
 		Category
 			.AddCustomRow(LOCTEXT("Keyword", "BarWidget"))
@@ -314,6 +315,18 @@ void StatsComponentDrawer::BarWidgetBase(FDetailWidgetDecl& Widget, FEditableBar
 			.HAlign(Params.Max.WidgetHAlign)
 			.VAlign(Params.Max.WidgetVAlign)
 
+			// Outline
+			+SCanvas::Slot()[
+				SNew(SColorBlock) 
+					.Color(Params.Bar.OutlineColor)
+					.ToolTipText(Params.Bar.Tooltip)
+					.CornerRadius(Params.Bar.CornerRadius)
+			]
+			.Position(Params.Bar.WidgetPosition)
+			.Size(Params.Bar.WidgetSize)
+			.HAlign(Params.Bar.WidgetHAlign)
+			.VAlign(Params.Bar.WidgetVAlign)
+			
 			// Background
 			+SCanvas::Slot()[
 				SNew(SColorBlock) 
@@ -321,8 +334,14 @@ void StatsComponentDrawer::BarWidgetBase(FDetailWidgetDecl& Widget, FEditableBar
 					.ToolTipText(Params.Bar.Tooltip)
 					.CornerRadius(Params.Bar.CornerRadius)
 			]
-			.Position(Params.Bar.WidgetPosition)
-			.Size(Params.Bar.WidgetSize)
+			.Position(FVector2D{
+				Params.Bar.WidgetPosition.X + Params.Bar.Padding,
+				Params.Bar.WidgetPosition.Y
+				})
+			.Size(FVector2D{
+				Params.Bar.WidgetSize.X - 2*Params.Bar.Padding,
+				Params.Bar.WidgetSize.Y - 2*Params.Bar.Padding
+				})
 			.HAlign(Params.Bar.WidgetHAlign)
 			.VAlign(Params.Bar.WidgetVAlign)
 
@@ -357,10 +376,10 @@ void StatsComponentDrawer::BarWidgetBase(FDetailWidgetDecl& Widget, FEditableBar
 			}) 
 		)
 	)
-		.ExtensionWidget.Widget->SetToolTipText(Params.Reset.Tooltip)
 	;
 	Widget.HAlign(HAlign_Left);
 	Widget.VAlign(VAlign_Center);
+	
 }
 
 
@@ -419,9 +438,8 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, TShar
 	Params.Max.Tooltip = FloatToFText(TargetStat.GetPermanentValue(), !bPercentage);
 	if (bPercentage)
 		Params.Max.Text = FText::FromString(FString::Printf(
-				TEXT("%s%s"),
-				*Params.Max.Text.ToString(),
-				*FString("%")
+				TEXT("%s%%"),
+				*Params.Max.Text.ToString()
 			));
 	
 	// Bar
