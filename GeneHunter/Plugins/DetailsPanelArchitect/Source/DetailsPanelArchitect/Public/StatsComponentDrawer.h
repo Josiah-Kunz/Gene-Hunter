@@ -71,7 +71,7 @@ private:
 	void BarWidgetFromExisting( IDetailLayoutBuilder& DetailBuilder, 
 		TSharedPtr<IPropertyHandle> PropertyHandle, FEditableBarWidgetParameters Params);
 
-	void BarWidgetBase(FDetailWidgetDecl& Widget, FEditableBarWidgetParameters Params);
+	void BarWidgetBase(FDetailWidgetDecl& WholeRowWidget, FEditableBarWidgetParameters Params);
 
 	// Macro for stats (if not for GET_MEMBER_NAME_CHECKED, you could do this as a function
 	#define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax, bPercentage) \

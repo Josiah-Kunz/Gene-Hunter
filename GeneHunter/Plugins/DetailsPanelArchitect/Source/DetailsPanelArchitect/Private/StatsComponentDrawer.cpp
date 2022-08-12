@@ -6,9 +6,11 @@
 #include "DetailWidgetRow.h"
 #include "MathUtil.h"
 #include "BPLibraries/Public/UtilityFunctionLibrary.h"
+#include "Brushes/SlateImageBrush.h"
 #include "Widgets/SCanvas.h"
 #include "Widgets/Colors/SColorBlock.h"
 #include "Widgets/Input/SEditableTextBox.h"
+#include "Widgets/Images/SImage.h"
 
 TSharedRef<IDetailCustomization> StatsComponentDrawer::MakeInstance()
 {
@@ -250,8 +252,7 @@ void StatsComponentDrawer::BarWidgetFromNew(IDetailLayoutBuilder& DetailBuilder,
 		FName(CategoryName),
 		FText::FromString(CategoryName),
 		ECategoryPriority::Important);
-
-
+	
 	BarWidgetBase(
 		Category
 			.AddCustomRow(LOCTEXT("Keyword", "BarWidget"))
@@ -266,9 +267,23 @@ void StatsComponentDrawer::BarWidgetFromExisting(IDetailLayoutBuilder& DetailBui
 	BarWidgetBase(Row->CustomWidget().WholeRowContent(), Params);
 }
 
-void StatsComponentDrawer::BarWidgetBase(FDetailWidgetDecl& Widget, FEditableBarWidgetParameters Params)
+void StatsComponentDrawer::BarWidgetBase(FDetailWidgetDecl& WholeRowWidget, FEditableBarWidgetParameters Params)
 {
-	Widget.operator[](
+
+	UE_LOG(LogTemp, Display, TEXT("%s"),
+		*(FPaths::ProjectContentDir() / TEXT("Editor/reset-icon.png"))
+		)
+	
+	WholeRowWidget.operator[](
+	
+	SNew(SImage)
+				.Image(new FSlateDynamicImageBrush(
+						FName(*(FPaths::ProjectContentDir() / TEXT("Editor/reset-icon.png"))),
+						FVector2D{22.0f, 26.0f}
+					)
+				)
+
+	/*
 		SNew(SCanvas)
 
 			// Text
@@ -363,12 +378,26 @@ void StatsComponentDrawer::BarWidgetBase(FDetailWidgetDecl& Widget, FEditableBar
 			})
 			.HAlign(Params.Bar.WidgetHAlign)
 			.VAlign(Params.Bar.WidgetVAlign)
+
+			// Reset button
+			+SCanvas::Slot()[
+				SNew(SImage)
+					.Image(new FSlateImageBrush(
+							FPaths::ProjectContentDir() / TEXT("Editor/reset-icon.png"),
+							FVector2D{22.0f, 26.0f}
+						)
+					)
+			]
+			.HAlign(HAlign_Right)
+			.VAlign(VAlign_Center)
+			*/
 	)
 	.OverrideResetToDefault(
 		FResetToDefaultOverride::Create( 
 			TAttribute<bool>::CreateLambda([Params]() 
 			{ 
-				return Params.Reset.bShowReset; 
+				//return Params.Reset.bShowReset;
+				return false;
 			}), 
 			FSimpleDelegate::CreateLambda([Params]() 
 			{ 
@@ -377,8 +406,8 @@ void StatsComponentDrawer::BarWidgetBase(FDetailWidgetDecl& Widget, FEditableBar
 		)
 	)
 	;
-	Widget.HAlign(HAlign_Left);
-	Widget.VAlign(VAlign_Center);
+	WholeRowWidget.HAlign(HAlign_Left);
+	WholeRowWidget.VAlign(VAlign_Center);
 	
 }
 
