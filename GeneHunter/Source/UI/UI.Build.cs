@@ -4,6 +4,8 @@ public class UI : ModuleRules{
 
 	public UI(ReadOnlyTargetRules Target) : base(Target){
 		
+		PublicDependencyModuleNames.AddRange(new string[]{ "UMG", "Slate", "SlateCore" });
+
 		PrivateIncludePaths.Add("UI/Private");
 		
 		PublicIncludePaths.Add("UI/Public");

@@ -4,7 +4,6 @@ public class TypesUnitTests : ModuleRules{
 	
 	public TypesUnitTests(ReadOnlyTargetRules Target) : base(Target){
 		
-		PublicIncludePaths.Add("Monster/TypesUnitTests/Public");
 		PrivateIncludePaths.Add("Monster/TypesUnitTests/Private");
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
