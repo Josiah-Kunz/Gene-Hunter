@@ -14,7 +14,11 @@ public:
 	
 	SLATE_BEGIN_ARGS(SMySlateWidget)
 		{}
+	
 	SLATE_ARGUMENT(FSlateBrush*, Brush)
+
+	/** Called when the background is clicked */
+	SLATE_EVENT( FOnClicked, OnClicked )
 
 	SLATE_END_ARGS()
 
@@ -23,7 +27,9 @@ protected:
 
 private:
 
-	TSharedPtr<SImage> Image;
+	TSharedPtr<SImage> BackgroundImage;
+
+	TSharedPtr<SButton> Button;
 	
 public:
 

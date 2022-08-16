@@ -9,11 +9,13 @@ BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
 void SMySlateWidget::Construct(const FArguments& InArgs)
 {
-
 	Brush = FInvalidatableBrushAttribute(InArgs._Brush);
 	ChildSlot
 	[
-		SAssignNew(Image, SImage)
+		SAssignNew(Button, SButton)[
+			SAssignNew(BackgroundImage, SImage)
+		]
+		
 	];
 
 }

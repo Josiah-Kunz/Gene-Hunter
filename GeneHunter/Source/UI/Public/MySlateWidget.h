@@ -4,6 +4,8 @@
 
 #include "MySlateWidget.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnButtonClickedEvent);
+
 UCLASS()
 class UI_API UMySlateWidget : public UWidget
 {
@@ -16,6 +18,11 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Appearance")
 	FSlateBrush Brush;
+
+	/** Called when the background is clicked */
+	UPROPERTY(BlueprintAssignable, Category="Event")
+	FOnButtonClickedEvent OnClicked;
+	
 
 protected:
 	virtual TSharedRef<SWidget> RebuildWidget() override;
