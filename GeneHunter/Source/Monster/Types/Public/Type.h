@@ -124,9 +124,12 @@ public:
 	/**
 	 * Gets the Type Assets (not the Types themselves). Includes both Types and "dummy" Types.
 	 * @param bSortABC If true, sorts the Types alphabetically. Make false to improve performance.
+	 * @param bIncludeDummy if true, include "dummy" Types (for unit testing only!).
+	 * @param bIncludeReal if true, include "real" (in-game) Types. You always want this unless you're unit testing.
 	 */
 	UFUNCTION(BlueprintCallable)
-	static void GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC = false);
+	static void GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC = false,
+		const bool bIncludeDummy = false, const bool bIncludeReal = true);
 
 	/**
 	 * Gets all Types.

@@ -142,10 +142,32 @@ void UType::PruneTypeAttackMods(UType* Type)
 
 #pragma region Getting Types
 
-void UType::GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC)
+void UType::GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC,
+	const bool bIncludeDummy, const bool bIncludeReal)
 {
+
+	// Get the assets
 	const FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
 	AssetRegistryModule.Get().GetAssetsByClass(TEXT("Type"), TypeAssets, false);
+
+	// Remove dummies or reals
+	for(int i=TypeAssets.Num() - 1; i>=0; i--)
+	{
+		const bool bIsDummy = TypeAssets[i].AssetName.ToString().Contains(DUMMY_IDENTIFIER);
+		if (!bIncludeDummy && bIsDummy)
+		{
+			TypeAssets.RemoveAt(i);
+			continue;
+		}
+
+		if (!bIncludeReal && !bIsDummy)
+		{
+			TypeAssets.RemoveAt(i);
+			continue;
+		}
+	}
+
+	// Sort
 	if (bSortABC)
 		UAssetFunctionLibrary::SortAssetsAlphabetically(TypeAssets, TypeAssets);
 }
