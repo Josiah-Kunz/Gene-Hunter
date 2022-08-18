@@ -11,6 +11,7 @@
 #include "Widgets/Colors/SColorBlock.h"
 #include "Widgets/Input/SEditableTextBox.h"
 #include "Widgets/Images/SImage.h"
+#include "SStatsBar.h"
 
 TSharedRef<IDetailCustomization> StatsComponentDrawer::MakeInstance()
 {
@@ -33,52 +34,47 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 
-	FEditableBarWidgetParameters Params = {};
+	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
+	FName(LevelCategoryName),
+	FText::FromString(LevelCategoryName),
+	ECategoryPriority::Important);
 
-	// Label
-	Params.Label.Text = FText::FromString("Lv.");
-	Params.Label.Tooltip = FText::FromString("Level");
-
-	// EditableText
-	Params.TextBox.Text = FText::FromString(FString::FromInt(StatsComponent->GetLevel()));
-	Params.TextBox.Tooltip = FText::FromString(FString::Printf(TEXT("%i"), StatsComponent->GetLevel()));
-	Params.TextBox.OnTextCommitted = [this, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
-	{
-		const int NewLevel = UUtilityFunctionLibrary::FromSI(InText);
-		if (NewLevel == StatsComponent->GetLevel())
-			return;
-		if (UserCommitted(InTextCommit))
-			StatsComponent->SetLevel(NewLevel);
-		DetailBuilder.ForceRefreshDetails();
-	},
-
-	// Max
-	Params.Max.Text = FText::FromString(FString::FromInt(StatsComponent->MaxLevel()));
-	Params.Max.Tooltip = FText::FromString(FString::FromInt(StatsComponent->MaxLevel()));
-
-	// Bar
-	Params.Bar.BarColor = FLinearColor::Green;
-	Params.Bar.BarFraction = (1.0f * StatsComponent->GetLevel())/StatsComponent->MaxLevel();
-	Params.Bar.Tooltip = FText::FromString(
+	Category.AddCustomRow(LOCTEXT("Keyword", "BarWidget")).WholeRowContent()[
+			SNew(SStatsBar)
+				.LabelText(FText::FromString("Lv."))
+				.LabelTooltip(FText::FromString("Level"))
+				.TextBoxText(FText::FromString(FString::FromInt(StatsComponent->GetLevel())))
+				.TextBoxTooltip(FText::FromString(FString::Printf(TEXT("%i"), StatsComponent->GetLevel())))
+				.OnTextCommitted([this, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
+					{
+						const int NewLevel = UUtilityFunctionLibrary::FromSI(InText);
+						if (NewLevel == StatsComponent->GetLevel())
+							return;
+						if (UserCommitted(InTextCommit))
+							StatsComponent->SetLevel(NewLevel);
+						DetailBuilder.ForceRefreshDetails();
+					})
+				.MaxText(FText::FromString(FString::FromInt(StatsComponent->MaxLevel())))
+				.MaxTooltip(FText::FromString(FString::FromInt(StatsComponent->MaxLevel())))
+				.BarColor(FLinearColor::Green)
+				.BarFraction((1.0f * StatsComponent->GetLevel())/StatsComponent->MaxLevel())
+				.BarTooltip(FText::FromString(
 					FString::Printf(TEXT(
 					"The higher the level, the stronger the stats! The max level is %s."),
 					*FString::FromInt(StatsComponent->MaxLevel())
-					)
-				);
-
-	// Reset
-	Params.Reset.bShowReset = true;
-	Params.Reset.OnReset = [this, &DetailBuilder]()
-		{
-			StatsComponent->SetLevel(1);
-			DetailBuilder.ForceRefreshDetails();
-		};
-	Params.Reset.Tooltip = FText::FromString(FString::Printf(
-		TEXT("Resets the current level (%i) to the minimum (1)."),
-		StatsComponent->GetLevel()
-		));
-
-	BarWidgetFromNew(DetailBuilder, "Level", Params);
+					)))
+			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
+				TAttribute<bool>::CreateLambda([]() 
+				{ 
+					return true;
+				}), 
+				FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
+				{ 
+					StatsComponent->SetLevel(1);
+					DetailBuilder.ForceRefreshDetails();
+				})
+			))
+	;
 }
 
 void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuilder)
@@ -270,18 +266,27 @@ void StatsComponentDrawer::BarWidgetFromExisting(IDetailLayoutBuilder& DetailBui
 void StatsComponentDrawer::BarWidgetBase(FDetailWidgetDecl& WholeRowWidget, FEditableBarWidgetParameters Params)
 {
 
-	UE_LOG(LogTemp, Display, TEXT("%s"),
-		*(FPaths::ProjectContentDir() / TEXT("Editor/reset-icon.png"))
-		)
+	bool isHP = Params.Label.Text.EqualTo(FText::FromString("HP"));
+	
 	
 	WholeRowWidget.operator[](
+
+	SNew(SStatsBar)
+		.IsPercentage(true)
+		.LabelText(Params.Label.Text)
+		.IsPercentage(isHP)
+		.BarFraction(Params.Bar.BarFraction)
+		.MaxText(Params.Max.Text)
+		.UseFullWidth(true)
 	
+/*
 	SNew(SImage)
 				.Image(new FSlateDynamicImageBrush(
 						FName(*(FPaths::ProjectContentDir() / TEXT("Editor/reset-icon.png"))),
 						FVector2D{22.0f, 26.0f}
 					)
 				)
+*/
 
 	/*
 		SNew(SCanvas)
@@ -389,8 +394,8 @@ void StatsComponentDrawer::BarWidgetBase(FDetailWidgetDecl& WholeRowWidget, FEdi
 					)
 			]
 			.HAlign(HAlign_Right)
-			.VAlign(VAlign_Center)
-			*/
+			.VAlign(VAlign_Center)*/
+
 	)
 	.OverrideResetToDefault(
 		FResetToDefaultOverride::Create( 
@@ -416,82 +421,45 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, TShar
 	FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue, const bool bPercentage)
 {
 
-	// Parameters
-	FEditableBarWidgetParameters Params = {};
+	IDetailPropertyRow* Row = DetailBuilder.EditDefaultProperty(PropertyHandle);
+	Row->CustomWidget()[
+		SNew(SStatsBar)
+			.LabelText(FText::FromString(TargetStat.Abbreviation()))
+			.LabelTooltip(FText::FromString(TargetStat.Name()))
+			.TextBoxText(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage))
+			.TextBoxTooltip(FloatToFText(TargetStat.GetCurrentValue(), !bPercentage))
+			.OnTextCommitted([&TargetStat, StatValueType, &DetailBuilder, bPercentage](const FText& InText, const ETextCommit::Type InTextCommit)
+				{
+					// Check to see if anything changed (avoids rounding errors)
+					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(TargetStat.GetCurrentValue(), SigFigs, !bPercentage)))
+						return;
 
-	// Label
-	Params.Label.Text = FText::FromString(TargetStat.Abbreviation());
-	Params.Label.Tooltip = FText::FromString(TargetStat.Name());
+					// Check commit method
+					if (UserCommitted(InTextCommit))
+						TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
 
-	// EditableTextBox
-	Params.TextBox.Text = UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage);
-	Params.TextBox.Tooltip = FloatToFText(TargetStat.GetCurrentValue(), !bPercentage);
-	Params.TextBox.OnTextCommitted = [&TargetStat, StatValueType, &DetailBuilder, bPercentage](const FText& InText, const ETextCommit::Type InTextCommit)
-		{
-			// Check to see if anything changed (avoids rounding errors)
-			if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(TargetStat.GetCurrentValue(), SigFigs, !bPercentage)))
-				return;
-
-			// Check commit method
-			if (UserCommitted(InTextCommit))
-				TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
-
-			// Refresh regardless
-			DetailBuilder.ForceRefreshDetails();
-		};
-	if (bPercentage)
-		Params.TextBox.WidgetSize = FVector2D{
-			Params.TextBox.WidgetSize.X - Params.Slash.WidgetSize.X,
-			Params.TextBox.WidgetSize.Y
-		};
-
-	// Slash is preceded by percent?
-	if (bPercentage)
-	{
-		Params.Slash.Text = FText::FromString(FString::Printf(
-			TEXT("%% %s"),
-			*Params.Slash.Text.ToString()
-			));
-		Params.Slash.WidgetPosition = FVector2D{
-			Params.Slash.WidgetPosition.X - Params.Slash.WidgetSize.X,
-			Params.Slash.WidgetPosition.Y
-		};
-		Params.Slash.WidgetSize = FVector2D{
-			Params.Slash.WidgetSize.X + Params.Slash.WidgetSize.X,
-			Params.Slash.WidgetSize.Y
-		};
-	}
-
-	// Max
-	Params.Max.Text = UUtilityFunctionLibrary::ToSI(TargetStat.GetPermanentValue(), SigFigs, !bPercentage);
-	Params.Max.Tooltip = FloatToFText(TargetStat.GetPermanentValue(), !bPercentage);
-	if (bPercentage)
-		Params.Max.Text = FText::FromString(FString::Printf(
-				TEXT("%s%%"),
-				*Params.Max.Text.ToString()
-			));
-	
-	// Bar
-	Params.Bar.BarColor = TargetStat.Color();
-	Params.Bar.BarFraction = TargetStat.GetValue(StatValueType) / MaxValue;
-	Params.Bar.Tooltip = TargetStat.SupportingText().Description;
-
-	// Reset
-	Params.Reset.bShowReset = true;
-	Params.Reset.OnReset = [this, &DetailBuilder, &TargetStat]()
-		{
-			TargetStat.SetCurrentValue(TargetStat.GetPermanentValue());
-			DetailBuilder.ForceRefreshDetails();
-		};
-	Params.Reset.Tooltip = FText::FromString(FString::Printf(
-		TEXT("Resets the current %s (%s) to the permanent value (%s)."),
-		*TargetStat.Name(),
-		*FloatToFText(TargetStat.GetCurrentValue(), !bPercentage).ToString(),
-		*FloatToFText(TargetStat.GetPermanentValue(), !bPercentage).ToString()
-	));
-	
-	// Content
-	BarWidgetFromExisting(DetailBuilder, PropertyHandle, Params);
+					// Refresh regardless
+					DetailBuilder.ForceRefreshDetails();
+				})
+			.IsPercentage(bPercentage)
+			.MaxText(UUtilityFunctionLibrary::ToSI(TargetStat.GetPermanentValue(), SigFigs, !bPercentage))
+			.MaxTooltip(FloatToFText(TargetStat.GetPermanentValue(), !bPercentage))
+			.BarColor(TargetStat.Color())
+			.BarFraction(TargetStat.GetValue(StatValueType) / MaxValue)
+			.BarTooltip(TargetStat.SupportingText().Description)
+		].OverrideResetToDefault(
+			FResetToDefaultOverride::Create( 
+				TAttribute<bool>::CreateLambda([]() 
+				{ 
+					return true;
+				}), 
+				FSimpleDelegate::CreateLambda([&DetailBuilder, &TargetStat]() 
+				{ 
+					TargetStat.SetCurrentValue(TargetStat.GetPermanentValue());
+					DetailBuilder.ForceRefreshDetails();
+				}) 
+			)
+		);
 }
 
 
