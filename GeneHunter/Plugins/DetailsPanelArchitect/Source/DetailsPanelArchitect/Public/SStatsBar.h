@@ -6,7 +6,8 @@
 #include "Widgets/SCompoundWidget.h"
 
 /**
- * 
+ * SCompoundWidget that houses functions to look like a(n editable) stats bar:
+ *		[Label] [EditableText] / [Max] [Baaaaaaar    ]
  */
 class DETAILSPANELARCHITECT_API SStatsBar : public SCompoundWidget
 {

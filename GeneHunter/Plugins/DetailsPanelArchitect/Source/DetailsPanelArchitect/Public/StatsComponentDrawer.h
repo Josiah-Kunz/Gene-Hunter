@@ -2,7 +2,6 @@
 #include "DetailLayoutBuilder.h"
 #include "PropertyEditor/Public/IDetailCustomization.h"
 #include "StatsComponent.h"
-#include "WidgetParameters/EditableBarWidgetParameters .h"
 
 
 class StatsComponentDrawer : public IDetailCustomization
@@ -46,6 +45,8 @@ private:
 	virtual void CustomizeLevelDetails(IDetailLayoutBuilder& DetailBuilder);
 
 	virtual void CustomizeExpDetails(IDetailLayoutBuilder& DetailBuilder);
+	
+	virtual void CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuilder);
 
 	virtual void CustomizeStatsDetails(IDetailLayoutBuilder& DetailBuilder);
 
@@ -64,14 +65,6 @@ private:
 	static bool UserCommitted(const ETextCommit::Type CommitType);
 
 	static FText FloatToFText(const float Value, const bool bIntegerOnly);
-	
-	void BarWidgetFromNew( IDetailLayoutBuilder& DetailBuilder, const FString CategoryName,
-		FEditableBarWidgetParameters Params);
-
-	void BarWidgetFromExisting( IDetailLayoutBuilder& DetailBuilder, 
-		TSharedPtr<IPropertyHandle> PropertyHandle, FEditableBarWidgetParameters Params);
-
-	void BarWidgetBase(FDetailWidgetDecl& WholeRowWidget, FEditableBarWidgetParameters Params);
 
 	// Macro for stats (if not for GET_MEMBER_NAME_CHECKED, you could do this as a function
 	#define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax, bPercentage) \

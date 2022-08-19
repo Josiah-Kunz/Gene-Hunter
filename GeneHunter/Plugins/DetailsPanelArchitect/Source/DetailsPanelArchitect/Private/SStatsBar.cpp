@@ -24,10 +24,9 @@ void SStatsBar::Construct(const FArguments& InArgs)
 	const float LabelX = InArgs._Margin.Left;
 	const float TextBoxX = LabelX + InArgs._LabelSize.X + InArgs._Gap;
 	const float SlashX = TextBoxX + InArgs._TextBoxSize.X + InArgs._Gap;
-	const float SlashWidth = InArgs._SlashSize.X + (InArgs._IsPercentage.Get() ? PercentWidth : 0);
-	const float MaxX = SlashX + SlashWidth + InArgs._Gap;
+	const float MaxX = SlashX + InArgs._SlashSize.X + InArgs._Gap;
 	const float MaxWidth = InArgs._MaxSize.X + (InArgs._IsPercentage.Get() ? PercentWidth : 0);
-	const float BarX = MaxX + MaxWidth + InArgs._Gap - (InArgs._IsPercentage.Get() ? 2*PercentWidth : 0);
+	const float BarX = MaxX + MaxWidth + InArgs._Gap - (InArgs._IsPercentage.Get() ? PercentWidth : 0);
 	
 	ChildSlot
 	[
@@ -43,10 +42,14 @@ void SStatsBar::Construct(const FArguments& InArgs)
 			.Size(InArgs._LabelSize)
 			ALIGN()
 
-		// EditableText
+		// EditableText (Value)
 		+SCanvas::Slot()[
 		SNew(SEditableTextBox)
-				.Text(InArgs._TextBoxText)
+				.Text(FText::FromString(
+					FString::Printf(TEXT("%s%s"),
+					*InArgs._TextBoxText.ToString(),
+					InArgs._IsPercentage.Get() ? *FString("%") : *FString("")
+					)))
 				.ToolTipText(InArgs._TextBoxTooltip)
 				.OnTextCommitted_Lambda(InArgs._OnTextCommitted.Get())
 			]
@@ -57,15 +60,11 @@ void SStatsBar::Construct(const FArguments& InArgs)
 		// Slash
 		+SCanvas::Slot()[
 			SNew(STextBlock)
-				.Text(FText::FromString(
-						FString::Printf(TEXT("%s%s"),
-						InArgs._IsPercentage.Get() ? *FString("%") : *FString(""),
-						*InArgs._SlashText.ToString()))
-					)
+				.Text(InArgs._SlashText)
 				.ToolTipText(InArgs._SlashTooltip)
 			]
 			.Position(FVector2D{SlashX, 0})
-			.Size(FVector2D{SlashWidth, InArgs._SlashSize.Y})
+			.Size(InArgs._SlashSize)
 			ALIGN()
 
 		// Max

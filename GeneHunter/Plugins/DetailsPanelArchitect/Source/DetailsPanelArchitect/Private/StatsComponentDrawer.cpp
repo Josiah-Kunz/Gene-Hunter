@@ -27,6 +27,7 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 	// Details
 	CustomizeLevelDetails(DetailBuilder);
 	CustomizeExpDetails(DetailBuilder);
+	CustomizeCXPDetails(DetailBuilder);
 	CustomizeStatsDetails(DetailBuilder);
 	
 }
@@ -39,7 +40,7 @@ void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 	FText::FromString(LevelCategoryName),
 	ECategoryPriority::Important);
 
-	Category.AddCustomRow(LOCTEXT("Keyword", "BarWidget")).WholeRowContent()[
+	Category.AddCustomRow(LOCTEXT("Keyword", "Level")).WholeRowContent()[
 			SNew(SStatsBar)
 				.LabelText(FText::FromString("Lv."))
 				.LabelTooltip(FText::FromString("Level"))
@@ -80,113 +81,114 @@ void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 
-	FEditableBarWidgetParameters ExpParams = {};
+	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
+	FName(LevelCategoryName),
+	FText::FromString(LevelCategoryName),
+	ECategoryPriority::Important);
 
-	// Label
-	ExpParams.Label.Text = FText::FromString("Exp");
-	ExpParams.Label.Tooltip = FText::FromString("Experience points within the level (non-cumulative experience points)");
-	
-	// EditableTextBox
-	ExpParams.TextBox.Text = UUtilityFunctionLibrary::ToSI(StatsComponent->GetExp(), SigFigs, true);
-	ExpParams.TextBox.OnTextCommitted = [this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
-		{
+	Category.AddCustomRow(LOCTEXT("Keyword", "Exp")).WholeRowContent()[
+		SNew(SStatsBar)
+			.LabelText(FText::FromString("Exp"))
+			.LabelTooltip(FText::FromString("Experience points within the level (non-cumulative experience points)"))
+			.TextBoxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetExp(), SigFigs, true))
+			.OnTextCommitted([this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
+				{
 
-			// Check if anything happened
-			const int DiffXP = UUtilityFunctionLibrary::FromSI(InText) - StatsComponent->GetExp();
-			if (DiffXP == 0)
-				return;
+					// Check if anything happened
+					const int DiffXP = UUtilityFunctionLibrary::FromSI(InText) - StatsComponent->GetExp();
+					if (DiffXP == 0)
+						return;
 
-			// Check to see if anything changed (avoids rounding errors)
-			if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetExp(), SigFigs, true)))
-				return;
+					// Check to see if anything changed (avoids rounding errors)
+					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetExp(), SigFigs, true)))
+						return;
 
-			// Use did something
-			if (UserCommitted(CommitType))
-				StatsComponent->AddCumulativeExp(DiffXP);
+					// Use did something
+					if (UserCommitted(CommitType))
+						StatsComponent->AddCumulativeExp(DiffXP);
 
-			// Refresh either way
-			DetailBuilder.ForceRefreshDetails();
-		};
-	ExpParams.TextBox.Tooltip = FText::FromString(FString::Printf(
-		TEXT("%s"),
-		*FloatToFText(StatsComponent->GetExp(), true).ToString()
-		));
+					// Refresh either way
+					DetailBuilder.ForceRefreshDetails();
+				})
+			.TextBoxTooltip(FText::FromString(FString::Printf(
+			TEXT("%s"),
+				*FloatToFText(StatsComponent->GetExp(), true).ToString()
+				)))
+			.MaxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetTotalExpThisLevel(), SigFigs, true))
+			.MaxTooltip(FText::FromString(FString::Printf(
+				TEXT("%s"),
+				*FloatToFText(StatsComponent->GetTotalExpThisLevel(), true).ToString()
+				)))
+			.BarColor(FLinearColor{0.9f, 0.1f, 0.9f, 0.8f})
+			.BarFraction(StatsComponent->GetExp()/StatsComponent->GetTotalExpThisLevel())
+			.BarTooltip(FText::FromString("Change in exp = change in level"))
+			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
+					TAttribute<bool>::CreateLambda([]() 
+					{ 
+						return true;
+					}), 
+					FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
+					{ 
+						StatsComponent->SetCumulativeExp(StatsComponent->GetCumulativeExpFromLevel(StatsComponent->GetLevel()));
+						DetailBuilder.ForceRefreshDetails();
+					})
+				))
+	;
+}
 
-	// Max
-	ExpParams.Max.Text = UUtilityFunctionLibrary::ToSI(StatsComponent->GetTotalExpThisLevel(), SigFigs, true);
-	ExpParams.Max.Tooltip = FText::FromString(FString::Printf(
-		TEXT("%s"),
-		*FloatToFText(StatsComponent->GetTotalExpThisLevel(), true).ToString()
-		));
+void StatsComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuilder)
+{
 
-	// Bar
-	ExpParams.Bar.BarColor = FLinearColor{0.9f, 0.1f, 0.9f};
-	ExpParams.Bar.BarFraction = StatsComponent->GetExp()/StatsComponent->GetTotalExpThisLevel();
-	ExpParams.Bar.Tooltip = FText::FromString("Change in exp = change in level");
+	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
+	FName(LevelCategoryName),
+	FText::FromString(LevelCategoryName),
+	ECategoryPriority::Important);
 
-	// Reset
-	ExpParams.Reset.bShowReset = true;
-	ExpParams.Reset.OnReset = [this, &DetailBuilder]()
-		{
-			StatsComponent->SetCumulativeExp(StatsComponent->GetCumulativeExpFromLevel(StatsComponent->GetLevel()));
-			DetailBuilder.ForceRefreshDetails();
-		};
-	ExpParams.Reset.Tooltip = FText::FromString("Resets the (non-cumulative) exp for this level to 0.");
-	
-	// Exp to level
-	BarWidgetFromNew(DetailBuilder, "Level", ExpParams);
-	
-	// Cumulative
-	FEditableBarWidgetParameters CxpParams = {};
+	Category.AddCustomRow(LOCTEXT("Keyword", "CXP")).WholeRowContent()[
+		SNew(SStatsBar)
+			.LabelText(FText::FromString("CXP"))
+			.LabelTooltip(FText::FromString("Cumulative experience points"))
+			.TextBoxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetCumulativeExp(), SigFigs, true))
+			.OnTextCommitted(
+				[this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
+				{
 
-	// Label
-	CxpParams.Label.Text = FText::FromString("CXP");
-	CxpParams.Label.Tooltip = FText::FromString("Cumulative experience points");
+					// Check to see if anything changed (avoids rounding errors)
+					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetCumulativeExp(), SigFigs, true)))
+						return;
 
-	// EditableTextBox
-	CxpParams.TextBox.Text = UUtilityFunctionLibrary::ToSI(StatsComponent->GetCumulativeExp(), SigFigs, true);
-	CxpParams.TextBox.Tooltip = FText::FromString(FString::Printf(
-		TEXT("%s"),
-		*FloatToFText(StatsComponent->GetCumulativeExp(), true).ToString()
-		));
-	CxpParams.TextBox.OnTextCommitted = [this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
-		{
+					// Change depending on commit type (might have hit "esc", so no changes)
+					if (UserCommitted(CommitType))
+						StatsComponent->SetCumulativeExp(UUtilityFunctionLibrary::FromSI(InText));
 
-			// Check to see if anything changed (avoids rounding errors)
-			if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetCumulativeExp(), SigFigs, true)))
-				return;
-
-			// Change depending on commit type (might have hit "esc", so no changes)
-			if (UserCommitted(CommitType))
-				StatsComponent->SetCumulativeExp(UUtilityFunctionLibrary::FromSI(InText));
-
-			// Refresh either way
-			DetailBuilder.ForceRefreshDetails();
-		};
-
-	// Max
-	CxpParams.Max.Text = UUtilityFunctionLibrary::ToSI(StatsComponent->GetMaxExp(), SigFigs, true);
-	CxpParams.Max.Tooltip = FText::FromString(FString::Printf(
-		TEXT("Max cumulative exp at level %i is %s."),
-		StatsComponent->MaxLevel(),
-		*FloatToFText(StatsComponent->GetMaxExp(), true).ToString()
-		));
-
-	// Bar
-	CxpParams.Bar.BarColor = FLinearColor{0.5f, 0, 0.5f};
-	CxpParams.Bar.BarFraction = StatsComponent->GetCumulativeExp()/StatsComponent->GetMaxExp();
-	CxpParams.Bar.Tooltip = FText::FromString("Change in exp = change in level"); 
-
-	// Reset
-	CxpParams.Reset.bShowReset = true;
-	CxpParams.Reset.OnReset = [this, &DetailBuilder]()
-		{
-			StatsComponent->SetCumulativeExp(0);
-			DetailBuilder.ForceRefreshDetails();
-		};
-	CxpParams.Reset.Tooltip = FText::FromString("Resets the cumulative exp to its minimum (1; level 1).");
-	
-	BarWidgetFromNew(DetailBuilder, "Level", CxpParams);
+					// Refresh either way
+					DetailBuilder.ForceRefreshDetails();
+				})
+			.TextBoxTooltip(FText::FromString(FString::Printf(
+					TEXT("%s"),
+					*FloatToFText(StatsComponent->GetCumulativeExp(), true).ToString()
+					)))
+			.MaxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetMaxExp(), SigFigs, true))
+			.MaxTooltip(FText::FromString(FString::Printf(
+				TEXT("Max cumulative exp at level %i is %s."),
+				StatsComponent->MaxLevel(),
+				*FloatToFText(StatsComponent->GetMaxExp(), true).ToString()
+				)))
+			.BarColor(FLinearColor{0.5f, 0, 0.5f})
+			.BarFraction(StatsComponent->GetCumulativeExp()/StatsComponent->GetMaxExp())
+			.BarTooltip(FText::FromString("Change in exp = change in level"))
+			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
+					TAttribute<bool>::CreateLambda([]() 
+					{ 
+						return true;
+					}), 
+					FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
+					{ 
+						StatsComponent->SetCumulativeExp(0);
+						DetailBuilder.ForceRefreshDetails();
+					})
+				))
+	;
 }
 
 
@@ -240,182 +242,6 @@ FText StatsComponentDrawer::FloatToFText(const float Value, const bool bIntegerO
 		FString::FromInt(FMath::RoundToInt(Value)) :
 		FString::SanitizeFloat(Value));
 }
-
-void StatsComponentDrawer::BarWidgetFromNew(IDetailLayoutBuilder& DetailBuilder, const FString CategoryName,
-                                            FEditableBarWidgetParameters Params)
-{
-	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
-		FName(CategoryName),
-		FText::FromString(CategoryName),
-		ECategoryPriority::Important);
-	
-	BarWidgetBase(
-		Category
-			.AddCustomRow(LOCTEXT("Keyword", "BarWidget"))
-			.WholeRowContent()
-		, Params);
-}
-
-void StatsComponentDrawer::BarWidgetFromExisting(IDetailLayoutBuilder& DetailBuilder,
-	TSharedPtr<IPropertyHandle> PropertyHandle, FEditableBarWidgetParameters Params)
-{
-	IDetailPropertyRow* Row = DetailBuilder.EditDefaultProperty(PropertyHandle);
-	BarWidgetBase(Row->CustomWidget().WholeRowContent(), Params);
-}
-
-void StatsComponentDrawer::BarWidgetBase(FDetailWidgetDecl& WholeRowWidget, FEditableBarWidgetParameters Params)
-{
-
-	bool isHP = Params.Label.Text.EqualTo(FText::FromString("HP"));
-	
-	
-	WholeRowWidget.operator[](
-
-	SNew(SStatsBar)
-		.IsPercentage(true)
-		.LabelText(Params.Label.Text)
-		.IsPercentage(isHP)
-		.BarFraction(Params.Bar.BarFraction)
-		.MaxText(Params.Max.Text)
-		.UseFullWidth(true)
-	
-/*
-	SNew(SImage)
-				.Image(new FSlateDynamicImageBrush(
-						FName(*(FPaths::ProjectContentDir() / TEXT("Editor/reset-icon.png"))),
-						FVector2D{22.0f, 26.0f}
-					)
-				)
-*/
-
-	/*
-		SNew(SCanvas)
-
-			// Text
-			+SCanvas::Slot()[
-				SNew(STextBlock)
-					.Text(Params.Label.Text)
-					.ToolTipText(Params.Label.Tooltip)
-			]
-			.Size(Params.Label.WidgetSize)
-			.Position(Params.Label.WidgetPosition)
-			.HAlign(Params.Label.WidgetHAlign)
-			.VAlign(Params.Label.WidgetVAlign)
-
-			// Current (EditableText)
-			+SCanvas::Slot()[
-				SNew(SEditableTextBox)
-					.Text(Params.TextBox.Text)
-					.ToolTipText(Params.TextBox.Tooltip)
-					.OnTextCommitted_Lambda(Params.TextBox.OnTextCommitted)
-			] 
-			.Size(Params.TextBox.WidgetSize)
-			.Position(Params.TextBox.WidgetPosition)
-			.HAlign(Params.TextBox.WidgetHAlign)
-			.VAlign(Params.TextBox.WidgetVAlign)
-
-			// Slash
-			+SCanvas::Slot()[
-				SNew(STextBlock)
-					.Text(Params.Slash.Text)
-			]
-			.Size(Params.Slash.WidgetSize)
-			.Position(Params.Slash.WidgetPosition)
-			.HAlign(Params.Slash.WidgetHAlign)
-			.VAlign(Params.Slash.WidgetVAlign)
-
-			// Max
-			+SCanvas::Slot()[
-				SNew(STextBlock)
-					.Text(Params.Max.Text)
-					.ToolTipText(Params.Max.Tooltip)
-			]
-			.Size(Params.Max.WidgetSize)
-			.Position(Params.Max.WidgetPosition)
-			.HAlign(Params.Max.WidgetHAlign)
-			.VAlign(Params.Max.WidgetVAlign)
-
-			// Outline
-			+SCanvas::Slot()[
-				SNew(SColorBlock) 
-					.Color(Params.Bar.OutlineColor)
-					.ToolTipText(Params.Bar.Tooltip)
-					.CornerRadius(Params.Bar.CornerRadius)
-			]
-			.Position(Params.Bar.WidgetPosition)
-			.Size(Params.Bar.WidgetSize)
-			.HAlign(Params.Bar.WidgetHAlign)
-			.VAlign(Params.Bar.WidgetVAlign)
-			
-			// Background
-			+SCanvas::Slot()[
-				SNew(SColorBlock) 
-					.Color(Params.Bar.BackgroundColor)
-					.ToolTipText(Params.Bar.Tooltip)
-					.CornerRadius(Params.Bar.CornerRadius)
-			]
-			.Position(FVector2D{
-				Params.Bar.WidgetPosition.X + Params.Bar.Padding,
-				Params.Bar.WidgetPosition.Y
-				})
-			.Size(FVector2D{
-				Params.Bar.WidgetSize.X - 2*Params.Bar.Padding,
-				Params.Bar.WidgetSize.Y - 2*Params.Bar.Padding
-				})
-			.HAlign(Params.Bar.WidgetHAlign)
-			.VAlign(Params.Bar.WidgetVAlign)
-
-			// Stat bar
-			+SCanvas::Slot()[
-				SNew(SColorBlock) 
-					.Color(Params.Bar.BarColor)
-					.Clipping(EWidgetClipping::ClipToBounds)
-					.ToolTipText(Params.Bar.Tooltip)
-					.CornerRadius(Params.Bar.CornerRadius)
-			]
-			.Position(FVector2D{
-				Params.Bar.WidgetPosition.X + Params.Bar.Padding,
-				Params.Bar.WidgetPosition.Y
-				})
-			.Size(FVector2D{
-				Params.Bar.BarFraction * Params.Bar.WidgetSize.X - 2*Params.Bar.Padding,
-				Params.Bar.WidgetSize.Y - 2*Params.Bar.Padding
-			})
-			.HAlign(Params.Bar.WidgetHAlign)
-			.VAlign(Params.Bar.WidgetVAlign)
-
-			// Reset button
-			+SCanvas::Slot()[
-				SNew(SImage)
-					.Image(new FSlateImageBrush(
-							FPaths::ProjectContentDir() / TEXT("Editor/reset-icon.png"),
-							FVector2D{22.0f, 26.0f}
-						)
-					)
-			]
-			.HAlign(HAlign_Right)
-			.VAlign(VAlign_Center)*/
-
-	)
-	.OverrideResetToDefault(
-		FResetToDefaultOverride::Create( 
-			TAttribute<bool>::CreateLambda([Params]() 
-			{ 
-				//return Params.Reset.bShowReset;
-				return false;
-			}), 
-			FSimpleDelegate::CreateLambda([Params]() 
-			{ 
-				Params.Reset.OnReset();
-			}) 
-		)
-	)
-	;
-	WholeRowWidget.HAlign(HAlign_Left);
-	WholeRowWidget.VAlign(VAlign_Center);
-	
-}
-
 
 void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
 	FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue, const bool bPercentage)
