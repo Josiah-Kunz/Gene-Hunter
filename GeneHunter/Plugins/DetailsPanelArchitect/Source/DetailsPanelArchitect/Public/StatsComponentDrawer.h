@@ -48,7 +48,9 @@ private:
 	
 	virtual void CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuilder);
 
-	virtual void CustomizeStatsDetails(IDetailLayoutBuilder& DetailBuilder);
+	virtual void CustomizeCurrentStatsDetails(IDetailLayoutBuilder& DetailBuilder);
+	
+	virtual void CustomizeBaseStatsDetails(IDetailLayoutBuilder& DetailBuilder);
 
 #pragma endregion
 
@@ -69,10 +71,10 @@ private:
 	// Macro for stats (if not for GET_MEMBER_NAME_CHECKED, you could do this as a function
 	#define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax, bPercentage) \
 		const TSharedPtr<IPropertyHandle> Handle##TargetStat = DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetStat)); \
-		StatWidget(DetailBuilder, Handle##TargetStat, StatsComponent->TargetStat, EStatValueType::Current, ValueMax, bPercentage);
+		StatWidget(DetailBuilder, DetailBuilder.EditDefaultProperty( Handle##TargetStat )->CustomWidget(), StatsComponent->TargetStat, EStatValueType::Current, ValueMax, bPercentage);
 
-	void StatWidget(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
-			FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue, const bool bPercentage = false);
+	void StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget,
+			FStat& TargetStat, const EStatValueType StatValueType, const float OverallMaxValue, const bool bPercentage = false);
 
 #pragma endregion
 	

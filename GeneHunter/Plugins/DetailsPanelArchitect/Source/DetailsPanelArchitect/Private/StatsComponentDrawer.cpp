@@ -28,7 +28,8 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 	CustomizeLevelDetails(DetailBuilder);
 	CustomizeExpDetails(DetailBuilder);
 	CustomizeCXPDetails(DetailBuilder);
-	CustomizeStatsDetails(DetailBuilder);
+	CustomizeCurrentStatsDetails(DetailBuilder);
+	CustomizeBaseStatsDetails(DetailBuilder);
 	
 }
 
@@ -36,9 +37,9 @@ void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 {
 
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
-	FName(LevelCategoryName),
-	FText::FromString(LevelCategoryName),
-	ECategoryPriority::Important);
+		FName(LevelCategoryName),
+		FText::FromString(LevelCategoryName),
+		ECategoryPriority::Important);
 
 	Category.AddCustomRow(LOCTEXT("Keyword", "Level")).WholeRowContent()[
 			SNew(SStatsBar)
@@ -191,14 +192,14 @@ void StatsComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 	;
 }
 
-
-void StatsComponentDrawer::CustomizeStatsDetails(IDetailLayoutBuilder& DetailBuilder)
+void StatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 
 	// Get useful limits
 	const float MaxStatValue = MaxStat(StatsComponent, EStatValueType::Current, false);
 	const float MaxPercentValue = MaxStat(StatsComponent, EStatValueType::Current, true);
-	
+
+	// Construct bars from existing properties
 	CURRENT_STAT_PROPERTY(Health, GetCurrentValue(), MaxStatValue, false)
 	CURRENT_STAT_PROPERTY(PhysicalAttack, GetCurrentValue(), MaxStatValue, false)
 	CURRENT_STAT_PROPERTY(PhysicalDefense, GetCurrentValue(), MaxStatValue, false)
@@ -207,6 +208,75 @@ void StatsComponentDrawer::CustomizeStatsDetails(IDetailLayoutBuilder& DetailBui
 	CURRENT_STAT_PROPERTY(Haste, GetCurrentValue(), MaxPercentValue, true)
 	CURRENT_STAT_PROPERTY(CriticalHit, GetCurrentValue(), MaxPercentValue, true)
 	
+}
+
+void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& DetailBuilder)
+{
+	// Get useful limits
+	const float MaxStatValue = MaxStat(StatsComponent, EStatValueType::BaseStat, false);
+	const float MaxPercentValue = MaxStat(StatsComponent, EStatValueType::BaseStat, true);
+
+	// Get category
+	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
+		FName("Base Stats"),
+		FText::FromString("Base Stats"),
+		ECategoryPriority::Important);
+
+#define HIDE_RESET() \
+	FResetToDefaultOverride::Create( \
+		TAttribute<bool>::CreateLambda([]() \
+		{ \
+			return false; \
+		}), \
+		FSimpleDelegate::CreateLambda([]() {}) \
+	)
+	
+	// Button
+	Category.AddCustomRow(LOCTEXT("Keyword", "Base Stat Randomizer Button")).WholeRowContent()[
+			SNew(SButton)
+				.Text(FText::FromString("Randomize"))
+				.ToolTipText(FText::FromString("Randomizes all Base Stats between 80 and 120."))
+				.HAlign(HAlign_Center)
+				.VAlign(VAlign_Center)
+				.TextStyle(FEditorStyle::Get(), "GraphBreadcrumbButtonText")
+				.OnClicked_Lambda([this, &DetailBuilder]()
+				{
+					StatsComponent->RandomizeBaseStats();
+					DetailBuilder.ForceRefreshDetails();
+					return FReply::Handled();
+				})
+		].OverrideResetToDefault(HIDE_RESET())
+	;
+	
+	// Construct bars
+#define DrawBaseStat(TargetBaseStat, TargetMax) \
+	StatWidget(DetailBuilder, Category.AddCustomRow(LOCTEXT("Keyword", "BaseStat")), \
+		StatsComponent->##TargetBaseStat, EStatValueType::BaseStat, TargetMax);
+
+	DrawBaseStat(Health, MaxStatValue)
+	DrawBaseStat(PhysicalAttack, MaxStatValue)
+	DrawBaseStat(PhysicalDefense, MaxStatValue)
+	DrawBaseStat(SpecialAttack, MaxStatValue)
+	DrawBaseStat(SpecialDefense, MaxStatValue)
+	DrawBaseStat(Haste, MaxPercentValue)
+	DrawBaseStat(CriticalHit, MaxPercentValue)
+
+	// Base stat total
+	Category.AddCustomRow(LOCTEXT("Keyword", "Base Stat Total")).WholeRowContent()
+		.HAlign(HAlign_Center)
+		.VAlign(VAlign_Center)
+	[
+		SNew(STextBlock)
+			.Text(FText::FromString(FString::Printf(
+					TEXT("BST: %i       EBSA: %i"),
+					FMath::RoundToInt(StatsComponent->BaseStatTotal()),
+					FMath::RoundToInt(StatsComponent->BaseStatEffectiveAverage())
+				)))
+			.TextStyle(&FCoreStyle::Get().GetWidgetStyle<FTextBlockStyle>( "SmallText"))
+			.ToolTipText(FText::FromString("Base Stat Total and Effective Base Stat Average"))
+			.ColorAndOpacity(FLinearColor{1, 1, 1, 0.5f})
+	].OverrideResetToDefault(HIDE_RESET())
+	;
 }
 
 UStatsComponent* StatsComponentDrawer::GetStatsComponent(IDetailLayoutBuilder& DetailBuilder)
@@ -243,49 +313,102 @@ FText StatsComponentDrawer::FloatToFText(const float Value, const bool bIntegerO
 		FString::SanitizeFloat(Value));
 }
 
-void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, TSharedPtr<IPropertyHandle> PropertyHandle,
-	FStat& TargetStat, const EStatValueType StatValueType, const float MaxValue, const bool bPercentage)
+void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget,
+	FStat& TargetStat, const EStatValueType StatValueType, const float OverallMaxValue, const bool bPercentage)
 {
 
-	IDetailPropertyRow* Row = DetailBuilder.EditDefaultProperty(PropertyHandle);
-	Row->CustomWidget()[
+	// Get the (local) max value
+	const float MaxStatValue = StatValueType == EStatValueType::Current ?
+					TargetStat.GetValue(EStatValueType::Permanent) :
+					TargetStat.GetValue(StatValueType);
+
+	// Set up "on reset" button delegate
+	FSimpleDelegate ResetClicked;
+	switch(StatValueType)
+	{
+	case EStatValueType::BaseStat:
+		ResetClicked = FSimpleDelegate::CreateLambda([this, &DetailBuilder, &TargetStat]() 
+			{
+				TargetStat.RandomizeBaseStat();
+				StatsComponent->RecalculateStats();
+				DetailBuilder.ForceRefreshDetails();
+			}
+		);
+		break;
+	case EStatValueType::BasePairs:
+		ResetClicked = FSimpleDelegate::CreateLambda([this, &DetailBuilder, &TargetStat]() 
+			{
+				TargetStat.RandomizeBasePairs();
+				StatsComponent->RecalculateStats();
+				DetailBuilder.ForceRefreshDetails();
+			}
+		);
+		break;
+	default:
+		ResetClicked = FSimpleDelegate::CreateLambda([&DetailBuilder, &TargetStat, MaxStatValue, StatValueType]() 
+			{
+				TargetStat.ModifyValue(MaxStatValue, StatValueType, EModificationMode::SetDirectly);
+				DetailBuilder.ForceRefreshDetails();
+			}
+		) ;
+	}
+
+	// Build widget
+	Widget.operator[](
 		SNew(SStatsBar)
 			.LabelText(FText::FromString(TargetStat.Abbreviation()))
 			.LabelTooltip(FText::FromString(TargetStat.Name()))
 			.TextBoxText(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage))
-			.TextBoxTooltip(FloatToFText(TargetStat.GetCurrentValue(), !bPercentage))
-			.OnTextCommitted([&TargetStat, StatValueType, &DetailBuilder, bPercentage](const FText& InText, const ETextCommit::Type InTextCommit)
+			.TextBoxTooltip(FloatToFText(TargetStat.GetValue(StatValueType), !bPercentage))
+			.OnTextCommitted([this, &TargetStat, StatValueType, &DetailBuilder, bPercentage](const FText& InText, const ETextCommit::Type InTextCommit)
 				{
 					// Check to see if anything changed (avoids rounding errors)
-					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(TargetStat.GetCurrentValue(), SigFigs, !bPercentage)))
+					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage)))
 						return;
 
 					// Check commit method
 					if (UserCommitted(InTextCommit))
+					{
 						TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
+						switch(StatValueType)
+						{
+						case EStatValueType::Current:
+							break;
+						case EStatValueType::Permanent:
+							UE_LOG(LogTemp, Error, TEXT("\"Permanent\" not coded for; you should not be able to alter this value directly!"))
+							break;
+						case EStatValueType::BaseStat:
+						case EStatValueType::BasePairs:
+							StatsComponent->RecalculateStats(true);
+							break;
+						case EStatValueType::CurrentAndPermanent:
+							UE_LOG(LogTemp, Error, TEXT("\"CurrentAndPermanent\" not coded for; you should not be able to alter this value directly!"))
+							break;
+						default:
+							UE_LOG(LogTemp, Error, TEXT("Unknown case not coded for; you should probably code this!"))
+							break;
+						}
+					}
 
 					// Refresh regardless
 					DetailBuilder.ForceRefreshDetails();
 				})
 			.IsPercentage(bPercentage)
-			.MaxText(UUtilityFunctionLibrary::ToSI(TargetStat.GetPermanentValue(), SigFigs, !bPercentage))
-			.MaxTooltip(FloatToFText(TargetStat.GetPermanentValue(), !bPercentage))
+			.MaxText(UUtilityFunctionLibrary::ToSI(MaxStatValue, SigFigs, !bPercentage))
+			.MaxTooltip(FloatToFText(MaxStatValue, !bPercentage))
 			.BarColor(TargetStat.Color())
-			.BarFraction(TargetStat.GetValue(StatValueType) / MaxValue)
+			.BarFraction(TargetStat.GetValue(StatValueType) / OverallMaxValue)
 			.BarTooltip(TargetStat.SupportingText().Description)
-		].OverrideResetToDefault(
+		).OverrideResetToDefault(
 			FResetToDefaultOverride::Create( 
 				TAttribute<bool>::CreateLambda([]() 
 				{ 
 					return true;
 				}), 
-				FSimpleDelegate::CreateLambda([&DetailBuilder, &TargetStat]() 
-				{ 
-					TargetStat.SetCurrentValue(TargetStat.GetPermanentValue());
-					DetailBuilder.ForceRefreshDetails();
-				}) 
+				ResetClicked
 			)
-		);
+		)
+	;
 }
 
 
@@ -308,10 +431,10 @@ float StatsComponentDrawer::MaxStat(const UStatsComponent* StatsComponent, const
 			Max = FMathf::Max3(Max, Stat->GetCurrentValue(), Stat->GetPermanentValue());
 			break;
 		case EStatValueType::BasePairs:
-			Max = FMathf::Max(Max, Stat->BasePairs);
+			Max = FMathf::Max3(Max, Stat->BasePairs, 100);
 			break;
 		case EStatValueType::BaseStat:
-			Max = FMathf::Max(Max, Stat->BaseStat);
+			Max = FMathf::Max3(Max, Stat->BaseStat, 120);
 			break;
 		}
 	}

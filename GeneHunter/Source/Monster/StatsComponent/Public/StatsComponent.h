@@ -133,25 +133,25 @@ public:
 #pragma region Stat variables
 public:
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
 	FHealth Health;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
 	FPhysicalAttack PhysicalAttack;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
 	FPhysicalDefense PhysicalDefense;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
 	FSpecialAttack SpecialAttack;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
 	FSpecialDefense SpecialDefense;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
 	FHaste Haste;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
 	FCriticalHit CriticalHit;
 
 #pragma endregion
@@ -203,7 +203,7 @@ public:
 	void RandomizeBasePairs(const int MinBasePairs = 1, const int MaxBasePairs = 100);
 	
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
-	void RandomizeBaseStats(const int MinBaseStats = 50, const int MaxBaseStats = 150);
+	void RandomizeBaseStats(const int MinBaseStats = 80, const int MaxBaseStats = 120);
 	
 	/**
 	 * Modifies (that is, increases, decreases, or sets) the Stats in this StatsComponent. Order is HP, PhA, PhD, SpA, SpD, Hst, Crt.
@@ -220,7 +220,7 @@ public:
 	 * Recalculates all stats based on the current level and resets current stats.
 	 */
 	UFUNCTION(BlueprintCallable)
-	void RecalculateStats();
+	void RecalculateStats(const bool bResetCurrent = true);
 
 #pragma endregion
 

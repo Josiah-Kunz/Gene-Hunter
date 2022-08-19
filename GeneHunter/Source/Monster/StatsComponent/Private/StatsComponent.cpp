@@ -156,10 +156,10 @@ void UStatsComponent::ModifyStatsUniformly(const float UniformMod, const EStatVa
 		Stat->ModifyValue(UniformMod, ValueType, Mode);
 }
 
-void UStatsComponent::RecalculateStats()
+void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 {
 	for(FStat* Stat : StatsArray)
-		Stat->Update(GetLevel());
+		Stat->Update(GetLevel(), bResetCurrent);
 }
 
 void UStatsComponent::RandomizeStats_DetailsPanel()

@@ -39,7 +39,7 @@ void FStat::SetPermanentValue(const float NewValue)
 
 #pragma region Public functions
 
-void FStat::Update(const int Level)
+void FStat::Update(const int Level, const bool bResetCurrent)
 {
 	UpdatePermanent(Level, true);
 }
@@ -120,6 +120,16 @@ FString FStat::ToString(const bool Inline) const
 		*FString::FromInt(BaseStat),
 		*FString::FromInt(BasePairs)
 		);
+}
+
+void FStat::RandomizeBaseStat(const int Min, const int Max)
+{
+	BaseStat = FMath::RandRange(Min, Max);
+}
+
+void FStat::RandomizeBasePairs(const int Min, const int Max)
+{
+	BasePairs = FMath::RandRange(Min, Max);
 }
 
 

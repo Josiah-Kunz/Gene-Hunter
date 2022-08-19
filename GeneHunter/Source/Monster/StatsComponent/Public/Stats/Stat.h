@@ -89,7 +89,7 @@ public:
 	/**
 	 * Updates both PermanentValue and CurrentValue (in that order) based on the level.
 	 */
-	virtual void Update(const int Level);
+	virtual void Update(const int Level, const bool bResetCurrent = true);
 	
 	/**
 	 * Updates the PermanentValue based on the input level.
@@ -112,6 +112,10 @@ public:
 	virtual float GetValue(const EStatValueType ModifyType);
 
 	FString ToString(const bool Inline = true) const;
+
+	void RandomizeBaseStat(const int Min = 50, const int Max = 150);
+	
+	void RandomizeBasePairs(const int Min = 1, const int Max = 100);
 
 #pragma endregion
 
