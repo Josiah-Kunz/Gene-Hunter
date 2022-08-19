@@ -119,7 +119,7 @@ void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 				TEXT("%s"),
 				*FloatToFText(StatsComponent->GetTotalExpThisLevel(), true).ToString()
 				)))
-			.BarColor(FLinearColor{0.9f, 0.1f, 0.9f, 0.8f})
+			.BarColor(FLinearColor{0.878f, 0.690f, 1.0f, 1.0f})
 			.BarFraction(StatsComponent->GetExp()/StatsComponent->GetTotalExpThisLevel())
 			.BarTooltip(FText::FromString("Change in exp = change in level"))
 			].OverrideResetToDefault(FResetToDefaultOverride::Create( 

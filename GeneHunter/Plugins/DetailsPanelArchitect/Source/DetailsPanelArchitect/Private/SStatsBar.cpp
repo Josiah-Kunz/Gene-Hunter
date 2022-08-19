@@ -108,6 +108,7 @@ void SStatsBar::Construct(const FArguments& InArgs)
 		// Bar color
 		+SCanvas::Slot()[
 			SNew(SColorBlock)
+				.UseSRGB(false)
 				.Color(InArgs._BarColor)
 				.ToolTipText(InArgs._BarTooltip)
 				.CornerRadius(InArgs._CornerRadius)
@@ -117,7 +118,8 @@ void SStatsBar::Construct(const FArguments& InArgs)
 				InArgs._BarSize.Y - 2*InArgs._OutlineThickness})
 			ALIGN()
 			
-		].VAlign(VAlign_Center);
+		].VAlign(VAlign_Center)
+	;
 	
 }
 
