@@ -60,7 +60,7 @@ void UStatsComponent::SetCumulativeExp(const int NewCumulativeExp)
 		RecalculateStats();
 }
 
-void UStatsComponent::AddCumulativeExp(const int AddedCumulativeExp)
+void UStatsComponent::AddExp(const int AddedCumulativeExp)
 {
 	SetCumulativeExp(GetCumulativeExp() + AddedCumulativeExp);
 }
@@ -93,10 +93,10 @@ float UStatsComponent::GetExpToLevel()
 	if (GetLevel() == MaxLevel())
 		return 0;
 	const float NextLevelExp = GetCumulativeExpFromLevel(GetLevel() + 1);
-	return NextLevelExp - GetExp();
+	return NextLevelExp - GetLevelExp();
 }
 
-float UStatsComponent::GetTotalExpThisLevel()
+float UStatsComponent::GetTotalLevelExp()
 {
 	if (GetLevel() == MaxLevel())
 		return 0;
@@ -105,7 +105,7 @@ float UStatsComponent::GetTotalExpThisLevel()
 	return NextLevelExp - ThisLevelExp;
 }
 
-float UStatsComponent::GetExp()
+float UStatsComponent::GetLevelExp()
 {
 	return GetCumulativeExp() - GetCumulativeExpFromLevel(GetLevel());
 }
@@ -113,6 +113,29 @@ float UStatsComponent::GetExp()
 float UStatsComponent::GetMaxExp()
 {
 	return GetCumulativeExpFromLevel(MaxLevel());
+}
+
+float UStatsComponent::GetExpYield(const UStatsComponent* VictoriousMonster)
+{
+
+	// Get level difference. If the enemy is lower level, they get more exp for defeating this Monster.
+	int LevelDiff = GetLevel() - VictoriousMonster->GetLevel();
+	LevelDiff = FMath::Max(0, LevelDiff); // Ensures positive
+	LevelDiff = FMath::Min(10, LevelDiff); // Cap benefits at +10 levels
+
+	// Return based on formula
+	return
+
+		// Base
+		BaseExpYield
+
+		// Curve based on the defeated Monster's current level
+		* GetTotalLevelExp() / (0.7f + 0.2f * GetLevel() + FMathf::Pow(0.00006*GetLevel(), 3))
+
+		// Reward for "punching up" and defeating a Monster bigger than you
+		* FMathf::Pow(1.5f, FMath::Floor((LevelDiff/2.0f)))
+	;
+	
 }
 
 #pragma endregion
@@ -160,22 +183,6 @@ void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 {
 	for(FStat* Stat : StatsArray)
 		Stat->Update(GetLevel(), bResetCurrent);
-}
-
-void UStatsComponent::RandomizeStats_DetailsPanel()
-{
-	RandomizeStats( MinBaseStats_DetailsPanel, MaxBaseStats_DetailsPanel,
-		MinBasePairs_DetailsPanel, MaxBasePairs_DetailsPanel);
-}
-
-void UStatsComponent::RandomizeBasePairs_DetailsPanel()
-{
-	RandomizeBasePairs(MinBasePairs_DetailsPanel, MaxBasePairs_DetailsPanel);
-}
-
-void UStatsComponent::RandomizeBaseStats_DetailsPanel()
-{
-	RandomizeBaseStats(MinBaseStats_DetailsPanel, MaxBaseStats_DetailsPanel);
 }
 
 bool UStatsComponent::IsEqual(UStatsComponent* Other, const EStatValueType ValueType, const float Tolerance)

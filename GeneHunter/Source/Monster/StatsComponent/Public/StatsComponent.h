@@ -16,7 +16,6 @@
 // Utilities
 #include "ModificationMode.h"
 #include "StatValueType.h"
-#include "StatModStruct.h"
 
 // .gen
 #include "StatsComponent.generated.h"
@@ -46,6 +45,9 @@ public:
 
 #pragma region Level variables and functions
 
+public:
+	int BaseExpYield = 1;
+	
 private:
 
 	/**
@@ -71,7 +73,7 @@ public:
 	 * Adds to the total accumulated experience points across all levels.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Level")
-	void AddCumulativeExp(const int AddedCumulativeExp);
+	void AddExp(const int AddedCumulativeExp);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
 	int GetLevel() const;
@@ -114,19 +116,25 @@ public:
 	 * Gets the experience points required from the previous level to the next level. Useful for display purposes.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	float GetTotalExpThisLevel();
+	float GetTotalLevelExp();
 
 	/**
 	 * Gets the amount of (non-cumulative) experience points into this level. Useful for display purposes.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	float GetExp();
+	float GetLevelExp();
 
 	/**
 	 * Gets the amount of cumulative exp at max level.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
 	float GetMaxExp();
+
+	/**
+	 * Gets the amount of experience this Monster yields when defeated.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
+	float GetExpYield(const UStatsComponent* VictoriousMonster);
 
 #pragma endregion
 
@@ -221,33 +229,6 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	void RecalculateStats(const bool bResetCurrent = true);
-
-#pragma endregion
-
-#pragma region Details panel buttons
-
-public:
-	
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Randomize Stats", meta=(DisplayName="Randomize Everything"))
-	void RandomizeStats_DetailsPanel();
-
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Randomize Stats", meta=(DisplayName="Randomize Base Pairs Only"))
-	void RandomizeBasePairs_DetailsPanel();
-
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Randomize Stats", meta=(DisplayName="Randomize Base Stats Only"))
-	void RandomizeBaseStats_DetailsPanel();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Randomize Stats", meta=(DisplayName="Min Base Pairs"))
-	int MinBasePairs_DetailsPanel = 1;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Randomize Stats", meta=(DisplayName="Max Base Pairs"))
-	int MaxBasePairs_DetailsPanel = 100;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Randomize Stats", meta=(DisplayName="Min Base Stats"))
-	int MinBaseStats_DetailsPanel = 50;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Randomize Stats", meta=(DisplayName="Max Base Stats"))
-	int MaxBaseStats_DetailsPanel = 150;
 
 #pragma endregion
 

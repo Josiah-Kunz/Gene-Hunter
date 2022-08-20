@@ -30,7 +30,7 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 	CustomizeCXPDetails(DetailBuilder);
 	CustomizeCurrentStatsDetails(DetailBuilder);
 	CustomizeBaseStatsDetails(DetailBuilder);
-	
+	CustomizeBasePairsDetails(DetailBuilder);
 }
 
 void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBuilder)
@@ -91,37 +91,37 @@ void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 		SNew(SStatsBar)
 			.LabelText(FText::FromString("Exp"))
 			.LabelTooltip(FText::FromString("Experience points within the level (non-cumulative experience points)"))
-			.TextBoxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetExp(), SigFigs, true))
+			.TextBoxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetLevelExp(), SigFigs, true))
 			.OnTextCommitted([this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
 				{
 
 					// Check if anything happened
-					const int DiffXP = UUtilityFunctionLibrary::FromSI(InText) - StatsComponent->GetExp();
+					const int DiffXP = UUtilityFunctionLibrary::FromSI(InText) - StatsComponent->GetLevelExp();
 					if (DiffXP == 0)
 						return;
 
 					// Check to see if anything changed (avoids rounding errors)
-					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetExp(), SigFigs, true)))
+					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetLevelExp(), SigFigs, true)))
 						return;
 
 					// Use did something
 					if (UserCommitted(CommitType))
-						StatsComponent->AddCumulativeExp(DiffXP);
+						StatsComponent->AddExp(DiffXP);
 
 					// Refresh either way
 					DetailBuilder.ForceRefreshDetails();
 				})
 			.TextBoxTooltip(FText::FromString(FString::Printf(
 			TEXT("%s"),
-				*FloatToFText(StatsComponent->GetExp(), true).ToString()
+				*FloatToFText(StatsComponent->GetLevelExp(), true).ToString()
 				)))
-			.MaxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetTotalExpThisLevel(), SigFigs, true))
+			.MaxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetTotalLevelExp(), SigFigs, true))
 			.MaxTooltip(FText::FromString(FString::Printf(
 				TEXT("%s"),
-				*FloatToFText(StatsComponent->GetTotalExpThisLevel(), true).ToString()
+				*FloatToFText(StatsComponent->GetTotalLevelExp(), true).ToString()
 				)))
 			.BarColor(FLinearColor{0.878f, 0.690f, 1.0f, 1.0f})
-			.BarFraction(StatsComponent->GetExp()/StatsComponent->GetTotalExpThisLevel())
+			.BarFraction(StatsComponent->GetLevelExp()/StatsComponent->GetTotalLevelExp())
 			.BarTooltip(FText::FromString("Change in exp = change in level"))
 			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
 					TAttribute<bool>::CreateLambda([]() 
@@ -277,6 +277,48 @@ void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& Detai
 			.ColorAndOpacity(FLinearColor{1, 1, 1, 0.5f})
 	].OverrideResetToDefault(HIDE_RESET())
 	;
+}
+
+void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& DetailBuilder)
+{
+	// Get useful limits
+	const float MaxStatValue = MaxStat(StatsComponent, EStatValueType::BasePairs, false);
+
+	// Get category
+	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
+		FName("Base Pairs"),
+		FText::FromString("Base Pairs"),
+		ECategoryPriority::Important);
+	
+	// Button
+	Category.AddCustomRow(LOCTEXT("Keyword", "Base Pair Randomizer Button")).WholeRowContent()[
+			SNew(SButton)
+				.Text(FText::FromString("Randomize"))
+				.ToolTipText(FText::FromString("Randomizes all Base Pairs between 1 and 100."))
+				.HAlign(HAlign_Center)
+				.VAlign(VAlign_Center)
+				.TextStyle(FEditorStyle::Get(), "GraphBreadcrumbButtonText")
+				.OnClicked_Lambda([this, &DetailBuilder]()
+				{
+					StatsComponent->RandomizeBasePairs();
+					DetailBuilder.ForceRefreshDetails();
+					return FReply::Handled();
+				})
+		].OverrideResetToDefault(HIDE_RESET())
+	;
+	
+	// Construct bars
+#define DrawBasePairs(TargetBasePairs) \
+	StatWidget(DetailBuilder, Category.AddCustomRow(LOCTEXT("Keyword", "BasePairs")), \
+		StatsComponent->##TargetBasePairs, EStatValueType::BasePairs, MaxStatValue);
+
+	DrawBasePairs(Health)
+	DrawBasePairs(PhysicalAttack)
+	DrawBasePairs(PhysicalDefense)
+	DrawBasePairs(SpecialAttack)
+	DrawBasePairs(SpecialDefense)
+	DrawBasePairs(Haste)
+	DrawBasePairs(CriticalHit)
 }
 
 UStatsComponent* StatsComponentDrawer::GetStatsComponent(IDetailLayoutBuilder& DetailBuilder)

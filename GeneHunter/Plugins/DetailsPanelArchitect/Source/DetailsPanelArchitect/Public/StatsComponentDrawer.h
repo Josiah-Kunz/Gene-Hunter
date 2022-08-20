@@ -52,6 +52,8 @@ private:
 	
 	virtual void CustomizeBaseStatsDetails(IDetailLayoutBuilder& DetailBuilder);
 
+	virtual void CustomizeBasePairsDetails(IDetailLayoutBuilder& DetailBuilder);
+
 #pragma endregion
 
 #pragma region Private utility functions

@@ -90,15 +90,15 @@ def Main():
     plt.close("all")
     
     # Keys
-    MakeStatKey(silent=SILENT)
-    MakeColorKey(silent=SILENT)
+    #MakeStatKey(silent=SILENT)
+    #MakeColorKey(silent=SILENT)
     
     # Base pair analysis
     #PlotBasePairContribution()
-    PlotBasePairVsAtk()
-    MutationsTable()
-
-    # Standard stats
+    #PlotBasePairVsAtk()
+    #MutationsTable()
+    """
+    # Stats
     for basePair in [1, 50, 100]:
         
         Plot(
@@ -106,34 +106,39 @@ def Main():
             savefilename="Standard-stat-overview-" + str(basePair),
             silent=SILENT
         )
-
-        #Plot(
-        #     "[Standard Stat]", StandardStat, basePair,
-        #     savefilename="Standard-stat-low-levels-" + str(basePair), 
-        #     notedLevels=[1, 9, 10, 19, 20],
-        #     silent=SILENT
-        # )
         
         #HP
         Plot("HP", HP, basePair, 
              savefilename="HP-overview-" + str(basePair), 
              silent=SILENT
         )
-        #Plot("HP", HP, savefilename="HP-low-levels", notedLevels=[1, 9, 10, 19, 20], silent=SILENT)
-        
+         
         # Percentage-based stats
         Plot("Haste", Haste, basePair, 
              ylabel="Haste (%)", 
              savefilename="Haste-overview-" + str(basePair), 
              silent=SILENT)
-        #Plot("Haste", Haste, 0, ylabel="Haste (%)", savefilename="Haste-low-levels", notedLevels=[1, 9, 10, 19, 20], silent=SILENT)
+        
         HasteCDRTable(silent=SILENT)
         Plot("Crit", Crit, basePair, 
              ylabel="Crit (%)", 
              savefilename="Crit-overview-" + str(basePair), 
              silent=SILENT
         )
-        #Plot("Crit", Crit, ylabel="Crit (%)", savefilename="Crit-low-levels", notedLevels=[1, 9, 10, 19, 20], silent=SILENT)
+    """
+        
+    # Exp yield
+    #PlotExpYield(0.5, 1, 1.5, 2, notedLevels=[1, 5, 10, 20, 49, 50, 99],
+    #             ylabel="Num KOs to Level (Linear)",
+    #             savefilename="exp-yield-analysis-linear")
+    PlotExpYield(0.5, 1, 1.5, 2, notedLevels=[1, 5, 10, 20, 49, 50, 99],
+                 function=NumMonstersToLevel,
+                 ylabel="Num KOs to Level")
+    PlotExpYield(0.5, 1, 1.5, 2, notedLevels=[1, 5, 10, 20, 49, 50, 99],
+                 function=NumMonstersToLevel,
+                 savefilename="exp-yield-analysis-enemy-plus2",
+                 ylabel="Num KOs to Level (Enemy +2)",
+                 levelDiff=2)
     
 def MakeStatKey(silent=False):
     
@@ -505,6 +510,138 @@ def HP(level, baseStat, basePair):
     
 def StandardStat(level, baseStat, basePair):
     return np.floor(2*baseStat*BasePairContribution(basePair)*level/100 + 5)*3**np.floor(level/10)
+
+def ExpToLevel(level):
+    return (level + 1)**3 - level**3
+
+def ExpYield_Linear(baseYield, level):
+    return baseYield*level
+
+def NumMonstersToLevel_Linear(baseYield, level):
+    return ExpToLevel(level)/ExpYield_Linear(baseYield, level)
+
+def ExpYield(baseYield, level, levelDiff):
+    enemyLevel = level + levelDiff
+    levelDiff = max(0, levelDiff) # Ensure positive
+    levelDiff = min(10, levelDiff) # Cap level boost at +10
+    return baseYield * ExpToLevel(enemyLevel)/(0.7+0.2*enemyLevel+0.0000*enemyLevel**2+0.00006*enemyLevel**3) * 1.5**np.floor(levelDiff/2)
+
+def NumMonstersToLevel(baseYield, level, levelDiff):
+    return ExpToLevel(level)/ExpYield(baseYield, level, levelDiff)
+
+def PlotExpYield(*args, function=NumMonstersToLevel, 
+                 notedLevels=[20, 50, 99], silent=True, 
+                 savefilename="exp-yield-analysis", 
+                 ylabel="Num KOs to Level Up",
+                 levelDiff=0
+                 ):
+    
+   # Delete lingering
+    plt.cla()
+    
+    # New figure
+    fig, ax = plt.subplots()
+    
+    # Plot it
+    levels = np.linspace(1, 99, 99)
+    for baseYield in args:
+        y = function(baseYield, levels, levelDiff)
+        plt.plot(levels, y, label=baseYield)
+    
+    # Gussy it up
+    plt.grid(True)
+    plt.xlabel("Level")
+    plt.ylabel(ylabel)
+    
+    # Save figure
+    plt.legend(loc='best')
+    plt.savefig(savefilename + "-plot.png", transparent=True, dpi=DPI)
+    if silent:
+        plt.close("all")
+        
+    # Initialize table
+    table = Table(DPI)
+    x=0
+    y=0
+    
+    # Title
+    table.AddCells(Cell(
+                       x, x+(len(notedLevels) + 1)*CELL_WIDTH, y, y-CELL_HEIGHT,
+                        content=ylabel,
+                        fontsize=HEADER_FONT_SIZE,
+                        color="white",
+                        lineColor="white"
+                    ),
+                    Cell(
+                       x, x+(len(notedLevels) + 1)*CELL_WIDTH, y, y-2*CELL_HEIGHT,
+                        content="",
+                        color="white",
+                        lineColor="white"
+                    )
+            )
+    y -= CELL_HEIGHT
+    
+    # "Level" header
+    table.AddCell(Cell(
+                       x+CELL_WIDTH + GAP_LINE_THICKNESS/2, x+CELL_WIDTH+len(notedLevels)*CELL_WIDTH, y, y-CELL_HEIGHT,
+                        content="Level",
+                        fontsize=HEADER_FONT_SIZE,
+                        color=HEADER_COLOR
+           ))
+    y -= CELL_HEIGHT
+    
+    # Construct column labels
+    x0 = x
+    table.AddCell(Cell(
+                       x, x+CELL_WIDTH, y, y-CELL_HEIGHT,
+                       content="Base Exp Yield",
+                       fontsize=HEADER_FONT_SIZE,
+                       color=HEADER_COLOR
+           ))
+    x += CELL_WIDTH
+    for level in notedLevels:
+        table.AddCell(Cell(
+                           x, x+CELL_WIDTH, y, y-CELL_HEIGHT,
+                           content=level,
+                           fontsize=HEADER_FONT_SIZE,
+                           color=HEADER_COLOR
+               ))
+        x += CELL_WIDTH
+    x = x0
+    y -= CELL_HEIGHT
+    y0 = y
+    
+    #Construct table body
+    x0=x
+    for baseYield in args:
+        x = x0
+        table.AddCell(Cell(
+                       x, x+CELL_WIDTH, y, y-CELL_HEIGHT,
+                       #color=baseStatColor.color,
+                        content=Format(baseYield, False),
+                        fontsize=BODY_FONT_SIZE
+           ))
+        x += CELL_WIDTH
+        for level in notedLevels:
+            statValue = function(baseYield, level, levelDiff)
+            table.AddCell(Cell(
+                                   x, x+CELL_WIDTH, y, y-CELL_HEIGHT, 
+                                   #color=baseStatColor.color,
+                                    content=Format(statValue),
+                                    fontsize=BODY_FONT_SIZE
+            ))
+            x += CELL_WIDTH
+        y -= CELL_HEIGHT
+        
+    # Extra line separating base stat labels from actual base stat values
+    table.AddCell(Cell(
+                       CELL_WIDTH, CELL_WIDTH + GAP_LINE_THICKNESS, y0 + CELL_HEIGHT, y0-len(args)*CELL_HEIGHT,
+                        color="black"
+           ))
+ 
+    # Render and save
+    table.Save(savefilename + "-table.png", silent=silent)
+    
     
 def BasePairContribution(basePair):
     return (basePair/100)**0.25
