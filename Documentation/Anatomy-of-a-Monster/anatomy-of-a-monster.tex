@@ -1,0 +1,47 @@
+\input{../preamble}
+
+\todo{This should be finalized at some point}
+
+\etocsettocstyle{}{}
+\begin{tldr}
+	\localtableofcontents
+\end{tldr}
+
+\sect{Definition of Terms}
+
+\begin{itemize}
+	\item{\textbf{Static data} is data that does not change on a Monster-by-Monster basis. For example, every Pikachu is \#25. This is unchangeable catalog data for all Pikachu. However, not all Pikachu have the same stats or moves.}
+	\item{\textbf{Instanced data}, on the other hand, is data that \textit{does} change from Monster-to-Monster. For example, different Monsters may have different levels, stats, and nicknames.}
+	\item{\textbf{Corporeal data} is data that interacts directly with the physical 3D world.}
+	\item{\textbf{Incorporeal data} is data not related to the Monster's physical being.}
+\end{itemize}
+
+\begin{center}
+\begin{talltblr}[
+	caption = {Examples of combining the aforementioned terms.},
+	label = {terms-punnett-square},
+]{
+	colspec = {Q[r,0.15\linewidth]Q[c,0.23\linewidth]Q[c,0.23\linewidth]},
+	hline{1,Z} = {2pt},
+	hlines,
+	row{1} = {font=\bfseries},
+	column{1} = {font=\bfseries}
+}
+
+				& Static									& Instanced\\
+	Corporeal	& {Height distribution\\Hitboxes\\Model}	& {Height\\Color profile\\Weight}\\
+	Incorporeal & {Move pool\\Affinities\\Chromosome pool}	& {Learned moves\\Types\\Chromosomes}\\
+
+\end{talltblr}
+\end{center}
+
+\input{static-corporeal}
+
+\input{instanced-corporeal}
+
+\input{static-incorporeal}
+
+\input{instanced-incorporeal}
+
+
+\input{../postamble}

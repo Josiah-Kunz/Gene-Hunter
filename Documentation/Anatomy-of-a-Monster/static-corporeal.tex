@@ -1,0 +1,36 @@
+\sect{Static Corporeal Data}
+
+This section refers to data that is a part of the 3D world for Monsters that cannot be changed in-game, such as a Monster's model or hitboxes.
+
+\subsect{Renderer}
+The renderer is how the Monster looks in the 3D world. This includes:
+\begin{itemize}
+	\item{3D model}
+	\item{Particle effects for, e.g., breathing, footfall, smoke from Fire Types, etc.}
+	\item{Animations and their controller}
+	\item{A mapping of body parts to specific locations (e.g., does this Monster have a ``mouth''? If so, where is it?)}
+	\item{Height and weight distributions (which can slightly influence the 3D model via scaling)}
+\end{itemize}
+
+\subsect{Colliders}
+\begin{itemize}
+	\item{Foot colliders}
+	\item{Interaction colliders}
+	\item{Hitboxes}
+\end{itemize}
+
+\subsect{Combat World UI}
+Note: combat canvas UI (such as the player's attack buttons) are not included here as they are not attached to the Monster.
+\begin{itemize}
+	\item{World nameplate}
+	\item{Floating damage numbers (for getting hit)}
+\end{itemize}
+
+\subsect{SFX}
+\begin{itemize}
+	\item{General sounds (e.g., footfall)}
+	\item{Non-combat sounds (e.g., idle)}
+	\item{Combat sounds (e.g., attacking)}
+\end{itemize}
+
+\subsect{Locomotion}
