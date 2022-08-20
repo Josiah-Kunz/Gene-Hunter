@@ -182,7 +182,7 @@ void UType::GetAllTypes(TArray<UType*>& Types, const TArray<UType*>& Exclude, co
 {
 	Types.Empty();
 	TArray<FAssetData> Assets;
-	GetAllTypeAssets(Assets, bSortABC);
+	GetAllTypeAssets(Assets, bSortABC, bDummyTypes, !bDummyTypes);
 	for(FAssetData& Asset : Assets)
 	{
 
