@@ -15,7 +15,7 @@ public class GeneHunter : ModuleRules
 			
 			// Modules
 			, "BPLibraries"
-			, "StatsComponent", "StatsComponentUnitTests", "Types", "TypesUnitTests", "UI"
+			, "AffinitiesComponent", "StatsComponent", "StatsComponentUnitTests", "Types", "TypesUnitTests", "UI"
 		});
 	}
 }
