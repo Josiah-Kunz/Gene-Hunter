@@ -9,6 +9,12 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
+
+		{
+			"Name": "AffinitiesComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
 		{
 			"Name": "BPLibraries",
 			"Type": "Runtime",

@@ -10,6 +10,7 @@ public class Types : ModuleRules{
 		
 		PublicDependencyModuleNames.AddRange(new string[]{
 			"UI" // For SupportingText.h
+		  , "BPLibraries" // for SortAssetsAlphabetically
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{

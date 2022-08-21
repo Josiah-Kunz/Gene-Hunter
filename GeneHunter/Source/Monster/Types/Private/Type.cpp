@@ -1,5 +1,6 @@
 #pragma once
 #include "Type.h"
+
 #include <algorithm>
 
 #pragma region Public functions
