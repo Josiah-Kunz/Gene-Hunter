@@ -56,6 +56,21 @@ private:
 
 #pragma endregion
 
+#pragma region Public utility functions
+
+public:
+	
+	void SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder, const FName StatPropertyName,
+		const FName ValuePropertyName, float Value) const;
+
+	TFunction<void(const FText&, ETextCommit::Type&)> StatOnTextCommitted(
+		IDetailLayoutBuilder& DetailBuilder, const FName ValuePropertyName, FStat& TargetStat,
+		const EStatValueType StatValueType, const bool bPercentage) const;
+
+	static bool UserCommitted(const ETextCommit::Type CommitType);
+
+#pragma endregion
+
 #pragma region Private utility functions
 	
 private:
@@ -63,26 +78,17 @@ private:
 	UStatsComponent* GetStatsComponent(IDetailLayoutBuilder& DetailBuilder);
 
 	static float MaxStat (const UStatsComponent* StatsComponent, const EStatValueType StatType, const bool bPercentage);
-
-	static void SetStatFromString(FStat* Stat, const FText Text, const EStatValueType StatType);
-
-	static bool UserCommitted(const ETextCommit::Type CommitType);
-
+	
 	static FText FloatToFText(const float Value, const bool bIntegerOnly);
 
 	void StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget, 
-			TSharedRef<IPropertyHandle>& ValueHandle, FStat& TargetStat, const EStatValueType StatValueType,
+			const FName ValuePropertyName, FStat& TargetStat, const EStatValueType StatValueType,
 			const float OverallMaxValue, const bool bPercentage = false);
 
 	FSimpleDelegate CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, FStat& TargetStat,
-		TSharedRef<IPropertyHandle>& ValueHandle, const EStatValueType StatValueType, const float MaxStatValue) const;
+		const FName ValuePropertyName, const EStatValueType StatValueType, const float MaxStatValue) const;
 
-	static void SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder, TSharedRef<IPropertyHandle>& ValueHandle,
-		float Value);
-
-	TFunction<void(const FText&, ETextCommit::Type&)> StatOnTextCommitted(
-		IDetailLayoutBuilder& DetailBuilder, TSharedRef<IPropertyHandle>& ValueHandle, FStat& TargetStat,
-		const EStatValueType StatValueType, const bool bPercentage) const;
+	static FName GetStatValueName(const EStatValueType StatValueType);
 
 #pragma endregion
 	
