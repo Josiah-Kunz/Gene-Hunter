@@ -13,8 +13,6 @@ struct STATSCOMPONENT_API FHealth : public FStat
 {
 	GENERATED_BODY()
 
-	
-
 public:
 	/**
 	 * Calculates the value of this Stat based on a unique formula. See the Stats document for relevant equations.

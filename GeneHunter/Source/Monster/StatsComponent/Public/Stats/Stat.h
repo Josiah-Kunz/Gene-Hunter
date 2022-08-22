@@ -18,7 +18,8 @@ struct STATSCOMPONENT_API FStat
 #pragma region Public variables
 
 public:
-	
+	virtual ~FStat() = default;
+
 	/**
 	 * The "base" from which to calculate the CurrentValue or PermanentValue.
 	 */

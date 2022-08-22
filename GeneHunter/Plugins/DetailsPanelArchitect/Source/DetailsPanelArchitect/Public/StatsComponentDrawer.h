@@ -70,13 +70,19 @@ private:
 
 	static FText FloatToFText(const float Value, const bool bIntegerOnly);
 
-	// Macro for stats (if not for GET_MEMBER_NAME_CHECKED, you could do this as a function
-	#define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax, bPercentage) \
-		const TSharedPtr<IPropertyHandle> Handle##TargetStat = DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetStat)); \
-		StatWidget(DetailBuilder, DetailBuilder.EditDefaultProperty( Handle##TargetStat )->CustomWidget(), StatsComponent->TargetStat, EStatValueType::Current, ValueMax, bPercentage);
+	void StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget, 
+			TSharedRef<IPropertyHandle>& ValueHandle, FStat& TargetStat, const EStatValueType StatValueType,
+			const float OverallMaxValue, const bool bPercentage = false);
 
-	void StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget,
-			FStat& TargetStat, const EStatValueType StatValueType, const float OverallMaxValue, const bool bPercentage = false);
+	FSimpleDelegate CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, FStat& TargetStat,
+		TSharedRef<IPropertyHandle>& ValueHandle, const EStatValueType StatValueType, const float MaxStatValue) const;
+
+	static void SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder, TSharedRef<IPropertyHandle>& ValueHandle,
+		float Value);
+
+	TFunction<void(const FText&, ETextCommit::Type&)> StatOnTextCommitted(
+		IDetailLayoutBuilder& DetailBuilder, TSharedRef<IPropertyHandle>& ValueHandle, FStat& TargetStat,
+		const EStatValueType StatValueType, const bool bPercentage) const;
 
 #pragma endregion
 	

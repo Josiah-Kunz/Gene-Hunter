@@ -20,7 +20,7 @@
 // .gen
 #include "StatsComponent.generated.h"
 
-UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup=(Monster))
 class STATSCOMPONENT_API UStatsComponent : public UActorComponent
 {
 #pragma region Standard stuff

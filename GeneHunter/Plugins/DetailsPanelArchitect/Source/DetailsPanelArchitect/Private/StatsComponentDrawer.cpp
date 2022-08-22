@@ -199,6 +199,19 @@ void StatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& De
 	const float MaxStatValue = MaxStat(StatsComponent, EStatValueType::Current, false);
 	const float MaxPercentValue = MaxStat(StatsComponent, EStatValueType::Current, true);
 
+	// Macro for stats (if not for GET_MEMBER_NAME_CHECKED, you could do this as a function
+#define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax, bPercentage) \
+	TSharedRef<IPropertyHandle> Handle##TargetStat = \
+		DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetStat)); \
+	StatWidget( \
+		DetailBuilder, \
+		DetailBuilder.EditDefaultProperty( Handle##TargetStat )->CustomWidget(), \
+		Handle##TargetStat, \
+		StatsComponent->TargetStat, \
+		EStatValueType::Current, \
+		ValueMax, \
+		bPercentage);
+
 	// Construct bars from existing properties
 	CURRENT_STAT_PROPERTY(Health, GetCurrentValue(), MaxStatValue, false)
 	CURRENT_STAT_PROPERTY(PhysicalAttack, GetCurrentValue(), MaxStatValue, false)
@@ -250,8 +263,10 @@ void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& Detai
 	
 	// Construct bars
 #define DrawBaseStat(TargetBaseStat, TargetMax) \
+	TSharedRef<IPropertyHandle> Handle##TargetBaseStat = \
+		DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetBaseStat)); \
 	StatWidget(DetailBuilder, Category.AddCustomRow(LOCTEXT("Keyword", "BaseStat")), \
-		StatsComponent->##TargetBaseStat, EStatValueType::BaseStat, TargetMax);
+		Handle##TargetBaseStat , StatsComponent->##TargetBaseStat, EStatValueType::BaseStat, TargetMax);
 
 	DrawBaseStat(Health, MaxStatValue)
 	DrawBaseStat(PhysicalAttack, MaxStatValue)
@@ -309,9 +324,11 @@ void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& Detai
 	
 	// Construct bars
 #define DrawBasePairs(TargetBasePairs) \
+	TSharedRef<IPropertyHandle> Handle##TargetBasePairs = \
+		DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetBasePairs)); \
 	StatWidget(DetailBuilder, Category.AddCustomRow(LOCTEXT("Keyword", "BasePairs")), \
-		StatsComponent->##TargetBasePairs, EStatValueType::BasePairs, MaxStatValue);
-
+		Handle##TargetBasePairs , StatsComponent->##TargetBasePairs, EStatValueType::BasePairs, MaxStatValue);
+	
 	DrawBasePairs(Health)
 	DrawBasePairs(PhysicalAttack)
 	DrawBasePairs(PhysicalDefense)
@@ -339,118 +356,6 @@ UStatsComponent* StatsComponentDrawer::GetStatsComponent(IDetailLayoutBuilder& D
 
 	// Return
 	return Ret;
-}
-
-bool StatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
-{
-
-	return CommitType == ETextCommit::Type::OnEnter || CommitType == ETextCommit::Type::OnUserMovedFocus;
-}
-
-FText StatsComponentDrawer::FloatToFText(const float Value, const bool bIntegerOnly)
-{
-	return FText::FromString(
-		bIntegerOnly ?
-		FString::FromInt(FMath::RoundToInt(Value)) :
-		FString::SanitizeFloat(Value));
-}
-
-void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget,
-	FStat& TargetStat, const EStatValueType StatValueType, const float OverallMaxValue, const bool bPercentage)
-{
-
-	// Get the (local) max value
-	const float MaxStatValue = StatValueType == EStatValueType::Current ?
-					TargetStat.GetValue(EStatValueType::Permanent) :
-					TargetStat.GetValue(StatValueType);
-
-	// Set up "on reset" button delegate
-	FSimpleDelegate ResetClicked;
-	switch(StatValueType)
-	{
-	case EStatValueType::BaseStat:
-		ResetClicked = FSimpleDelegate::CreateLambda([this, &DetailBuilder, &TargetStat]() 
-			{
-				TargetStat.RandomizeBaseStat();
-				StatsComponent->RecalculateStats();
-				DetailBuilder.ForceRefreshDetails();
-			}
-		);
-		break;
-	case EStatValueType::BasePairs:
-		ResetClicked = FSimpleDelegate::CreateLambda([this, &DetailBuilder, &TargetStat]() 
-			{
-				TargetStat.RandomizeBasePairs();
-				StatsComponent->RecalculateStats();
-				DetailBuilder.ForceRefreshDetails();
-			}
-		);
-		break;
-	default:
-		ResetClicked = FSimpleDelegate::CreateLambda([&DetailBuilder, &TargetStat, MaxStatValue, StatValueType]() 
-			{
-				TargetStat.ModifyValue(MaxStatValue, StatValueType, EModificationMode::SetDirectly);
-				DetailBuilder.ForceRefreshDetails();
-			}
-		) ;
-	}
-
-	// Build widget
-	Widget.operator[](
-		SNew(SStatsBar)
-			.LabelText(FText::FromString(TargetStat.Abbreviation()))
-			.LabelTooltip(FText::FromString(TargetStat.Name()))
-			.TextBoxText(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage))
-			.TextBoxTooltip(FloatToFText(TargetStat.GetValue(StatValueType), !bPercentage))
-			.OnTextCommitted([this, &TargetStat, StatValueType, &DetailBuilder, bPercentage](const FText& InText, const ETextCommit::Type InTextCommit)
-				{
-					// Check to see if anything changed (avoids rounding errors)
-					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage)))
-						return;
-
-					// Check commit method
-					if (UserCommitted(InTextCommit))
-					{
-						TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
-						switch(StatValueType)
-						{
-						case EStatValueType::Current:
-							break;
-						case EStatValueType::Permanent:
-							UE_LOG(LogTemp, Error, TEXT("\"Permanent\" not coded for; you should not be able to alter this value directly!"))
-							break;
-						case EStatValueType::BaseStat:
-						case EStatValueType::BasePairs:
-							StatsComponent->RecalculateStats(true);
-							break;
-						case EStatValueType::CurrentAndPermanent:
-							UE_LOG(LogTemp, Error, TEXT("\"CurrentAndPermanent\" not coded for; you should not be able to alter this value directly!"))
-							break;
-						default:
-							UE_LOG(LogTemp, Error, TEXT("Unknown case not coded for; you should probably code this!"))
-							break;
-						}
-					}
-
-					// Refresh regardless
-					DetailBuilder.ForceRefreshDetails();
-				})
-			.IsPercentage(bPercentage)
-			.MaxText(UUtilityFunctionLibrary::ToSI(MaxStatValue, SigFigs, !bPercentage))
-			.MaxTooltip(FloatToFText(MaxStatValue, !bPercentage))
-			.BarColor(TargetStat.Color())
-			.BarFraction(TargetStat.GetValue(StatValueType) / OverallMaxValue)
-			.BarTooltip(TargetStat.SupportingText().Description)
-		).OverrideResetToDefault(
-			FResetToDefaultOverride::Create( 
-				TAttribute<bool>::CreateLambda([]() 
-				{ 
-					return true;
-				}), 
-				ResetClicked
-			)
-		)
-	;
 }
 
 
@@ -486,6 +391,224 @@ float StatsComponentDrawer::MaxStat(const UStatsComponent* StatsComponent, const
 void StatsComponentDrawer::SetStatFromString(FStat* Stat, const FText Text, const EStatValueType StatType)
 {
 	Stat->ModifyValue(FCString::Atof(*Text.ToString()), StatType, EModificationMode::SetDirectly);
+}
+
+
+bool StatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
+{
+
+	return CommitType == ETextCommit::Type::OnEnter || CommitType == ETextCommit::Type::OnUserMovedFocus;
+}
+
+FText StatsComponentDrawer::FloatToFText(const float Value, const bool bIntegerOnly)
+{
+	return FText::FromString(
+		bIntegerOnly ?
+		FString::FromInt(FMath::RoundToInt(Value)) :
+		FString::SanitizeFloat(Value));
+}
+
+void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget,
+	TSharedRef<IPropertyHandle>& ValueHandle, FStat& TargetStat, const EStatValueType StatValueType,
+	const float OverallMaxValue, const bool bPercentage)
+{
+
+	// Get the (local) max value
+	const float MaxStatValue = StatValueType == EStatValueType::Current ?
+					TargetStat.GetValue(EStatValueType::Permanent) :
+					TargetStat.GetValue(StatValueType);
+
+	// Reset button on the far right
+	const FSimpleDelegate ResetClicked = CreateResetDelegate(
+		DetailBuilder, TargetStat, ValueHandle, StatValueType, MaxStatValue);
+
+	// Build widget
+	Widget.operator[](
+		SNew(SStatsBar)
+			.LabelText(FText::FromString(TargetStat.Abbreviation()))
+			.LabelTooltip(FText::FromString(TargetStat.Name()))
+			.TextBoxText(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage))
+			.TextBoxTooltip(FloatToFText(TargetStat.GetValue(StatValueType), !bPercentage))
+			//.OnTextCommitted(StatOnTextCommitted(DetailBuilder, ValueHandle, TargetStat, StatValueType, bPercentage))
+			.OnTextCommitted([this, &DetailBuilder, &ValueHandle, &TargetStat, StatValueType, bPercentage]
+				(const FText& InText, const ETextCommit::Type InTextCommit)
+			{
+				// Check to see if anything changed (avoids rounding errors)
+				if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage)))
+					return;
+
+				// Check commit method
+				if (this->UserCommitted(InTextCommit))
+				{
+					// Modify the stat, but see if it is intentional
+					TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
+					switch(StatValueType)
+					{
+					case EStatValueType::Current:
+						break;
+					case EStatValueType::Permanent:
+						UE_LOG(LogTemp, Error, TEXT("\"Permanent\" not coded for; you should not be able to alter this value directly!"))
+						break;
+					case EStatValueType::BaseStat:
+					case EStatValueType::BasePairs:
+						StatsComponent->RecalculateStats(true);
+						break;
+					case EStatValueType::CurrentAndPermanent:
+						UE_LOG(LogTemp, Error, TEXT("\"CurrentAndPermanent\" not coded for; you should not be able to alter this value directly!"))
+						break;
+					default:
+						UE_LOG(LogTemp, Error, TEXT("Unknown case not coded for; you should probably code this!"))
+						break;
+					}
+
+					// Save
+					if (ValueHandle->IsValidHandle())
+					{
+						switch(ValueHandle->SetValue(FMath::RoundToInt(TargetStat.GetValue(StatValueType))))
+						{
+						case FPropertyAccess::Fail:
+							UE_LOG(LogTemp, Error, TEXT("Failed to set handle in StatsComponentDrawer!"))
+							break;
+						case FPropertyAccess::Success:
+							break;
+						case FPropertyAccess::MultipleValues:
+							UE_LOG(LogTemp, Warning, TEXT("Multiple values not handled; you should probably code for this in StatsComponentDrawer."))
+							break;
+						default:
+							UE_LOG(LogTemp, Warning, TEXT("Other not handled; you should probably code for this in StatsComponentDrawer."))
+							break;
+						}
+					} else
+					{
+						UE_LOG(LogTemp, Warning, TEXT("Invalid handle in StatsComponentDrawer!"))
+					}
+					DetailBuilder.ForceRefreshDetails();
+				}
+			})
+			.IsPercentage(bPercentage)
+			.MaxText(UUtilityFunctionLibrary::ToSI(MaxStatValue, SigFigs, !bPercentage))
+			.MaxTooltip(FloatToFText(MaxStatValue, !bPercentage))
+			.BarColor(TargetStat.Color())
+			.BarFraction(TargetStat.GetValue(StatValueType) / OverallMaxValue)
+			.BarTooltip(TargetStat.SupportingText().Description)
+		).OverrideResetToDefault(
+			FResetToDefaultOverride::Create( 
+				TAttribute<bool>::CreateLambda([]() 
+				{ 
+					return true;
+				}), 
+				ResetClicked
+			)
+		)
+	;
+}
+
+FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, FStat& TargetStat,
+	TSharedRef<IPropertyHandle>& ValueHandle, const EStatValueType StatValueType, const float MaxStatValue) const
+{
+
+	// Set up "on reset" button delegate
+	FSimpleDelegate ResetClicked;
+	switch(StatValueType)
+	{
+	case EStatValueType::BaseStat:
+		ResetClicked = FSimpleDelegate::CreateLambda(
+			[this, &DetailBuilder, &TargetStat, &ValueHandle, StatValueType]() 
+			{
+				TargetStat.RandomizeBaseStat();
+				StatsComponent->RecalculateStats();
+				SaveAndRefresh(DetailBuilder, ValueHandle, TargetStat.GetValue(StatValueType));
+			}
+		);
+		break;
+	case EStatValueType::BasePairs:
+		ResetClicked = FSimpleDelegate::CreateLambda(
+			[this, &DetailBuilder, &TargetStat, &ValueHandle, StatValueType]() 
+			{
+				TargetStat.RandomizeBasePairs();
+				StatsComponent->RecalculateStats();
+				SaveAndRefresh(DetailBuilder, ValueHandle, TargetStat.GetValue(StatValueType));
+			}
+		);
+		break;
+	default:
+		ResetClicked = FSimpleDelegate::CreateLambda(
+			[&DetailBuilder, &TargetStat, MaxStatValue, &ValueHandle,  StatValueType]() 
+			{
+				TargetStat.ModifyValue(MaxStatValue, StatValueType, EModificationMode::SetDirectly);
+				SaveAndRefresh(DetailBuilder, ValueHandle, TargetStat.GetValue(StatValueType));
+			}
+		) ;
+	}
+
+	return ResetClicked;
+}
+
+void StatsComponentDrawer::SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder,
+	TSharedRef<IPropertyHandle>& ValueHandle, const float Value)
+{
+	if (ValueHandle->IsValidHandle())
+	{
+		switch(ValueHandle->SetValue(FMath::RoundToInt(Value)))
+		{
+		case FPropertyAccess::Fail:
+			UE_LOG(LogTemp, Error, TEXT("Failed to set handle in StatsComponentDrawer!"))
+			break;
+		case FPropertyAccess::Success:
+			break;
+		case FPropertyAccess::MultipleValues:
+			UE_LOG(LogTemp, Warning, TEXT("Multiple values not handled; you should probably code for this in StatsComponentDrawer."))
+			break;
+		default:
+			UE_LOG(LogTemp, Warning, TEXT("Other not handled; you should probably code for this in StatsComponentDrawer."))
+			break;
+		}
+	} else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Invalid handle in StatsComponentDrawer!"))
+	}
+	DetailBuilder.ForceRefreshDetails();
+}
+
+TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTextCommitted(
+	IDetailLayoutBuilder& DetailBuilder, TSharedRef<IPropertyHandle>& ValueHandle, FStat& TargetStat,
+	const EStatValueType StatValueType, const bool bPercentage) const
+{
+	return [this, &DetailBuilder, &ValueHandle, &TargetStat, StatValueType, bPercentage]
+				(const FText& InText, const ETextCommit::Type InTextCommit)
+	{
+		// Check to see if anything changed (avoids rounding errors)
+		if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage)))
+			return;
+
+		// Check commit method
+		if (this->UserCommitted(InTextCommit))
+		{
+			// Modify the stat, but see if it is intentional
+			TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
+			switch(StatValueType)
+			{
+			case EStatValueType::Current:
+				break;
+			case EStatValueType::Permanent:
+				UE_LOG(LogTemp, Error, TEXT("\"Permanent\" not coded for; you should not be able to alter this value directly!"))
+				break;
+			case EStatValueType::BaseStat:
+			case EStatValueType::BasePairs:
+				StatsComponent->RecalculateStats(true);
+				break;
+			case EStatValueType::CurrentAndPermanent:
+				UE_LOG(LogTemp, Error, TEXT("\"CurrentAndPermanent\" not coded for; you should not be able to alter this value directly!"))
+				break;
+			default:
+				UE_LOG(LogTemp, Error, TEXT("Unknown case not coded for; you should probably code this!"))
+				break;
+			}
+
+			// Save
+			SaveAndRefresh(DetailBuilder, ValueHandle, TargetStat.GetValue(StatValueType));
+		}
+	};
 }
 
 

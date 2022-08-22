@@ -181,6 +181,7 @@ void UStatsComponent::ModifyStatsUniformly(const float UniformMod, const EStatVa
 
 void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Recalculating!"))
 	for(FStat* Stat : StatsArray)
 		Stat->Update(GetLevel(), bResetCurrent);
 }
