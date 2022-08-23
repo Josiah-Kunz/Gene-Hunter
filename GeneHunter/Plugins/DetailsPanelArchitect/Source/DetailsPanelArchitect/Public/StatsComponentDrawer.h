@@ -60,11 +60,10 @@ private:
 
 public:
 	
-	void SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder, const FName StatPropertyName,
-		const FName ValuePropertyName, float Value) const;
+	void SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const;
 
 	TFunction<void(const FText&, ETextCommit::Type&)> StatOnTextCommitted(
-		IDetailLayoutBuilder& DetailBuilder, const FName ValuePropertyName, FStat& TargetStat,
+		IDetailLayoutBuilder& DetailBuilder, FStat& TargetStat,
 		const EStatValueType StatValueType, const bool bPercentage) const;
 
 	static bool UserCommitted(const ETextCommit::Type CommitType);
@@ -75,20 +74,18 @@ public:
 	
 private:
 	
-	UStatsComponent* GetStatsComponent(IDetailLayoutBuilder& DetailBuilder);
+	UStatsComponent* GetStatsComponent(const IDetailLayoutBuilder& DetailBuilder);
 
 	static float MaxStat (const UStatsComponent* StatsComponent, const EStatValueType StatType, const bool bPercentage);
 	
 	static FText FloatToFText(const float Value, const bool bIntegerOnly);
 
 	void StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget, 
-			const FName ValuePropertyName, FStat& TargetStat, const EStatValueType StatValueType,
-			const float OverallMaxValue, const bool bPercentage = false);
+			FStat& TargetStat, const EStatValueType StatValueType,
+			const float OverallMaxValue, const bool bPercentage = false) const;
 
 	FSimpleDelegate CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, FStat& TargetStat,
-		const FName ValuePropertyName, const EStatValueType StatValueType, const float MaxStatValue) const;
-
-	static FName GetStatValueName(const EStatValueType StatValueType);
+		const EStatValueType StatValueType, const float MaxStatValue) const;
 
 #pragma endregion
 	

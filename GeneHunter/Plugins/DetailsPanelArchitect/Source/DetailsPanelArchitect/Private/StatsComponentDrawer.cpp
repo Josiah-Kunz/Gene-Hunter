@@ -52,8 +52,7 @@ void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 							return;
 						if (UserCommitted(InTextCommit))
 							StatsComponent->SetLevel(NewLevel);
-						UKismetSystemLibrary::TransactObject(StatsComponent);
-						DetailBuilder.ForceRefreshDetails();
+						SaveAndRefresh(DetailBuilder);
 					})
 				.MaxText(FText::FromString(FString::FromInt(StatsComponent->MaxLevel())))
 				.MaxTooltip(FText::FromString(FString::FromInt(StatsComponent->MaxLevel())))
@@ -205,7 +204,6 @@ void StatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& De
 	StatWidget( \
 		DetailBuilder, \
 		DetailBuilder.EditDefaultProperty( Handle##TargetStat )->CustomWidget(), \
-		GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetStat), \
 		StatsComponent->TargetStat, \
 		EStatValueType::Current, \
 		ValueMax, \
@@ -261,17 +259,22 @@ void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& Detai
 	;
 	
 	// Construct bars
-#define DrawBaseStat(TargetBaseStat, TargetMax) \
-	StatWidget(DetailBuilder, Category.AddCustomRow(LOCTEXT("Keyword", "BaseStat")), \
-		GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetBaseStat ) , StatsComponent->##TargetBaseStat, EStatValueType::BaseStat, TargetMax);
+#define DRAW_BASE_STAT(TargetBaseStat, TargetMax) \
+	StatWidget( \
+		DetailBuilder, \
+		Category.AddCustomRow(LOCTEXT("Keyword", "BaseStat")), \
+		StatsComponent->##TargetBaseStat , \
+		EStatValueType::BaseStat, \
+		TargetMax \
+	);
 
-	DrawBaseStat(Health, MaxStatValue)
-	DrawBaseStat(PhysicalAttack, MaxStatValue)
-	DrawBaseStat(PhysicalDefense, MaxStatValue)
-	DrawBaseStat(SpecialAttack, MaxStatValue)
-	DrawBaseStat(SpecialDefense, MaxStatValue)
-	DrawBaseStat(Haste, MaxPercentValue)
-	DrawBaseStat(CriticalHit, MaxPercentValue)
+	DRAW_BASE_STAT(Health, MaxStatValue)
+	DRAW_BASE_STAT(PhysicalAttack, MaxStatValue)
+	DRAW_BASE_STAT(PhysicalDefense, MaxStatValue)
+	DRAW_BASE_STAT(SpecialAttack, MaxStatValue)
+	DRAW_BASE_STAT(SpecialDefense, MaxStatValue)
+	DRAW_BASE_STAT(Haste, MaxPercentValue)
+	DRAW_BASE_STAT(CriticalHit, MaxPercentValue)
 
 	// Base stat total
 	Category.AddCustomRow(LOCTEXT("Keyword", "Base Stat Total")).WholeRowContent()
@@ -320,27 +323,32 @@ void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& Detai
 	;
 	
 	// Construct bars
-#define DrawBasePairs(TargetBasePairs) \
-	StatWidget(DetailBuilder, Category.AddCustomRow(LOCTEXT("Keyword", "BasePairs")), \
-		GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetBasePairs ) , StatsComponent->##TargetBasePairs, EStatValueType::BasePairs, MaxStatValue);
+#define DRAW_BASE_PAIRS(TargetBasePairs) \
+	StatWidget( \
+		DetailBuilder, \
+		Category.AddCustomRow(LOCTEXT("Keyword", "BasePairs")), \
+		StatsComponent->##TargetBasePairs, \
+		EStatValueType::BasePairs, \
+		MaxStatValue\
+	);
 	
-	DrawBasePairs(Health)
-	DrawBasePairs(PhysicalAttack)
-	DrawBasePairs(PhysicalDefense)
-	DrawBasePairs(SpecialAttack)
-	DrawBasePairs(SpecialDefense)
-	DrawBasePairs(Haste)
-	DrawBasePairs(CriticalHit)
+	DRAW_BASE_PAIRS(Health)
+	DRAW_BASE_PAIRS(PhysicalAttack)
+	DRAW_BASE_PAIRS(PhysicalDefense)
+	DRAW_BASE_PAIRS(SpecialAttack)
+	DRAW_BASE_PAIRS(SpecialDefense)
+	DRAW_BASE_PAIRS(Haste)
+	DRAW_BASE_PAIRS(CriticalHit)
 }
 
-UStatsComponent* StatsComponentDrawer::GetStatsComponent(IDetailLayoutBuilder& DetailBuilder)
+UStatsComponent* StatsComponentDrawer::GetStatsComponent(const IDetailLayoutBuilder& DetailBuilder)
 {
 	// Get object from array
 	DetailBuilder.GetObjectsBeingCustomized(ObjectsToEdit);
 	if (ObjectsToEdit.Num() == 0) return nullptr;
 	
 	// Object guard
-	TWeakObjectPtr<UObject> Object = ObjectsToEdit[0];
+	const TWeakObjectPtr<UObject> Object = ObjectsToEdit[0];
 	if (!Object.IsValid()) return nullptr;
 
 	// Get
@@ -398,8 +406,8 @@ FText StatsComponentDrawer::FloatToFText(const float Value, const bool bIntegerO
 }
 
 void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget,
-	const FName ValuePropertyName, FStat& TargetStat, const EStatValueType StatValueType,
-	const float OverallMaxValue, const bool bPercentage)
+	FStat& TargetStat, const EStatValueType StatValueType,
+	const float OverallMaxValue, const bool bPercentage) const
 {
 
 	// Get the (local) max value
@@ -409,7 +417,7 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDeta
 
 	// Reset button on the far right
 	const FSimpleDelegate ResetClicked = CreateResetDelegate(
-		DetailBuilder, TargetStat, ValuePropertyName, StatValueType, MaxStatValue);
+		DetailBuilder, TargetStat, StatValueType, MaxStatValue);
 
 	// Build widget
 	Widget.operator[](
@@ -418,63 +426,7 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDeta
 			.LabelTooltip(FText::FromString(TargetStat.Name()))
 			.TextBoxText(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage))
 			.TextBoxTooltip(FloatToFText(TargetStat.GetValue(StatValueType), !bPercentage))
-			.OnTextCommitted(StatOnTextCommitted(DetailBuilder, ValuePropertyName, TargetStat, StatValueType, bPercentage))
-			/*.OnTextCommitted([this, &DetailBuilder, &ValuePropertyName, &TargetStat, StatValueType, bPercentage]
-				(const FText& InText, const ETextCommit::Type InTextCommit)
-			{
-				// Check to see if anything changed (avoids rounding errors)
-				if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage)))
-					return;
-
-				// Check commit method
-				if (this->UserCommitted(InTextCommit))
-				{
-					// Modify the stat, but see if it is intentional
-					TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
-					switch(StatValueType)
-					{
-					case EStatValueType::Current:
-						break;
-					case EStatValueType::Permanent:
-						UE_LOG(LogTemp, Error, TEXT("\"Permanent\" not coded for; you should not be able to alter this value directly!"))
-						break;
-					case EStatValueType::BaseStat:
-					case EStatValueType::BasePairs:
-						StatsComponent->RecalculateStats(true);
-						break;
-					case EStatValueType::CurrentAndPermanent:
-						UE_LOG(LogTemp, Error, TEXT("\"CurrentAndPermanent\" not coded for; you should not be able to alter this value directly!"))
-						break;
-					default:
-						UE_LOG(LogTemp, Error, TEXT("Unknown case not coded for; you should probably code this!"))
-						break;
-					}
-
-					// Save
-					TSharedRef<IPropertyHandle> ValueHandle = DetailBuilder.GetProperty(ValuePropertyName); 
-					if (ValueHandle->IsValidHandle())
-					{
-						switch(ValueHandle->SetValue(FMath::RoundToInt(TargetStat.GetValue(StatValueType))))
-						{
-						case FPropertyAccess::Fail:
-							UE_LOG(LogTemp, Error, TEXT("Failed to set handle in StatsComponentDrawer!"))
-							break;
-						case FPropertyAccess::Success:
-							break;
-						case FPropertyAccess::MultipleValues:
-							UE_LOG(LogTemp, Warning, TEXT("Multiple values not handled; you should probably code for this in StatsComponentDrawer."))
-							break;
-						default:
-							UE_LOG(LogTemp, Warning, TEXT("Other not handled; you should probably code for this in StatsComponentDrawer."))
-							break;
-						}
-					} else
-					{
-						UE_LOG(LogTemp, Warning, TEXT("Invalid handle in StatsComponentDrawer!"))
-					}
-					DetailBuilder.ForceRefreshDetails();
-				}
-			})*/
+			.OnTextCommitted(StatOnTextCommitted(DetailBuilder, TargetStat, StatValueType, bPercentage))
 			.IsPercentage(bPercentage)
 			.MaxText(UUtilityFunctionLibrary::ToSI(MaxStatValue, SigFigs, !bPercentage))
 			.MaxTooltip(FloatToFText(MaxStatValue, !bPercentage))
@@ -494,41 +446,39 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDeta
 }
 
 FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, FStat& TargetStat,
-	const FName ValuePropertyName, const EStatValueType StatValueType, const float MaxStatValue) const
+	const EStatValueType StatValueType, const float MaxStatValue) const
 {
 
 	// Set up "on reset" button delegate
 	FSimpleDelegate ResetClicked;
-	const FName StatValueName = GetStatValueName(StatValueType);
 	switch(StatValueType)
 	{
 	case EStatValueType::BaseStat:
 		ResetClicked = FSimpleDelegate::CreateLambda(
-			[this, &DetailBuilder, &TargetStat, ValuePropertyName, StatValueName, StatValueType]() 
+			[this, &DetailBuilder, &TargetStat]() 
 			{
 				TargetStat.RandomizeBaseStat();
 				StatsComponent->RecalculateStats();
-				SaveAndRefresh(DetailBuilder, ValuePropertyName, StatValueName,
-					TargetStat.GetValue(StatValueType));
+				SaveAndRefresh(DetailBuilder);
 			}
 		);
 		break;
 	case EStatValueType::BasePairs:
 		ResetClicked = FSimpleDelegate::CreateLambda(
-			[this, &DetailBuilder, &TargetStat, ValuePropertyName, StatValueName, StatValueType]() 
+			[this, &DetailBuilder, &TargetStat]() 
 			{
 				TargetStat.RandomizeBasePairs();
 				StatsComponent->RecalculateStats();
-				SaveAndRefresh(DetailBuilder, ValuePropertyName, StatValueName, TargetStat.GetValue(StatValueType));
+				SaveAndRefresh(DetailBuilder);
 			}
 		);
 		break;
 	default:
 		ResetClicked = FSimpleDelegate::CreateLambda(
-			[this, &DetailBuilder, &TargetStat, MaxStatValue, ValuePropertyName, StatValueName, StatValueType]() 
+			[this, &DetailBuilder, &TargetStat, MaxStatValue, StatValueType]() 
 			{
 				TargetStat.ModifyValue(MaxStatValue, StatValueType, EModificationMode::SetDirectly);
-				SaveAndRefresh(DetailBuilder, ValuePropertyName, StatValueName, TargetStat.GetValue(StatValueType));
+				SaveAndRefresh(DetailBuilder);
 			}
 		) ;
 	}
@@ -536,74 +486,17 @@ FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& 
 	return ResetClicked;
 }
 
-FName StatsComponentDrawer::GetStatValueName(const EStatValueType StatValueType)
+void StatsComponentDrawer::SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const
 {
-	switch(StatValueType)
-	{
-	case EStatValueType::BaseStat:
-		return TEXT("BaseStat");
-	case EStatValueType::BasePairs:
-		return TEXT("BasePairs");
-	}
-	return TEXT("");
-}
-
-void StatsComponentDrawer::SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder, const FName StatPropertyName, 
-                                          const FName ValuePropertyName, const float Value) const
-{
-
-	// Check stat property
-	TSharedRef<IPropertyHandle> StatHandle = DetailBuilder.GetProperty(StatPropertyName, UStatsComponent::StaticClass());
-	if (!StatHandle->IsValidHandle())
-	{
-		UE_LOG(LogTemp, Error, TEXT("Invalid stat handle in StatsComponentDrawer! Property name was %s"),
-			*StatPropertyName.ToString())
-		return;
-	}
-	
-	// Check value property
-	TSharedPtr<IPropertyHandle> ValueHandle = StatHandle->GetChildHandle(ValuePropertyName);
-	if (ValueHandle->IsValidHandle())
-	{
-		switch(ValueHandle->SetValue(FMath::RoundToInt(Value)))
-		{
-		case FPropertyAccess::Fail:
-			UE_LOG(LogTemp, Error, TEXT("Failed to set handle in StatsComponentDrawer!"))
-			break;
-		case FPropertyAccess::Success:
-			UKismetSystemLibrary::TransactObject(StatsComponent);
-			/*switch(StatHandle->GetParentHandle()->SetValue(StatsComponent))
-			{
-			case FPropertyAccess::Fail:
-				UE_LOG(LogTemp, Warning, TEXT("FAILURE"))
-				break;
-			case FPropertyAccess::Success:
-				UE_LOG(LogTemp, Warning, TEXT("SUCCESSURE"))
-					break;
-			default:
-				break;
-			}*/
-			break;
-		case FPropertyAccess::MultipleValues:
-			UE_LOG(LogTemp, Warning, TEXT("Multiple values not handled; you should probably code for this in StatsComponentDrawer."))
-			break;
-		default:
-			UE_LOG(LogTemp, Warning, TEXT("Other not handled; you should probably code for this in StatsComponentDrawer."))
-			break;
-		}
-	} else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Invalid handle in StatsComponentDrawer!"))
-	}
+	UKismetSystemLibrary::TransactObject(StatsComponent);
 	DetailBuilder.ForceRefreshDetails();
 }
 
 TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTextCommitted(
-	IDetailLayoutBuilder& DetailBuilder,  const FName ValuePropertyName, FStat& TargetStat,
+	IDetailLayoutBuilder& DetailBuilder, FStat& TargetStat,
 	const EStatValueType StatValueType, const bool bPercentage) const
 {
-	const FName StatValueName = GetStatValueName(StatValueType);
-	return [this, &DetailBuilder, ValuePropertyName, &TargetStat, StatValueType, StatValueName, bPercentage]
+	return [this, &DetailBuilder, &TargetStat, StatValueType, bPercentage]
 				(const FText& InText, const ETextCommit::Type InTextCommit)
 	{
 		// Check to see if anything changed (avoids rounding errors)
@@ -635,7 +528,7 @@ TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTe
 			}
 
 			// Save
-			SaveAndRefresh(DetailBuilder, ValuePropertyName, StatValueName, TargetStat.GetValue(StatValueType));
+			SaveAndRefresh(DetailBuilder);
 		}
 	};
 }
