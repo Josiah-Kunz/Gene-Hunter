@@ -42,13 +42,13 @@ protected:
 	 * The current value of this Stat that can be increased or decreased. CurrentValue reverts to PermanentValue, e.g.,
 	 * at the start and end of a battle.
 	 */
-	UPROPERTY()
+	UPROPERTY(VisibleDefaultsOnly, Category = "Level")
 	float CurrentValue = 0;
 
 	/**
 	 * The default value of this Stat, e.g., when a battle starts. Only modify outside of battle (e.g., on level).
 	 */
-	UPROPERTY()
+	UPROPERTY(VisibleDefaultsOnly, Category = "Level")
 	float PermanentValue = 1;
 
 	virtual float StatJump(const int Level);

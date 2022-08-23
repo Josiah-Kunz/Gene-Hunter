@@ -46,13 +46,19 @@ public:
 #pragma region Level variables and functions
 
 public:
-	int BaseExpYield = 1;
+
+	/**
+	 * Linearly multiplies the amount of experience points yielded when defeating this Monster.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
+	float BaseExpYield = 1;
 	
 private:
 
 	/**
 	 * The total experience accumulated points across all levels.
 	 */
+	UPROPERTY(VisibleDefaultsOnly, Category = "Level")
 	int CumulativeExp = 1;
 
 public:
