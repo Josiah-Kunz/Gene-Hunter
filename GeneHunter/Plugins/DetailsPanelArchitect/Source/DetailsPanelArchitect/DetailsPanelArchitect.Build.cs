@@ -27,10 +27,13 @@ public class DetailsPanelArchitect : ModuleRules
 			{
 				// Basics
 				"Core",
+				"Slate",
+				"SlateCore",
 				
 				// Editor specific
-				"PropertyEditor",	// IDetailLayoutBuilder
 				"BPLibraries",		// ToSI functionality
+				"PropertyEditor",	// IDetailLayoutBuilder
+				"Types",			// Type affinities
 				"UI",				// SupportingText
 
 				// Types to customize

@@ -2,6 +2,7 @@
 #include "DetailLayoutBuilder.h"
 #include "PropertyEditor/Public/IDetailCustomization.h"
 #include "AffinitiesComponent.h"
+#include "Widgets/SCanvas.h"
 
 
 class AffinitiesComponentDrawer : public IDetailCustomization
@@ -12,6 +13,9 @@ class AffinitiesComponentDrawer : public IDetailCustomization
 private:
 	
 	UAffinitiesComponent* AffinitiesComponent = nullptr;
+
+	TArray<UType*> AllTypes;
+	TArray<TSharedPtr<FString>> TypeNames;
 
 
 #pragma endregion
@@ -32,6 +36,11 @@ private:
 
 #pragma region Private customization functions
 
+	virtual void CustomizeAffinities(IDetailLayoutBuilder& DetailBuilder);
+	
+	virtual void DrawAffinity(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category,
+		FAffinity& Affinity);
+
 #pragma endregion
 
 #pragma region Public utility functions
@@ -42,6 +51,10 @@ public:
 
 	static bool UserCommitted(const ETextCommit::Type CommitType);
 
+	UType* GetTypeByName(const FString* TypeName);
+
+	TFunction<void(TSharedPtr<FString> Selection, ESelectInfo::Type SelectInfo)> OnComboBoxChanged(FAffinity& Affinity);
+
 #pragma endregion
 
 #pragma region Private utility functions
@@ -49,6 +62,13 @@ public:
 private:
 	
 	UAffinitiesComponent* GetAffinitiesComponent(const IDetailLayoutBuilder& DetailBuilder);
+
+	// Do we need this??
+	const TArray<TSharedPtr<UType*, ESPMode::ThreadSafe>> GetTypes() const;
+
+	TArray<TSharedPtr<FString, ESPMode::ThreadSafe>> GetTypeNames();
+
+	TSharedPtr<SHorizontalBox> AffinityValueCanvas(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity);
 
 #pragma endregion
 	

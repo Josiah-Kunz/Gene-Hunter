@@ -2,6 +2,8 @@
 
 #include "DetailsPanelArchitect.h"
 
+#include "AffinitiesComponent.h"
+#include "AffinitiesComponentDrawer.h"
 #include "StatsComponent.h"
 #include "StatsComponentDrawer.h"
 
@@ -21,6 +23,10 @@ void FDetailsPanelArchitectModule::StartupModule()
 		UStatsComponent::StaticClass()->GetFName(),
 		FOnGetDetailCustomizationInstance::CreateStatic(StatsComponentDrawer::MakeInstance)
 	);
+	PropertyEdModule.RegisterCustomClassLayout(
+		UAffinitiesComponent::StaticClass()->GetFName(),
+		FOnGetDetailCustomizationInstance::CreateStatic(AffinitiesComponentDrawer::MakeInstance)
+	);
 }
 
 void FDetailsPanelArchitectModule::ShutdownModule()
@@ -33,9 +39,8 @@ void FDetailsPanelArchitectModule::ShutdownModule()
 	FPropertyEditorModule& PropertyEdModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
 	
 	// Unregister
-	PropertyEdModule.UnregisterCustomClassLayout(
-		UStatsComponent::StaticClass()->GetFName()
-	);
+	PropertyEdModule.UnregisterCustomClassLayout(UStatsComponent::StaticClass()->GetFName());
+	PropertyEdModule.UnregisterCustomClassLayout(UAffinitiesComponent::StaticClass()->GetFName());
 }
 
 #undef LOCTEXT_NAMESPACE
