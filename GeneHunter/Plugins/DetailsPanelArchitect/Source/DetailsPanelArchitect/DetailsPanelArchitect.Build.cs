@@ -34,6 +34,7 @@ public class DetailsPanelArchitect : ModuleRules
 				"UI",				// SupportingText
 
 				// Types to customize
+				"AffinitiesComponent",
 				"StatsComponent",
 			}
 		);

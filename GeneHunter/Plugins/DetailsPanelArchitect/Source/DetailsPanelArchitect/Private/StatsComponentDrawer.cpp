@@ -11,6 +11,8 @@
 #include "SStatsBar.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+#pragma region Boilerplate
+
 TSharedRef<IDetailCustomization> StatsComponentDrawer::MakeInstance()
 {
 	return MakeShareable(new StatsComponentDrawer);
@@ -30,6 +32,10 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 	CustomizeBaseStatsDetails(DetailBuilder);
 	CustomizeBasePairsDetails(DetailBuilder);
 }
+
+#pragma endregion
+
+#pragma region Private customization functions
 
 void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBuilder)
 {
@@ -341,6 +347,67 @@ void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& Detai
 	DRAW_BASE_PAIRS(CriticalHit)
 }
 
+#pragma endregion
+
+#pragma region Public utility functions
+
+void StatsComponentDrawer::SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const
+{
+	UKismetSystemLibrary::TransactObject(StatsComponent);
+	DetailBuilder.ForceRefreshDetails();
+}
+
+
+TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTextCommitted(
+	IDetailLayoutBuilder& DetailBuilder, FStat& TargetStat,
+	const EStatValueType StatValueType, const bool bPercentage) const
+{
+	return [this, &DetailBuilder, &TargetStat, StatValueType, bPercentage]
+				(const FText& InText, const ETextCommit::Type InTextCommit)
+	{
+		// Check to see if anything changed (avoids rounding errors)
+		if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage)))
+			return;
+
+		// Check commit method
+		if (this->UserCommitted(InTextCommit))
+		{
+			// Modify the stat, but see if it is intentional
+			TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
+			switch(StatValueType)
+			{
+			case EStatValueType::Current:
+				break;
+			case EStatValueType::Permanent:
+				UE_LOG(LogTemp, Error, TEXT("\"Permanent\" not coded for; you should not be able to alter this value directly!"))
+				break;
+			case EStatValueType::BaseStat:
+			case EStatValueType::BasePairs:
+				StatsComponent->RecalculateStats(true);
+				break;
+			case EStatValueType::CurrentAndPermanent:
+				UE_LOG(LogTemp, Error, TEXT("\"CurrentAndPermanent\" not coded for; you should not be able to alter this value directly!"))
+				break;
+			default:
+				UE_LOG(LogTemp, Error, TEXT("Unknown case not coded for; you should probably code this!"))
+				break;
+			}
+
+			// Save
+			SaveAndRefresh(DetailBuilder);
+		}
+	};
+}
+
+bool StatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
+{
+	return CommitType == ETextCommit::Type::OnEnter || CommitType == ETextCommit::Type::OnUserMovedFocus;
+}
+
+#pragma endregion
+
+#pragma region Private utility functions
+
 UStatsComponent* StatsComponentDrawer::GetStatsComponent(const IDetailLayoutBuilder& DetailBuilder)
 {
 	// Get object from array
@@ -360,7 +427,6 @@ UStatsComponent* StatsComponentDrawer::GetStatsComponent(const IDetailLayoutBuil
 	// Return
 	return Ret;
 }
-
 
 float StatsComponentDrawer::MaxStat(const UStatsComponent* StatsComponent, const EStatValueType StatType, const bool bPercentage)
 {
@@ -389,12 +455,6 @@ float StatsComponentDrawer::MaxStat(const UStatsComponent* StatsComponent, const
 		}
 	}
 	return Max;
-}
-
-bool StatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
-{
-
-	return CommitType == ETextCommit::Type::OnEnter || CommitType == ETextCommit::Type::OnUserMovedFocus;
 }
 
 FText StatsComponentDrawer::FloatToFText(const float Value, const bool bIntegerOnly)
@@ -486,52 +546,6 @@ FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& 
 	return ResetClicked;
 }
 
-void StatsComponentDrawer::SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const
-{
-	UKismetSystemLibrary::TransactObject(StatsComponent);
-	DetailBuilder.ForceRefreshDetails();
-}
-
-TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTextCommitted(
-	IDetailLayoutBuilder& DetailBuilder, FStat& TargetStat,
-	const EStatValueType StatValueType, const bool bPercentage) const
-{
-	return [this, &DetailBuilder, &TargetStat, StatValueType, bPercentage]
-				(const FText& InText, const ETextCommit::Type InTextCommit)
-	{
-		// Check to see if anything changed (avoids rounding errors)
-		if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage)))
-			return;
-
-		// Check commit method
-		if (this->UserCommitted(InTextCommit))
-		{
-			// Modify the stat, but see if it is intentional
-			TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
-			switch(StatValueType)
-			{
-			case EStatValueType::Current:
-				break;
-			case EStatValueType::Permanent:
-				UE_LOG(LogTemp, Error, TEXT("\"Permanent\" not coded for; you should not be able to alter this value directly!"))
-				break;
-			case EStatValueType::BaseStat:
-			case EStatValueType::BasePairs:
-				StatsComponent->RecalculateStats(true);
-				break;
-			case EStatValueType::CurrentAndPermanent:
-				UE_LOG(LogTemp, Error, TEXT("\"CurrentAndPermanent\" not coded for; you should not be able to alter this value directly!"))
-				break;
-			default:
-				UE_LOG(LogTemp, Error, TEXT("Unknown case not coded for; you should probably code this!"))
-				break;
-			}
-
-			// Save
-			SaveAndRefresh(DetailBuilder);
-		}
-	};
-}
-
+#pragma endregion
 
 #undef LOCTEXT_NAMESPACE
