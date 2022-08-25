@@ -9,6 +9,7 @@
 #include "Widgets/Input/STextComboBox.h"
 #include "Widgets/Images/SImage.h"
 #include "Types/SlateStructs.h"
+#include "EditorStyleSet.h"
 
 #pragma region Boilerplate
 
@@ -32,15 +33,25 @@ void AffinitiesComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBui
 void AffinitiesComponentDrawer::CustomizeAffinities(IDetailLayoutBuilder& DetailBuilder)
 {
 
+	// Hide original drawer
+	const TSharedRef<IPropertyHandle> PropertyHandle = DetailBuilder.GetProperty(
+		GET_MEMBER_NAME_CHECKED(UAffinitiesComponent, Affinities));
+	PropertyHandle->MarkHiddenByCustomization();
+	
 	// Get category
-	const FString CategoryName = "Affinities";
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
-		FName(CategoryName),
-		FText::FromString(CategoryName),
+		PropertyHandle->GetDefaultCategoryName(),
+		PropertyHandle->GetDefaultCategoryText(),
 		ECategoryPriority::Important);
 
+	AffinitiesComponent = GetAffinitiesComponent(DetailBuilder);
+
+	// Draw 'em
 	for(FAffinity& Affinity : AffinitiesComponent->Affinities)
 		DrawAffinity(DetailBuilder, Category, Affinity);
+
+	// Draw +/- for modifying array
+	DrawArrayMutator(DetailBuilder, Category);
 }
 
 void AffinitiesComponentDrawer::DrawAffinity(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category,
@@ -58,16 +69,140 @@ void AffinitiesComponentDrawer::DrawAffinity(IDetailLayoutBuilder& DetailBuilder
 	.NameContent()
 	.HAlign(HAlign_Fill)
 	[
+		SNew(SOverlay)
 
-		SNew(STextComboBox)
-			.OptionsSource(&TypeNames)
-			.InitiallySelectedItem(InitialName)
-			.OnSelectionChanged_Lambda(OnComboBoxChanged(Affinity))
-			//.OnComboBoxOpening_Lambda([](){}) // Something is fishy here...
+		+SOverlay::Slot()[
+			SNew(STextComboBox)
+				.OptionsSource(&TypeNames)
+				.InitiallySelectedItem(InitialName)
+				.OnSelectionChanged_Lambda(OnComboBoxChanged(DetailBuilder, Affinity))
+				//.OnComboBoxOpening_Lambda([](){}) // Something is fishy here...
+		]
+		.HAlign(HAlign_Fill)
+		.Padding(28, 0, 0, 0)
+
+		+SOverlay::Slot()[
+			SNew(SButton)
+			.ButtonStyle( FEditorStyle::Get(), "NoBorder" )
+			.OnClicked_Lambda([this, &DetailBuilder, &Affinity]() -> FReply
+			{
+				Affinity.SetLockedState(!Affinity.IsLocked());
+				SaveAndRefresh(DetailBuilder);
+				return FReply::Handled();
+			})
+			.ToolTipText(
+				Affinity.IsLocked() ?
+				FText::FromString("Unlock this affinity. If locked, this affinity is required and cannot be changed in-game. Current state is [LOCKED].") :
+				FText::FromString("Lock this affinity. If locked, this affinity is required and cannot be changed in-game. Current state is [UNLOCKED].")
+			)
+			[
+				SNew(SImage)
+				.Image(FEditorStyle::GetBrush(
+					Affinity.IsLocked() ?
+					TEXT("Sequencer.LockSequence") :
+					TEXT("Sequencer.UnlockSequence")
+				))
+				.DesiredSizeOverride(FVector2D{16, 16})
+			]
+			.HAlign(HAlign_Left)
+		]
+		.HAlign(HAlign_Left)
+		.VAlign(VAlign_Center)
 	]
 	.ValueContent()
 	[
 		AffinityValueCanvas(DetailBuilder, Affinity).ToSharedRef()
+	]
+	.OverrideResetToDefault(FResetToDefaultOverride::Create( 
+		TAttribute<bool>::CreateLambda([&Affinity]() 
+			{ 
+				return Affinity.GetMaxPoints() != 3 || Affinity.GetCurrentPoints() != 0;
+			}), 
+			CreateResetDelegate(DetailBuilder, Affinity)
+		)
+	)
+	;
+}
+
+void AffinitiesComponentDrawer::DrawArrayMutator(IDetailLayoutBuilder& DetailBuilder,
+	IDetailCategoryBuilder& Category)
+{
+	Category.AddCustomRow(LOCTEXT("KeyWord", "Array Mutator"))
+	.WholeRowContent()
+	.HAlign(HAlign_Right)
+	[
+		SNew(SHorizontalBox)
+
+		// Plus
+		+SHorizontalBox::Slot()
+		.AutoWidth()
+		[
+			SNew(SButton)
+			.OnClicked_Lambda([this, &DetailBuilder]() -> FReply
+			{
+				FAffinity NewAffinity = FAffinity{};
+				NewAffinity.Type = AllTypes[0];
+				AffinitiesComponent->Affinities.Add(NewAffinity);
+				SaveAndRefresh(DetailBuilder);
+				return FReply::Handled();
+			})
+			.ToolTipText(FText::FromString("Add an affinity to the array."))
+			[
+				SNew(SImage)
+				.Image(FEditorStyle::GetBrush(TEXT("Icons.Plus")))
+				.DesiredSizeOverride(FVector2D{16, 16})
+			]
+		]
+
+		// Minus
+		+SHorizontalBox::Slot()
+		.AutoWidth()
+		[
+			SNew(SButton)
+			.OnClicked_Lambda([this, &DetailBuilder]() -> FReply
+			{
+				if (AffinitiesComponent->Affinities.Num() > 0)
+				{
+					AffinitiesComponent->Affinities.RemoveAt(AffinitiesComponent->Affinities.Num() - 1);
+					SaveAndRefresh(DetailBuilder);
+				}
+				return FReply::Handled();
+			})
+			.IsEnabled_Lambda([this]()
+			{
+				return AffinitiesComponent->Affinities.Num() > 1;
+			})
+			.ToolTipText(FText::FromString("Removes the last affinity from the array."))
+			[
+				SNew(SImage)
+				.Image(FEditorStyle::GetBrush(TEXT("Icons.Minus")))
+				.DesiredSizeOverride(FVector2D{16, 16})
+			]
+		]
+
+		// Trash
+		+SHorizontalBox::Slot()
+		.AutoWidth()
+		[
+			SNew(SButton)
+			.OnClicked_Lambda([this, &DetailBuilder]() -> FReply
+			{
+				for(int i=AffinitiesComponent->Affinities.Num() - 1; i>0; i--)
+					AffinitiesComponent->Affinities.RemoveAt(i);
+				SaveAndRefresh(DetailBuilder);
+				return FReply::Handled();
+			})
+			.IsEnabled_Lambda([this]()
+			{
+				return AffinitiesComponent->Affinities.Num() > 1;
+			})
+			.ToolTipText(FText::FromString("Remove all affinities except the first one."))
+			[
+				SNew(SImage)
+				.Image(FEditorStyle::GetBrush("FoliageEditMode.Remove"))
+				.DesiredSizeOverride(FVector2D{16, 16})
+			]
+		]
 	]
 	;
 }
@@ -103,7 +238,7 @@ UAffinitiesComponent* AffinitiesComponentDrawer::GetAffinitiesComponent(const ID
 	return Ret;
 }
 
-const TArray<TSharedPtr<UType*, ESPMode::ThreadSafe>> AffinitiesComponentDrawer::GetTypes() const
+TArray<TSharedPtr<UType*, ESPMode::ThreadSafe>> AffinitiesComponentDrawer::GetTypes() const
 {
 	TArray<UType*> Types;
 	UType::GetAllTypes(Types, {});
@@ -139,12 +274,11 @@ TSharedPtr<SHorizontalBox> AffinitiesComponentDrawer::AffinityValueCanvas(IDetai
 		.ButtonStyle( FEditorStyle::Get(), "NoBorder" )
 		.OnClicked_Lambda([this, &DetailBuilder, &Affinity]() -> FReply
 		{
-			if (Affinity.MaxPoints > 1)
+			if (Affinity.GetMaxPoints() > 1)
 			{
-				Affinity.MaxPoints--;
-				Affinity.CurrentPoints = FMath::Min(Affinity.CurrentPoints, Affinity.MaxPoints);
+				Affinity.SetMaxPoints(Affinity.GetMaxPoints() - 1);
 				SaveAndRefresh(DetailBuilder);
-			}
+			} 
 			return FReply::Handled();
 		})
 		.ToolTipText(FText::FromString("Decrease max affinity points by 1."))
@@ -162,18 +296,24 @@ TSharedPtr<SHorizontalBox> AffinitiesComponentDrawer::AffinityValueCanvas(IDetai
 	.Padding(Padding)
 	;
 
-	// Empty circles
-	for(int i=0; i<Affinity.MaxPoints; i++)
+	// Circles
+	for(int i=0; i<Affinity.GetMaxPoints(); i++)
 	{
-		const bool bFilled = i < Affinity.CurrentPoints;
+		const bool bFilled = i < Affinity.GetCurrentPoints();
+		const int CurrentPoints = Affinity.GetCurrentPoints();
 		Ret->AddSlot()[
 
 			SNew(SButton)
 			.ButtonStyle( FEditorStyle::Get(), "NoBorder" )
 			.ToolTipText(FText::FromString("Click to set this as the current number of affinity points."))
-			.OnClicked_Lambda([this, &DetailBuilder, &Affinity, i]() -> FReply
+			.OnClicked_Lambda([this, &DetailBuilder, &Affinity, i, CurrentPoints]() -> FReply
 			{
-				Affinity.CurrentPoints = i + 1;
+
+				// If at exactly (1), the only way to remove it is to click it
+				if (CurrentPoints == i+1)
+					Affinity.SetCurrentPoints(CurrentPoints - 1);
+				else 
+					Affinity.SetCurrentPoints(i+1);
 				SaveAndRefresh(DetailBuilder);
 				return FReply::Handled();
 			})
@@ -211,7 +351,7 @@ TSharedPtr<SHorizontalBox> AffinitiesComponentDrawer::AffinityValueCanvas(IDetai
 		.ButtonStyle( FEditorStyle::Get(), "NoBorder" )
 		.OnClicked_Lambda([this, &DetailBuilder, &Affinity]() -> FReply
 		{
-			Affinity.MaxPoints++;
+			Affinity.SetMaxPoints(Affinity.GetMaxPoints()+1);
 			SaveAndRefresh(DetailBuilder);
 			return FReply::Handled();
 		})
@@ -243,9 +383,9 @@ UType* AffinitiesComponentDrawer::GetTypeByName(const FString* TypeName)
 }
 
 TFunction<void(TSharedPtr<FString> Selection, ESelectInfo::Type SelectInfo)> AffinitiesComponentDrawer::
-OnComboBoxChanged(FAffinity& Affinity)
+OnComboBoxChanged(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity)
 {
-	return [this, &Affinity](TSharedPtr<FString> Selection, ESelectInfo::Type SelectInfo)
+	return [this, &DetailBuilder, &Affinity](TSharedPtr<FString> Selection, ESelectInfo::Type SelectInfo)
 	{
 		if (!Selection.IsValid())
 			return;
@@ -254,7 +394,8 @@ OnComboBoxChanged(FAffinity& Affinity)
 		if (SelectedType != nullptr)
 		{
 			Affinity.Type = SelectedType;
-			UKismetSystemLibrary::TransactObject(AffinitiesComponent);
+			//UKismetSystemLibrary::TransactObject(AffinitiesComponent);
+			SaveAndRefresh(DetailBuilder);
 		} else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Selected Type is nullptr in AffinitiesComponentDrawer! Surely this is an error. Reverting to default value."))
@@ -264,6 +405,20 @@ OnComboBoxChanged(FAffinity& Affinity)
 				Affinity.Type = AllTypes[0];
 		}
 	};
+}
+
+FSimpleDelegate AffinitiesComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder,
+	FAffinity& Affinity) const
+{
+	return FSimpleDelegate::CreateLambda(
+		[this, &DetailBuilder, &Affinity]()
+		{
+			Affinity.SetLockedState(false);
+			Affinity.SetMaxPoints(3);
+			Affinity.SetCurrentPoints(0);
+			SaveAndRefresh(DetailBuilder);
+		}
+	);
 }
 
 #undef LOCTEXT_NAMESPACE

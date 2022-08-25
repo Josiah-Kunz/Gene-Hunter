@@ -41,6 +41,8 @@ private:
 	virtual void DrawAffinity(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category,
 		FAffinity& Affinity);
 
+	virtual void DrawArrayMutator(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category);
+
 #pragma endregion
 
 #pragma region Public utility functions
@@ -53,7 +55,8 @@ public:
 
 	UType* GetTypeByName(const FString* TypeName);
 
-	TFunction<void(TSharedPtr<FString> Selection, ESelectInfo::Type SelectInfo)> OnComboBoxChanged(FAffinity& Affinity);
+	TFunction<void(TSharedPtr<FString> Selection, ESelectInfo::Type SelectInfo)> OnComboBoxChanged(
+		IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity);
 
 #pragma endregion
 
@@ -64,11 +67,13 @@ private:
 	UAffinitiesComponent* GetAffinitiesComponent(const IDetailLayoutBuilder& DetailBuilder);
 
 	// Do we need this??
-	const TArray<TSharedPtr<UType*, ESPMode::ThreadSafe>> GetTypes() const;
+	TArray<TSharedPtr<UType*, ESPMode::ThreadSafe>> GetTypes() const;
 
 	TArray<TSharedPtr<FString, ESPMode::ThreadSafe>> GetTypeNames();
 
 	TSharedPtr<SHorizontalBox> AffinityValueCanvas(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity);
+
+	FSimpleDelegate CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity) const;
 
 #pragma endregion
 	

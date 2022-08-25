@@ -28,20 +28,32 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)	
 	UType* Type = nullptr;
 
+	int GetCurrentPoints() const;
+	
+	void SetCurrentPoints(const int NewPoints);
+
+	int GetMaxPoints() const;
+
+	void SetMaxPoints(const int NewMax);
+
+private:
+
 	/**
-	 * The maximum number of possible points to put into this Affinity.
+	 * If locked, the Monster *must* have at least one point in this Affinity. It is a defining Type for the Monster.
 	 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)	
-	int MaxPoints = 3;
+	UPROPERTY(VisibleDefaultsOnly)
+	bool bLocked = false;
 
 	/**
 	 * The current number of points put into this Affinity.
 	 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)	
+	UPROPERTY(VisibleDefaultsOnly)
 	int CurrentPoints = 0;
 
-private:
-
-	bool bLocked = false;
+	/**
+	 * The maximum number of possible points to put into this Affinity.
+	 */
+	UPROPERTY(VisibleDefaultsOnly)
+	int MaxPoints = 3;
 	
 };
