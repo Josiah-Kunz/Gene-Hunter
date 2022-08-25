@@ -32,8 +32,51 @@ public:
 							   FActorComponentTickFunction* ThisTickFunction) override;
 
 #pragma endregion
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Affinities")
 	TArray<FAffinity> Affinities;
+
+	/**
+	 * Determines if this Monster has any more available Types depending on the current point allocation and
+	 * MaxUsableAffinities.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Affinities")
+	bool CanChooseNewType() const;
+
+	/**
+	 * Retrieves the number of Types based on the current point allocation.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Affinities")
+	int GetNumTypes() const;
+
+	/**
+	 * Gets the number of Types this Monster may have. For example, if MaxUsableAffinities is 2, this Monster may be
+	 * dual-typed.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Affinities")
+	int GetMaxUsableAffinities() const;
+
+	/**
+	 * Sets the number of Types this Monster may have. For example, if MaxUsableAffinities is 2, this Monster may be
+	 * dual-typed.
+	 */
+	UFUNCTION(BlueprintCallable, Category="Affinities")
+	void SetMaxUsableAffinities(const int NewMax);
+
+private:
+
+	/**
+	 * The number of Types this Monster may have. For example, if MaxUsableAffinities is 2, this Monster may be
+	 * dual-typed.
+	 */
+	UPROPERTY(VisibleDefaultsOnly, Category = "Affinities")
+	int MaxUsableAffinities = 2;
+	
+	/**
+	 * If the actual number of affinities with points exceeds MaxUsableAffinities, these excessive affinities will
+	 * have their points stripped. 
+	 */
+	UFUNCTION(Category="Affinities")
+	void ReconcileMax();
 	
 };

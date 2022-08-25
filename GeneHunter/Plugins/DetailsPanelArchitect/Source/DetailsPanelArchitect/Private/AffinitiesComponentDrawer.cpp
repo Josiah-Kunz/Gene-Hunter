@@ -10,6 +10,7 @@
 #include "Widgets/Images/SImage.h"
 #include "Types/SlateStructs.h"
 #include "EditorStyleSet.h"
+#include "Widgets/Input/SEditableTextBox.h"
 
 #pragma region Boilerplate
 
@@ -24,15 +25,6 @@ void AffinitiesComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBui
 	// Get object
 	AffinitiesComponent = GetAffinitiesComponent(DetailBuilder);
 
-	// Details
-	CustomizeAffinities(DetailBuilder);
-}
-
-#pragma endregion
-
-void AffinitiesComponentDrawer::CustomizeAffinities(IDetailLayoutBuilder& DetailBuilder)
-{
-
 	// Hide original drawer
 	const TSharedRef<IPropertyHandle> PropertyHandle = DetailBuilder.GetProperty(
 		GET_MEMBER_NAME_CHECKED(UAffinitiesComponent, Affinities));
@@ -44,7 +36,51 @@ void AffinitiesComponentDrawer::CustomizeAffinities(IDetailLayoutBuilder& Detail
 		PropertyHandle->GetDefaultCategoryText(),
 		ECategoryPriority::Important);
 
-	AffinitiesComponent = GetAffinitiesComponent(DetailBuilder);
+	// Details
+	CustomizeMaxUsableAffinities(DetailBuilder, Category);
+	CustomizeAffinities(DetailBuilder, Category);
+}
+
+#pragma endregion
+
+void AffinitiesComponentDrawer::CustomizeMaxUsableAffinities(IDetailLayoutBuilder& DetailBuilder,
+	IDetailCategoryBuilder& Category)
+{
+	Category.AddCustomRow(LOCTEXT("KeyWord", "MaxUsableAffinities"))
+	.NameContent()[
+		SNew(STextBlock)
+		.Text(FText::FromString("Max Usable Affinities"))
+		.ToolTipText(FText::FromString("The number of Types this Monster may have. For example, if this is 2, this Monster may be single or dual-typed."))
+	]
+	.ValueContent()[
+		SNew(SEditableTextBox)
+		.Text(FText::FromString(FString::Printf(TEXT("%i"), AffinitiesComponent->GetMaxUsableAffinities())))
+		.OnTextCommitted_Lambda([this, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
+		{
+			AffinitiesComponent->SetMaxUsableAffinities(FCString::Atoi(*InText.ToString()));
+			SaveAndRefresh(DetailBuilder);
+		})
+	]
+	.OverrideResetToDefault(
+		FResetToDefaultOverride::Create( 
+		TAttribute<bool>::CreateLambda([this]() 
+			{ 
+				return AffinitiesComponent->GetMaxUsableAffinities() != 2;
+			}), 
+			FSimpleDelegate::CreateLambda(
+			[this, &DetailBuilder]()
+			{
+				AffinitiesComponent->SetMaxUsableAffinities(2);
+				SaveAndRefresh(DetailBuilder);
+			})
+		)
+	)
+	;
+}
+
+void AffinitiesComponentDrawer::CustomizeAffinities(IDetailLayoutBuilder& DetailBuilder,
+	IDetailCategoryBuilder& Category)
+{
 
 	// Draw 'em
 	for(FAffinity& Affinity : AffinitiesComponent->Affinities)
@@ -71,6 +107,7 @@ void AffinitiesComponentDrawer::DrawAffinity(IDetailLayoutBuilder& DetailBuilder
 	[
 		SNew(SOverlay)
 
+		// ComboBox
 		+SOverlay::Slot()[
 			SNew(STextComboBox)
 				.OptionsSource(&TypeNames)
@@ -81,14 +118,27 @@ void AffinitiesComponentDrawer::DrawAffinity(IDetailLayoutBuilder& DetailBuilder
 		.HAlign(HAlign_Fill)
 		.Padding(28, 0, 0, 0)
 
+		// Lock
 		+SOverlay::Slot()[
 			SNew(SButton)
 			.ButtonStyle( FEditorStyle::Get(), "NoBorder" )
 			.OnClicked_Lambda([this, &DetailBuilder, &Affinity]() -> FReply
 			{
+				// Set state
 				Affinity.SetLockedState(!Affinity.IsLocked());
+
+				// Save + return
 				SaveAndRefresh(DetailBuilder);
 				return FReply::Handled();
+			})
+			.IsEnabled_Lambda([this, &Affinity]()
+			{
+				// If already locked, we always want to be able to unlock it
+				if (Affinity.IsLocked())
+					return true;
+
+				// See if we can otherwise modify it
+				return CanModifyAffinity(Affinity);
 			})
 			.ToolTipText(
 				Affinity.IsLocked() ?
@@ -258,15 +308,14 @@ TArray<TSharedPtr<FString, ESPMode::ThreadSafe>> AffinitiesComponentDrawer::GetT
 }
 
 TSharedPtr<SHorizontalBox> AffinitiesComponentDrawer::AffinityValueCanvas(IDetailLayoutBuilder& DetailBuilder,
-	FAffinity& Affinity)
+	FAffinity& Affinity) const
 {
 	// Set up variables
 	//TSharedPtr<SCanvas> Ret = SNew(SCanvas);
 	TSharedPtr<SHorizontalBox> Ret = SNew(SHorizontalBox);
-	const float Padding = 2;
-	const float CircleSizeEmpty = 20;
-	const float CircleSizeFull = 16;
-	const float PMSize = 12;
+	constexpr float Padding = 2;
+	constexpr float CircleSizeEmpty = 20;
+	constexpr float PMSize = 12;
 
 	// Minus
 	Ret->AddSlot()[
@@ -369,6 +418,9 @@ TSharedPtr<SHorizontalBox> AffinitiesComponentDrawer::AffinityValueCanvas(IDetai
 	.SizeParam(FAuto{})
 	.Padding(Padding)
 	;
+
+	// Enabled
+	Ret->SetEnabled(CanModifyAffinity(Affinity));
 	
 	// Return
 	return Ret;
@@ -419,6 +471,13 @@ FSimpleDelegate AffinitiesComponentDrawer::CreateResetDelegate(IDetailLayoutBuil
 			SaveAndRefresh(DetailBuilder);
 		}
 	);
+}
+
+bool AffinitiesComponentDrawer::CanModifyAffinity(const FAffinity& Affinity) const
+{
+	if (AffinitiesComponent->CanChooseNewType())
+		return true;
+	return Affinity.GetCurrentPoints() > 0;
 }
 
 #undef LOCTEXT_NAMESPACE

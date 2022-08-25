@@ -36,7 +36,9 @@ private:
 
 #pragma region Private customization functions
 
-	virtual void CustomizeAffinities(IDetailLayoutBuilder& DetailBuilder);
+	virtual void CustomizeMaxUsableAffinities(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category);
+
+	virtual void CustomizeAffinities(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category);
 	
 	virtual void DrawAffinity(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category,
 		FAffinity& Affinity);
@@ -71,9 +73,11 @@ private:
 
 	TArray<TSharedPtr<FString, ESPMode::ThreadSafe>> GetTypeNames();
 
-	TSharedPtr<SHorizontalBox> AffinityValueCanvas(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity);
+	TSharedPtr<SHorizontalBox> AffinityValueCanvas(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity) const;
 
 	FSimpleDelegate CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity) const;
+
+	bool CanModifyAffinity(const FAffinity& Affinity) const;
 
 #pragma endregion
 	
