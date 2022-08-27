@@ -112,6 +112,21 @@ public:
 	static void ArrayOfTypesToArrayOfTypeArray1D(UPARAM(ref) const TArray<UType*>& Original,
 		TArray<FTypeArray1D>& Result, const int Wrap = 1);
 
+	/**
+	 * Gets ranges and labels for various effectivenesses. For example, when attacking (1, inf) => "Effective".
+	 */
+	static TMap<FFloatRange, FString> EffectivenessLabels(const bool bAtk);
+
+	/**
+	 * Gets ranges and labels for various effectivenesses when attacking. For example, (1, inf) => "Effective".
+	 */
+	static TMap<FFloatRange, FString> AtkEffectivenessLabels();
+
+	/**
+	 * Gets ranges and labels for various effectivenesses when defending. For example, (1, inf) => "Weak To".
+	 */
+	static TMap<FFloatRange, FString> DefEffectivenessLabels();
+	
 	static bool IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices);
 
 	static bool FormsTriadSide(UType* Attacker, UType* Defender, const bool bTwoWay);

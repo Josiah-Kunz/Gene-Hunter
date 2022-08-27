@@ -456,6 +456,72 @@ void UTypeUtilities::ArrayOfTypesToArrayOfTypeArray1D(const TArray<UType*>& Orig
 	}
 }
 
+TMap<FFloatRange, FString> UTypeUtilities::EffectivenessLabels(const bool bAtk)
+{
+	return bAtk ? AtkEffectivenessLabels() : DefEffectivenessLabels();
+}
+
+TMap<FFloatRange, FString> UTypeUtilities::AtkEffectivenessLabels()
+{
+	return
+	{
+			{
+				FFloatRange{
+					FFloatRangeBound::Exclusive(1),
+					FFloatRangeBound::Open()
+				}, "Effective Against"
+			}
+		, {
+			FFloatRange{
+				FFloatRangeBound::Exclusive(0),
+				FFloatRangeBound::Exclusive(1)
+			}, "Ineffective Against"
+		}
+		, {
+			FFloatRange{
+				FFloatRangeBound::Inclusive(0),
+				FFloatRangeBound::Inclusive(0)
+			}, "No Effect Against"
+		}
+		,{
+			FFloatRange{
+				FFloatRangeBound::Open(),
+				FFloatRangeBound::Exclusive(0)
+			}, "Heals Instead"
+		}
+	};
+}
+
+TMap<FFloatRange, FString> UTypeUtilities::DefEffectivenessLabels()
+{
+	return
+	{
+		{
+			FFloatRange{
+				FFloatRangeBound::Exclusive(1),
+				FFloatRangeBound::Open()
+			}, "Weak To"
+		}
+		, {
+			FFloatRange{
+				FFloatRangeBound::Exclusive(0),
+				FFloatRangeBound::Exclusive(1)
+			}, "Resists"
+		}
+		, {
+			FFloatRange{
+				FFloatRangeBound::Inclusive(0),
+				FFloatRangeBound::Inclusive(0)
+			}, "Immune To"
+		}
+		,{
+			FFloatRange{
+				FFloatRangeBound::Open(),
+				FFloatRangeBound::Exclusive(0)
+			}, "Healed By"
+		}
+	};
+}
 
 
 bool UTypeUtilities::IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices)

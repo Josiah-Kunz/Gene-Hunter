@@ -2,6 +2,7 @@
 #include "DetailLayoutBuilder.h"
 #include "PropertyEditor/Public/IDetailCustomization.h"
 #include "AffinitiesComponent.h"
+#include "TypeArray1D.h"
 #include "Widgets/SCanvas.h"
 
 
@@ -26,6 +27,9 @@ public:
 
 	static TSharedRef<IDetailCustomization> MakeInstance();
 
+	/**
+	 * Where the magic happens!
+	 */
 	virtual void CustomizeDetails(IDetailLayoutBuilder& DetailBuilder) override;
 
 private:
@@ -35,28 +39,51 @@ private:
 #pragma endregion
 
 #pragma region Affinities category customization functions
-
+	
 	virtual void CustomizeAffinitiesCategory(IDetailLayoutBuilder& DetailBuilder,
 		const TSharedRef<IPropertyHandle> PropertyHandle);
 
+	/**
+	 * Customizes the simple private variable that determines how many "Types" a Monster may have (e.g., dual Type).
+	 * Necessary since this variable is only accessible via setter and getter functions.
+	 */
 	virtual void CustomizeMaxUsableAffinities(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category);
 
+	/**
+	 * Customizes the affinities available to the Monster.
+	 */
 	virtual void CustomizeAffinities(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category);
-	
+
+	/**
+	 * Draws a single affinity row.
+	 */
 	virtual void DrawAffinity(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category,
 		FAffinity& Affinity);
 
+	/**
+	 * Draws the "value" side of a single affinity row.
+	 */
+	TSharedPtr<SHorizontalBox> AffinityValueWidget(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity) const;
+
+	/**
+	 * Draws the +/-/trash buttons for modifying the array of affinities.
+	 */
 	virtual void DrawArrayMutator(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category);
 
 #pragma endregion
 
 #pragma region Combat profile category customization functions
 	
-	virtual void CustomizeCombatProfileCategory(IDetailLayoutBuilder& DetailBuilder,
+	virtual void CustomizeCombatProfileCategories(IDetailLayoutBuilder& DetailBuilder,
 			const TSharedRef<IPropertyHandle> PropertyHandle);
 
-	virtual void DrawAttackProfiles(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category,
-		TArray<UType*>& AffinityTypes);//
+	virtual void DrawCombatProfile(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category,
+		TArray<UType*>& AffinityTypes, const bool bAtk);
+
+	virtual TSharedRef<SWidget> MakeTypeRowWidget(TArray<FTypeArray1D>& Analysis, 
+			const int ArrayIndex, const float Width=80, const float Height=20, const float CornerRadius=4);
+
+	virtual void NoCombatProfile(IDetailCategoryBuilder& Category);
 
 #pragma endregion
 
@@ -81,12 +108,12 @@ private:
 	
 	UAffinitiesComponent* GetAffinitiesComponent(const IDetailLayoutBuilder& DetailBuilder);
 
+	IDetailCategoryBuilder& GetCategory(IDetailLayoutBuilder& DetailBuilder, const FString CategoryName);
+	
 	// Do we need this??
 	TArray<TSharedPtr<UType*, ESPMode::ThreadSafe>> GetTypes() const;
 
 	TArray<TSharedPtr<FString, ESPMode::ThreadSafe>> GetTypeNames();
-
-	TSharedPtr<SHorizontalBox> AffinityValueCanvas(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity) const;
 
 	FSimpleDelegate CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity) const;
 

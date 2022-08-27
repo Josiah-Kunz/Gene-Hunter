@@ -1,6 +1,4 @@
-﻿#define LOCTEXT_NAMESPACE "AffinitiesComponentDrawer"
-
-#include "AffinitiesComponentDrawer.h"
+﻿#include "AffinitiesComponentDrawer.h"
 
 #include "DetailCategoryBuilder.h"
 #include "DetailWidgetRow.h"
@@ -12,6 +10,10 @@
 #include "EditorStyleSet.h"
 #include "Widgets/Input/SEditableTextBox.h"
 #include "TypeUtilities.h"
+#include "WidgetFunctionLibrary.h"
+#include "Widgets/Colors/SColorBlock.h"
+
+#define LOCTEXT_NAMESPACE "AffinitiesComponentDrawer"
 
 #pragma region Boilerplate
 
@@ -33,106 +35,27 @@ void AffinitiesComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBui
 
 	// Customize categories
 	CustomizeAffinitiesCategory(DetailBuilder, PropertyHandle);
-	
+	CustomizeCombatProfileCategories(DetailBuilder, PropertyHandle);
 }
 
 #pragma endregion
+
+#pragma region Affinities category customization functions
 
 void AffinitiesComponentDrawer::CustomizeAffinitiesCategory(IDetailLayoutBuilder& DetailBuilder,
 	const TSharedRef<IPropertyHandle> PropertyHandle)
 {
 	// Get category
-	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
-		PropertyHandle->GetDefaultCategoryName(),
-		PropertyHandle->GetDefaultCategoryText(),
-		ECategoryPriority::Important);
+	IDetailCategoryBuilder& Category = GetCategory(DetailBuilder,
+		PropertyHandle->GetDefaultCategoryName().ToString());
 
 	// Details
 	CustomizeMaxUsableAffinities(DetailBuilder, Category);
 	CustomizeAffinities(DetailBuilder, Category);
 }
 
-void AffinitiesComponentDrawer::CustomizeCombatProfileCategory(IDetailLayoutBuilder& DetailBuilder,
-	const TSharedRef<IPropertyHandle> PropertyHandle)
-{
-	// Get category
-	const FString CategoryName = "Combat Profile";
-	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
-		FName(CategoryName),
-		FText::FromString(CategoryName),
-		ECategoryPriority::Important);
-
-	// Analyze the types' combat
-	TArray<UType*> AffinityTypes;
-	AffinitiesComponent->GetTypes(AffinityTypes);
-	
-}
-
-void AffinitiesComponentDrawer::DrawAttackProfiles(IDetailLayoutBuilder& DetailBuilder,
-	IDetailCategoryBuilder& Category, TArray<UType*>& AffinityTypes)
-{
-	TMap<FFloatRange, FString> RangesAndLabels = {
-		{
-			FFloatRange{
-				FFloatRangeBound::Exclusive(1),
-				FFloatRangeBound::Open()
-			}, "Effective"
-		}
-		, {
-			FFloatRange{
-				FFloatRangeBound::Exclusive(0),
-				FFloatRangeBound::Exclusive(1)
-			}, "Ineffective"
-		}
-		, {
-			FFloatRange{
-				FFloatRangeBound::Inclusive(0),
-				FFloatRangeBound::Inclusive(0)
-			}, "No Effect"
-		}
-		,{
-			FFloatRange{
-				FFloatRangeBound::Open(),
-				FFloatRangeBound::Exclusive(0)
-			}, "Heals"
-		}
-	};
-
-	// Iterate though ranges
-	bool bDrewOne = false;
-	for(const TPair<FFloatRange, FString>& RangeLabelPair : RangesAndLabels)
-	{
-
-		// Do the analysis
-		TArray<FTypeArray1D> TypeCombinations, Analysis;
-		UTypeUtilities::GetAllTypeCombinations(AllTypes, 1, TypeCombinations);
-		UTypeUtilities::Analyze(
-			AffinityTypes,
-			TypeCombinations,
-			RangeLabelPair.Key,
-			Analysis,
-			EAttackModifierMode::Coverage
-		);
-
-		// If no types, skip
-		if (Analysis.Num() == 0)
-			continue;
-		bDrewOne = true;
-
-		// Header
-		Category.AddCustomRow(LOCTEXT("KeyWord", "AttackProfile Header"))
-		.WholeRowContent()[
-			SNew(STextBlock)
-			.Text(FText::FromString(RangeLabelPair.Value))
-			.Font(FEditorStyle::GetFontStyle("BoldFont"))
-			.TextStyle(FEditorStyle::Get(), "Menu.Heading")
-		]
-		;
-	}
-}
-
 void AffinitiesComponentDrawer::CustomizeMaxUsableAffinities(IDetailLayoutBuilder& DetailBuilder,
-                                                             IDetailCategoryBuilder& Category)
+															 IDetailCategoryBuilder& Category)
 {
 	Category.AddCustomRow(LOCTEXT("KeyWord", "MaxUsableAffinities"))
 	.NameContent()[
@@ -249,7 +172,7 @@ void AffinitiesComponentDrawer::DrawAffinity(IDetailLayoutBuilder& DetailBuilder
 	]
 	.ValueContent()
 	[
-		AffinityValueCanvas(DetailBuilder, Affinity).ToSharedRef()
+		AffinityValueWidget(DetailBuilder, Affinity).ToSharedRef()
 	]
 	.OverrideResetToDefault(FResetToDefaultOverride::Create( 
 		TAttribute<bool>::CreateLambda([&Affinity]() 
@@ -345,6 +268,162 @@ void AffinitiesComponentDrawer::DrawArrayMutator(IDetailLayoutBuilder& DetailBui
 	;
 }
 
+void AffinitiesComponentDrawer::CustomizeCombatProfileCategories(IDetailLayoutBuilder& DetailBuilder,
+	const TSharedRef<IPropertyHandle> PropertyHandle)
+{
+	// Get categories
+	IDetailCategoryBuilder& AtkCategory = GetCategory(DetailBuilder, "Attack Profile");
+	IDetailCategoryBuilder& DefCategory = GetCategory(DetailBuilder, "Defense Profile");
+	
+
+	// Analyze the types' combat
+	TArray<UType*> AffinityTypes;
+	AffinitiesComponent->GetTypes(AffinityTypes);
+
+	// Draw profiles
+	DrawCombatProfile(DetailBuilder, AtkCategory, AffinityTypes, true);
+	DrawCombatProfile(DetailBuilder, DefCategory, AffinityTypes, false);
+	
+}
+
+void AffinitiesComponentDrawer::DrawCombatProfile(IDetailLayoutBuilder& DetailBuilder,
+	IDetailCategoryBuilder& Category, TArray<UType*>& AffinityTypes, const bool bAtk)
+{
+
+	// Iterate though ranges
+	bool bDrewOne = false;
+	for(const TPair<FFloatRange, FString>& RangeLabelPair : UTypeUtilities::EffectivenessLabels(bAtk))
+	{
+
+		// Do the analysis
+		TArray<FTypeArray1D> TypeCombinations, Analysis;
+		UTypeUtilities::GetAllTypeCombinations(AllTypes, 1, TypeCombinations);
+		UTypeUtilities::Analyze(
+			AffinityTypes,
+			TypeCombinations,
+			RangeLabelPair.Key,
+			Analysis,
+			EAttackModifierMode::Coverage,
+			bAtk
+		);
+
+		// If no types, skip
+		if (Analysis.Num() == 0)
+			continue;
+		bDrewOne = true;
+
+		// Header
+		Category.AddCustomRow(LOCTEXT("KeyWord", "Profile Header"))
+		.WholeRowContent()
+		.VAlign(VAlign_Center)
+		[
+			SNew(STextBlock)
+			.Text(FText::FromString(RangeLabelPair.Value))
+			.Font(FEditorStyle::GetFontStyle("BoldFont"))
+			.TextStyle(FEditorStyle::Get(), "Menu.Heading")
+			.ColorAndOpacity(FLinearColor::White)
+			.ShadowColorAndOpacity(FLinearColor::Black)
+			.ShadowOffset(FVector2D{1, 1})
+		]
+		;
+
+		// Types slate
+		constexpr int TypesPerRow = 3;
+		for(int i=0; i<Analysis.Num(); i+=TypesPerRow)
+		{
+
+			// Create container
+			TSharedPtr<SHorizontalBox> Container = SNew(SHorizontalBox);
+
+			// Add stuff
+			for(int j=0; j<TypesPerRow; j++)
+			{	
+				Container->AddSlot()
+				.AutoWidth()
+				.Padding(2)
+				[
+					MakeTypeRowWidget(Analysis, i+j)
+				]
+				;
+			}
+			
+			Category.AddCustomRow(LOCTEXT("KeyWord", "Type Row"))
+			.WholeRowContent()
+			.HAlign(HAlign_Center)
+			.VAlign(VAlign_Center)
+			[
+				Container.ToSharedRef()
+			]
+			;
+		}
+	}
+
+	// Didn't draw any =(
+	if (!bDrewOne)
+		NoCombatProfile(Category);
+}
+
+TSharedRef<SWidget> AffinitiesComponentDrawer::MakeTypeRowWidget(TArray<FTypeArray1D>& Analysis, const int ArrayIndex,
+	const float Width, const float Height, const float CornerRadius)
+{
+
+	// Check within array range
+	if (ArrayIndex >= Analysis.Num())
+	{
+		return SNew(SOverlay);
+	}
+
+	// Get Type (for readability)
+	UType* Type = Analysis[ArrayIndex].Array[0];
+
+	// Build fo rill
+	return SNew(SOverlay)
+
+		+SOverlay::Slot()
+		.VAlign(VAlign_Center)
+		.HAlign(HAlign_Center)
+		[
+			SNew(SColorBlock)
+			.Size(FVector2D{Width, Height})
+			.Color(Type->Colors[0])
+			.CornerRadius(FVector4{CornerRadius, CornerRadius, CornerRadius, CornerRadius})
+			.ToolTipText(Type->SupportingText.Description)
+		]
+
+		+SOverlay::Slot()
+		.VAlign(VAlign_Center)
+		.HAlign(HAlign_Center)
+		[
+			SNew(STextBlock)
+			.Text(FText::FromString(Type->GetName()))
+			.ToolTipText(Type->SupportingText.Description)
+			.Font(FEditorStyle::GetFontStyle(TEXT("BoldFont")))
+			.ColorAndOpacity(UWidgetFunctionLibrary::CorrespondingTextColor(Type->Colors[0]))
+			.ShadowColorAndOpacity(UWidgetFunctionLibrary::CorrespondingOutlineColor(Type->Colors[0]))
+			.ShadowOffset(FVector2D{1, 1})
+			.Justification(ETextJustify::Center)
+		]
+	;
+}
+
+void AffinitiesComponentDrawer::NoCombatProfile(IDetailCategoryBuilder& Category)
+{
+	Category.AddCustomRow(LOCTEXT("KeyWord", "AttackProfile Header"))
+		.WholeRowContent()
+		.VAlign(VAlign_Center)
+		.HAlign(HAlign_Center)
+		[
+			SNew(STextBlock)
+			.Text(FText::FromString("All Neutral"))
+			.Font(FEditorStyle::GetFontStyle("BoldFont"))
+			.TextStyle(FEditorStyle::Get(), "Menu.Heading")
+			.ColorAndOpacity(FLinearColor::White)
+			.ShadowColorAndOpacity(FLinearColor::Black)
+			.ShadowOffset(FVector2D{1, 1})
+		]
+		;
+}
+
 void AffinitiesComponentDrawer::SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const
 {
 	UKismetSystemLibrary::TransactObject(AffinitiesComponent);
@@ -376,6 +455,15 @@ UAffinitiesComponent* AffinitiesComponentDrawer::GetAffinitiesComponent(const ID
 	return Ret;
 }
 
+IDetailCategoryBuilder& AffinitiesComponentDrawer::GetCategory(IDetailLayoutBuilder& DetailBuilder,
+	const FString CategoryName)
+{
+	return DetailBuilder.EditCategory(
+		FName(CategoryName),
+		FText::FromString(CategoryName),
+		ECategoryPriority::Important);
+}
+
 TArray<TSharedPtr<UType*, ESPMode::ThreadSafe>> AffinitiesComponentDrawer::GetTypes() const
 {
 	TArray<UType*> Types;
@@ -395,7 +483,7 @@ TArray<TSharedPtr<FString, ESPMode::ThreadSafe>> AffinitiesComponentDrawer::GetT
 	return Options;
 }
 
-TSharedPtr<SHorizontalBox> AffinitiesComponentDrawer::AffinityValueCanvas(IDetailLayoutBuilder& DetailBuilder,
+TSharedPtr<SHorizontalBox> AffinitiesComponentDrawer::AffinityValueWidget(IDetailLayoutBuilder& DetailBuilder,
 	FAffinity& Affinity) const
 {
 	// Set up variables

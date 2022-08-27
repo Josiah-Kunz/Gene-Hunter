@@ -1,7 +1,5 @@
 ﻿#include "WidgetFunctionLibrary.h"
 
-//#include "Components/PanelWidget.h"
-
 void UWidgetFunctionLibrary::ClearChildrenExcept(UPanelWidget* Widget, const TArray<UWidget*> Exclude)
 {
 	for(int i=Widget->GetChildrenCount() - 1; i>=0; i--)
@@ -28,6 +26,18 @@ UWidget* UWidgetFunctionLibrary::GetChildOfType(const UUserWidget* Parent, const
 	return nullptr;
 }
 
+FLinearColor UWidgetFunctionLibrary::CorrespondingTextColor(const FLinearColor& Color)
+{
+	if (Color.R + Color.G + Color.B > 1.5f)
+		return FLinearColor::Black;
+	return FLinearColor::White;
+}
 
+FLinearColor UWidgetFunctionLibrary::CorrespondingOutlineColor(const FLinearColor& Color)
+{
+	if (Color.R + Color.G + Color.B > 1.5f)
+		return FLinearColor::White;
+	return FLinearColor::Black;
+}
 
 

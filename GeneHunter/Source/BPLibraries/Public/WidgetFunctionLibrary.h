@@ -35,5 +35,19 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	static UWidget* GetChildOfType(const UUserWidget* Parent, const TSubclassOf<UWidget> WidgetClass);
+
+	/**
+	 * If the input color is "dark", this returns white; otherwise, returns black. Useful for getting
+	 * text colors on a background.
+	 */
+	UFUNCTION(BlueprintCallable)
+	static FLinearColor CorrespondingTextColor(const FLinearColor& Color);
+
+	/**
+	 * Returns the opposite of CorrespondingTextColor. That is, f the input color is "dark", this returns black;
+	 * otherwise, returns white. Useful for getting text outline colors on a background.
+	 */
+	UFUNCTION(BlueprintCallable)
+	static FLinearColor CorrespondingOutlineColor(const FLinearColor& Color);
 	
 };
