@@ -1,49 +1,9 @@
-﻿#include "TypeUnitTestUtilities.h"
+﻿#include "TypeUtilities.h"
 
 #include "DiffResults.h"
 #include "UtilityFunctionLibrary.h"
 
-
-bool UTypeUnitTestUtilities::TestCombatAnalysis(const TArray<UType*>& AllTypes, const TArray<UType*>& TypesToAnalyze,
-                                                const int NumOpponentTypes, const FFloatRange Range, const bool bAtk, const EAttackModifierMode Mode,
-                                                const TArray<FTypeArray1D>& Expected, FString& Description, const bool bDebug)
-{
-
-	// Get array of FTypeArray1D (either defenders or attackers)
-	TArray<FTypeArray1D> OpponentTypes;
-	GetAllTypeCombinations(AllTypes, NumOpponentTypes, OpponentTypes);
-
-	// Get the UTypes (actual) that fall within the given range
-	TArray<FTypeArray1D> Analysis;
-	Analyze(TypesToAnalyze, OpponentTypes,
-				Range,
-				Analysis,
-				Mode,
-				bAtk,
-				bDebug
-			);
-
-	// Test it
-	return FTypeArray1D::ArrayOfTypeArray1DsAreEqual(Analysis, Expected, Description);
-}
-
-bool UTypeUnitTestUtilities::TestAnalyzeAll(TArray<UType*>& AllTypes, const int NumTestedTypes, const int NumUntestedTypes,
-		const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode,
-		const TArray<FTypeArray2D*>& Expected, FString& Description)
-{
-	
-	// Get the FTypeArray2D (actual) that fall within the given range
-	TArray<FTypeArray2D> Analysis;
-	AnalyzeAll(AllTypes, NumTestedTypes, NumUntestedTypes, Range, bAnalyzeAtk, Mode, Analysis);
-	TArray<FTypeArray2D*> AnalysisPointer;
-	for(FTypeArray2D& TypeArray2D : Analysis)
-		AnalysisPointer.Add(std::addressof(TypeArray2D));
-
-	// Test it
-	return FTypeArray2D::ArrayOfTypeArray2DsAreEqual(AnalysisPointer, Expected, Description);
-}
-
-void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int NumDefenders, const FFloatRange Range,
+void UTypeUtilities::PrintStatistics(const int NumAttackers, const int NumDefenders, const FFloatRange Range,
 	const EAttackModifierMode Mode, const bool bAtk, const bool bPrintToConsole, const bool bPrintToFile,
 	const bool bPrintToFileLaTeX, TArray<UType*>& Exclude, const FString PrintDirectory)
 {
@@ -167,7 +127,7 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 
 			// Check line count
 			LineCount++;
-			if (LineCount > MAX_LATEX_LINES)
+			if (LineCount > MaxLaTeXLines)
 			{
 				LaTeXText += "\t...\\\\\n";
 				break;
@@ -236,7 +196,7 @@ void UTypeUnitTestUtilities::PrintStatistics(const int NumAttackers, const int N
 }
 
 
-void UTypeUnitTestUtilities::GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes,
+void UTypeUtilities::GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes,
 	TArray<FTypeArray1D>& TypeCombinations)
 {
 	
@@ -271,7 +231,7 @@ void UTypeUnitTestUtilities::GetAllTypeCombinations(const TArray<UType*>& Types,
 }
 
 
-void UTypeUnitTestUtilities::Analyze(const TArray<UType*>& TypesToAnalyze,
+void UTypeUtilities::Analyze(const TArray<UType*>& TypesToAnalyze,
 	const TArray<FTypeArray1D>& AgainstTypes, const FFloatRange Range, TArray<FTypeArray1D>& Analysis,
 	const EAttackModifierMode Mode, const bool bAtk, const bool bDebug)
 {
@@ -300,10 +260,9 @@ void UTypeUnitTestUtilities::Analyze(const TArray<UType*>& TypesToAnalyze,
 	}
 }
 
-void UTypeUnitTestUtilities::AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
+void UTypeUtilities::AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
 	const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode, TArray<FTypeArray2D>& Result)
 {
-
 
 	/*
 	 *	Visualization of algorithm
@@ -415,7 +374,7 @@ void UTypeUnitTestUtilities::AnalyzeAll(TArray<UType*>& Types, const int NumTest
 	}
 }
 
-void UTypeUnitTestUtilities::GetRockPaperScissors(const TArray<UType*>& Types, const bool bTwoWay,
+void UTypeUtilities::GetRockPaperScissors(const TArray<UType*>& Types, const bool bTwoWay,
 	TArray<FTypeArray1D>& Triads)
 {
 
@@ -448,7 +407,7 @@ void UTypeUnitTestUtilities::GetRockPaperScissors(const TArray<UType*>& Types, c
 	}
 }
 
-void UTypeUnitTestUtilities::PrintRockPaperScissors(const bool bTwoWay)
+void UTypeUtilities::PrintRockPaperScissors(const bool bTwoWay)
 {
 
 	// Get data
@@ -470,7 +429,7 @@ void UTypeUnitTestUtilities::PrintRockPaperScissors(const bool bTwoWay)
 	UE_LOG(LogTemp, Warning, TEXT(" \n%s"), *UConstLibrary::LineSeparator);
 }
 
-void UTypeUnitTestUtilities::ArrayOfTypeArray1DToArrayOfTypes(const TArray<FTypeArray1D>& Original,
+void UTypeUtilities::ArrayOfTypeArray1DToArrayOfTypes(const TArray<FTypeArray1D>& Original,
 	TArray<UType*>& Result)
 {
 	for(FTypeArray1D TypeArray1D : Original)
@@ -478,7 +437,7 @@ void UTypeUnitTestUtilities::ArrayOfTypeArray1DToArrayOfTypes(const TArray<FType
 			Result.Add(Type);
 }
 
-void UTypeUnitTestUtilities::ArrayOfTypesToArrayOfTypeArray1D(const TArray<UType*>& Original,
+void UTypeUtilities::ArrayOfTypesToArrayOfTypeArray1D(const TArray<UType*>& Original,
 	TArray<FTypeArray1D>& Result, const int Wrap)
 {
 	int i=0;
@@ -499,7 +458,7 @@ void UTypeUnitTestUtilities::ArrayOfTypesToArrayOfTypeArray1D(const TArray<UType
 
 
 
-bool UTypeUnitTestUtilities::IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices)
+bool UTypeUtilities::IncrementIndices(const TArray<UType*>& Types, TArray<int>& Indices)
 {
 
 	/*
@@ -526,7 +485,7 @@ bool UTypeUnitTestUtilities::IncrementIndices(const TArray<UType*>& Types, TArra
 	return Ret;
 }
 
-bool UTypeUnitTestUtilities::FormsTriadSide(UType* Attacker, UType* Defender, const bool bTwoWay)
+bool UTypeUtilities::FormsTriadSide(UType* Attacker, UType* Defender, const bool bTwoWay)
 {
 	return Attacker->GetAttackModifier(Defender) > 1 &&
 				(bTwoWay ? Defender->GetAttackModifier(Attacker) < 1 : true);

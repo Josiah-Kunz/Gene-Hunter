@@ -1,11 +1,12 @@
 ﻿#pragma once
 
-#include "Utilities/TypeUnitTestUtilities.h"
+#include "TypeUnitTestUtilities.h"
+#include "TypeUtilities.h"
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Utilities_RockPaperScissors_TwoWay,
-	"__GeneHunter.UType.Utilities.Rock-Paper-Scissors.2-Way",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+                                 "__GeneHunter.UType.Utilities.Rock-Paper-Scissors.2-Way",
+                                 EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /**
  * Tests for "rock-paper-scissors" Type triads (2-way), such as Pokemon's Fire > Grass > Water.
@@ -24,11 +25,11 @@ bool FUType_Utilities_RockPaperScissors_TwoWay::RunTest(const FString& Parameter
 
 	// Get actual
 	TArray<FTypeArray1D> Actual;
-	UTypeUnitTestUtilities::GetRockPaperScissors(AllDummyTypes, true, Actual);
+	UTypeUtilities::GetRockPaperScissors(AllDummyTypes, true, Actual);
 		
 	// Do the test
 	FString Desc = "";
-	bool bPass = FTypeArray1D::ArrayOfTypeArray1DsAreEqual(Actual, Expected, Desc);
+	const bool bPass = FTypeArray1D::ArrayOfTypeArray1DsAreEqual(Actual, Expected, Desc);
 	TestEqual(
 	"Rock-Paper-Scissors (2-Way) " + Desc,
 	bPass, true

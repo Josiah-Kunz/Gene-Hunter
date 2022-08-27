@@ -26,18 +26,23 @@ void UAffinitiesComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
-bool UAffinitiesComponent::CanChooseNewType() const
+bool UAffinitiesComponent::CanChooseNewType()
 {
 	return GetNumTypes() < MaxUsableAffinities;
 }
 
-int UAffinitiesComponent::GetNumTypes() const
+void UAffinitiesComponent::GetTypes(TArray<UType*>& Types)
 {
-	int Ret = 0;
-	for(const FAffinity Affinity : Affinities)
+	Types = {};
+	for(FAffinity Affinity : Affinities)
 		if (Affinity.GetCurrentPoints() > 0)
-			Ret++;
-	return Ret;
+			Types.Add(Affinity.Type);
+}
+
+int UAffinitiesComponent::GetNumTypes()
+{	TArray<UType*> Types;
+	GetTypes(Types);
+	return Types.Num();
 }
 
 int UAffinitiesComponent::GetMaxUsableAffinities() const

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "Utilities/TypeUnitTestUtilities.h"
+#include "TypeUnitTestUtilities.h"
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Attack_Coverage_AllTypes1v1,
@@ -37,12 +37,10 @@ bool FUType_Combat_Attack_Coverage_AllTypes1v1::RunTest(const FString& Parameter
 	FString Desc = "";
 	const bool bPass = UTypeUnitTestUtilities::TestAnalyzeAll(AllDummyTypes, 1, 1,
 		UType::Effective, true, EAttackModifierMode::Coverage, Expected, Desc);
-	
 	TestEqual(
 	"AnalzyeAll 1v1 (offensive) " + Desc,
 	bPass, true
 	);
-
 	return true;
 	
 }

@@ -34,7 +34,10 @@ private:
 
 #pragma endregion
 
-#pragma region Private customization functions
+#pragma region Affinities category customization functions
+
+	virtual void CustomizeAffinitiesCategory(IDetailLayoutBuilder& DetailBuilder,
+		const TSharedRef<IPropertyHandle> PropertyHandle);
 
 	virtual void CustomizeMaxUsableAffinities(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category);
 
@@ -44,6 +47,16 @@ private:
 		FAffinity& Affinity);
 
 	virtual void DrawArrayMutator(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category);
+
+#pragma endregion
+
+#pragma region Combat profile category customization functions
+	
+	virtual void CustomizeCombatProfileCategory(IDetailLayoutBuilder& DetailBuilder,
+			const TSharedRef<IPropertyHandle> PropertyHandle);
+
+	virtual void DrawAttackProfiles(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category,
+		TArray<UType*>& AffinityTypes);//
 
 #pragma endregion
 

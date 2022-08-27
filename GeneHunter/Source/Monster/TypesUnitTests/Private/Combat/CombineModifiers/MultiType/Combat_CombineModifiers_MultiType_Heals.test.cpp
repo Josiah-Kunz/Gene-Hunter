@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "Utilities/TypeUnitTestUtilities.h"
+#include "TypeUnitTestUtilities.h"
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_CombineModifiers_MultiType_Heals,

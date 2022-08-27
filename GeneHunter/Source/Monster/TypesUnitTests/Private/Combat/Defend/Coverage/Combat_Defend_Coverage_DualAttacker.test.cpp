@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 
-#include "Utilities/TypeUnitTestUtilities.h"
+#include "TypeUnitTestUtilities.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUType_Combat_Defend_Coverage_DualAttacker,
 	"__GeneHunter.UType.Combat.Defend.Coverage.Dual-Typed Defender",

@@ -15,5 +15,11 @@ public class TypesUnitTests : ModuleRules{
 		  , "UI"			// for SupportingText.h
 		  , "UMG"
 		});
+		
+		PublicDependencyModuleNames.AddRange(new string[]{
+			"Types"
+			, "Engine"		// for UBlueprintFunctionLibrary
+			, "BPLibraries" // for RangeToString
+		});
 	}
 }

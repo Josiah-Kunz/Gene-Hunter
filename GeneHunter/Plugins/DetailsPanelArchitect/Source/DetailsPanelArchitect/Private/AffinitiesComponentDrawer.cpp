@@ -11,6 +11,7 @@
 #include "Types/SlateStructs.h"
 #include "EditorStyleSet.h"
 #include "Widgets/Input/SEditableTextBox.h"
+#include "TypeUtilities.h"
 
 #pragma region Boilerplate
 
@@ -29,7 +30,17 @@ void AffinitiesComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBui
 	const TSharedRef<IPropertyHandle> PropertyHandle = DetailBuilder.GetProperty(
 		GET_MEMBER_NAME_CHECKED(UAffinitiesComponent, Affinities));
 	PropertyHandle->MarkHiddenByCustomization();
+
+	// Customize categories
+	CustomizeAffinitiesCategory(DetailBuilder, PropertyHandle);
 	
+}
+
+#pragma endregion
+
+void AffinitiesComponentDrawer::CustomizeAffinitiesCategory(IDetailLayoutBuilder& DetailBuilder,
+	const TSharedRef<IPropertyHandle> PropertyHandle)
+{
 	// Get category
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
 		PropertyHandle->GetDefaultCategoryName(),
@@ -41,10 +52,87 @@ void AffinitiesComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBui
 	CustomizeAffinities(DetailBuilder, Category);
 }
 
-#pragma endregion
+void AffinitiesComponentDrawer::CustomizeCombatProfileCategory(IDetailLayoutBuilder& DetailBuilder,
+	const TSharedRef<IPropertyHandle> PropertyHandle)
+{
+	// Get category
+	const FString CategoryName = "Combat Profile";
+	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
+		FName(CategoryName),
+		FText::FromString(CategoryName),
+		ECategoryPriority::Important);
+
+	// Analyze the types' combat
+	TArray<UType*> AffinityTypes;
+	AffinitiesComponent->GetTypes(AffinityTypes);
+	
+}
+
+void AffinitiesComponentDrawer::DrawAttackProfiles(IDetailLayoutBuilder& DetailBuilder,
+	IDetailCategoryBuilder& Category, TArray<UType*>& AffinityTypes)
+{
+	TMap<FFloatRange, FString> RangesAndLabels = {
+		{
+			FFloatRange{
+				FFloatRangeBound::Exclusive(1),
+				FFloatRangeBound::Open()
+			}, "Effective"
+		}
+		, {
+			FFloatRange{
+				FFloatRangeBound::Exclusive(0),
+				FFloatRangeBound::Exclusive(1)
+			}, "Ineffective"
+		}
+		, {
+			FFloatRange{
+				FFloatRangeBound::Inclusive(0),
+				FFloatRangeBound::Inclusive(0)
+			}, "No Effect"
+		}
+		,{
+			FFloatRange{
+				FFloatRangeBound::Open(),
+				FFloatRangeBound::Exclusive(0)
+			}, "Heals"
+		}
+	};
+
+	// Iterate though ranges
+	bool bDrewOne = false;
+	for(const TPair<FFloatRange, FString>& RangeLabelPair : RangesAndLabels)
+	{
+
+		// Do the analysis
+		TArray<FTypeArray1D> TypeCombinations, Analysis;
+		UTypeUtilities::GetAllTypeCombinations(AllTypes, 1, TypeCombinations);
+		UTypeUtilities::Analyze(
+			AffinityTypes,
+			TypeCombinations,
+			RangeLabelPair.Key,
+			Analysis,
+			EAttackModifierMode::Coverage
+		);
+
+		// If no types, skip
+		if (Analysis.Num() == 0)
+			continue;
+		bDrewOne = true;
+
+		// Header
+		Category.AddCustomRow(LOCTEXT("KeyWord", "AttackProfile Header"))
+		.WholeRowContent()[
+			SNew(STextBlock)
+			.Text(FText::FromString(RangeLabelPair.Value))
+			.Font(FEditorStyle::GetFontStyle("BoldFont"))
+			.TextStyle(FEditorStyle::Get(), "Menu.Heading")
+		]
+		;
+	}
+}
 
 void AffinitiesComponentDrawer::CustomizeMaxUsableAffinities(IDetailLayoutBuilder& DetailBuilder,
-	IDetailCategoryBuilder& Category)
+                                                             IDetailCategoryBuilder& Category)
 {
 	Category.AddCustomRow(LOCTEXT("KeyWord", "MaxUsableAffinities"))
 	.NameContent()[

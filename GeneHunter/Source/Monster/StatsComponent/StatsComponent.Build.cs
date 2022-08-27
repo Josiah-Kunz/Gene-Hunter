@@ -26,7 +26,7 @@ public class StatsComponent : ModuleRules{
 			, "CoreUObject"	// for UObjects
 			  
 			// Other modules
-			, "BPLibraries" // for Stats using RoundToDecimal
+			, "BPLibraries"		// for Stats using RoundToDecimal
 		});
 	}
 }

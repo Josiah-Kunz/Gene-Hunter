@@ -32,6 +32,14 @@ public:
 							   FActorComponentTickFunction* ThisTickFunction) override;
 
 #pragma endregion
+
+	/**
+	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any
+	 * new Monster so that affinities can be customized from the get-go (so the player has agency which makes for more
+	 * exciting gameplay).
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Affinities")
+	int UnspentPoints = 1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Affinities")
 	TArray<FAffinity> Affinities;
@@ -41,13 +49,19 @@ public:
 	 * MaxUsableAffinities.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Affinities")
-	bool CanChooseNewType() const;
+	bool CanChooseNewType();
 
+	/**
+	 * Returns the Types that have points allocated in them.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Affinities")
+	void GetTypes(TArray<UType*>& Types);
+	
 	/**
 	 * Retrieves the number of Types based on the current point allocation.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Affinities")
-	int GetNumTypes() const;
+	int GetNumTypes();
 
 	/**
 	 * Gets the number of Types this Monster may have. For example, if MaxUsableAffinities is 2, this Monster may be

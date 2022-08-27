@@ -9,8 +9,8 @@ public class Types : ModuleRules{
 		PublicIncludePaths.Add("Monster/Types/Public");
 		
 		PublicDependencyModuleNames.AddRange(new string[]{
-			"UI" // For SupportingText.h
-		  , "BPLibraries" // for SortAssetsAlphabetically
+			"UI"			// for SupportingText.h
+		  , "BPLibraries"	// for SortAssetsAlphabetically
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
