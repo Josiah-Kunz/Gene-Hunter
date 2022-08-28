@@ -59,12 +59,7 @@ private:
 	 */
 	virtual void DrawAffinity(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category,
 		FAffinity& Affinity);
-
-	/**
-	 * Draws the "value" side of a single affinity row.
-	 */
-	TSharedPtr<SHorizontalBox> AffinityValueWidget(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity) const;
-
+	
 	/**
 	 * Draws the +/-/trash buttons for modifying the array of affinities.
 	 */
@@ -73,13 +68,22 @@ private:
 #pragma endregion
 
 #pragma region Combat profile category customization functions
-	
+
+	/**
+	 * Draws the attack and defense profile categories based on the allocated affinities' types.
+	 */
 	virtual void CustomizeCombatProfileCategories(IDetailLayoutBuilder& DetailBuilder,
 			const TSharedRef<IPropertyHandle> PropertyHandle);
 
+	/**
+	 * Generic profile drawer for "attack" or "defense".
+	 */
 	virtual void DrawCombatProfile(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category,
 		TArray<UType*>& AffinityTypes, const bool bAtk);
 
+	/**
+	 * Draws a single row
+	 */
 	virtual TSharedRef<SWidget> MakeTypeRowWidget(TArray<FTypeArray1D>& Analysis, 
 			const int ArrayIndex, const float Width=80, const float Height=20, const float CornerRadius=4);
 
@@ -108,12 +112,11 @@ private:
 	
 	UAffinitiesComponent* GetAffinitiesComponent(const IDetailLayoutBuilder& DetailBuilder);
 
-	IDetailCategoryBuilder& GetCategory(IDetailLayoutBuilder& DetailBuilder, const FString CategoryName);
-	
-	// Do we need this??
-	TArray<TSharedPtr<UType*, ESPMode::ThreadSafe>> GetTypes() const;
+	IDetailCategoryBuilder& GetCategory(IDetailLayoutBuilder& DetailBuilder, const FString CategoryName) const;
 
 	TArray<TSharedPtr<FString, ESPMode::ThreadSafe>> GetTypeNames();
+	
+	TArray<UType*> GetAllTypes();
 
 	FSimpleDelegate CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity) const;
 
