@@ -32,7 +32,6 @@ public class DetailsPanelArchitect : ModuleRules
 				
 				// Editor specific
 				"BPLibraries",		// ToSI functionality
-				"CustomSlate",		// for custom slates like SStatsBar
 				"EditorStyle",		// for, e.g., FEditorStyle::Get()
 				"PropertyEditor",	// IDetailLayoutBuilder
 				"Types",			// Type affinities

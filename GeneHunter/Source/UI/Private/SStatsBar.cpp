@@ -8,8 +8,6 @@
 #include "Widgets/SCanvas.h"
 #include "Widgets/Colors/SColorBlock.h"
 #include "Widgets/Input/SEditableTextBox.h"
-#include "Widgets/Images/SImage.h"
-#include "Widgets/Layout/SSpacer.h"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
