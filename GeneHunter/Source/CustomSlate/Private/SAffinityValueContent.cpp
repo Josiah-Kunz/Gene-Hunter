@@ -3,6 +3,7 @@
 
 #include "SAffinityValueContent.h"
 
+#include "EditorStyleSet.h"
 #include "SlateOptMacros.h"
 #include "Widgets/Images/SImage.h"
 

@@ -9,7 +9,7 @@
 /**
  * SCompoundWidget that draws a UType "name plate".
  */
-class DETAILSPANELARCHITECT_API STypePlate : public SCompoundWidget
+class CUSTOMSLATE_API STypePlate : public SCompoundWidget
 {
 public:
 	

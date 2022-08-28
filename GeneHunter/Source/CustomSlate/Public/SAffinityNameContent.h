@@ -10,7 +10,7 @@
 /**
  * SCompoundWidget that houses the "NameComponent" of an affinity slate. This is just the ComboBox and lock.
  */
-class DETAILSPANELARCHITECT_API SAffinityNameContent : public SCompoundWidget
+class CUSTOMSLATE_API SAffinityNameContent : public SCompoundWidget
 {
 public:
 	

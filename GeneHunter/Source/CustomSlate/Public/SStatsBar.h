@@ -9,7 +9,7 @@
  * SCompoundWidget that houses functions to look like a(n editable) stats bar:
  *		[Label] [EditableText] / [Max] [Baaaaaaar    ]
  */
-class DETAILSPANELARCHITECT_API SStatsBar : public SCompoundWidget
+class CUSTOMSLATE_API SStatsBar : public SCompoundWidget
 {
 public:
 

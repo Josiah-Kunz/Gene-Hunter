@@ -14,7 +14,7 @@ public class UI : ModuleRules{
 			
 			// Basics
 			"Core",			// for basic types
-			"CoreUObject"	// fe use UObjects
+			"CoreUObject"	// to use UObjects
 			
 			// All for Rama
 			, "AppFramework", "Slate", "SlateCore", "UMG"

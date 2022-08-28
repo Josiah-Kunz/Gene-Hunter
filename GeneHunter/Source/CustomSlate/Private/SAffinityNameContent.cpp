@@ -3,6 +3,7 @@
 
 #include "SAffinityNameContent.h"
 
+#include "EditorStyleSet.h"
 #include "SlateOptMacros.h"
 #include "Widgets/Input/STextComboBox.h"
 #include "Widgets/Images/SImage.h"
