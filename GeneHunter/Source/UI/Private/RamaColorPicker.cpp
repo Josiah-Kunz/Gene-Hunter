@@ -71,9 +71,10 @@ void URamaColorPicker::ColorUpdated(FLinearColor NewValue)
 TSharedRef<SWidget> URamaColorPicker::RebuildWidget()
 {
 	MySlateColorPicker = SNew( SJoyColorPicker )
+		.sRGBOverride(sRGB)
 		.TargetColorAttribute( JoyColor )
 		.OnColorCommitted( FOnLinearColorValueChanged::CreateUObject( this, &URamaColorPicker::ColorUpdated) );
-	
+		
 	return MySlateColorPicker.ToSharedRef();
 }
 
