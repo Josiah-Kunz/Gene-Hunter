@@ -8,6 +8,7 @@
 #include "EditorStyleSet.h"
 #include "SAffinityNameContent.h"
 #include "SAffinityValueContent.h"
+#include "SCombatProfile.h"
 #include "STypePlate.h"
 #include "Widgets/Input/SEditableTextBox.h"
 #include "TypeUtilities.h"
@@ -152,16 +153,22 @@ void AffinitiesComponentDrawer::DrawAffinity(IDetailLayoutBuilder& DetailBuilder
 			return FReply::Handled();
 		})
 		.OnCircleClicked([this, &DetailBuilder, &Affinity](const int AffinityIndex, const int CurrentPoints) -> FReply
-			{
+		{
 
-				// If at exactly (1), the only way to remove it is to click it
-				if (CurrentPoints == AffinityIndex+1)
-					Affinity.SetCurrentPoints(CurrentPoints - 1);
-				else 
-					Affinity.SetCurrentPoints(AffinityIndex+1);
-				SaveAndRefresh(DetailBuilder);
-				return FReply::Handled();
-			})
+			// If at exactly (1), the only way to remove it is to click it
+			if (CurrentPoints == AffinityIndex+1)
+				Affinity.SetCurrentPoints(CurrentPoints - 1);
+			else 
+				Affinity.SetCurrentPoints(AffinityIndex+1);
+			SaveAndRefresh(DetailBuilder);
+			return FReply::Handled();
+		})
+		.OnPlusClicked([this, &DetailBuilder, &Affinity]() -> FReply
+		{
+			Affinity.SetMaxPoints(Affinity.GetMaxPoints() + 1);
+			SaveAndRefresh(DetailBuilder);
+			return FReply::Handled();
+		})
 	]
 
 	// Reset
@@ -280,112 +287,14 @@ void AffinitiesComponentDrawer::DrawCombatProfile(IDetailLayoutBuilder& DetailBu
 	IDetailCategoryBuilder& Category, TArray<UType*>& AffinityTypes, const bool bAtk)
 {
 
-	// Iterate though ranges
-	bool bDrewOne = false;
-	for(const TPair<FFloatRange, FString>& RangeLabelPair : UTypeUtilities::EffectivenessLabels(bAtk))
-	{
-
-		// Do the analysis
-		TArray<FTypeArray1D> TypeCombinations, Analysis;
-		UTypeUtilities::GetAllTypeCombinations(GetAllTypes(), 1, TypeCombinations);
-		UTypeUtilities::Analyze(
-			AffinityTypes,
-			TypeCombinations,
-			RangeLabelPair.Key,
-			Analysis,
-			EAttackModifierMode::Coverage,
-			bAtk
-		);
-
-		// If no types, skip
-		if (Analysis.Num() == 0)
-			continue;
-		bDrewOne = true;
-
-		// Header
-		Category.AddCustomRow(LOCTEXT("KeyWord", "Profile Header"))
-		.WholeRowContent()
-		.VAlign(VAlign_Center)
-		[
-			SNew(STextBlock)
-			.Text(FText::FromString(RangeLabelPair.Value))
-			.Font(FEditorStyle::GetFontStyle("BoldFont"))
-			.TextStyle(FEditorStyle::Get(), "Menu.Heading")
-			.ColorAndOpacity(FLinearColor::White)
-			.ShadowColorAndOpacity(FLinearColor::Black)
-			.ShadowOffset(FVector2D{1, 1})
-		]
-		;
-
-		// Types slate
-		constexpr int TypesPerRow = 3;
-		for(int i=0; i<Analysis.Num(); i+=TypesPerRow)
-		{
-
-			// Create container
-			TSharedPtr<SHorizontalBox> Container = SNew(SHorizontalBox);
-
-			// Add stuff
-			for(int j=0; j<TypesPerRow; j++)
-			{	
-				Container->AddSlot()
-				.AutoWidth()
-				.Padding(2)
-				[
-					MakeTypeRowWidget(Analysis, i+j)
-				]
-				;
-			}
-			
-			Category.AddCustomRow(LOCTEXT("KeyWord", "Type Row"))
-			.WholeRowContent()
-			.HAlign(HAlign_Center)
-			.VAlign(VAlign_Center)
-			[
-				Container.ToSharedRef()
-			]
-			;
-		}
-	}
-
-	// Didn't draw any =(
-	if (!bDrewOne)
-		NoCombatProfile(Category);
-}
-
-TSharedRef<SWidget> AffinitiesComponentDrawer::MakeTypeRowWidget(TArray<FTypeArray1D>& Analysis, const int ArrayIndex,
-	const float Width, const float Height, const float CornerRadius)
-{
-
-	// Check within array range
-	if (ArrayIndex >= Analysis.Num())
-	{
-		return SNew(SOverlay);
-	}
-
-	// Get Type (for readability)
-	UType* Type = Analysis[ArrayIndex].Array[0];
-
-	// Build fo rill
-	return SNew(STypePlate).Type(Type);
-}
-
-void AffinitiesComponentDrawer::NoCombatProfile(IDetailCategoryBuilder& Category)
-{
-	Category.AddCustomRow(LOCTEXT("KeyWord", "AttackProfile Header"))
-		.WholeRowContent()
-		.VAlign(VAlign_Center)
-		.HAlign(HAlign_Center)
-		[
-			SNew(STextBlock)
-			.Text(FText::FromString("All Neutral"))
-			.Font(FEditorStyle::GetFontStyle("BoldFont"))
-			.TextStyle(FEditorStyle::Get(), "Menu.Heading")
-			.ColorAndOpacity(FLinearColor::White)
-			.ShadowColorAndOpacity(FLinearColor::Black)
-			.ShadowOffset(FVector2D{1, 1})
-		]
-		;
+	Category.AddCustomRow(LOCTEXT("KeyWord", "Profile"))
+	.WholeRowContent()
+	.VAlign(VAlign_Center)
+	[
+		SNew(SCombatProfile)
+			.Types(AffinityTypes)
+			.CombatAnalysisMode(bAtk ? ECombatAnalysisMode::Attack : ECombatAnalysisMode::Defense)
+	];
 }
 
 void AffinitiesComponentDrawer::SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const

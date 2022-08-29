@@ -81,14 +81,6 @@ private:
 	virtual void DrawCombatProfile(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category,
 		TArray<UType*>& AffinityTypes, const bool bAtk);
 
-	/**
-	 * Draws a single row
-	 */
-	virtual TSharedRef<SWidget> MakeTypeRowWidget(TArray<FTypeArray1D>& Analysis, 
-			const int ArrayIndex, const float Width=80, const float Height=20, const float CornerRadius=4);
-
-	virtual void NoCombatProfile(IDetailCategoryBuilder& Category);
-
 #pragma endregion
 
 #pragma region Public utility functions
