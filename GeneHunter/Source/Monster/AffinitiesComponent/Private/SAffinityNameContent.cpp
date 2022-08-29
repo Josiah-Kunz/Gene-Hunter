@@ -12,10 +12,7 @@ BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
 void SAffinityNameContent::Construct(const FArguments& InArgs)
 {
-UE_LOG(LogTemp, Warning, TEXT("Is lock enabled for Type %s? %s "),
-	*InArgs._Affinity.Type->GetName(),
-	(InArgs._IsLockEnabled.Get() ? *FString("Yes") : *FString("No"))
-	)
+	
 	// Ensure affinity type isn't null
 	const FAffinity& Affinity = InArgs._Affinity;
 	check(Affinity.Type)

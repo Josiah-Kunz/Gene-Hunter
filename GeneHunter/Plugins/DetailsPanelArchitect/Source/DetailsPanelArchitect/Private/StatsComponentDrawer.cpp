@@ -70,9 +70,9 @@ void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 					*FString::FromInt(StatsComponent->MaxLevel())
 					)))
 			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
-				TAttribute<bool>::CreateLambda([]() 
+				TAttribute<bool>::CreateLambda([this]() 
 				{ 
-					return true;
+					return StatsComponent->GetLevel() != 1;
 				}), 
 				FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
 				{ 
@@ -128,9 +128,9 @@ void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 			.BarFraction(StatsComponent->GetLevelExp()/StatsComponent->GetTotalLevelExp())
 			.BarTooltip(FText::FromString("Change in exp = change in level"))
 			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
-					TAttribute<bool>::CreateLambda([]() 
+					TAttribute<bool>::CreateLambda([this]() 
 					{ 
-						return true;
+						return StatsComponent->GetCumulativeExp() != StatsComponent->GetCumulativeExpFromLevel(StatsComponent->GetLevel());
 					}), 
 					FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
 					{ 
@@ -183,9 +183,10 @@ void StatsComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 			.BarFraction(StatsComponent->GetCumulativeExp()/StatsComponent->GetMaxExp())
 			.BarTooltip(FText::FromString("Change in exp = change in level"))
 			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
-					TAttribute<bool>::CreateLambda([]() 
+					TAttribute<bool>::CreateLambda([this]() 
 					{ 
-						return true;
+						return StatsComponent->GetCumulativeExp() != StatsComponent->GetCumulativeExpFromLevel(StatsComponent->MinLevel());
+						
 					}), 
 					FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
 					{ 
@@ -495,9 +496,15 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDeta
 			.BarTooltip(TargetStat.SupportingText().Description)
 		).OverrideResetToDefault(
 			FResetToDefaultOverride::Create( 
-				TAttribute<bool>::CreateLambda([]() 
-				{ 
-					return true;
+				TAttribute<bool>::CreateLambda([&TargetStat, StatValueType, MaxStatValue]() 
+				{
+					switch(StatValueType)
+					{
+					case EStatValueType::Current:
+						return FMathf::Abs(TargetStat.GetValue(StatValueType) - MaxStatValue) > FMathf::Epsilon;
+					default:
+						return true;
+					}
 				}), 
 				ResetClicked
 			)

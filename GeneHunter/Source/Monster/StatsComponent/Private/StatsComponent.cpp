@@ -44,10 +44,10 @@ void UStatsComponent::SetCumulativeExp(const int NewCumulativeExp)
 
 	// Clamp level
 	int NewLevel = GetLevel();
-	if (NewLevel < 0)
+	if (NewLevel < MinLevel())
 	{
-		NewLevel = 0;
-		CumulativeExp = 1;
+		NewLevel = MinLevel();
+		CumulativeExp = GetCumulativeExpFromLevel(MinLevel());
 	}
 	if (NewLevel > MaxLevel())
 	{
@@ -72,8 +72,8 @@ int UStatsComponent::GetLevel() const
 
 void UStatsComponent::SetLevel(const int NewLevel)
 {
-	const int Level = FMathf::Clamp(NewLevel, 1, MaxLevel());
-	SetCumulativeExp(FMathf::Pow(Level, ExpExponent()));
+	const int Level = FMathf::Clamp(NewLevel, MinLevel(), MaxLevel());
+	SetCumulativeExp(GetCumulativeExpFromLevel(Level));
 	for(FStat* Stat : StatsArray)
 		Stat->Update(GetLevel());
 }
@@ -181,7 +181,6 @@ void UStatsComponent::ModifyStatsUniformly(const float UniformMod, const EStatVa
 
 void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Recalculating!"))
 	for(FStat* Stat : StatsArray)
 		Stat->Update(GetLevel(), bResetCurrent);
 }

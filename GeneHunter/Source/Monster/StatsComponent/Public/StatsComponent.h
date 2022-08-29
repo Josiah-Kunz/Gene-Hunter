@@ -98,6 +98,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
 	virtual int MaxLevel(){return 100;}
+	
+	/**
+     * The maximum level. Overrideable.
+     */
+    UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
+    virtual int MinLevel(){return 1;}
 
 	/**
 	* The relationship between level and cumulativeExp is:
