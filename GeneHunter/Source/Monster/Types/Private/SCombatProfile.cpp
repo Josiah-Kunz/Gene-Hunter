@@ -127,12 +127,9 @@ TSharedRef<SWidget> SCombatProfile::MakeTypeRowWidget(const FArguments& InArgs, 
 		return SNew(SOverlay);
 	}
 
-	// Get Type (for readability)
-	UType* Type = Analysis[ArrayIndex].Array[0];
-
 	// Build fo rill
 	return SNew(STypePlate)
-		.Type(Type)
+		.Type(Analysis[ArrayIndex].Array[0])
 		.Height(InArgs._Height)
 		.Width(InArgs._Width)
 		.CornerRadius(InArgs._CornerRadius)

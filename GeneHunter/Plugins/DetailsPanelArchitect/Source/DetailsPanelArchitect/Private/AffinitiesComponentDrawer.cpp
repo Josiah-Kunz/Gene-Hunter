@@ -9,11 +9,8 @@
 #include "SAffinityNameContent.h"
 #include "SAffinityValueContent.h"
 #include "SCombatProfile.h"
-#include "STypePlate.h"
 #include "Widgets/Input/SEditableTextBox.h"
-#include "TypeUtilities.h"
 #include "WidgetFunctionLibrary.h"
-#include "Widgets/Colors/SColorBlock.h"
 
 #define LOCTEXT_NAMESPACE "AffinitiesComponentDrawer"
 
@@ -115,15 +112,16 @@ void AffinitiesComponentDrawer::DrawAffinity(IDetailLayoutBuilder& DetailBuilder
 	[
 		SNew(SAffinityNameContent)
 		.Affinity(Affinity)
-		.IsLockEnabled([this, &Affinity]()
+		.IsLockEnabled(Affinity.IsLocked() || CanModifyAffinity(Affinity))
+		/*[this, &Affinity]()
 			{
 				// If already locked, we always want to be able to unlock it
 				if (Affinity.IsLocked())
 					return true;
-
+			
 				// See if we can otherwise modify it
 				return CanModifyAffinity(Affinity);
-			})
+			})*/
 		.OnLockClicked([this, &DetailBuilder, &Affinity]() -> FReply
 			{
 				// Set state
@@ -169,6 +167,7 @@ void AffinitiesComponentDrawer::DrawAffinity(IDetailLayoutBuilder& DetailBuilder
 			SaveAndRefresh(DetailBuilder);
 			return FReply::Handled();
 		})
+		.IsEnabled(CanModifyAffinity(Affinity))
 	]
 
 	// Reset
@@ -177,7 +176,7 @@ void AffinitiesComponentDrawer::DrawAffinity(IDetailLayoutBuilder& DetailBuilder
 			{ 
 				return Affinity.GetMaxPoints() != 3 || Affinity.GetCurrentPoints() != 0;
 			}), 
-			CreateResetDelegate(DetailBuilder, Affinity)
+			AffinityResetDelegate(DetailBuilder, Affinity)
 		)
 	)
 	;
@@ -266,6 +265,10 @@ void AffinitiesComponentDrawer::DrawArrayMutator(IDetailLayoutBuilder& DetailBui
 	;
 }
 
+#pragma endregion
+
+#pragma region Combat profile category customization functions
+
 void AffinitiesComponentDrawer::CustomizeCombatProfileCategories(IDetailLayoutBuilder& DetailBuilder,
 	const TSharedRef<IPropertyHandle> PropertyHandle)
 {
@@ -297,16 +300,52 @@ void AffinitiesComponentDrawer::DrawCombatProfile(IDetailLayoutBuilder& DetailBu
 	];
 }
 
+#pragma endregion
+
+#pragma region Public utility functions
+
 void AffinitiesComponentDrawer::SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const
 {
 	UKismetSystemLibrary::TransactObject(AffinitiesComponent);
 	DetailBuilder.ForceRefreshDetails();
 }
 
-bool AffinitiesComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
+UType* AffinitiesComponentDrawer::GetTypeByName(const FString* TypeName)
 {
-	return CommitType == ETextCommit::Type::OnEnter || CommitType == ETextCommit::Type::OnUserMovedFocus;
+	for(UType* Type : GetAllTypes())
+		if (Type->GetName().Equals(*TypeName))
+			return Type;
+	return nullptr;
 }
+
+TFunction<void(TSharedPtr<FString> Selection, ESelectInfo::Type SelectInfo)> AffinitiesComponentDrawer::
+OnComboBoxChanged(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity)
+{
+	return [this, &DetailBuilder, &Affinity](const TSharedPtr<FString> Selection, ESelectInfo::Type SelectInfo)
+	{
+		if (!Selection.IsValid())
+			return;
+
+		UType* SelectedType = GetTypeByName(Selection.Get());
+		if (SelectedType != nullptr)
+		{
+			Affinity.Type = SelectedType;
+			SaveAndRefresh(DetailBuilder);
+		} else
+		{
+			UE_LOG(LogTemp, Warning,
+				TEXT("Selected Type %s is nullptr in AffinitiesComponentDrawer! Surely this is an error. Reverting to default value."),
+				Selection.Get()
+			)
+			if (GetAllTypes().Num() > 0)
+				Affinity.Type = GetAllTypes()[0];
+		}
+	};
+}
+
+#pragma endregion
+
+#pragma region Private utility functions
 
 UAffinitiesComponent* AffinitiesComponentDrawer::GetAffinitiesComponent(const IDetailLayoutBuilder& DetailBuilder)
 {
@@ -337,14 +376,6 @@ IDetailCategoryBuilder& AffinitiesComponentDrawer::GetCategory(IDetailLayoutBuil
 		ECategoryPriority::Important);
 }
 
-TArray<TSharedPtr<FString, ESPMode::ThreadSafe>> AffinitiesComponentDrawer::GetTypeNames()
-{
-	TArray<TSharedPtr<FString, ESPMode::ThreadSafe>> Options = {};
-	for(int i=0; i<GetAllTypes().Num(); i++)
-		Options.Add(MakeShared<FString>(GetAllTypes()[i]->GetName()));
-	return Options;
-}
-
 TArray<UType*> AffinitiesComponentDrawer::GetAllTypes()
 {
 	if (AllTypes.Num() == 0)
@@ -352,42 +383,7 @@ TArray<UType*> AffinitiesComponentDrawer::GetAllTypes()
 	return AllTypes;
 }
 
-UType* AffinitiesComponentDrawer::GetTypeByName(const FString* TypeName)
-{
-	for(UType* Type : GetAllTypes())
-		if (Type->GetName().Equals(*TypeName))
-			return Type;
-	return nullptr;
-}
-
-TFunction<void(TSharedPtr<FString> Selection, ESelectInfo::Type SelectInfo)> AffinitiesComponentDrawer::
-OnComboBoxChanged(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity)
-{
-	return [this, &DetailBuilder, &Affinity](TSharedPtr<FString> Selection, ESelectInfo::Type SelectInfo)
-	{
-		if (!Selection.IsValid())
-			return;
-
-		UType* SelectedType = GetTypeByName(Selection.Get());
-		if (SelectedType != nullptr)
-		{
-			Affinity.Type = SelectedType;
-			SaveAndRefresh(DetailBuilder);
-		} else
-		{
-			UE_LOG(LogTemp, Warning,
-				TEXT("Selected Type %s is nullptr in AffinitiesComponentDrawer! Surely this is an error. Reverting to default value."),
-				Selection.Get()
-			)
-			if (GetAllTypes().Num() == 0)
-				GetTypeNames();
-			if (GetAllTypes().Num() > 0)
-				Affinity.Type = GetAllTypes()[0];
-		}
-	};
-}
-
-FSimpleDelegate AffinitiesComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder,
+FSimpleDelegate AffinitiesComponentDrawer::AffinityResetDelegate(IDetailLayoutBuilder& DetailBuilder,
 	FAffinity& Affinity) const
 {
 	return FSimpleDelegate::CreateLambda(
@@ -407,5 +403,7 @@ bool AffinitiesComponentDrawer::CanModifyAffinity(const FAffinity& Affinity) con
 		return true;
 	return Affinity.GetCurrentPoints() > 0;
 }
+
+#pragma endregion
 
 #undef LOCTEXT_NAMESPACE

@@ -24,7 +24,7 @@ public:
 	_OnComboBoxChanged([](TSharedPtr<FString> NewString, ESelectInfo::Type SelectType){})
 	, _OnComboBoxOpening([](){})
 	, _OnLockClicked([](){return FReply::Unhandled();})
-	, _IsLockEnabled([](){return true;})
+	, _IsLockEnabled(true)
 
 	// Value
 	// =====
@@ -55,7 +55,7 @@ public:
 	SLATE_ATTRIBUTE(TFunction<void(TSharedPtr<FString>, ESelectInfo::Type)>, OnComboBoxChanged)
 	SLATE_ATTRIBUTE(TFunction<void()>, OnComboBoxOpening)
 	SLATE_ATTRIBUTE(TFunction<FReply()>, OnLockClicked)
-	SLATE_ATTRIBUTE(TFunction<bool()>, IsLockEnabled)
+	SLATE_ATTRIBUTE(bool, IsLockEnabled)
 
 	// Value
 	// =====

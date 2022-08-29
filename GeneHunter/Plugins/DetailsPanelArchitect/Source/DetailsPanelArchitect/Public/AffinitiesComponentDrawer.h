@@ -3,7 +3,6 @@
 #include "PropertyEditor/Public/IDetailCustomization.h"
 #include "AffinitiesComponent.h"
 #include "TypeArray1D.h"
-#include "Widgets/SCanvas.h"
 
 
 class AffinitiesComponentDrawer : public IDetailCustomization
@@ -39,7 +38,10 @@ private:
 #pragma endregion
 
 #pragma region Affinities category customization functions
-	
+
+	/**
+	 * Responsible for the entire "Affinities" category.
+	 */
 	virtual void CustomizeAffinitiesCategory(IDetailLayoutBuilder& DetailBuilder,
 		const TSharedRef<IPropertyHandle> PropertyHandle);
 
@@ -55,7 +57,7 @@ private:
 	virtual void CustomizeAffinities(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category);
 
 	/**
-	 * Draws a single affinity row.
+	 * Draws a single affinity row by using SAffinity slate.
 	 */
 	virtual void DrawAffinity(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category,
 		FAffinity& Affinity);
@@ -86,13 +88,20 @@ private:
 #pragma region Public utility functions
 
 public:
-	
+
+	/**
+	 * Marks the current object as dirty and refreshes the detail builder.
+	 */
 	void SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const;
 
-	static bool UserCommitted(const ETextCommit::Type CommitType);
-
+	/**
+	 * To be used with the ComboBox's FString values.
+	 */
 	UType* GetTypeByName(const FString* TypeName);
 
+	/**
+	 * Function called when the ComboBox has changed.
+	 */
 	TFunction<void(TSharedPtr<FString> Selection, ESelectInfo::Type SelectInfo)> OnComboBoxChanged(
 		IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity);
 
@@ -101,17 +110,30 @@ public:
 #pragma region Private utility functions
 	
 private:
-	
+
+	/**
+	 * Retrieves the star of the show!
+	 */ 
 	UAffinitiesComponent* GetAffinitiesComponent(const IDetailLayoutBuilder& DetailBuilder);
 
+	/**
+	 * Gets the category from the passed DetailBuilder.
+	 */
 	IDetailCategoryBuilder& GetCategory(IDetailLayoutBuilder& DetailBuilder, const FString CategoryName) const;
 
-	TArray<TSharedPtr<FString, ESPMode::ThreadSafe>> GetTypeNames();
-	
+	/**
+	 * A safe and fast way to get all UTypes.
+	 */
 	TArray<UType*> GetAllTypes();
 
-	FSimpleDelegate CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity) const;
+	/**
+	 * Creates the delegate that fires when the reset button is clicked on an affinity.
+	 */
+	FSimpleDelegate AffinityResetDelegate(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity) const;
 
+	/**
+	 * Determines the enabled state of the SAffinity.
+	 */
 	bool CanModifyAffinity(const FAffinity& Affinity) const;
 
 #pragma endregion
