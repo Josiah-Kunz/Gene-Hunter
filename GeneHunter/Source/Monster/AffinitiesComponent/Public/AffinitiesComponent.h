@@ -2,16 +2,16 @@
 
 // Engine
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
 
-// Affinities
+// Monster utilities
 #include "Affinity.h"
+#include "EffectableComponent.h"
 
 // .gen
 #include "AffinitiesComponent.generated.h"
 
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
-class AFFINITIESCOMPONENT_API UAffinitiesComponent : public UActorComponent
+class AFFINITIESCOMPONENT_API UAffinitiesComponent : public UEffectableComponent
 {
 #pragma region Standard stuff
 	

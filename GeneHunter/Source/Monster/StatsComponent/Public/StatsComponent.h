@@ -2,7 +2,6 @@
 
 // Engine
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
 
 // Stats
 #include "Health.h"
@@ -13,6 +12,9 @@
 #include "Haste.h"
 #include "CriticalHit.h"
 
+// Effects
+#include "Effects/Public/EffectableComponent.h"
+
 // Utilities
 #include "ModificationMode.h"
 #include "StatValueType.h"
@@ -21,7 +23,7 @@
 #include "StatsComponent.generated.h"
 
 UCLASS(ClassGroup=(Monster))
-class STATSCOMPONENT_API UStatsComponent : public UActorComponent
+class STATSCOMPONENT_API UStatsComponent : public UEffectableComponent
 {
 #pragma region Standard stuff
 	
