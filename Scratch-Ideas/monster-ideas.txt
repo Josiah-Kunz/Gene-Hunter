@@ -26,6 +26,8 @@ Enchanted forest:
 		= Poison [locked]/Fire; Ground (do skunks burrow?)
 	- Squirrel
 		= All unlocked --- Nature (b/c trees); Air (b/c flying); Magic
+	- Luna Moth
+		= All unlocked --- Light/Air/Void
 	
 Phasmid tribe: +stealth
 	- stick bug
