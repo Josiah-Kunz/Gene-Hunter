@@ -9,12 +9,23 @@ Wasp/butterfly hybrid that's really pretty but also can sting you
 	- Air (its wings are prominent features)
 	- Poison
 	- Could this be only obtainable as a "fourth" stage via gene splicing from two other Monsters?
+	- Acquire via small egg/s from a gift/found in special area
+	- Signature move: Second Metamorphosis (requires 3/4 affinities points in Nature?)
 	
 Enchanted forest:
-	- Void/Magic black kitten -> evo: lithe black cat (speed)
-	- Air/Magic owl
-	- Ground/Magic rabbit -> trans/cisdimensional portals early (because digging and disappearing and rabbit out of the hat)
-	- Magic [locked]/Fire [unlocked] fox
+	- Black kitten -> evo: lithe black cat (speed)
+		= Void/Magic (both locked)
+	- Owl
+		= Air [locked]/Magic
+	- Rabbit
+		= Ground [locked]/Magic
+		= trans/cisdimensional portals early (because digging and disappearing and rabbit out of the hat)
+	- Fox
+		= Magic [locked]/Fire; Ground
+	- Skunk
+		= Poison [locked]/Fire; Ground (do skunks burrow?)
+	- Squirrel
+		= All unlocked --- Nature (b/c trees); Air (b/c flying); Magic
 	
 Phasmid tribe: +stealth
 	- stick bug
