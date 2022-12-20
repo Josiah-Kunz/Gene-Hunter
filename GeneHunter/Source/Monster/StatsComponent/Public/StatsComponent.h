@@ -25,6 +25,19 @@
 UCLASS(ClassGroup=(Monster))
 class STATSCOMPONENT_API UStatsComponent : public UEffectableComponent
 {
+
+#pragma region Delegates
+
+	DECLARE_DELEGATE_OneParam(FStatDelegate, FStat*);
+
+	TArray<FStatDelegate> BeforeRecalculateStatsArray;
+	TArray<FStatDelegate> AfterRecalculateStatsArray;
+
+	TArray<FStatDelegate> BeforeModifyStatsArray;
+	TArray<FStatDelegate> AfterModifyStatsArray;
+
+#pragma endregion
+	
 #pragma region Standard stuff
 	
 	GENERATED_BODY()
@@ -243,6 +256,14 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	void RecalculateStats(const bool bResetCurrent = true);
+
+private:
+
+	/**
+	 * All in-code modifications should pass through here rather than doing Stat->ModifyValue(...). This ensures that 
+	 * the effect delegates are called.
+	 */
+	void ModifyStatInternal(FStat* Stat, const float Value,  const EStatValueType ValueType, const EModificationMode Mode) const;
 
 #pragma endregion
 

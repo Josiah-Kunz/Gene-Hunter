@@ -169,20 +169,36 @@ void UStatsComponent::RandomizeBaseStats(const int MinBaseStats, const int MaxBa
 void UStatsComponent::ModifyStats(TArray<float>& Values, const EStatValueType ValueType, const EModificationMode Mode) const
 {
 	for(int i=0; i<FMathf::Min(Values.Num(), StatsArray.Num()); i++)
-		StatsArray[i]->ModifyValue(Values[i], ValueType, Mode);
+		ModifyStatInternal(StatsArray[i], Values[i], ValueType, Mode);
 }
 
 void UStatsComponent::ModifyStatsUniformly(const float UniformMod, const EStatValueType ValueType,
 	const EModificationMode Mode)
 {
 	for(FStat* Stat : StatsArray)
-		Stat->ModifyValue(UniformMod, ValueType, Mode);
+		ModifyStatInternal(Stat, UniformMod, ValueType, Mode);
 }
 
 void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 {
 	for(FStat* Stat : StatsArray)
+	{
+		for(FStatDelegate Delegate : BeforeRecalculateStatsArray)
+			Delegate.Execute(Stat);
 		Stat->Update(GetLevel(), bResetCurrent);
+		for(FStatDelegate Delegate : AfterRecalculateStatsArray)
+			Delegate.Execute(Stat);
+	}
+}
+
+void UStatsComponent::ModifyStatInternal(FStat* Stat, const float Value, const EStatValueType ValueType,
+	const EModificationMode Mode) const
+{
+	for(FStatDelegate Delegate : BeforeModifyStatsArray)
+		Delegate.Execute(Stat);
+	Stat->ModifyValue(Value, ValueType, Mode);
+	for(FStatDelegate Delegate : AfterModifyStatsArray)
+		Delegate.Execute(Stat);
 }
 
 bool UStatsComponent::IsEqual(UStatsComponent* Other, const EStatValueType ValueType, const float Tolerance)
