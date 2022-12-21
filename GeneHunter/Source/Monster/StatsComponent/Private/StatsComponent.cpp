@@ -239,8 +239,6 @@ float UStatsComponent::BaseStatTotal()
 float UStatsComponent::BaseStatEffectiveAverage()
 {
 
-	
-
 	// Get base stat total
 	float BST = BaseStatTotal();
 	

@@ -28,6 +28,8 @@ class STATSCOMPONENT_API UStatsComponent : public UEffectableComponent
 
 #pragma region Delegates
 
+public:
+
 	DECLARE_DELEGATE_TwoParams(FRecalculateStatDelegate,
 		FStat*
 		, bool /* bResetCurrent */
