@@ -165,7 +165,6 @@ void UStatsComponent::RandomizeBaseStats(const int MinBaseStats, const int MaxBa
 }
 
 
-
 void UStatsComponent::ModifyStats(TArray<float>& Values, const EStatValueType ValueType, const EModificationMode Mode) const
 {
 	for(int i=0; i<FMathf::Min(Values.Num(), StatsArray.Num()); i++)
@@ -183,22 +182,22 @@ void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 {
 	for(FStat* Stat : StatsArray)
 	{
-		for(FStatDelegate Delegate : BeforeRecalculateStatsArray)
-			Delegate.Execute(Stat);
+		for(FRecalculateStatDelegate Delegate : BeforeRecalculateStatsArray)
+			Delegate.Execute(Stat, bResetCurrent);
 		Stat->Update(GetLevel(), bResetCurrent);
-		for(FStatDelegate Delegate : AfterRecalculateStatsArray)
-			Delegate.Execute(Stat);
+		for(FRecalculateStatDelegate Delegate : AfterRecalculateStatsArray)
+			Delegate.Execute(Stat, bResetCurrent);
 	}
 }
 
 void UStatsComponent::ModifyStatInternal(FStat* Stat, const float Value, const EStatValueType ValueType,
 	const EModificationMode Mode) const
 {
-	for(FStatDelegate Delegate : BeforeModifyStatsArray)
-		Delegate.Execute(Stat);
+	for(FModifyStatDelegate Delegate : BeforeModifyStatsArray)
+		Delegate.Execute(Stat, Value, ValueType, Mode);
 	Stat->ModifyValue(Value, ValueType, Mode);
-	for(FStatDelegate Delegate : AfterModifyStatsArray)
-		Delegate.Execute(Stat);
+	for(FModifyStatDelegate Delegate : AfterModifyStatsArray)
+		Delegate.Execute(Stat, Value, ValueType, Mode);
 }
 
 bool UStatsComponent::IsEqual(UStatsComponent* Other, const EStatValueType ValueType, const float Tolerance)

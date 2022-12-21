@@ -28,13 +28,21 @@ class STATSCOMPONENT_API UStatsComponent : public UEffectableComponent
 
 #pragma region Delegates
 
-	DECLARE_DELEGATE_OneParam(FStatDelegate, FStat*);
+	DECLARE_DELEGATE_TwoParams(FRecalculateStatDelegate,
+		FStat*
+		, bool /* bResetCurrent */
+	);
+	TArray<FRecalculateStatDelegate> BeforeRecalculateStatsArray;
+	TArray<FRecalculateStatDelegate> AfterRecalculateStatsArray;
 
-	TArray<FStatDelegate> BeforeRecalculateStatsArray;
-	TArray<FStatDelegate> AfterRecalculateStatsArray;
-
-	TArray<FStatDelegate> BeforeModifyStatsArray;
-	TArray<FStatDelegate> AfterModifyStatsArray;
+	DECLARE_DELEGATE_FourParams(FModifyStatDelegate,
+			FStat*
+			, float				/* Value */
+			, EStatValueType	/* ValueType */
+			, EModificationMode /* Mode */
+		);
+	TArray<FModifyStatDelegate> BeforeModifyStatsArray;
+	TArray<FModifyStatDelegate> AfterModifyStatsArray;
 
 #pragma endregion
 	
