@@ -28,6 +28,10 @@ class STATSCOMPONENT_API UStatsComponent : public UEffectableComponent
 
 #pragma region Delegates
 
+	/**
+	 * Note: it is up to some external controller to modify the order of delegate execution.
+	 */
+
 public:
 
 	DECLARE_DELEGATE_TwoParams(FRecalculateStatDelegate,
