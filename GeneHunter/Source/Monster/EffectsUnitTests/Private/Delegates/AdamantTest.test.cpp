@@ -23,7 +23,7 @@ bool FEffects_Delegates_RecalculateStats::RunTest(const FString& Parameters)
 	const float OriginalSpA = StatsComponent->SpecialAttack.GetCurrentValue();
 	
 	// Define "adamant" delegate (+10% PhA/-10% SpA)
-	UStatsComponent::FRecalculateStatDelegate AdamantRecalculateDelegate;
+	UStatsComponent::FRecalculateStatsDelegate AdamantRecalculateDelegate;
 	AdamantRecalculateDelegate.BindLambda([StatsComponent](FStat* Stat, bool bResetCurrent)
 	{
 

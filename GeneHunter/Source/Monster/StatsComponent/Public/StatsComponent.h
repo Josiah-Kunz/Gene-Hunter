@@ -18,6 +18,7 @@
 // Utilities
 #include "ModificationMode.h"
 #include "StatValueType.h"
+#include "UtilityFunctionLibrary.h"
 
 // .gen
 #include "StatsComponent.generated.h"
@@ -33,22 +34,24 @@ class STATSCOMPONENT_API UStatsComponent : public UEffectableComponent
 	 */
 
 public:
-
+	
+	/*
 	DECLARE_DELEGATE_TwoParams(FRecalculateStatDelegate,
 		FStat*
-		, bool& /* bResetCurrent */
+		, bool& 
 	);
 	TArray<FRecalculateStatDelegate> BeforeRecalculateStatsArray;
 	TArray<FRecalculateStatDelegate> AfterRecalculateStatsArray;
 
 	DECLARE_DELEGATE_FourParams(FModifyStatDelegate,
 			FStat*
-			, float&				/* Value */
-			, EStatValueType&		/* ValueType */
-			, EModificationMode&	/* Mode */
+			, float&				
+			, EStatValueType&		
+			, EModificationMode&	
 		);
 	TArray<FModifyStatDelegate> BeforeModifyStatsArray;
 	TArray<FModifyStatDelegate> AfterModifyStatsArray;
+	*/
 
 #pragma endregion
 	
@@ -74,13 +77,34 @@ public:
 
 #pragma region Level variables and functions
 
+private:
+
+	/**
+	 * Linearly multiplies the amount of experience points yielded when defeating this Monster.
+	 */
+	UPROPERTY(VisibleDefaultsOnly, Category = "Level")
+	float BaseExpYield = 1;
+
 public:
 
 	/**
 	 * Linearly multiplies the amount of experience points yielded when defeating this Monster.
 	 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
-	float BaseExpYield = 1;
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
+	int GetBaseExpYield() const;
+
+	/**
+	 * Sets the value of BaseExpYield.
+	 */
+	UFUNCTION(BlueprintCallable, Category="Level")
+	void SetBaseExpYield(const int NewBaseExpYield);
+
+	/* Delegates */
+	/* --------- */
+	
+	DECLARE_DELEGATE(FGetBaseExpYield);
+	TArray<FGetBaseExpYield> BeforeGetBaseExpYield;
+	TArray<FGetBaseExpYield> AfterGetBaseExpYield;
 	
 private:
 
@@ -264,12 +288,14 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	void ModifyStatsUniformly(const float UniformMod, const EStatValueType ValueType, const EModificationMode Mode);
-
+	
 	/**
 	 * Recalculates all stats based on the current level and resets current stats.
 	 */
 	UFUNCTION(BlueprintCallable)
 	void RecalculateStats(bool bResetCurrent = true);
+
+	EFFECT_DELEGATES_TwoParams(RecalculateStats, FStat*, bool)
 
 private:
 
@@ -278,6 +304,15 @@ private:
 	 * the effect delegates are called.
 	 */
 	void ModifyStatInternal(FStat* Stat, float Value, EStatValueType ValueType, EModificationMode Mode) const;
+
+public:
+	
+	EFFECT_DELEGATES_FourParams(
+		ModifyStat,
+		FStat*
+		, float&				
+		, EStatValueType&		
+		, EModificationMode&)
 
 #pragma endregion
 

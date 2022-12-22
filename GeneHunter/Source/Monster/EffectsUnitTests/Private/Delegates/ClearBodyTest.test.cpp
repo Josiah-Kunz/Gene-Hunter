@@ -53,7 +53,7 @@ bool FEffects_Delegates_ModifyStats::RunTest(const FString& Parameters)
 	});
 
 	// Add clear body to delegate array
-	StatsComponent->BeforeModifyStatsArray.Add(ClearBodyDelegate);
+	StatsComponent->BeforeModifyStatArray.Add(ClearBodyDelegate);
 
 	// Attempt to reduce stats by -10%
 	StatsComponent->ModifyStatsUniformly(-10, EStatValueType::Current, EModificationMode::AddPercentage);

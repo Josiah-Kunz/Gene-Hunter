@@ -29,6 +29,16 @@ void UStatsComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	// ...
 }
 
+int UStatsComponent::GetBaseExpYield() const
+{
+	return BaseExpYield;
+}
+
+void UStatsComponent::SetBaseExpYield(const int NewBaseExpYield)
+{
+	BaseExpYield = NewBaseExpYield;
+}
+
 int UStatsComponent::GetCumulativeExp() const
 {
 	return CumulativeExp;
@@ -182,20 +192,20 @@ void UStatsComponent::RecalculateStats(bool bResetCurrent)
 {
 	for(FStat* Stat : StatsArray)
 	{
-		for(FRecalculateStatDelegate Delegate : BeforeRecalculateStatsArray)
+		for(FRecalculateStatsDelegate Delegate : BeforeRecalculateStatsArray)
 			Delegate.Execute(Stat, bResetCurrent);
 		Stat->Update(GetLevel(), bResetCurrent);
-		for(FRecalculateStatDelegate Delegate : AfterRecalculateStatsArray)
+		for(FRecalculateStatsDelegate Delegate : AfterRecalculateStatsArray)
 			Delegate.Execute(Stat, bResetCurrent);
 	}
 }
 
 void UStatsComponent::ModifyStatInternal(FStat* Stat, float Value, EStatValueType ValueType, EModificationMode Mode) const
 {
-	for(FModifyStatDelegate Delegate : BeforeModifyStatsArray)
+	for(FModifyStatDelegate Delegate : BeforeModifyStatArray)
 		Delegate.Execute(Stat, Value, ValueType, Mode);
 	Stat->ModifyValue(Value, ValueType, Mode);
-	for(FModifyStatDelegate Delegate : AfterModifyStatsArray)
+	for(FModifyStatDelegate Delegate : AfterModifyStatArray)
 		Delegate.Execute(Stat, Value, ValueType, Mode);
 }
 
