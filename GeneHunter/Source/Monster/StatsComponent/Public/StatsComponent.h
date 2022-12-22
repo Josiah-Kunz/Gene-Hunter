@@ -26,34 +26,6 @@
 UCLASS(ClassGroup=(Monster))
 class STATSCOMPONENT_API UStatsComponent : public UEffectableComponent
 {
-
-#pragma region Delegates
-
-	/**
-	 * Note: it is up to some external controller to modify the order of delegate execution.
-	 */
-
-public:
-	
-	/*
-	DECLARE_DELEGATE_TwoParams(FRecalculateStatDelegate,
-		FStat*
-		, bool& 
-	);
-	TArray<FRecalculateStatDelegate> BeforeRecalculateStatsArray;
-	TArray<FRecalculateStatDelegate> AfterRecalculateStatsArray;
-
-	DECLARE_DELEGATE_FourParams(FModifyStatDelegate,
-			FStat*
-			, float&				
-			, EStatValueType&		
-			, EModificationMode&	
-		);
-	TArray<FModifyStatDelegate> BeforeModifyStatsArray;
-	TArray<FModifyStatDelegate> AfterModifyStatsArray;
-	*/
-
-#pragma endregion
 	
 #pragma region Standard stuff
 	
@@ -77,6 +49,8 @@ public:
 
 #pragma region Level variables and functions
 
+#pragma region Base exp yield
+	
 private:
 
 	/**
@@ -99,12 +73,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Level")
 	void SetBaseExpYield(const int NewBaseExpYield);
 
-	/* Delegates */
-	/* --------- */
-	
-	DECLARE_DELEGATE(FGetBaseExpYield);
-	TArray<FGetBaseExpYield> BeforeGetBaseExpYield;
-	TArray<FGetBaseExpYield> AfterGetBaseExpYield;
+	/**
+	 * Parameters:
+	 *	- Unaltered base exp yield
+	 */
+	EFFECT_DELEGATES_OneParam(GetBaseExpYield, float)
 	
 private:
 
@@ -281,7 +254,7 @@ public:
 	/**
 	 * Modifies (that is, increases, decreases, or sets) the Stats in this StatsComponent. Order is HP, PhA, PhD, SpA, SpD, Hst, Crt.
 	 */
-	void ModifyStats(TArray<float>& Values, const EStatValueType ValueType, const EModificationMode Mode) const;
+	void ModifyStats(TArray<float>& Values, const EStatValueType ValueType, const EModificationMode Mode);
 	
 	/**
 	 * Modifies (that is, increases, decreases, or sets) all Stats in this StatsComponent by the given amount.
@@ -303,7 +276,7 @@ private:
 	 * All in-code modifications should pass through here rather than doing Stat->ModifyValue(...). This ensures that 
 	 * the effect delegates are called.
 	 */
-	void ModifyStatInternal(FStat* Stat, float Value, EStatValueType ValueType, EModificationMode Mode) const;
+	void ModifyStatInternal(FStat* Stat, float Value, EStatValueType ValueType, EModificationMode Mode);
 
 public:
 	

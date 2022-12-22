@@ -31,6 +31,7 @@ void UStatsComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 int UStatsComponent::GetBaseExpYield() const
 {
+	
 	return BaseExpYield;
 }
 
@@ -175,7 +176,7 @@ void UStatsComponent::RandomizeBaseStats(const int MinBaseStats, const int MaxBa
 }
 
 
-void UStatsComponent::ModifyStats(TArray<float>& Values, const EStatValueType ValueType, const EModificationMode Mode) const
+void UStatsComponent::ModifyStats(TArray<float>& Values, const EStatValueType ValueType, const EModificationMode Mode)
 {
 	for(int i=0; i<FMathf::Min(Values.Num(), StatsArray.Num()); i++)
 		ModifyStatInternal(StatsArray[i], Values[i], ValueType, Mode);
@@ -192,21 +193,17 @@ void UStatsComponent::RecalculateStats(bool bResetCurrent)
 {
 	for(FStat* Stat : StatsArray)
 	{
-		for(FRecalculateStatsDelegate Delegate : BeforeRecalculateStatsArray)
-			Delegate.Execute(Stat, bResetCurrent);
+		ExecuteBeforeRecalculateStats(Stat, bResetCurrent);
 		Stat->Update(GetLevel(), bResetCurrent);
-		for(FRecalculateStatsDelegate Delegate : AfterRecalculateStatsArray)
-			Delegate.Execute(Stat, bResetCurrent);
+		ExecuteAfterRecalculateStats(Stat, bResetCurrent);
 	}
 }
 
-void UStatsComponent::ModifyStatInternal(FStat* Stat, float Value, EStatValueType ValueType, EModificationMode Mode) const
+void UStatsComponent::ModifyStatInternal(FStat* Stat, float Value, EStatValueType ValueType, EModificationMode Mode)
 {
-	for(FModifyStatDelegate Delegate : BeforeModifyStatArray)
-		Delegate.Execute(Stat, Value, ValueType, Mode);
+	ExecuteBeforeModifyStat(Stat, Value, ValueType, Mode);
 	Stat->ModifyValue(Value, ValueType, Mode);
-	for(FModifyStatDelegate Delegate : AfterModifyStatArray)
-		Delegate.Execute(Stat, Value, ValueType, Mode);
+	ExecuteAfterModifyStat(Stat, Value, ValueType, Mode);
 }
 
 bool UStatsComponent::IsEqual(UStatsComponent* Other, const EStatValueType ValueType, const float Tolerance)
