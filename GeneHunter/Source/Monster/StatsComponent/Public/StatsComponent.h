@@ -36,16 +36,16 @@ public:
 
 	DECLARE_DELEGATE_TwoParams(FRecalculateStatDelegate,
 		FStat*
-		, bool /* bResetCurrent */
+		, bool& /* bResetCurrent */
 	);
 	TArray<FRecalculateStatDelegate> BeforeRecalculateStatsArray;
 	TArray<FRecalculateStatDelegate> AfterRecalculateStatsArray;
 
 	DECLARE_DELEGATE_FourParams(FModifyStatDelegate,
 			FStat*
-			, float				/* Value */
-			, EStatValueType	/* ValueType */
-			, EModificationMode /* Mode */
+			, float&				/* Value */
+			, EStatValueType&		/* ValueType */
+			, EModificationMode&	/* Mode */
 		);
 	TArray<FModifyStatDelegate> BeforeModifyStatsArray;
 	TArray<FModifyStatDelegate> AfterModifyStatsArray;
@@ -269,7 +269,7 @@ public:
 	 * Recalculates all stats based on the current level and resets current stats.
 	 */
 	UFUNCTION(BlueprintCallable)
-	void RecalculateStats(const bool bResetCurrent = true);
+	void RecalculateStats(bool bResetCurrent = true);
 
 private:
 
@@ -277,7 +277,7 @@ private:
 	 * All in-code modifications should pass through here rather than doing Stat->ModifyValue(...). This ensures that 
 	 * the effect delegates are called.
 	 */
-	void ModifyStatInternal(FStat* Stat, const float Value,  const EStatValueType ValueType, const EModificationMode Mode) const;
+	void ModifyStatInternal(FStat* Stat, float Value, EStatValueType ValueType, EModificationMode Mode) const;
 
 #pragma endregion
 

@@ -386,9 +386,6 @@ TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTe
 			case EStatValueType::BasePairs:
 				StatsComponent->RecalculateStats(true);
 				break;
-			case EStatValueType::CurrentAndPermanent:
-				UE_LOG(LogTemp, Error, TEXT("\"CurrentAndPermanent\" not coded for; you should not be able to alter this value directly!"))
-				break;
 			default:
 				UE_LOG(LogTemp, Error, TEXT("Unknown case not coded for; you should probably code this!"))
 				break;
@@ -443,9 +440,6 @@ float StatsComponentDrawer::MaxStat(const UStatsComponent* StatsComponent, const
 			break;
 		case EStatValueType::Permanent:
 			Max = FMathf::Max(Max, Stat->GetPermanentValue());
-			break;
-		case EStatValueType::CurrentAndPermanent:
-			Max = FMathf::Max3(Max, Stat->GetCurrentValue(), Stat->GetPermanentValue());
 			break;
 		case EStatValueType::BasePairs:
 			Max = FMathf::Max3(Max, Stat->BasePairs, 100);

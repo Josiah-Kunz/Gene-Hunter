@@ -1,4 +1,8 @@
-﻿#pragma once
+﻿/**
+ * Tests an "Adamant nature" (a la Pokemon): +10% PhA | -10% SpA
+ */
+
+#pragma once
 
 #include "MathUtil.h"
 #include "StatUnitTestUtilities.h" 
@@ -24,11 +28,19 @@ bool FUStat_StatsComponent_Delegates_AdamantTest::RunTest(const FString& Paramet
 
 		// +10% PhA
 		if ( Stat->Name() == StatsComponent->PhysicalAttack.Name())
-			Stat->ModifyValue(10, EStatValueType::CurrentAndPermanent, EModificationMode::AddPercentage);
+		{
+			Stat->ModifyValue(10, EStatValueType::Permanent, EModificationMode::AddPercentage);
+			if (bResetCurrent)
+				Stat->ModifyValue(10, EStatValueType::Current, EModificationMode::AddPercentage);
+		}
 
 		// -10% SpA
 		if ( Stat->Name() == StatsComponent->SpecialAttack.Name())
-			Stat->ModifyValue(-10, EStatValueType::CurrentAndPermanent, EModificationMode::AddPercentage);
+		{
+			Stat->ModifyValue(-10, EStatValueType::Permanent, EModificationMode::AddPercentage);
+			if (bResetCurrent)
+				Stat->ModifyValue(-10, EStatValueType::Permanent, EModificationMode::AddPercentage);
+		}
 		
 			
 	});

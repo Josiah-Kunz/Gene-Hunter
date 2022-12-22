@@ -11,12 +11,14 @@ bool FUStat_StatsComponent_ModifyStats::RunTest(const FString& Parameters)
 	
 	// Actual
 	UStatsComponent* Actual = NewObject<UStatsComponent>();
-	Actual->ModifyStatsUniformly(200, EStatValueType::CurrentAndPermanent, EModificationMode::SetDirectly);
+	Actual->ModifyStatsUniformly(200, EStatValueType::Permanent, EModificationMode::SetDirectly);
+	Actual->ModifyStatsUniformly(200, EStatValueType::Current, EModificationMode::SetDirectly);
 	Actual->ModifyStatsUniformly(10, EStatValueType::Current, EModificationMode::AddPercentage);
 	
 	// Expected
 	UStatsComponent* Expected = NewObject<UStatsComponent>();
-	Expected->ModifyStatsUniformly(220, EStatValueType::CurrentAndPermanent, EModificationMode::SetDirectly);
+	Expected->ModifyStatsUniformly(220, EStatValueType::Permanent, EModificationMode::SetDirectly);
+	Expected->ModifyStatsUniformly(220, EStatValueType::Current, EModificationMode::SetDirectly);
 
 	// Do test
 	TestTrue("Modify Stats Uniformly",

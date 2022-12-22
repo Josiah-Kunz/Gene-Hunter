@@ -1,13 +1,18 @@
-﻿#pragma once
+﻿/**
+ * Tests the Pokemon ability "Clear Body" (no stat reductions besides health), although
+ * this test is slightly different strictly speaking.
+ */
+
+#pragma once
 
 #include "MathUtil.h"
 #include "StatUnitTestUtilities.h" 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsComponent_Delegates_AdamantTest,
-	"__GeneHunter.FStat.StatsComponent.Delegates.\"Adamant\" Test",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsComponent_Delegates_ClearBodyTest,
+	"__GeneHunter.FStat.StatsComponent.Delegates.\"Clear Body\" Test",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FUStat_StatsComponent_Delegates_AdamantTest::RunTest(const FString& Parameters)
+bool FUStat_StatsComponent_Delegates_ClearBodyTest::RunTest(const FString& Parameters)
 {
 	
 	// Get dummy
@@ -15,42 +20,57 @@ bool FUStat_StatsComponent_Delegates_AdamantTest::RunTest(const FString& Paramet
 
 	// Get baseline
 	const float OriginalPhA = StatsComponent->PhysicalAttack.GetCurrentValue();
-	const float OriginalSpA = StatsComponent->SpecialAttack.GetCurrentValue();
+	const float OriginalHP = StatsComponent->SpecialAttack.GetCurrentValue();
 	
-	// Define "adamant" delegate (+10% PhA/-10% SpA)
-	UStatsComponent::FRecalculateStatDelegate AdamantRecalculateDelegate;
-	AdamantRecalculateDelegate.BindLambda([StatsComponent](FStat* Stat, bool bResetCurrent)
+	// Define "clear body" delegate 
+	UStatsComponent::FModifyStatDelegate ClearBodyDelegate;
+	ClearBodyDelegate.BindLambda([StatsComponent](FStat* Stat, float& Value, EStatValueType& ValueType, EModificationMode& Mode)
 	{
 
-		// +10% PhA
-		if ( Stat->Name() == StatsComponent->PhysicalAttack.Name())
-			Stat->ModifyValue(10, EStatValueType::CurrentAndPermanent, EModificationMode::AddPercentage);
-
-		// -10% SpA
-		if ( Stat->Name() == StatsComponent->SpecialAttack.Name())
-			Stat->ModifyValue(-10, EStatValueType::CurrentAndPermanent, EModificationMode::AddPercentage);
-		
-			
+		// Determine if there is an attempted reduction in a non-HP stat. If so, set a non-modifying value.
+		if (Stat->Name() != StatsComponent->Health.Name())
+		{
+			switch(Mode)
+			{
+			case EModificationMode::AddAbsolute: case EModificationMode::AddFraction: case EModificationMode::AddPercentage:
+				if (Value < 0)
+					Value = 0;
+				break;
+			case EModificationMode::MultiplyAbsolute:
+				if (Value < 1)
+					Value = 1;
+				break;
+			case EModificationMode::MultiplyPercentage:
+				if (Value < 100)
+					Value = 100;
+				break;
+			case EModificationMode::SetDirectly:
+				if (Value < Stat->GetValue(ValueType))
+					Value = Stat->GetValue(ValueType);
+			}
+		}
 	});
-	StatsComponent->AfterRecalculateStatsArray.Add(AdamantRecalculateDelegate);
 
-	// Recalculate stats
-	StatsComponent->RecalculateStats();
+	// Add clear body to delegate array
+	StatsComponent->BeforeModifyStatsArray.Add(ClearBodyDelegate);
+
+	// Attempt to reduce stats by -10%
+	StatsComponent->ModifyStatsUniformly(-10, EStatValueType::Current, EModificationMode::AddPercentage);
 
 	// Check PhA
-	const float ExpectedPhA = OriginalPhA * 1.1f;
-	TestTrue(FString::Printf(TEXT("Increase PhA by 10 percent?: Expected [%s] vs Actual [%s]"),
+	const float ExpectedPhA = OriginalPhA * 0.9f;
+	TestTrue(FString::Printf(TEXT("Decreased PhA by 10 percent?: Expected [%s] vs Actual [%s]"),
 		*FString::SanitizeFloat(ExpectedPhA),
 		*FString::SanitizeFloat(StatsComponent->PhysicalAttack.GetCurrentValue())),
 	FMathf::Abs(ExpectedPhA - StatsComponent->PhysicalAttack.GetCurrentValue())
 		< UStatUnitTestUtilities::TOLERANCE);
 
-	// Check SpA
-	const float ExpectedSpA = OriginalSpA * 0.9f;
-	TestTrue(FString::Printf(TEXT("Decrease SpA by 10 percent?: Expected [%s] vs Actual [%s]"),
-		*FString::SanitizeFloat(ExpectedSpA),
-		*FString::SanitizeFloat(StatsComponent->SpecialAttack.GetCurrentValue())),
-	FMathf::Abs(ExpectedSpA - StatsComponent->SpecialAttack.GetCurrentValue())
+	// Check HP
+	const float ExpectedHP = OriginalHP;
+	TestTrue(FString::Printf(TEXT("HP stayed the same?: Expected [%s] vs Actual [%s]"),
+		*FString::SanitizeFloat(ExpectedHP),
+		*FString::SanitizeFloat(StatsComponent->Health.GetCurrentValue())),
+	FMathf::Abs(ExpectedHP - StatsComponent->Health.GetCurrentValue())
 		< UStatUnitTestUtilities::TOLERANCE);
 	
 	// Return

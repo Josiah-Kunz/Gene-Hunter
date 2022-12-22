@@ -67,10 +67,6 @@ void FStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, c
 	case EStatValueType::Permanent:
 		SetPermanentValue(GetModification(GetPermanentValue(), ModifyMode, Modifier));
 		break;
-	case EStatValueType::CurrentAndPermanent:
-		SetPermanentValue(GetModification(GetPermanentValue(), ModifyMode, Modifier));
-		SetCurrentValue(GetModification(GetCurrentValue(), ModifyMode, Modifier));
-		break;
 	case EStatValueType::BaseStat:
 		BaseStat = GetModification(BaseStat, ModifyMode, Modifier);
 		break;
@@ -91,9 +87,6 @@ float FStat::GetValue(const EStatValueType ModifyType)
 		return GetCurrentValue();
 	case EStatValueType::Permanent:
 		return GetPermanentValue();
-	case EStatValueType::CurrentAndPermanent:
-		UE_LOG(LogTemp, Warning, TEXT("Problem in FStat::GetValue! \"CurrentAndPermanent\" not well defined!"))
-		return GetCurrentValue();
 	case EStatValueType::BaseStat:
 		return BaseStat;
 	case EStatValueType::BasePairs:

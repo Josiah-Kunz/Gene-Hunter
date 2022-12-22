@@ -178,7 +178,7 @@ void UStatsComponent::ModifyStatsUniformly(const float UniformMod, const EStatVa
 		ModifyStatInternal(Stat, UniformMod, ValueType, Mode);
 }
 
-void UStatsComponent::RecalculateStats(const bool bResetCurrent)
+void UStatsComponent::RecalculateStats(bool bResetCurrent)
 {
 	for(FStat* Stat : StatsArray)
 	{
@@ -190,8 +190,7 @@ void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 	}
 }
 
-void UStatsComponent::ModifyStatInternal(FStat* Stat, const float Value, const EStatValueType ValueType,
-	const EModificationMode Mode) const
+void UStatsComponent::ModifyStatInternal(FStat* Stat, float Value, EStatValueType ValueType, EModificationMode Mode) const
 {
 	for(FModifyStatDelegate Delegate : BeforeModifyStatsArray)
 		Delegate.Execute(Stat, Value, ValueType, Mode);
@@ -202,10 +201,6 @@ void UStatsComponent::ModifyStatInternal(FStat* Stat, const float Value, const E
 
 bool UStatsComponent::IsEqual(UStatsComponent* Other, const EStatValueType ValueType, const float Tolerance)
 {
-
-	// StatValueType is redundant
-	if (ValueType == EStatValueType::CurrentAndPermanent)
-		return IsEqual(Other, EStatValueType::Current, Tolerance) && IsEqual(Other, EStatValueType::Permanent, Tolerance);
 	
 	for(int i=0; i<StatsArray.Num(); i++)
 	{
