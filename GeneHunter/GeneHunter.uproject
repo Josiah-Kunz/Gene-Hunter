@@ -40,8 +40,13 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
-		
-		
+
+
+		{
+			"Name": "EffectsUnitTests",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		},
 		{
 			"Name": "TypesUnitTests",
 			"Type": "Editor",

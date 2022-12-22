@@ -7,11 +7,11 @@
 #include "MathUtil.h"
 #include "StatUnitTestUtilities.h" 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsComponent_Delegates_AdamantTest,
-	"__GeneHunter.FStat.StatsComponent.Delegates.\"Adamant\" Test",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FEffects_Delegates_RecalculateStats,
+	"__GeneHunter.Effects.Delegate Tests.Recalculate Stats (\"Adamant\")",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FUStat_StatsComponent_Delegates_AdamantTest::RunTest(const FString& Parameters)
+bool FEffects_Delegates_RecalculateStats::RunTest(const FString& Parameters)
 {
 	
 	// Get dummy
