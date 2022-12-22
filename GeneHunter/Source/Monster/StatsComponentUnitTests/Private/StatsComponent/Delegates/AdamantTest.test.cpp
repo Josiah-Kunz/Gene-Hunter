@@ -18,6 +18,7 @@ bool FUStat_StatsComponent_Delegates_AdamantTest::RunTest(const FString& Paramet
 	DUMMY_BASE_STATS_BLOCK
 
 	// Get baseline
+	StatsComponent->RecalculateStats(true);
 	const float OriginalPhA = StatsComponent->PhysicalAttack.GetCurrentValue();
 	const float OriginalSpA = StatsComponent->SpecialAttack.GetCurrentValue();
 	
@@ -39,15 +40,14 @@ bool FUStat_StatsComponent_Delegates_AdamantTest::RunTest(const FString& Paramet
 		{
 			Stat->ModifyValue(-10, EStatValueType::Permanent, EModificationMode::AddPercentage);
 			if (bResetCurrent)
-				Stat->ModifyValue(-10, EStatValueType::Permanent, EModificationMode::AddPercentage);
+				Stat->ModifyValue(-10, EStatValueType::Current, EModificationMode::AddPercentage);
 		}
-		
 			
 	});
 	StatsComponent->AfterRecalculateStatsArray.Add(AdamantRecalculateDelegate);
 
 	// Recalculate stats
-	StatsComponent->RecalculateStats();
+	StatsComponent->RecalculateStats(true);
 
 	// Check PhA
 	const float ExpectedPhA = OriginalPhA * 1.1f;
@@ -59,7 +59,8 @@ bool FUStat_StatsComponent_Delegates_AdamantTest::RunTest(const FString& Paramet
 
 	// Check SpA
 	const float ExpectedSpA = OriginalSpA * 0.9f;
-	TestTrue(FString::Printf(TEXT("Decrease SpA by 10 percent?: Expected [%s] vs Actual [%s]"),
+	TestTrue(FString::Printf(TEXT("Decrease SpA by 10 percent?: Original [%s] | Expected [%s] vs Actual [%s]"),
+		*FString::SanitizeFloat(OriginalSpA),
 		*FString::SanitizeFloat(ExpectedSpA),
 		*FString::SanitizeFloat(StatsComponent->SpecialAttack.GetCurrentValue())),
 	FMathf::Abs(ExpectedSpA - StatsComponent->SpecialAttack.GetCurrentValue())

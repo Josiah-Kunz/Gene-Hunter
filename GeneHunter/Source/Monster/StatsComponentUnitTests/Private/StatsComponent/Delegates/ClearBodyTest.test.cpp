@@ -19,8 +19,9 @@ bool FUStat_StatsComponent_Delegates_ClearBodyTest::RunTest(const FString& Param
 	DUMMY_BASE_STATS_BLOCK
 
 	// Get baseline
+	StatsComponent->RecalculateStats(true);
 	const float OriginalPhA = StatsComponent->PhysicalAttack.GetCurrentValue();
-	const float OriginalHP = StatsComponent->SpecialAttack.GetCurrentValue();
+	const float OriginalHP = StatsComponent->Health.GetCurrentValue();
 	
 	// Define "clear body" delegate 
 	UStatsComponent::FModifyStatDelegate ClearBodyDelegate;
@@ -28,7 +29,7 @@ bool FUStat_StatsComponent_Delegates_ClearBodyTest::RunTest(const FString& Param
 	{
 
 		// Determine if there is an attempted reduction in a non-HP stat. If so, set a non-modifying value.
-		if (Stat->Name() != StatsComponent->Health.Name())
+		if (!Stat->Name().Equals(StatsComponent->Health.Name()))
 		{
 			switch(Mode)
 			{
@@ -58,16 +59,16 @@ bool FUStat_StatsComponent_Delegates_ClearBodyTest::RunTest(const FString& Param
 	StatsComponent->ModifyStatsUniformly(-10, EStatValueType::Current, EModificationMode::AddPercentage);
 
 	// Check PhA
-	const float ExpectedPhA = OriginalPhA * 0.9f;
-	TestTrue(FString::Printf(TEXT("Decreased PhA by 10 percent?: Expected [%s] vs Actual [%s]"),
+	const float ExpectedPhA = OriginalPhA;
+	TestTrue(FString::Printf(TEXT("Unable to decrease PhA?: Expected [%s] vs Actual [%s]"),
 		*FString::SanitizeFloat(ExpectedPhA),
 		*FString::SanitizeFloat(StatsComponent->PhysicalAttack.GetCurrentValue())),
 	FMathf::Abs(ExpectedPhA - StatsComponent->PhysicalAttack.GetCurrentValue())
 		< UStatUnitTestUtilities::TOLERANCE);
 
 	// Check HP
-	const float ExpectedHP = OriginalHP;
-	TestTrue(FString::Printf(TEXT("HP stayed the same?: Expected [%s] vs Actual [%s]"),
+	const float ExpectedHP = OriginalHP * 0.9f;
+	TestTrue(FString::Printf(TEXT("HP decreased?: Expected [%s] vs Actual [%s]"),
 		*FString::SanitizeFloat(ExpectedHP),
 		*FString::SanitizeFloat(StatsComponent->Health.GetCurrentValue())),
 	FMathf::Abs(ExpectedHP - StatsComponent->Health.GetCurrentValue())
