@@ -160,21 +160,21 @@ public:
 	virtual int MaxLevel();
 
 	EFFECT_DELEGATES_OneParam(MaxLevel, int&)
-
-	// todo
 	
 	/**
      * The minimum level. Overrideable.
      */
     UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-    virtual int MinLevel(){return 1;}
+    virtual int MinLevel();
+
+	EFFECT_DELEGATES_OneParam(MinLevel, int&)
 
 	/**
 	* The relationship between level and cumulativeExp is:
 	*	CumulativeExp = Level ^ ExpExponent
 	*/
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	static float ExpExponent(){return 3;}
+	static float ExpExponent();
 
 	/**
 	 * Retrieves the minimum amount of (cumulative) experience points required for the target level.
@@ -211,6 +211,8 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
 	float GetExpYield(UStatsComponent* VictoriousMonster);
+
+	EFFECT_DELEGATES_TwoParams(GetExpYield, UStatsComponent*, float&)
 
 #pragma endregion
 
@@ -280,8 +282,10 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
 	void RandomizeStats(
-		const int MinBaseStat = 50, const int MaxBaseStat = 150,
-		const int MinBasePairs = 1, const int MaxBasePairs = 100);
+		int MinBaseStat = 50, int MaxBaseStat = 150,
+		int MinBasePairs = 1, int MaxBasePairs = 100);
+
+	EFFECT_DELEGATES_FourParams(RandomizeStats, int&, int&, int&, int&)
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
 	void RandomizeBasePairs(const int MinBasePairs = 1, const int MaxBasePairs = 100);

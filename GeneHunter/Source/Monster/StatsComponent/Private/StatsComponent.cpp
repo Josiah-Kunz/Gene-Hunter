@@ -118,6 +118,19 @@ int UStatsComponent::MaxLevel()
 	return MaxLevel;
 }
 
+int UStatsComponent::MinLevel()
+{
+	int MinLevel = 1;
+	ExecuteBeforeMinLevel(MinLevel);
+	ExecuteAfterMinLevel(MinLevel);
+	return MinLevel;
+}
+
+float UStatsComponent::ExpExponent()
+{
+	return 3;
+}
+
 float UStatsComponent::GetCumulativeExpFromLevel(const int TargetLevel)
 {
 	return FMathf::Pow(TargetLevel, ExpExponent());
@@ -159,7 +172,7 @@ float UStatsComponent::GetExpYield(UStatsComponent* VictoriousMonster)
 	LevelDiff = FMath::Min(10, LevelDiff); // Cap benefits at +10 levels
 
 	// Return based on formula
-	return
+	float Yield =
 
 		// Base
 		BaseExpYield
@@ -170,15 +183,24 @@ float UStatsComponent::GetExpYield(UStatsComponent* VictoriousMonster)
 		// Reward for "punching up" and defeating a Monster bigger than you
 		* FMathf::Pow(1.5f, FMath::Floor((LevelDiff/2.0f)))
 	;
-	
+
+	// Delegates
+	ExecuteBeforeGetExpYield(VictoriousMonster, Yield);
+	ExecuteAfterGetExpYield(VictoriousMonster, Yield);
+
+	// Return
+	return Yield;
 }
 
 #pragma endregion
 
 void UStatsComponent::RandomizeStats(
-	const int MinBaseStat, const int MaxBaseStat,
-	const int MinBasePairs, const int MaxBasePairs)
+	int MinBaseStat, int MaxBaseStat,
+	int MinBasePairs, int MaxBasePairs)
 {
+
+	ExecuteBeforeRandomizeStats(MinBaseStat, MaxBaseStat, MinBasePairs, MaxBasePairs);
+	
 	for(FStat* Stat : StatsArray)
 	{
 		if (MaxBaseStat > MinBaseStat)
@@ -187,6 +209,8 @@ void UStatsComponent::RandomizeStats(
 			Stat->BasePairs = FMath::RandRange(MinBasePairs, MaxBasePairs);
 		Stat->Update(GetLevel());
 	}
+
+	ExecuteAfterRandomizeStats(MinBaseStat, MaxBaseStat, MinBasePairs, MaxBasePairs);
 }
 
 void UStatsComponent::RandomizeBasePairs(const int MinBasePairs, const int MaxBasePairs)
