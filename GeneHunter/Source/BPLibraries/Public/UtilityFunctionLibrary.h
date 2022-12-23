@@ -74,7 +74,10 @@ public:
 	Delegate.Execute( BaseName##P1 );} 
 
 /**
- * Creates two arrays of delegates: Before##BaseName and After##BaseName.
+ * Creates:
+ *	- The delegate type FBaseNameDelegate
+ *	- The before/after arrays of delegates: TArray<FBaseNameDelegate> BeforeBaseNameArray
+ *	- A function for each before/after to execute the arrays: ExecuteBeforeBaseName (...)
  */
 #define EFFECT_DELEGATES(BaseName) \
 	DECLARE_DELEGATE (F##BaseName##Delegate );\

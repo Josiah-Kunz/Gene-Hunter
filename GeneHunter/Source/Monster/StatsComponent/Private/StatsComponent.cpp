@@ -29,24 +29,33 @@ void UStatsComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	// ...
 }
 
-int UStatsComponent::GetBaseExpYield() const
+int UStatsComponent::GetBaseExpYield() 
 {
-	
+	ExecuteBeforeGetBaseExpYield(BaseExpYield);
+	ExecuteAfterGetBaseExpYield(BaseExpYield);
 	return BaseExpYield;
 }
 
-void UStatsComponent::SetBaseExpYield(const int NewBaseExpYield)
+void UStatsComponent::SetBaseExpYield(int NewBaseExpYield)
 {
+	ExecuteBeforeSetBaseExpYield(GetBaseExpYield(), NewBaseExpYield);
 	BaseExpYield = NewBaseExpYield;
+	ExecuteAfterSetBaseExpYield(GetBaseExpYield(), NewBaseExpYield);
 }
 
-int UStatsComponent::GetCumulativeExp() const
+int UStatsComponent::GetCumulativeExp()
 {
+	ExecuteBeforeGetCumulativeExp(CumulativeExp);
+	ExecuteAfterGetCumulativeExp(CumulativeExp);
 	return CumulativeExp;
 }
 
-void UStatsComponent::SetCumulativeExp(const int NewCumulativeExp)
+void UStatsComponent::SetCumulativeExp(int NewCumulativeExp)
 {
+
+	// Delegate
+	ExecuteBeforeSetCumulativeExp(GetCumulativeExp(), NewCumulativeExp);
+	
 	// Cache old (it's a surprise tool that will help us later!)
 	const int OldLevel = GetLevel();
 
@@ -69,29 +78,44 @@ void UStatsComponent::SetCumulativeExp(const int NewCumulativeExp)
 	// Did it change?
 	if (NewLevel != OldLevel)
 		RecalculateStats();
+
+	// Delegate
+	ExecuteAfterSetCumulativeExp(GetCumulativeExp(), NewCumulativeExp);
 }
 
-void UStatsComponent::AddExp(const int AddedCumulativeExp)
+void UStatsComponent::AddExp(int AddedCumulativeExp)
 {
+	ExecuteBeforeAddExp(GetCumulativeExp(), AddedCumulativeExp);
 	SetCumulativeExp(GetCumulativeExp() + AddedCumulativeExp);
+	ExecuteAfterAddExp(GetCumulativeExp(), AddedCumulativeExp);
 }
 
-int UStatsComponent::GetLevel() const
+int UStatsComponent::GetLevel() 
 {
 	return FMath::Floor(FMathf::Pow(GetCumulativeExp(), 1/ExpExponent()));
 }
 
-void UStatsComponent::SetLevel(const int NewLevel)
+void UStatsComponent::SetLevel(int NewLevel)
 {
+	ExecuteBeforeSetLevel(GetLevel(), NewLevel);
 	const int Level = FMathf::Clamp(NewLevel, MinLevel(), MaxLevel());
 	SetCumulativeExp(GetCumulativeExpFromLevel(Level));
 	for(FStat* Stat : StatsArray)
 		Stat->Update(GetLevel());
+	ExecuteAfterSetLevel(GetLevel(), NewLevel);
 }
 
 void UStatsComponent::AddLevels(const int AddedLevels)
 {
 	SetLevel(GetLevel() + AddedLevels);
+}
+
+int UStatsComponent::MaxLevel()
+{
+	int MaxLevel = 100;
+	ExecuteBeforeMaxLevel(MaxLevel);
+	ExecuteAfterMaxLevel(MaxLevel);
+	return MaxLevel;
 }
 
 float UStatsComponent::GetCumulativeExpFromLevel(const int TargetLevel)
@@ -126,7 +150,7 @@ float UStatsComponent::GetMaxExp()
 	return GetCumulativeExpFromLevel(MaxLevel());
 }
 
-float UStatsComponent::GetExpYield(const UStatsComponent* VictoriousMonster)
+float UStatsComponent::GetExpYield(UStatsComponent* VictoriousMonster)
 {
 
 	// Get level difference. If the enemy is lower level, they get more exp for defeating this Monster.
