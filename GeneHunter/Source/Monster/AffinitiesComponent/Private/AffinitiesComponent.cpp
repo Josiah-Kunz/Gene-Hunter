@@ -26,6 +26,25 @@ void UAffinitiesComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
+int UAffinitiesComponent::GetUnspentPoints()
+{
+	ExecuteBeforeGetUnspentPoints(UnspentPoints);
+	ExecuteAfterGetUnspentPoints(UnspentPoints);
+	return UnspentPoints;
+}
+
+void UAffinitiesComponent::SetUnspentPoints(int NewPoints)
+{
+	ExecuteBeforeSetUnspentPoints(UnspentPoints, NewPoints);
+	UnspentPoints = NewPoints;
+	ExecuteAfterSetUnspentPoints(UnspentPoints, NewPoints);
+}
+
+void UAffinitiesComponent::AddUnspentPoints(const int AddedPoints)
+{
+	SetUnspentPoints(GetUnspentPoints() + AddedPoints);
+}
+
 bool UAffinitiesComponent::CanChooseNewType()
 {
 	return GetNumTypes() < MaxUsableAffinities;
@@ -40,7 +59,8 @@ void UAffinitiesComponent::GetTypes(TArray<UType*>& Types)
 }
 
 int UAffinitiesComponent::GetNumTypes()
-{	TArray<UType*> Types;
+{
+	TArray<UType*> Types;
 	GetTypes(Types);
 	return Types.Num();
 }

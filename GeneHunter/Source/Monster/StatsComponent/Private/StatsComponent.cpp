@@ -237,7 +237,7 @@ void UStatsComponent::ModifyStatsUniformly(const float UniformMod, const EStatVa
 		ModifyStatInternal(Stat, UniformMod, ValueType, Mode);
 }
 
-void UStatsComponent::RecalculateStats(bool bResetCurrent)
+void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 {
 	for(FStat* Stat : StatsArray)
 	{

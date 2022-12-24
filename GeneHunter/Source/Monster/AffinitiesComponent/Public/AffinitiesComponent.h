@@ -6,6 +6,7 @@
 // Monster utilities
 #include "Affinity.h"
 #include "EffectableComponent.h"
+#include "UtilityFunctionLibrary.h"
 
 // .gen
 #include "AffinitiesComponent.generated.h"
@@ -33,13 +34,51 @@ public:
 
 #pragma endregion
 
+private:
+	
 	/**
 	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any
 	 * new Monster so that affinities can be customized from the get-go (so the player has agency which makes for more
 	 * exciting gameplay).
 	 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Affinities")
+	UPROPERTY(VisibleDefaultsOnly, Category = "Level")
 	int UnspentPoints = 1;
+
+public:
+
+	/**
+	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any
+	 * new Monster so that affinities can be customized from the get-go (so the player has agency which makes for more
+	 * exciting gameplay).
+	 */
+	int GetUnspentPoints();
+
+	/**
+	 * Parameters:
+	 *	- Unspent points
+	 */
+	EFFECT_DELEGATES_OneParam(GetUnspentPoints, int&)
+
+	/**
+	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any
+	 * new Monster so that affinities can be customized from the get-go (so the player has agency which makes for more
+	 * exciting gameplay).
+	 */
+	void SetUnspentPoints(int NewPoints);
+
+	/**
+	 * Parameters:
+	 *	- Unspent points
+	 *	- Attempted value
+	 */
+	EFFECT_DELEGATES_TwoParams(SetUnspentPoints, int&, int&)
+
+	/**
+	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any
+	 * new Monster so that affinities can be customized from the get-go (so the player has agency which makes for more
+	 * exciting gameplay).
+	 */
+	void AddUnspentPoints(int AddedPoints = 1);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Affinities")
 	TArray<FAffinity> Affinities;
