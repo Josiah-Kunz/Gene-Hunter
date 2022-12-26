@@ -3,21 +3,10 @@
 // Engine
 #include "CoreMinimal.h"
 
-// Stats
-#include "Health.h"
-#include "PhysicalAttack.h"
-#include "PhysicalDefense.h"
-#include "SpecialAttack.h"
-#include "SpecialDefense.h"
-#include "Haste.h"
-#include "CriticalHit.h"
-
 // Effects
 #include "Effects/Public/EffectableComponent.h"
 
 // Utilities
-#include "ModificationMode.h"
-#include "StatValueType.h"
 #include "UtilityFunctionLibrary.h"
 
 // .gen
