@@ -26,12 +26,17 @@
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "Types",
+			"Name": "LevelComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
 		{
 			"Name": "StatsComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "Types",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
