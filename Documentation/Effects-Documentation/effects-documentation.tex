@@ -9,18 +9,32 @@
 \newcommand{\SubItem}[1]{\begin{itemize}\item{#1}\end{itemize}}
 
 \begin{itemize}
-	\item{\textbf{\texttt{EffectableComponent}s} are \texttt{ActorComponent}s that allow for delegation (effects). They have predefined places that allow for code modification. 
-		\SubItem{Let's use \texttt{StatsComponent} as an example. Say we want a Pok\'{e}mon-style ``Adamant'' nature ($+$10\% PhA/$-$10\%SpA). One such place for modification is in the function \texttt{RecalculateStats}.}
+	\item{\textbf{\code{EffectableComponent}s} are \code{ActorComponent}s that allow for delegation (effects). They have predefined places that allow for code modification. 
+		\SubItem{Let's use \code{StatsComponent} as an example. Say we want a Pok\'{e}mon-style ``Adamant'' nature ($+$10\% PhA/$-$10\%SpA). One such place for modification is in the function \code{RecalculateStats}.}
 		\begin{center}
 			\includegraphics[scale=2.5]{recalculate-stats-code}
 		\end{center}
 		}
-	\item{\textbf{Delegate arrays} are variables inside of \texttt{EffectableComponent}s. They hold functions that execute when needed.
-		\SubItem{Let's use \texttt{StatsComponent}'s \texttt{AfterRecalculateStatsArray} in our example. In this case, after stats are recalculated (say, on level-up), the base PhA would increase by 10\% and the base SpA would decrease by 10\% (additively): }
+	\item{\textbf{Delegate arrays} are variables inside of \code{EffectableComponent}s. They hold functions that execute when needed.
+		\SubItem{Let's use \code{StatsComponent}'s \code{AfterRecalculateStatsArray} in our example. In this case, after stats are recalculated (say, on level-up), the base PhA would increase by 10\% and the base SpA would decrease by 10\% (additively): }
 		\begin{center}
 			\includegraphics[scale=2.5]{adamant-code}
 		\end{center}		 
 		}
 \end{itemize}
+
+\begin{longtblr}[
+	caption = {Type Trait Suggestions},
+	label = {type-traits},
+]{
+	colspec= {c X[wd=15em]},
+	hline{1,Z} = {2pt},
+	hlines,
+	row{1} = {font=\bfseries},
+}
+
+	A & B
+	
+\end{longtblr}
 
 \input{../postamble}
