@@ -23,18 +23,75 @@
 		}
 \end{itemize}
 
+\sect{List of \code{EffectableComponent}s and Delegate Arrays}
+
+The following tables show all implemented \code{EffectableComponent}s and their delegate arrays. Note the ``base name'' indicates existence of:
+
+\begin{enumerate}
+	\item{the delegate type \code{FBaseNameDelegate};}
+	\item{the before/after arrays of delegates: \\\code{TArray<FBaseNameDelegate> BeforeBaseNameArray}; and}
+	\item{a function for each before/after to execute the arrays: \code{ExecuteBeforeBaseName (...)}.}
+\end{enumerate}
+
+\noindent Note that the philosophy applies to what is \textit{probable} rather than what is \textit{possible}. Hence the list meant to be practical rather than exhaustive.
+
 \begin{longtblr}[
-	caption = {Type Trait Suggestions},
+	caption = {Delegate Arrays for \code{AffinitiesComponent}},
 	label = {type-traits},
 ]{
-	colspec= {c X[wd=15em]},
+	colspec= {Q[r, wd=0.25\linewidth] Q[l, wd=0.35\linewidth] Q[l, wd=0.25\linewidth]},
 	hline{1,Z} = {2pt},
 	hlines,
 	row{1} = {font=\bfseries},
 }
 
-	A & B
+	Delegate Array Base Name	& Parameters	& Note\\
+	GetUnspentPoints			& \code{int\&} Unspent points\\
+	SetUnpentPoints				& \code{int\&} Current unspent points\\
+								& \code{int\&} Attempted value being set\\
 	
 \end{longtblr}
+
+\begin{longtblr}[
+	caption = {Delegate Arrays for \code{StatsComponent}},
+	label = {type-traits},
+]{
+	colspec= {Q[r, wd=0.25\linewidth] Q[l, wd=0.35\linewidth] Q[l, wd=0.25\linewidth]},
+	hline{1,Z} = {2pt},
+	hlines,
+	row{1} = {font=\bfseries},
+}
+
+	Delegate Array Base Name	& Parameters	& Note\\
+	GetBaseExpYield				& \code{int} Unaltered base exp yield\\
+	SetBaseExpYield				& \code{int} Unaltered base exp yield\\
+								& \code{int\&} Attempted value being set\\
+	GetExpYield					& \code{UStatsComponent*} Victorious Monster\\
+								& \code{float\&} Awarded exp\\
+	GetCumulativeExp			& \code{int\&} Current CEXP\\
+	SetCumulativeExp			& \code{int} Current CEXP\\
+								& \code{int\&} Attempted CEXP\\
+	AddExp						& \code{int} Current exp	& No GetExp (=GetLevel)\\
+								& \code{int\&} Added exp\\
+	SetLevel					& \code{int} Current level	& No GetLevel\\
+								& \code{int\&} Attempted level\\
+	MaxLevel					& \code{int\&} The maximum level	& This is a getter function only\\
+	MinLevel					& \code{int\&} The minimum level	& This is a getter function only\\
+	RandomizeStats				& \code{int\&} Min base stat		& This is the one with four parameters, but is called by all others\\
+								& \code{int\&} Max base stat\\
+								& \code{int\&} Min base pairs\\
+								& \code{int\&} Max base pairs\\
+	RecalculateStats			& \code{FStat*} Each stat in the loop	& Rather than make each individual stat an \code{EffectableComponent}, you can go stat-by-stat here\\
+								& \code{bool} If true, reset the current stats to match the newly-calculated permanent stats\\
+	ModifyStat					& \code{FStat*} The stat being modified\\
+								& \code{float\&} The value of modification\\
+								& \code{EStatValueType\&} The value type (e.g., current or permanent)\\
+								& \code{EModificationMode\&} E.g., additive or multiplicative\\
+	
+\end{longtblr}
+
+\sect{Making Your Own Effects}
+
+Suppose you want to make your own effect from scratch. \todo{Lay this out!}
 
 \input{../postamble}

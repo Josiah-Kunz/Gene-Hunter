@@ -23,6 +23,11 @@
 // .gen
 #include "StatsComponent.generated.h"
 
+/**
+ * A class to hold, track, and calculate FStats such as Health, Physical Attack, and Haste, but also
+ *	level and exp yield. It should only be used for "invisible" stats (think command line simulator) and *not* be used
+ *	for movement modifiers like run speed or jump height.
+ */
 UCLASS(ClassGroup=(Monster))
 class STATSCOMPONENT_API UStatsComponent : public UEffectableComponent
 {

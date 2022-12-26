@@ -11,6 +11,9 @@
 // .gen
 #include "AffinitiesComponent.generated.h"
 
+/**
+ * A class for storing Types and points, but *not* for calculating Type advantages or doing something with those points.
+ */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class AFFINITIESCOMPONENT_API UAffinitiesComponent : public UEffectableComponent
 {
