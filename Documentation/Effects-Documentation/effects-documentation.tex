@@ -37,7 +37,7 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 
 \begin{longtblr}[
 	caption = {Delegate Arrays for \code{AffinitiesComponent}},
-	label = {type-traits},
+	label = {delegate-arrays-affinitiescomponent},
 ]{
 	colspec= {Q[r, wd=0.25\linewidth] Q[l, wd=0.35\linewidth] Q[l, wd=0.25\linewidth]},
 	hline{1,Z} = {2pt},
@@ -53,8 +53,8 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 \end{longtblr}
 
 \begin{longtblr}[
-	caption = {Delegate Arrays for \code{StatsComponent}},
-	label = {type-traits},
+	caption = {Delegate Arrays for \code{LevelComponent}},
+	label = {delegate-arrays-levelcomponent},
 ]{
 	colspec= {Q[r, wd=0.25\linewidth] Q[l, wd=0.35\linewidth] Q[l, wd=0.25\linewidth]},
 	hline{1,Z} = {2pt},
@@ -77,6 +77,20 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 								& \code{int\&} Attempted level\\
 	MaxLevel					& \code{int\&} The maximum level	& This is a getter function only\\
 	MinLevel					& \code{int\&} The minimum level	& This is a getter function only\\
+\end{longtblr}
+
+
+\begin{longtblr}[
+	caption = {Delegate Arrays for \code{StatsComponent}},
+	label = {delegate-arrays-statscomponent},
+]{
+	colspec= {Q[r, wd=0.25\linewidth] Q[l, wd=0.35\linewidth] Q[l, wd=0.25\linewidth]},
+	hline{1,Z} = {2pt},
+	hlines,
+	row{1} = {font=\bfseries},
+}
+
+	Delegate Array Base Name	& Parameters	& Note\\
 	RandomizeStats				& \code{int\&} Min base stat		& This is the one with four parameters, but is called by all others\\
 								& \code{int\&} Max base stat\\
 								& \code{int\&} Min base pairs\\

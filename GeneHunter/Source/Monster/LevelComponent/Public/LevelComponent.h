@@ -28,10 +28,6 @@ public:
 	// Sets default values for this component's properties
 	ULevelComponent();
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
 #pragma endregion
 
 #pragma region Exp yield

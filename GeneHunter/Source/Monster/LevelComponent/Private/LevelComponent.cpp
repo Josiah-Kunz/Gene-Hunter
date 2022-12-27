@@ -10,15 +10,6 @@ ULevelComponent::ULevelComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-// Called when the game starts
-void ULevelComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
-	
-}
-
 #pragma endregion
 
 #pragma region Exp yield
