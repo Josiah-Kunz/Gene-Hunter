@@ -29,11 +29,12 @@
  *	level and exp yield. It should only be used for "invisible" stats (think command line simulator) and *not* be used
  *	for movement modifiers like run speed or jump height.
  */
-UCLASS(ClassGroup=(Monster))
+UCLASS(ClassGroup=(Monster), BlueprintType, meta=(BlueprintSpawnableComponent,
+	ShortTooltip = "Combat Stats"))
 class STATSCOMPONENT_API UStatsComponent : public UEffectableComponent
 {
 	
-#pragma region Standard stuff
+#pragma region Inherited functions
 	
 	GENERATED_BODY()
 
@@ -42,21 +43,22 @@ public:
 	// Sets default values for this component's properties
 	UStatsComponent();
 
+	virtual void OnComponentCreated() override;
+
+private:
+
+	void EnsureLevelComponent();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
-public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-							   FActorComponentTickFunction* ThisTickFunction) override;
 
 #pragma endregion
 
 #pragma region Stat variables
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
 	ULevelComponent* LevelComponent;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")

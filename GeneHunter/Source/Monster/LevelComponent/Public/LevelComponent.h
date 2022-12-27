@@ -15,7 +15,7 @@
 /**
  * A class to hold, track, and calculate level, current exp, cumulative exp, and exp yield. 
  */
-UCLASS(ClassGroup=(Monster))
+UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class LEVELCOMPONENT_API ULevelComponent : public UEffectableComponent
 {
 	
@@ -31,11 +31,6 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
-public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-							   FActorComponentTickFunction* ThisTickFunction) override;
 
 #pragma endregion
 

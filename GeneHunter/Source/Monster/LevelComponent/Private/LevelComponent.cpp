@@ -19,15 +19,6 @@ void ULevelComponent::BeginPlay()
 	
 }
 
-
-// Called every frame
-void ULevelComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-
 #pragma endregion
 
 #pragma region Exp yield

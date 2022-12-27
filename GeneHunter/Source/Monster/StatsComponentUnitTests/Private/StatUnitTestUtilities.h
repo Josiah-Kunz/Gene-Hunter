@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "StatsComponent.h"
-#include "Misc/AutomationTest.h"
 #include "StatUnitTestUtilities.generated.h"
 
 UCLASS()

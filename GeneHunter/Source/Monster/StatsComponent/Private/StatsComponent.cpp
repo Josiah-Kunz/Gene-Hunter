@@ -8,7 +8,62 @@
 UStatsComponent::UStatsComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-	RandomizeStats();
+}
+
+void UStatsComponent::OnComponentCreated()
+{
+	Super::OnComponentCreated();
+	UE_LOG(LogTemp, Warning, TEXT("OnComponentCreated"))
+	EnsureLevelComponent();
+}
+
+void UStatsComponent::EnsureLevelComponent()
+{
+	if (GetOwner() != nullptr)
+	{
+
+		// Cache
+		const ULevelComponent* OldLevelComponent = LevelComponent;
+
+		// Find or create
+		if (LevelComponent == nullptr)
+			LevelComponent = GetOwner()->FindComponentByClass<ULevelComponent>();
+		if (LevelComponent == nullptr)
+		{
+			//GetOwner()->AddComponentByClass(ULevelComponent::StaticClass(), false,
+			//	GetOwner()->GetTransform(), true);
+
+			/*
+			USceneComponent* Created = NewObject<USceneComponent>(GetOwner(), ULevelComponent::StaticClass(), TEXT("Level Component"));
+			Created->RegisterComponent();
+			Created->AttachToComponent(GetOwner()->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
+			*/
+			
+			
+			LevelComponent = NewObject<ULevelComponent>(GetOwner(), TEXT("Level Component"));
+			GetOwner()->AddInstanceComponent(LevelComponent);
+
+			
+			UE_LOG(LogTemp, Warning, TEXT("Created level component"))
+		}
+
+		// Anything changed?
+		if (LevelComponent != nullptr && LevelComponent != OldLevelComponent)
+		{
+			// Delegate for changing stats on level up
+			ULevelComponent::FSetCumulativeExpDelegate UpdateStatsAfterLevelUp;
+			UpdateStatsAfterLevelUp.BindLambda([this](const int OldCEXP, const int NewCEXP)
+			{
+				const int OldLevel = LevelComponent->GetLevel();
+				const int NewLevel = ULevelComponent::GetLevelFromCEXP(NewCEXP);
+				if (NewLevel != OldLevel)
+					RecalculateStats();
+			});
+	
+			// Start with random stats
+			RandomizeStats();
+		}
+	}
 }
 
 // Called when the game starts
@@ -16,22 +71,7 @@ void UStatsComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Get LevelComponent or create one if none exists
-	LevelComponent = GetOwner()->FindComponentByClass<ULevelComponent>();
-	if (LevelComponent == nullptr)
-		GetOwner()->AddComponentByClass(ULevelComponent::StaticClass(), false,
-			GetOwner()->GetTransform(), true);
-		//UE_LOG(LogTemp, Error, TEXT("No LevelComponent attached!"))
-
-	// Delegate for changing stats on level up
-	ULevelComponent::FSetCumulativeExpDelegate UpdateStatsAfterLevelUp;
-	UpdateStatsAfterLevelUp.BindLambda([this](const int OldCEXP, const int NewCEXP)
-	{
-		const int OldLevel = LevelComponent->GetLevel();
-		const int NewLevel = ULevelComponent::GetLevelFromCEXP(NewCEXP);
-		if (NewLevel != OldLevel)
-			RecalculateStats();
-	});
+	
 
 
 	/*
@@ -43,15 +83,6 @@ void UStatsComponent::BeginPlay()
 	LevelComponent->AfterSetLevelArray.Add(UpdateStatsAfterLevelUp);
 	*/
 	
-}
-
-
-// Called every frame
-void UStatsComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
 void UStatsComponent::RandomizeStats(
