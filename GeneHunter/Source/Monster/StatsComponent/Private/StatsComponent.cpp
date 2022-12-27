@@ -13,13 +13,12 @@ UStatsComponent::UStatsComponent()
 void UStatsComponent::OnComponentCreated()
 {
 	Super::OnComponentCreated();
-	UE_LOG(LogTemp, Warning, TEXT("OnComponentCreated"))
-	EnsureLevelComponent();
+	EnsureLevelComponent(GetOwner());
 }
 
-void UStatsComponent::EnsureLevelComponent()
+void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 {
-	if (GetOwner() != nullptr)
+	if (Owner != nullptr)
 	{
 
 		// Cache
@@ -27,24 +26,11 @@ void UStatsComponent::EnsureLevelComponent()
 
 		// Find or create
 		if (LevelComponent == nullptr)
-			LevelComponent = GetOwner()->FindComponentByClass<ULevelComponent>();
+			LevelComponent = Owner->FindComponentByClass<ULevelComponent>();
 		if (LevelComponent == nullptr)
 		{
-			//GetOwner()->AddComponentByClass(ULevelComponent::StaticClass(), false,
-			//	GetOwner()->GetTransform(), true);
-
-			/*
-			USceneComponent* Created = NewObject<USceneComponent>(GetOwner(), ULevelComponent::StaticClass(), TEXT("Level Component"));
-			Created->RegisterComponent();
-			Created->AttachToComponent(GetOwner()->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
-			*/
-			
-			
-			LevelComponent = NewObject<ULevelComponent>(GetOwner(), TEXT("Level Component"));
-			GetOwner()->AddInstanceComponent(LevelComponent);
-
-			
-			UE_LOG(LogTemp, Warning, TEXT("Created level component"))
+			LevelComponent = NewObject<ULevelComponent>(Owner, TEXT("Level Component"));
+			Owner->AddInstanceComponent(LevelComponent);
 		}
 
 		// Anything changed?

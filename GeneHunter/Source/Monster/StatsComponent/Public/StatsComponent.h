@@ -45,9 +45,7 @@ public:
 
 	virtual void OnComponentCreated() override;
 
-private:
-
-	void EnsureLevelComponent();
+	void EnsureLevelComponent(AActor* Owner);
 
 protected:
 	// Called when the game starts
