@@ -1,17 +1,15 @@
 ﻿using UnrealBuildTool;
 
-public class StatsComponent : ModuleRules{
+public class LevelComponent : ModuleRules{
 
-	public StatsComponent(ReadOnlyTargetRules Target) : base(Target){
+	public LevelComponent(ReadOnlyTargetRules Target) : base(Target){
 
 		PrivateIncludePaths.AddRange(new string[]{
-			"Monster/StatsComponent/Private",
-			"Monster/StatsComponent/Private/Stats"
+			"Monster/LevelComponent/Private",
 		});
 
 		PublicIncludePaths.AddRange(new string[]{
-			"Monster/StatsComponent/Public",
-			"Monster/StatsComponent/Public/Stats"
+			"Monster/LevelComponent/Public",
 		});
 		
 		PublicDependencyModuleNames.AddRange(new string[]{
@@ -19,7 +17,6 @@ public class StatsComponent : ModuleRules{
 		  , "UI"		// for SupportingText.h
 		  , "Effects"	// for UEffectableComponent
 		  , "BPLibraries"		// for effect delegate macros
-		  , "LevelComponent"	// Stats depend on Level
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{

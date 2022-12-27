@@ -40,6 +40,7 @@ public class DetailsPanelArchitect : ModuleRules
 				// Types to customize
 				"AffinitiesComponent",
 				"StatsComponent",
+				"LevelComponent",
 			}
 		);
 			

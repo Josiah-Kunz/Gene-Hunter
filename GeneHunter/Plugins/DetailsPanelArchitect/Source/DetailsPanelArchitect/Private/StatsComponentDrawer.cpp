@@ -25,9 +25,6 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 	StatsComponent = GetStatsComponent(DetailBuilder);
 
 	// Details
-	CustomizeLevelDetails(DetailBuilder);
-	CustomizeExpDetails(DetailBuilder);
-	CustomizeCXPDetails(DetailBuilder);
 	CustomizeCurrentStatsDetails(DetailBuilder);
 	CustomizeBaseStatsDetails(DetailBuilder);
 	CustomizeBasePairsDetails(DetailBuilder);
@@ -36,166 +33,6 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 #pragma endregion
 
 #pragma region Private customization functions
-
-void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBuilder)
-{
-
-	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
-		FName(LevelCategoryName),
-		FText::FromString(LevelCategoryName),
-		ECategoryPriority::Important);
-
-	Category.AddCustomRow(LOCTEXT("Keyword", "Level")).WholeRowContent()[
-			SNew(SStatsBar)
-				.LabelText(FText::FromString("Lv."))
-				.LabelTooltip(FText::FromString("Level"))
-				.TextBoxText(FText::FromString(FString::FromInt(StatsComponent->GetLevel())))
-				.TextBoxTooltip(FText::FromString(FString::Printf(TEXT("%i"), StatsComponent->GetLevel())))
-				.OnTextCommitted([this, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
-					{
-						const int NewLevel = UUtilityFunctionLibrary::FromSI(InText);
-						if (NewLevel == StatsComponent->GetLevel())
-							return;
-						if (UserCommitted(InTextCommit))
-							StatsComponent->SetLevel(NewLevel);
-						SaveAndRefresh(DetailBuilder);
-					})
-				.MaxText(FText::FromString(FString::FromInt(StatsComponent->MaxLevel())))
-				.MaxTooltip(FText::FromString(FString::FromInt(StatsComponent->MaxLevel())))
-				.BarColor(FLinearColor::Green)
-				.BarFraction((1.0f * StatsComponent->GetLevel())/StatsComponent->MaxLevel())
-				.BarTooltip(FText::FromString(
-					FString::Printf(TEXT(
-					"The higher the level, the stronger the stats! The max level is %s."),
-					*FString::FromInt(StatsComponent->MaxLevel())
-					)))
-			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
-				TAttribute<bool>::CreateLambda([this]() 
-				{ 
-					return StatsComponent->GetLevel() != 1;
-				}), 
-				FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
-				{ 
-					StatsComponent->SetLevel(1);
-					DetailBuilder.ForceRefreshDetails();
-				})
-			))
-	;
-}
-
-void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuilder)
-{
-
-	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
-	FName(LevelCategoryName),
-	FText::FromString(LevelCategoryName),
-	ECategoryPriority::Important);
-
-	Category.AddCustomRow(LOCTEXT("Keyword", "Exp")).WholeRowContent()[
-		SNew(SStatsBar)
-			.LabelText(FText::FromString("Exp"))
-			.LabelTooltip(FText::FromString("Experience points within the level (non-cumulative experience points)"))
-			.TextBoxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetLevelExp(), SigFigs, true))
-			.OnTextCommitted([this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
-				{
-
-					// Check if anything happened
-					const int DiffXP = UUtilityFunctionLibrary::FromSI(InText) - StatsComponent->GetLevelExp();
-					if (DiffXP == 0)
-						return;
-
-					// Check to see if anything changed (avoids rounding errors)
-					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetLevelExp(), SigFigs, true)))
-						return;
-
-					// Use did something
-					if (UserCommitted(CommitType))
-						StatsComponent->AddExp(DiffXP);
-
-					// Refresh either way
-					DetailBuilder.ForceRefreshDetails();
-				})
-			.TextBoxTooltip(FText::FromString(FString::Printf(
-			TEXT("%s"),
-				*FloatToFText(StatsComponent->GetLevelExp(), true).ToString()
-				)))
-			.MaxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetTotalLevelExp(), SigFigs, true))
-			.MaxTooltip(FText::FromString(FString::Printf(
-				TEXT("%s"),
-				*FloatToFText(StatsComponent->GetTotalLevelExp(), true).ToString()
-				)))
-			.BarColor(FLinearColor{0.878f, 0.690f, 1.0f, 1.0f})
-			.BarFraction(StatsComponent->GetLevelExp()/StatsComponent->GetTotalLevelExp())
-			.BarTooltip(FText::FromString("Change in exp = change in level"))
-			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
-					TAttribute<bool>::CreateLambda([this]() 
-					{ 
-						return StatsComponent->GetCumulativeExp() != StatsComponent->GetCumulativeExpFromLevel(StatsComponent->GetLevel());
-					}), 
-					FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
-					{ 
-						StatsComponent->SetCumulativeExp(StatsComponent->GetCumulativeExpFromLevel(StatsComponent->GetLevel()));
-						DetailBuilder.ForceRefreshDetails();
-					})
-				))
-	;
-}
-
-void StatsComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuilder)
-{
-
-	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
-	FName(LevelCategoryName),
-	FText::FromString(LevelCategoryName),
-	ECategoryPriority::Important);
-
-	Category.AddCustomRow(LOCTEXT("Keyword", "CXP")).WholeRowContent()[
-		SNew(SStatsBar)
-			.LabelText(FText::FromString("CXP"))
-			.LabelTooltip(FText::FromString("Cumulative experience points"))
-			.TextBoxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetCumulativeExp(), SigFigs, true))
-			.OnTextCommitted(
-				[this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
-				{
-
-					// Check to see if anything changed (avoids rounding errors)
-					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetCumulativeExp(), SigFigs, true)))
-						return;
-
-					// Change depending on commit type (might have hit "esc", so no changes)
-					if (UserCommitted(CommitType))
-						StatsComponent->SetCumulativeExp(UUtilityFunctionLibrary::FromSI(InText));
-
-					// Refresh either way
-					DetailBuilder.ForceRefreshDetails();
-				})
-			.TextBoxTooltip(FText::FromString(FString::Printf(
-					TEXT("%s"),
-					*FloatToFText(StatsComponent->GetCumulativeExp(), true).ToString()
-					)))
-			.MaxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetMaxExp(), SigFigs, true))
-			.MaxTooltip(FText::FromString(FString::Printf(
-				TEXT("Max cumulative exp at level %i is %s."),
-				StatsComponent->MaxLevel(),
-				*FloatToFText(StatsComponent->GetMaxExp(), true).ToString()
-				)))
-			.BarColor(FLinearColor{0.5f, 0, 0.5f})
-			.BarFraction(StatsComponent->GetCumulativeExp()/StatsComponent->GetMaxExp())
-			.BarTooltip(FText::FromString("Change in exp = change in level"))
-			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
-					TAttribute<bool>::CreateLambda([this]() 
-					{ 
-						return StatsComponent->GetCumulativeExp() != StatsComponent->GetCumulativeExpFromLevel(StatsComponent->MinLevel());
-						
-					}), 
-					FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
-					{ 
-						StatsComponent->SetCumulativeExp(0);
-						DetailBuilder.ForceRefreshDetails();
-					})
-				))
-	;
-}
 
 void StatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& DetailBuilder)
 {
@@ -224,6 +61,9 @@ void StatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& De
 	CURRENT_STAT_PROPERTY(SpecialDefense, GetCurrentValue(), MaxStatValue, false)
 	CURRENT_STAT_PROPERTY(Haste, GetCurrentValue(), MaxPercentValue, true)
 	CURRENT_STAT_PROPERTY(CriticalHit, GetCurrentValue(), MaxPercentValue, true)
+
+	// Set as first category
+	DetailBuilder.EditCategory(TEXT("Current Stats")).SetSortOrder(0);
 	
 }
 
@@ -237,7 +77,7 @@ void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& Detai
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
 		FName("Base Stats"),
 		FText::FromString("Base Stats"),
-		ECategoryPriority::Important);
+		ECategoryPriority::Default);
 
 #define HIDE_RESET() \
 	FResetToDefaultOverride::Create( \
@@ -310,7 +150,7 @@ void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& Detai
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
 		FName("Base Pairs"),
 		FText::FromString("Base Pairs"),
-		ECategoryPriority::Important);
+		ECategoryPriority::Default);
 	
 	// Button
 	Category.AddCustomRow(LOCTEXT("Keyword", "Base Pair Randomizer Button")).WholeRowContent()[

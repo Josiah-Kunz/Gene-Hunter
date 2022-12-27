@@ -9,7 +9,7 @@ class StatsComponentDrawer : public IDetailCustomization
 
 #pragma region Variables
 
-private:
+public:
 	inline constexpr static float Padding = 2;
 	inline constexpr static float StatInputWidth = 50;
 	inline constexpr static float StatAbbrevMaxWidth = 30;
@@ -18,8 +18,7 @@ private:
 	inline constexpr static float MaxHeight = 20;
 	inline constexpr static int SigFigs = 3;
 
-	const FString LevelCategoryName = "Level";
-	
+private:
 	UStatsComponent* StatsComponent = nullptr;
 
 
@@ -42,15 +41,6 @@ private:
 #pragma region Private customization functions
 
 private:
-
-	/** Customizes "level" and its bar. */
-	virtual void CustomizeLevelDetails(IDetailLayoutBuilder& DetailBuilder);
-
-	/** Customizes "level exp" (exp within the current level). */
-	virtual void CustomizeExpDetails(IDetailLayoutBuilder& DetailBuilder);
-
-	/** Customizes cumulative exp. */
-	virtual void CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuilder);
 
 	/** Customizes current and permanent stats. */
 	virtual void CustomizeCurrentStatsDetails(IDetailLayoutBuilder& DetailBuilder);

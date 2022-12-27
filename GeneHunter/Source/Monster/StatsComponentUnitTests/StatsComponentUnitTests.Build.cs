@@ -11,6 +11,7 @@ public class StatsComponentUnitTests : ModuleRules{
 		  , "CoreUObject"	// for UObjects (and their initializations)
 		  , "Engine"		// for UBlueprintFuncitonLibrary in StatUnitTestUtilities.h
 		  , "StatsComponent"	// for the type that we're testing
+		  , "LevelComponent"	// goes with StatsComponent
 		});
 	}
 }
