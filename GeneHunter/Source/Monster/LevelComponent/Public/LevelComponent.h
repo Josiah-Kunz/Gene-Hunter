@@ -3,14 +3,14 @@
 // Engine
 #include "CoreMinimal.h"
 
-// Effects
+// Other components
 #include "Effects/Public/EffectableComponent.h"
 
 // Utilities
 #include "UtilityFunctionLibrary.h"
 
 // .gen
-#include "StatsComponent.generated.h"
+#include "LevelComponent.generated.h"
 
 /**
  * A class to hold, track, and calculate level, current exp, cumulative exp, and exp yield. 
@@ -80,9 +80,9 @@ public:
 	 * Gets the amount of experience this Monster yields when defeated.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	float GetExpYield(UStatsComponent* VictoriousMonster);
+	float GetExpYield(ULevelComponent* VictoriousMonster);
 
-	EFFECT_DELEGATES_TwoParams(GetExpYield, UStatsComponent*, float&)
+	EFFECT_DELEGATES_TwoParams(GetExpYield, ULevelComponent*, float&)
 
 #pragma endregion
 
@@ -142,8 +142,17 @@ public:
 
 public:
 
+	/**
+	 * Gets the current level based on the amount of cumulative experience points.
+	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
 	int GetLevel();
+
+	/**
+	 * Retrieves the level from the given amount of cumulative experience points.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
+	static int GetLevelFromCEXP(const int CEXP);
 	
 	UFUNCTION(BlueprintCallable, Category="Level")
 	void SetLevel(int NewLevel);

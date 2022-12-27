@@ -16,11 +16,32 @@ void UStatsComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Get LevelComponent or create one if none exists
 	LevelComponent = GetOwner()->FindComponentByClass<ULevelComponent>();
 	if (LevelComponent == nullptr)
 		GetOwner()->AddComponentByClass(ULevelComponent::StaticClass(), false,
 			GetOwner()->GetTransform(), true);
 		//UE_LOG(LogTemp, Error, TEXT("No LevelComponent attached!"))
+
+	// Delegate for changing stats on level up
+	ULevelComponent::FSetCumulativeExpDelegate UpdateStatsAfterLevelUp;
+	UpdateStatsAfterLevelUp.BindLambda([this](const int OldCEXP, const int NewCEXP)
+	{
+		const int OldLevel = LevelComponent->GetLevel();
+		const int NewLevel = ULevelComponent::GetLevelFromCEXP(NewCEXP);
+		if (NewLevel != OldLevel)
+			RecalculateStats();
+	});
+
+
+	/*
+	ULevelComponent::FSetLevelDelegate UpdateStatsAfterLevelUp;
+	UpdateStatsAfterLevelUp.BindLambda([this](const int ){
+		for(FStat* Stat : StatsArray)
+			Stat->Update(LevelComponent->GetLevel());
+	});
+	LevelComponent->AfterSetLevelArray.Add(UpdateStatsAfterLevelUp);
+	*/
 	
 }
 

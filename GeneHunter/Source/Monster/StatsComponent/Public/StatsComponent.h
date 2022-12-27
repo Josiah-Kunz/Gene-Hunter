@@ -56,8 +56,7 @@ public:
 #pragma region Stat variables
 public:
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
-	// TODO
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
 	ULevelComponent* LevelComponent;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")

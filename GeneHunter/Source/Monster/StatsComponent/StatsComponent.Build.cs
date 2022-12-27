@@ -18,7 +18,8 @@ public class StatsComponent : ModuleRules{
 			"Engine"	// for MathUtil.h (internal) and ActorComponent.h (external)
 		  , "UI"		// for SupportingText.h
 		  , "Effects"	// for UEffectableComponent
-		  , "BPLibraries"	// for effect delegate macros
+		  , "BPLibraries"		// for effect delegate macros
+		  , "LevelComponent"	// Stats depend on Level
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{

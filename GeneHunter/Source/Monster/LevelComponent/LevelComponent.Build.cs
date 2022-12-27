@@ -6,12 +6,10 @@ public class LevelComponent : ModuleRules{
 
 		PrivateIncludePaths.AddRange(new string[]{
 			"Monster/LevelComponent/Private",
-			"Monster/LevelComponent/Private/Stats"
 		});
 
 		PublicIncludePaths.AddRange(new string[]{
 			"Monster/LevelComponent/Public",
-			"Monster/LevelComponent/Public/Stats"
 		});
 		
 		PublicDependencyModuleNames.AddRange(new string[]{
@@ -19,7 +17,6 @@ public class LevelComponent : ModuleRules{
 		  , "UI"		// for SupportingText.h
 		  , "Effects"	// for UEffectableComponent
 		  , "BPLibraries"		// for effect delegate macros
-		  , "LevelComponent"	// Stats depend on Level
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{

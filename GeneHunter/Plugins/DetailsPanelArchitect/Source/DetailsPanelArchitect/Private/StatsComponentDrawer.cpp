@@ -39,7 +39,7 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 
 void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBuilder)
 {
-
+/*
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
 		FName(LevelCategoryName),
 		FText::FromString(LevelCategoryName),
@@ -81,11 +81,12 @@ void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 				})
 			))
 	;
+	*/
 }
 
 void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuilder)
 {
-
+/*
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
 	FName(LevelCategoryName),
 	FText::FromString(LevelCategoryName),
@@ -139,11 +140,12 @@ void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 					})
 				))
 	;
+	*/
 }
 
 void StatsComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuilder)
 {
-
+/*
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
 	FName(LevelCategoryName),
 	FText::FromString(LevelCategoryName),
@@ -195,6 +197,7 @@ void StatsComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 					})
 				))
 	;
+	*/
 }
 
 void StatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& DetailBuilder)

@@ -1,18 +1,17 @@
-#include "StatsComponent.h"
+#include "LevelComponent.h"
 
 #include "MathUtil.h"
 
 #pragma region Standard stuff
 
 // Sets default values for this component's properties
-UStatsComponent::UStatsComponent()
+ULevelComponent::ULevelComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-	RandomizeStats();
 }
 
 // Called when the game starts
-void UStatsComponent::BeginPlay()
+void ULevelComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -22,7 +21,7 @@ void UStatsComponent::BeginPlay()
 
 
 // Called every frame
-void UStatsComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void ULevelComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
@@ -33,14 +32,14 @@ void UStatsComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 #pragma region Exp yield
 
-int UStatsComponent::GetBaseExpYield() 
+int ULevelComponent::GetBaseExpYield() 
 {
 	ExecuteBeforeGetBaseExpYield(BaseExpYield);
 	ExecuteAfterGetBaseExpYield(BaseExpYield);
 	return BaseExpYield;
 }
 
-void UStatsComponent::SetBaseExpYield(int NewBaseExpYield)
+void ULevelComponent::SetBaseExpYield(int NewBaseExpYield)
 {
 	ExecuteBeforeSetBaseExpYield(GetBaseExpYield(), NewBaseExpYield);
 	BaseExpYield = NewBaseExpYield;
@@ -48,7 +47,7 @@ void UStatsComponent::SetBaseExpYield(int NewBaseExpYield)
 }
 
 
-float UStatsComponent::GetExpYield(UStatsComponent* VictoriousMonster)
+float ULevelComponent::GetExpYield(ULevelComponent* VictoriousMonster)
 {
 
 	// Get level difference. If the enemy is lower level, they get more exp for defeating this Monster.
@@ -81,21 +80,21 @@ float UStatsComponent::GetExpYield(UStatsComponent* VictoriousMonster)
 
 #pragma region Exp
 
-int UStatsComponent::GetCumulativeExp()
+int ULevelComponent::GetCumulativeExp()
 {
 	ExecuteBeforeGetCumulativeExp(CumulativeExp);
 	ExecuteAfterGetCumulativeExp(CumulativeExp);
 	return CumulativeExp;
 }
 
-void UStatsComponent::SetCumulativeExp(int NewCumulativeExp)
+void ULevelComponent::SetCumulativeExp(int NewCumulativeExp)
 {
 
 	// Delegate
 	ExecuteBeforeSetCumulativeExp(GetCumulativeExp(), NewCumulativeExp);
 	
 	// Cache old (it's a surprise tool that will help us later!)
-	const int OldLevel = GetLevel();
+	const int OldCEXP = CumulativeExp;
 
 	// Set and clamp exp
 	CumulativeExp = FMath::Clamp(NewCumulativeExp, 1, GetMaxExp());
@@ -113,15 +112,11 @@ void UStatsComponent::SetCumulativeExp(int NewCumulativeExp)
 		CumulativeExp = GetCumulativeExpFromLevel(MaxLevel());
 	}
 
-	// Did it change?
-	if (NewLevel != OldLevel)
-		RecalculateStats();
-
 	// Delegate
-	ExecuteAfterSetCumulativeExp(GetCumulativeExp(), NewCumulativeExp);
+	ExecuteAfterSetCumulativeExp(OldCEXP, CumulativeExp);
 }
 
-void UStatsComponent::AddExp(int AddedCumulativeExp)
+void ULevelComponent::AddExp(int AddedCumulativeExp)
 {
 	ExecuteBeforeAddExp(GetCumulativeExp(), AddedCumulativeExp);
 	SetCumulativeExp(GetCumulativeExp() + AddedCumulativeExp);
@@ -132,27 +127,30 @@ void UStatsComponent::AddExp(int AddedCumulativeExp)
 
 #pragma region Level
 
-int UStatsComponent::GetLevel() 
+int ULevelComponent::GetLevel() 
 {
-	return FMath::Floor(FMathf::Pow(GetCumulativeExp(), 1/ExpExponent()));
+	return GetLevelFromCEXP(GetCumulativeExp());
 }
 
-void UStatsComponent::SetLevel(int NewLevel)
+int ULevelComponent::GetLevelFromCEXP(const int CEXP)
+{
+	return FMath::Floor(FMathf::Pow(CEXP, 1/ExpExponent()));
+}
+
+void ULevelComponent::SetLevel(int NewLevel)
 {
 	ExecuteBeforeSetLevel(GetLevel(), NewLevel);
 	const int Level = FMathf::Clamp(NewLevel, MinLevel(), MaxLevel());
 	SetCumulativeExp(GetCumulativeExpFromLevel(Level));
-	for(FStat* Stat : StatsArray)
-		Stat->Update(GetLevel());
 	ExecuteAfterSetLevel(GetLevel(), NewLevel);
 }
 
-void UStatsComponent::AddLevels(const int AddedLevels)
+void ULevelComponent::AddLevels(const int AddedLevels)
 {
 	SetLevel(GetLevel() + AddedLevels);
 }
 
-int UStatsComponent::MaxLevel()
+int ULevelComponent::MaxLevel()
 {
 	int MaxLevel = 100;
 	ExecuteBeforeMaxLevel(MaxLevel);
@@ -160,7 +158,7 @@ int UStatsComponent::MaxLevel()
 	return MaxLevel;
 }
 
-int UStatsComponent::MinLevel()
+int ULevelComponent::MinLevel()
 {
 	int MinLevel = 1;
 	ExecuteBeforeMinLevel(MinLevel);
@@ -172,17 +170,17 @@ int UStatsComponent::MinLevel()
 
 #pragma region Conversion: exp <-> level
 
-float UStatsComponent::ExpExponent()
+float ULevelComponent::ExpExponent()
 {
 	return 3;
 }
 
-float UStatsComponent::GetCumulativeExpFromLevel(const int TargetLevel)
+float ULevelComponent::GetCumulativeExpFromLevel(const int TargetLevel)
 {
 	return FMathf::Pow(TargetLevel, ExpExponent());
 }
 
-float UStatsComponent::GetExpToLevel()
+float ULevelComponent::GetExpToLevel()
 {
 	if (GetLevel() == MaxLevel())
 		return 0;
@@ -190,7 +188,7 @@ float UStatsComponent::GetExpToLevel()
 	return NextLevelExp - GetLevelExp();
 }
 
-float UStatsComponent::GetTotalLevelExp()
+float ULevelComponent::GetTotalLevelExp()
 {
 	if (GetLevel() == MaxLevel())
 		return 0;
@@ -199,12 +197,12 @@ float UStatsComponent::GetTotalLevelExp()
 	return NextLevelExp - ThisLevelExp;
 }
 
-float UStatsComponent::GetLevelExp()
+float ULevelComponent::GetLevelExp()
 {
 	return GetCumulativeExp() - GetCumulativeExpFromLevel(GetLevel());
 }
 
-float UStatsComponent::GetMaxExp()
+float ULevelComponent::GetMaxExp()
 {
 	return GetCumulativeExpFromLevel(MaxLevel());
 }
