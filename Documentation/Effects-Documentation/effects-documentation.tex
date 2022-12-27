@@ -68,9 +68,9 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 								& \code{int\&} Attempted value being set\\
 	GetExpYield					& \code{UStatsComponent*} Victorious Monster\\
 								& \code{float\&} Awarded exp\\
-	GetCumulativeExp			& \code{int\&} Current CEXP\\
-	SetCumulativeExp			& \code{int} Current CEXP\\
-								& \code{int\&} Attempted CEXP\\
+	GetCumulativeExp			& \code{int\&} Current CXP\\
+	SetCumulativeExp			& \code{int} Current CXP	& All other level/exp setters go through here!\\
+								& \code{int\&} Attempted CXP\\
 	AddExp						& \code{int} Current exp	& No GetExp (=GetLevel)\\
 								& \code{int\&} Added exp\\
 	SetLevel					& \code{int} Current level	& No GetLevel\\

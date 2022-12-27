@@ -111,12 +111,12 @@ void ULevelComponent::AddExp(int AddedCumulativeExp)
 
 int ULevelComponent::GetLevel() 
 {
-	return GetLevelFromCEXP(GetCumulativeExp());
+	return GetLevelFromCXP(GetCumulativeExp());
 }
 
-int ULevelComponent::GetLevelFromCEXP(const int CEXP)
+int ULevelComponent::GetLevelFromCXP(const int CXP)
 {
-	return FMath::Floor(FMathf::Pow(CEXP, 1/ExpExponent()));
+	return FMath::Floor(FMathf::Pow(CXP, 1/ExpExponent()));
 }
 
 void ULevelComponent::SetLevel(int NewLevel)

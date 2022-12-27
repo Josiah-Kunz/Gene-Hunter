@@ -38,13 +38,14 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 		{
 			// Delegate for changing stats on level up
 			ULevelComponent::FSetCumulativeExpDelegate UpdateStatsAfterLevelUp;
-			UpdateStatsAfterLevelUp.BindLambda([this](const int OldCEXP, const int NewCEXP)
+			UpdateStatsAfterLevelUp.BindLambda([this](const int OldCXP, const int NewCXP)
 			{
-				const int OldLevel = LevelComponent->GetLevel();
-				const int NewLevel = ULevelComponent::GetLevelFromCEXP(NewCEXP);
+				const int OldLevel = ULevelComponent::GetLevelFromCXP(OldCXP);
+				const int NewLevel = ULevelComponent::GetLevelFromCXP(NewCXP);
 				if (NewLevel != OldLevel)
 					RecalculateStats();
 			});
+			LevelComponent->AfterSetCumulativeExpArray.Add(UpdateStatsAfterLevelUp);
 	
 			// Start with random stats
 			RandomizeStats();

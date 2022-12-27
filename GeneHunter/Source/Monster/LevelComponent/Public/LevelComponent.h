@@ -97,7 +97,7 @@ public:
 
 	/**
 	 * Parameters:
-	 *	- Current CEXP
+	 *	- Current CXP
 	 */
 	EFFECT_DELEGATES_OneParam(GetCumulativeExp, int&)
 
@@ -108,9 +108,9 @@ public:
 	void SetCumulativeExp(int NewCumulativeExp);
 
 	/**
-	 * Parameters:
-	 *	- Current CEXP
-	 *	- Attempted CEXP
+	 * The ultimate root of adding/setting/changing level or experience points. Parameters:
+	 *	- Current CXP
+	 *	- Attempted CXP
 	 */
 	EFFECT_DELEGATES_TwoParams(SetCumulativeExp, int, int&)
 
@@ -121,7 +121,7 @@ public:
 	void AddExp(int AddedCumulativeExp);
 
 	/**
-	 * Parameters:
+	 * Goes though SetCumulativeExp. Parameters:
 	 *	- Current exp
 	 *	- Added exp
 	 */
@@ -143,13 +143,13 @@ public:
 	 * Retrieves the level from the given amount of cumulative experience points.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	static int GetLevelFromCEXP(const int CEXP);
+	static int GetLevelFromCXP(const int CXP);
 	
 	UFUNCTION(BlueprintCallable, Category="Level")
 	void SetLevel(int NewLevel);
 
 	/**
-	 * Parameters:
+	 * Goes though SetCumulativeExp. Parameters:
 	 *	- Current level
 	 *	- Attempted level to set
 	 */

@@ -61,6 +61,9 @@ void StatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& De
 	CURRENT_STAT_PROPERTY(SpecialDefense, GetCurrentValue(), MaxStatValue, false)
 	CURRENT_STAT_PROPERTY(Haste, GetCurrentValue(), MaxPercentValue, true)
 	CURRENT_STAT_PROPERTY(CriticalHit, GetCurrentValue(), MaxPercentValue, true)
+
+	// Set as first category
+	DetailBuilder.EditCategory(TEXT("Current Stats")).SetSortOrder(0);
 	
 }
 
@@ -74,7 +77,7 @@ void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& Detai
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
 		FName("Base Stats"),
 		FText::FromString("Base Stats"),
-		ECategoryPriority::Important);
+		ECategoryPriority::Default);
 
 #define HIDE_RESET() \
 	FResetToDefaultOverride::Create( \
@@ -147,7 +150,7 @@ void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& Detai
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
 		FName("Base Pairs"),
 		FText::FromString("Base Pairs"),
-		ECategoryPriority::Important);
+		ECategoryPriority::Default);
 	
 	// Button
 	Category.AddCustomRow(LOCTEXT("Keyword", "Base Pair Randomizer Button")).WholeRowContent()[
