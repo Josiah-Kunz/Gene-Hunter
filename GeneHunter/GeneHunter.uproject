@@ -26,6 +26,11 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "GHLibraries",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "LevelComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"

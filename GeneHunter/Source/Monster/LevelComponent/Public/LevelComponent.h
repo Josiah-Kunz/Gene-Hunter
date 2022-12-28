@@ -4,10 +4,7 @@
 #include "CoreMinimal.h"
 
 // Other components
-#include "Effects/Public/EffectableComponent.h"
-
-// Utilities
-#include "UtilityFunctionLibrary.h"
+#include "EffectableComponent.h"
 
 // .gen
 #include "LevelComponent.generated.h"

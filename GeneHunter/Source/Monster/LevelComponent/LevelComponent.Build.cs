@@ -15,8 +15,7 @@ public class LevelComponent : ModuleRules{
 		PublicDependencyModuleNames.AddRange(new string[]{
 			"Engine"	// for MathUtil.h (internal) and ActorComponent.h (external)
 		  , "UI"		// for SupportingText.h
-		  , "Effects"	// for UEffectableComponent
-		  , "BPLibraries"		// for effect delegate macros
+		  , "GHLibraries"		// for effect delegate macros and UEffectableComponent
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{

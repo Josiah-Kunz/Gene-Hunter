@@ -14,12 +14,11 @@
 #include "CriticalHit.h"
 
 // Effects
-#include "Effects/Public/EffectableComponent.h"
+#include "EffectableComponent.h"
 
 // Utilities
 #include "ModificationMode.h"
 #include "StatValueType.h"
-#include "UtilityFunctionLibrary.h"
 
 // .gen
 #include "StatsComponent.generated.h"
@@ -150,6 +149,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RecalculateStats(bool bResetCurrent = true);
 
+	/**
+	 * Parameters:
+	 *	- The targeted FStat pointer
+	 *	- bResetCurrent
+	 */
 	EFFECT_DELEGATES_TwoParams(RecalculateStats, FStat*, bool)
 
 private:

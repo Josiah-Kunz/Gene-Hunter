@@ -17,7 +17,7 @@ public class AffinitiesComponent : ModuleRules{
 		PublicDependencyModuleNames.AddRange(new string[]{
 			"Engine"	// for MathUtil.h (internal) and ActorComponent.h (external)
 			, "Types"	// because that's what affinities are
-			, "Effects" // For UEffectableComponent
+			, "GHLibraries" // For UEffectableComponent
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
