@@ -1,6 +1,6 @@
-#include "Effects/ModifyStat.h"
+#include "Effects/StatModifier.h"
 
-void FModifyStat::OnAttach()
+void FStatModifier::OnAttach()
 {
 
 	// Trigger on RecalculateStats
@@ -19,7 +19,7 @@ void FModifyStat::OnAttach()
 
 }
 
-void FModifyStat::OnDetach()
+void FStatModifier::OnDetach()
 {
 	auto RecalculateStatsArray = StatsComponent->AfterRecalculateStatsArray;
 	for(int i=RecalculateStatsArray.Num() - 1; i>=0; i--)

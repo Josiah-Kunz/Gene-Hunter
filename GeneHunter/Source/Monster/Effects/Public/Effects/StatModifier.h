@@ -7,14 +7,14 @@
 #include "StatsComponent/Public/ModificationMode.h"
 #include "StatsComponent/Public/StatValueType.h"
 
-#include "ModifyStat.generated.h"
+#include "StatModifier.generated.h"
 
 /**
  * An FEffect that can modify a single stat on either UStatsComponent::RecalculateStats, UStatsComponent::ModifyStats,
  *	or both.
  */
 USTRUCT(Blueprintable)
-struct EFFECTS_API FModifyStat : public FEffect
+struct EFFECTS_API FStatModifier : public FEffect
 {
 	GENERATED_BODY()
 
