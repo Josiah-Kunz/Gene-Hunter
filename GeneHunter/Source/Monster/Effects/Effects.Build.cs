@@ -8,8 +8,7 @@ public class Effects : ModuleRules{
 		
 		PublicIncludePaths.Add("Monster/Effects/Public");
 		
-		PublicDependencyModuleNames.AddRange(new string[]{
-		}); 
+		PublicDependencyModuleNames.AddRange(new string[]{ }); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
 			

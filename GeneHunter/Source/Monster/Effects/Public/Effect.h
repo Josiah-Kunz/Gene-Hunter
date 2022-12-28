@@ -5,14 +5,17 @@
 #include "Effect.generated.h"
 
 /**
- * 
+ * A struct to hold data (e.g., Priority) and code (how effects are actually implemented). Implementation of this data
+ *	happens in EffectsComponent.
  */
 USTRUCT(Blueprintable)
-struct STATSCOMPONENT_API FEffect
+struct EFFECTS_API FEffect
 {
 	GENERATED_BODY()
 
-#pragma region Public variables
+public:
+	
+	virtual ~FEffect() = default;
 
 public:
 
@@ -33,9 +36,7 @@ public:
 	 *		-	Intrinsic delegates
 	 * 
 	 */
-	float Priority = 50;
-
-#pragma endregion
+	virtual float GetPriority(){return 50;}
 
 	/**
 	 * Called by EffectsComponent when this Effect is first attached to an EffectsComponent. Here, you should add
