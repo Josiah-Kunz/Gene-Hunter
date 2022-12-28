@@ -1,17 +1,17 @@
 #include "Effects/StatModifier.h"
 
-void FStatModifier::OnAttach()
+void UStatModifier::OnAttach()
 {
 
 	// Trigger on RecalculateStats
-	if (Trigger == ETrigger::RecalculateStats || Trigger == ETrigger::Both)
+	if (Trigger == EStatModifierTrigger::RecalculateStats || Trigger == EStatModifierTrigger::Both)
 	{
 		RecalculateStatsDelegate.BindLambda(RecalculateLambda);
 		StatsComponent->AfterRecalculateStatsArray.Add(RecalculateStatsDelegate);
 	}
 
 	// Trigger on ModifyStats
-	if (Trigger == ETrigger::ModifyStats || Trigger == ETrigger::Both)
+	if (Trigger == EStatModifierTrigger::ModifyStats || Trigger == EStatModifierTrigger::Both)
 	{
 		ModifyStatDelegate.BindLambda(ModifyLambda);
 		StatsComponent->AfterModifyStatArray.Add(ModifyStatDelegate);
@@ -19,7 +19,7 @@ void FStatModifier::OnAttach()
 
 }
 
-void FStatModifier::OnDetach()
+void UStatModifier::OnDetach()
 {
 	auto RecalculateStatsArray = StatsComponent->AfterRecalculateStatsArray;
 	for(int i=RecalculateStatsArray.Num() - 1; i>=0; i--)

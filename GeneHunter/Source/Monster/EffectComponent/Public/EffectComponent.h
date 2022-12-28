@@ -1,21 +1,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/ActorComponent.h"
 
-#include "Effect.generated.h"
+#include "EffectComponent.generated.h"
 
 /**
  * A struct to hold data (e.g., Priority) and code (how effects are actually implemented). Implementation of this data
  *	happens in EffectsComponent.
  */
-USTRUCT(Blueprintable)
-struct EFFECTS_API FEffect
+UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
+class EFFECTCOMPONENT_API UEffectComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:
-	
-	virtual ~FEffect() = default;
 
 public:
 

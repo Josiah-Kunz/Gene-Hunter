@@ -21,7 +21,7 @@
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "Effects",
+			"Name": "EffectComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
@@ -53,7 +53,7 @@
 
 
 		{
-			"Name": "EffectsUnitTests",
+			"Name": "EffectComponentUnitTests",
 			"Type": "Editor",
 			"LoadingPhase": "Default"
 		},

@@ -8,11 +8,11 @@
 #include "MathUtil.h"
 #include "StatUnitTestUtilities.h" 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FEffects_Delegates_ModifyStats,
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponentDelegates_ModifyStats,
 	"__GeneHunter.Effects.Delegate Tests.Modify Stats (\"Clear Body\")",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FEffects_Delegates_ModifyStats::RunTest(const FString& Parameters)
+bool UEffectComponentDelegates_ModifyStats::RunTest(const FString& Parameters)
 {
 	
 	// Get dummy
