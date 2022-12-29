@@ -5,7 +5,7 @@ public class GHLibraries : ModuleRules{
 	public GHLibraries(ReadOnlyTargetRules Target) : base(Target){
 		
 		
-		//PrivateIncludePaths.Add("GHLibraries/Private");
+		PrivateIncludePaths.Add("GHLibraries/Private");
 		
 		PublicIncludePaths.Add("GHLibraries/Public");
 		

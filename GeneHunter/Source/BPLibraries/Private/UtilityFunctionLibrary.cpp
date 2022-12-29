@@ -220,3 +220,15 @@ float UUtilityFunctionLibrary::FromSI(FText Text)
 	// Return
 	return FCString::Atof(*String) * Multiplier;
 }
+
+template <typename ReqClassType>
+ReqClassType* UUtilityFunctionLibrary::RequireComponent(AActor* Owner)
+{
+	// See if one already exists
+	ReqClassType* OldComponent = Owner->FindComponentByClass<ReqClassType>();
+	if (OldComponent != nullptr)
+		return OldComponent;
+
+	// Make a new one
+	return NewObject<ReqClassType>(Owner);
+}

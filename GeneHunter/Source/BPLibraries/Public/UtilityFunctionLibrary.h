@@ -34,6 +34,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static float FromSI(FText Text);
 	
+	template<typename ReqClassType> static FORCEINLINE ReqClassType* RequireComponent(AActor* Owner);
+	
 };
 
 #pragma endregion

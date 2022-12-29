@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Monster/EffectComponent/Public/EffectComponent.h"
+#include "EffectComponent.h"
 #include "Stat.h"
 #include "StatsComponent.h"
 #include "StatsComponent/Public/ModificationMode.h"

@@ -1,8 +1,11 @@
 #include "Effects/StatModifier.h"
+#include "EffectUtilities.h"
 
 void UStatModifier::OnComponentCreated()
 {
 	Super::OnComponentCreated();
+
+	REQUIRE_COMPONENT(UStatsComponent, StatsComponent, GetOwner())
 	
 	// Trigger on RecalculateStats
 	if (Trigger == EStatModifierTrigger::RecalculateStats || Trigger == EStatModifierTrigger::Both)
