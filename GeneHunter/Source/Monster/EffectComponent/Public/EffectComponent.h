@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SupportingText.h"
 #include "Components/ActorComponent.h"
 
 #include "EffectComponent.generated.h"
@@ -13,8 +14,6 @@ UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class EFFECTCOMPONENT_API UEffectComponent : public UActorComponent
 {
 	GENERATED_BODY()
-
-public:
 
 public:
 
@@ -35,24 +34,8 @@ public:
 	 *		-	Intrinsic delegates
 	 * 
 	 */
-	virtual float GetPriority(){return 50;}
+	virtual float GetPriority();
 
-	/**
-	 * Called by EffectsComponent when this Effect is first attached to an EffectsComponent. Here, you should add
-	 * delegates to delegate arrays in EffectableComponents. For example, for the "Adamant" effect:
-	 *
-	 *		- Delegate => UStatsComponent::FRecalculateStatsDelegate Adamant;
-	 *		- Define => Adamant.BindLambda(...);
-	 *		- Attach => StatsComponent->AfterRecalculateStatsArray.Add(Adamant);
-	 */
-	virtual void OnAttach();
-
-	/**
-	* Called by EffectsComponent when this Effect is first detached from an EffectsComponent. Here, you should remove
-	 * delegates from delegate arrays in EffectableComponents. For example, for the "Adamant" effect:
-	 *
-	 *		- StatsComponent->AfterRecalculateStatsArray.Remove(Adamant);
-	 */
-	virtual void OnDetach();
+	virtual FSupportingText GetSupportingText();
 	
 };

@@ -56,9 +56,15 @@ public:
 				InStat->ModifyValue(Value, ValueType, Mode);
 		};
 	UStatsComponent::FModifyStatDelegate ModifyStatDelegate;
-	
-	virtual void OnAttach() override;
 
-	virtual void OnDetach() override;
+#pragma endregion
+
+#pragma region Overrides
+
+	virtual void OnComponentCreated() override;
+
+	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
+
+#pragma endregion
 };
 

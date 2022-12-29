@@ -1,8 +1,9 @@
 #include "Effects/StatModifier.h"
 
-void UStatModifier::OnAttach()
+void UStatModifier::OnComponentCreated()
 {
-
+	Super::OnComponentCreated();
+	
 	// Trigger on RecalculateStats
 	if (Trigger == EStatModifierTrigger::RecalculateStats || Trigger == EStatModifierTrigger::Both)
 	{
@@ -16,11 +17,12 @@ void UStatModifier::OnAttach()
 		ModifyStatDelegate.BindLambda(ModifyLambda);
 		StatsComponent->AfterModifyStatArray.Add(ModifyStatDelegate);
 	}
-
 }
 
-void UStatModifier::OnDetach()
+void UStatModifier::OnComponentDestroyed(bool bDestroyingHierarchy)
 {
+	Super::OnComponentDestroyed(bDestroyingHierarchy);
+
 	auto RecalculateStatsArray = StatsComponent->AfterRecalculateStatsArray;
 	for(int i=RecalculateStatsArray.Num() - 1; i>=0; i--)
 	{

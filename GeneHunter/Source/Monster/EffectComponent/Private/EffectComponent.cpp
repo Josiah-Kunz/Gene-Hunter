@@ -1,9 +1,15 @@
 #include "EffectComponent.h"
 
-void UEffectComponent::OnAttach()
+float UEffectComponent::GetPriority()
 {
+	return 50;
 }
 
-void UEffectComponent::OnDetach()
+FSupportingText UEffectComponent::GetSupportingText()
 {
+	return FSupportingText{
+		FText::FromString("No dev note"),
+		FText::FromString("No description set. Surely this is an oversight."),
+		FText::FromString("Flavorless!")
+	};
 }
