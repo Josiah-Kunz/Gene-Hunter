@@ -20,8 +20,15 @@ bool UEffectComponent_Components_Attachment::RunTest(const FString& Parameters)
 
 	// Attach an effect
 	UStatModifier* StatModifier = NewObject<UStatModifier>(DummyActor);
+	DummyActor->AddInstanceComponent(StatModifier);
 
-	// Check RecalculateStats number of delegates
+	UE_LOG(LogTemp, Warning, TEXT("%s"), StatModifier->HasBeenCreated() ? *FString("Has been created") : *FString("Has not been created"))
+	
+	// Test that it auto recognized StatsComponent
+	TestTrue(FString::Printf(TEXT("EffectComponent found StatsComponent automatically?")),
+	StatModifier->StatsComponent != nullptr);
+
+	// Test RecalculateStats number of delegates
 	constexpr int RecalculateExpected = 1;
 	TestTrue(FString::Printf(TEXT("Delegates in RecalculateStats: Expected [%s] vs Actual [%s]"),
 		*FString::SanitizeFloat(RecalculateExpected),

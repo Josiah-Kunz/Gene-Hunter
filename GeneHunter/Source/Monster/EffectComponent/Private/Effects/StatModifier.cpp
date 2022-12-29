@@ -4,9 +4,9 @@
 void UStatModifier::OnComponentCreated()
 {
 	Super::OnComponentCreated();
-
+	UE_LOG(LogTemp, Warning, TEXT("Created"))
 	REQUIRE_COMPONENT(UStatsComponent, StatsComponent, GetOwner())
-	
+	UE_LOG(LogTemp, Warning, TEXT( "%s"), StatsComponent == nullptr ? "Null" : "Not null")
 	// Trigger on RecalculateStats
 	if (Trigger == EStatModifierTrigger::RecalculateStats || Trigger == EStatModifierTrigger::Both)
 	{
@@ -45,4 +45,49 @@ void UStatModifier::OnComponentDestroyed(bool bDestroyingHierarchy)
 			break;
 		}
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Has been destroyed"))
+}
+
+void UStatModifier::InitializeComponent()
+{
+	Super::InitializeComponent();
+	UE_LOG(LogTemp, Warning, TEXT("Has been initialized"))
+}
+
+void UStatModifier::OnRegister()
+{
+	Super::OnRegister();
+	UE_LOG(LogTemp, Warning, TEXT("Has been registered"))
+}
+
+void UStatModifier::PostApplyToComponent()
+{
+	Super::PostApplyToComponent();
+	UE_LOG(LogTemp, Warning, TEXT("Has been PostApplyToComponent"))
+}
+
+void UStatModifier::RegisterComponentTickFunctions(bool bRegister)
+{
+
+
+	Super::RegisterComponentTickFunctions(bRegister);
+
+	UE_LOG(LogTemp, Warning, TEXT("Has been RegisterTick"))
+}
+
+bool UStatModifier::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags)
+{
+
+	UE_LOG(LogTemp, Warning, TEXT("Has been ReplicateSubobjects"))
+	return Super::ReplicateSubobjects(Channel, Bunch, RepFlags);
+
+	
+}
+
+void UStatModifier::SetActive(bool bNewActive, bool bReset)
+{
+	Super::SetActive(bNewActive, bReset);
+
+	UE_LOG(LogTemp, Warning, TEXT("Has been set active"))
 }
