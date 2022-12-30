@@ -65,18 +65,6 @@ public:
 
 	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
 
-	virtual void InitializeComponent() override;
-
-	virtual void OnRegister() override;
-
-	virtual void PostApplyToComponent() override;
-
-virtual void RegisterComponentTickFunctions(bool bRegister) override;
-
-virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
-
-virtual void SetActive(bool bNewActive, bool bReset) override;
-
 #pragma endregion
 };
 

@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "EffectUtilities.h"
 #include "MathUtil.h"
 #include "StatUnitTestUtilities.h"
 #include "StatModifier.h"
@@ -19,11 +20,9 @@ bool UEffectComponent_Components_Attachment::RunTest(const FString& Parameters)
 	DUMMY_BASE_STATS_BLOCK
 
 	// Attach an effect
-	UStatModifier* StatModifier = NewObject<UStatModifier>(DummyActor);
-	DummyActor->AddInstanceComponent(StatModifier);
+	UStatModifier* StatModifier = nullptr;
+	REQUIRE_COMPONENT(UStatModifier, StatModifier, DummyActor)
 
-	UE_LOG(LogTemp, Warning, TEXT("%s"), StatModifier->HasBeenCreated() ? *FString("Has been created") : *FString("Has not been created"))
-	
 	// Test that it auto recognized StatsComponent
 	TestTrue(FString::Printf(TEXT("EffectComponent found StatsComponent automatically?")),
 	StatModifier->StatsComponent != nullptr);

@@ -1,5 +1,6 @@
 #include "StatsComponent.h"
 
+#include "EffectUtilities.h"
 #include "MathUtil.h"
 
 #pragma region Standard stuff
@@ -25,13 +26,16 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 		const ULevelComponent* OldLevelComponent = LevelComponent;
 
 		// Find or create
+		REQUIRE_COMPONENT(ULevelComponent, LevelComponent, Owner)
+		/*
 		if (LevelComponent == nullptr)
 			LevelComponent = Owner->FindComponentByClass<ULevelComponent>();
 		if (LevelComponent == nullptr)
 		{
 			LevelComponent = NewObject<ULevelComponent>(Owner, TEXT("Level Component"));
 			Owner->AddInstanceComponent(LevelComponent);
-		}
+			LevelComponent->RegisterComponent();
+		}*/
 
 		// Anything changed?
 		if (LevelComponent != nullptr && LevelComponent != OldLevelComponent)
