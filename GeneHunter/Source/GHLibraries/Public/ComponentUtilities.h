@@ -2,14 +2,16 @@
 
 #include "CoreMinimal.h"
 
-class EffectUtilities
+class ComponentUtilities
 {
 
 public:
 
 /**
- * Searches Owner for the ComponentType. If one is found, it is assigned as Component. Otherwise, a new one is created,
+ * If null, searches Owner for the ComponentType. If one is found, it is assigned as Component. Otherwise, a new one is created,
  *	added to Owner, and registered.
+ *
+ * If not null, attaches it to the Owner and registers it.
  */
 #define REQUIRE_COMPONENT(ComponentType, Component, Owner) \
 	if ( Component == nullptr) { \
@@ -19,6 +21,9 @@ public:
 			Owner ->AddInstanceComponent( Component ); \
 			Component ->RegisterComponent(); \
 		} \
+	} else { \
+		Owner ->AddInstanceComponent( Component ); \
+		Component ->RegisterComponent(); \
 	}
 	
 };

@@ -1,6 +1,6 @@
 #include "StatsComponent.h"
 
-#include "EffectUtilities.h"
+#include "ComponentUtilities.h"
 #include "MathUtil.h"
 
 #pragma region Standard stuff
@@ -27,15 +27,6 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 
 		// Find or create
 		REQUIRE_COMPONENT(ULevelComponent, LevelComponent, Owner)
-		/*
-		if (LevelComponent == nullptr)
-			LevelComponent = Owner->FindComponentByClass<ULevelComponent>();
-		if (LevelComponent == nullptr)
-		{
-			LevelComponent = NewObject<ULevelComponent>(Owner, TEXT("Level Component"));
-			Owner->AddInstanceComponent(LevelComponent);
-			LevelComponent->RegisterComponent();
-		}*/
 
 		// Anything changed?
 		if (LevelComponent != nullptr && LevelComponent != OldLevelComponent)
@@ -61,19 +52,6 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 void UStatsComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
-
-
-	/*
-	ULevelComponent::FSetLevelDelegate UpdateStatsAfterLevelUp;
-	UpdateStatsAfterLevelUp.BindLambda([this](const int ){
-		for(FStat* Stat : StatsArray)
-			Stat->Update(LevelComponent->GetLevel());
-	});
-	LevelComponent->AfterSetLevelArray.Add(UpdateStatsAfterLevelUp);
-	*/
-	
 }
 
 void UStatsComponent::RandomizeStats(

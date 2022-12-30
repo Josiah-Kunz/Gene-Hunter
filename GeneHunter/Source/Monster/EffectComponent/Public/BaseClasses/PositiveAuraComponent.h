@@ -15,6 +15,7 @@ class EFFECTCOMPONENT_API UPositiveAuraComponent : public UEffectComponent
 {
 	GENERATED_BODY()
 
+public:
 	UPositiveAuraComponent();
 
 };
