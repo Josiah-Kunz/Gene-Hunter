@@ -7,7 +7,7 @@
 #include "ComponentUtilities.h"
 #include "MathUtil.h"
 #include "StatUnitTestUtilities.h"
-#include "PositiveStatAura.h"
+#include "BerserkerGene.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Components_Attachment,
 	"__GeneHunter.Effects.Component Tests.Attachment",
@@ -20,8 +20,8 @@ bool UEffectComponent_Components_Attachment::RunTest(const FString& Parameters)
 	DUMMY_BASE_STATS_BLOCK
 
 	// Attach an effect
-	UPositiveStatAura* StatModifier = nullptr;
-	REQUIRE_COMPONENT(UPositiveStatAura, StatModifier, DummyActor)
+	UBerserkerGene* StatModifier = nullptr;
+	REQUIRE_COMPONENT(UBerserkerGene, StatModifier, DummyActor)
 
 	// Test that it auto recognized StatsComponent
 	TestTrue(FString::Printf(TEXT("EffectComponent found StatsComponent automatically?")),
