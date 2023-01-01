@@ -23,7 +23,7 @@ Enchanted forest:
 	- Fox
 		= Magic [locked]/Fire; Ground
 	- Skunk
-		= Poison [locked]/Fire; Ground (do skunks burrow?)
+		= Toxic [locked]/Fire; Ground (do skunks burrow?)
 	- Squirrel
 		= All unlocked --- Nature (b/c trees); Air (b/c flying); Magic
 	- Luna Moth

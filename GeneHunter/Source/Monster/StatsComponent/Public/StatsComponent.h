@@ -131,6 +131,12 @@ public:
 	
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
 	void RandomizeBaseStats(const int MinBaseStats = 80, const int MaxBaseStats = 120);
+
+	/**
+	 * Modifies (that is, increases, decreases, or sets) a single Stat in this StatsComponent.
+	 */
+	void ModifyStat(FStat* Stat, const float Value, const EStatValueType ValueType, const EModificationMode Mode);
+	
 	
 	/**
 	 * Modifies (that is, increases, decreases, or sets) the Stats in this StatsComponent. Order is HP, PhA, PhD, SpA, SpD, Hst, Crt.
@@ -198,6 +204,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float BaseStatEffectiveAverage();
+
+	/**
+	 * If the given FStat would be reduced, it is instead not reduced.
+	 */
+	static void AvertReduction(FStat* Stat, float& Value, const EStatValueType ValueType,
+		const EModificationMode Mode);
 
 #pragma endregion
 	

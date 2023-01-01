@@ -33,8 +33,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static float FromSI(FText Text);
-	
-	template<typename ReqClassType> static FORCEINLINE ReqClassType* RequireComponent(AActor* Owner);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static FString SplitCamelCase(FString Str );
 	
 };
 

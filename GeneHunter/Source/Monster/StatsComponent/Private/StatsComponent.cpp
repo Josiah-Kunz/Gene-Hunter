@@ -83,18 +83,24 @@ void UStatsComponent::RandomizeBaseStats(const int MinBaseStats, const int MaxBa
 	RandomizeStats(MinBaseStats, MaxBaseStats, 0, -1);
 }
 
+void UStatsComponent::ModifyStat(FStat* Stat, const float Value, const EStatValueType ValueType,
+	const EModificationMode Mode)
+{
+	ModifyStatInternal(Stat, Value, ValueType, Mode);
+}
+
 
 void UStatsComponent::ModifyStats(TArray<float>& Values, const EStatValueType ValueType, const EModificationMode Mode)
 {
 	for(int i=0; i<FMathf::Min(Values.Num(), StatsArray.Num()); i++)
-		ModifyStatInternal(StatsArray[i], Values[i], ValueType, Mode);
+		ModifyStat(StatsArray[i], Values[i], ValueType, Mode);
 }
 
 void UStatsComponent::ModifyStatsUniformly(const float UniformMod, const EStatValueType ValueType,
 	const EModificationMode Mode)
 {
 	for(FStat* Stat : StatsArray)
-		ModifyStatInternal(Stat, UniformMod, ValueType, Mode);
+		ModifyStat(Stat, UniformMod, ValueType, Mode);
 }
 
 void UStatsComponent::RecalculateStats(const bool bResetCurrent)
@@ -171,4 +177,29 @@ float UStatsComponent::BaseStatEffectiveAverage()
 
 	// Return
 	return BST/Denominator;
+}
+
+void UStatsComponent::AvertReduction(FStat* Stat, float& Value, const EStatValueType ValueType,
+	const EModificationMode Mode)
+{
+	switch(Mode)
+	{
+	case EModificationMode::AddAbsolute: case EModificationMode::AddFraction: case EModificationMode::AddPercentage:
+		if (Value < 0)
+			Value = 0;
+		break;
+	case EModificationMode::MultiplyAbsolute:
+		if (Value < 1)
+			Value = 1;
+		break;
+	case EModificationMode::MultiplyPercentage:
+		if (Value < 100)
+			Value = 100;
+		break;
+	case EModificationMode::SetDirectly:
+		if (Value < Stat->GetValue(ValueType))
+			Value = Stat->GetValue(ValueType);
+	}
+
+	UE_LOG(LogTemp, Error, TEXT("AvertReduction cannot handle specified Mode [%s]!"), *UEnum::GetValueAsString(Mode))
 }

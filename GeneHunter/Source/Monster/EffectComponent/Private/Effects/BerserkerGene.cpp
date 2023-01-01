@@ -10,9 +10,6 @@ void UBerserkerGene::OnComponentCreated()
 {
 	Super::OnComponentCreated();
 
-	// Find the StatsComponent and assign it
-	REQUIRE_COMPONENT(UStatsComponent, StatsComponent, GetOwner())
-
 	// Add to delegate array
 	Delegate.BindLambda(Lambda);
 	StatsComponent->AfterRecalculateStatsArray.Add(Delegate);

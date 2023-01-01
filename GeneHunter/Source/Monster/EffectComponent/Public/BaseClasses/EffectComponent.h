@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "StatsComponent.h"
 #include "SupportingText.h"
 #include "Components/ActorComponent.h"
 
@@ -16,6 +17,9 @@ class EFFECTCOMPONENT_API UEffectComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UStatsComponent* StatsComponent;
 
 	/**
 	 * The lower the priority, the farther away it is from execution. If two priorities are tied, the execution order is
@@ -37,5 +41,15 @@ public:
 	virtual float GetPriority();
 
 	virtual FSupportingText GetSupportingText();
+
+	/**
+	 * How this EffectComponent will be displayed in the UI. Defaults to class name (minus the "U") split by camel case.
+	 */
+	virtual FText GetName();
+
+	/**
+	 * Retries the UStatsComponent.
+	 */
+	virtual void OnComponentCreated() override;
 	
 };

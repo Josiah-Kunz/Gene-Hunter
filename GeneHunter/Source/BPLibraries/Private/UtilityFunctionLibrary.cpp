@@ -1,5 +1,7 @@
 ﻿#include "UtilityFunctionLibrary.h"
 
+#include <regex>
+
 #include "ConstLibrary.h"
 #include "MathUtil.h"
 #include "Algo/Replace.h"
@@ -221,14 +223,35 @@ float UUtilityFunctionLibrary::FromSI(FText Text)
 	return FCString::Atof(*String) * Multiplier;
 }
 
-template <typename ReqClassType>
-ReqClassType* UUtilityFunctionLibrary::RequireComponent(AActor* Owner)
+FString UUtilityFunctionLibrary::SplitCamelCase(FString Str)
 {
-	// See if one already exists
-	ReqClassType* OldComponent = Owner->FindComponentByClass<ReqClassType>();
-	if (OldComponent != nullptr)
-		return OldComponent;
+	FString Ret = "";
+	const FString Capitals = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	for(int i=0; i<Str.Len(); i++)
+	{
 
-	// Make a new one
-	return NewObject<ReqClassType>(Owner);
+		// Is this letter a capital?
+		if (Capitals.Contains(&Str[i]))
+		{
+
+			// Not at the end; look at the next character
+			if (i+1<Str.Len())
+			{
+				// Does the next character contain a capital? If not, add a space. If so, it might be an acronym.
+				if (!Capitals.Contains(&Str[i+1]))
+					Ret += " ";
+
+			// At the end *and* it's a capital
+			} else
+			{
+				Ret += " ";
+			}
+		}
+
+		// Concat no matter what
+		Ret += Str[i];
+	}
+
+	// Return
+	return Ret;
 }

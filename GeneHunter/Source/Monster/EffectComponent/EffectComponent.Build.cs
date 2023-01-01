@@ -27,6 +27,7 @@ public class EffectComponent : ModuleRules{
 			"CoreUObject",	// for UObjects
 			"Engine",		// for AActor
 			"GHLibraries",	// for RequireComponent
+			"BPLibraries",	// for SplitCamelCase
 		});
 	}
 }
