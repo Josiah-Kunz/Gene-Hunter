@@ -3,6 +3,21 @@
 #include "ComponentUtilities.h"
 #include "BPLibraries/Public/UtilityFunctionLibrary.h"
 
+int UEffectComponent::GetStacks()
+{
+	return Stacks;
+}
+
+void UEffectComponent::SetStacks(const int NewStacks)
+{
+	Stacks = FMath::Clamp(NewStacks, 1, MaxStacks());
+}
+
+int UEffectComponent::MaxStacks()
+{
+	return 1;
+}
+
 float UEffectComponent::GetPriority()
 {
 	return 50;

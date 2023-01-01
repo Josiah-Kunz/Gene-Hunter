@@ -21,19 +21,12 @@ public:
 	 */
 	float RemainingTime;
 
-	float Stacks;
-
 	UTimedEffectComponent();
 	
 	/**
 	 * The duration of this effect when it is first applied.
 	 */
 	virtual float StartingDuration();
-
-	/**
-	 * The maximum number of times this stacks.
-	 */
-	virtual int MaxStacks();
 
 	/**
 	 * Sets RemainingTime to StartingDuration.
