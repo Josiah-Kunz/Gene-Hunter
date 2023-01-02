@@ -1,0 +1,7 @@
+Oops! I guess I missed my 1 year project anniversary. Oh well---my work has been spotty at best. I'm in charge of the exciting new engineering program at Illinois College (check us out: https://www.ic.edu/engineering). I've made a conscious choice to prioritize this and bench my various other projects. It hurts a bit, but it is the right thing to do.
+
+I'm also potty-training my 2-year-old. She's great, and I don't regret it at all, but it does mean I probably won't get the effects module working over Christmas break. I mean, it's techincally working, but all the specific classes need to be written + implemented + documented, so I don't count it as done yet. Anyone can do logic, right? It's all about execution.
+
+Unreal is a real joy. I do prefer it over Unity, just as the online forums said I would. I continue to improve but I have a long way to go. 
+
+The effects module is probably the most complicated system I've done yet, but I don't think it will be the most complicated overall. I'm having a ton of fun, though. It's something I get to do just for me on vacation, y'know?
