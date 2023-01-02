@@ -40,6 +40,8 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
 	virtual int MaxStacks();
+
+	virtual void OnRefreshStacks();
 	
 	/**
 	 * The lower the priority, the farther away it is from execution. If two priorities are tied, the execution order is

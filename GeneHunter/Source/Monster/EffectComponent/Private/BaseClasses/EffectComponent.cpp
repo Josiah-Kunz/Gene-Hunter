@@ -1,6 +1,4 @@
 #include "EffectComponent.h"
-
-#include "ComponentUtilities.h"
 #include "BPLibraries/Public/UtilityFunctionLibrary.h"
 
 int UEffectComponent::GetStacks()
@@ -13,16 +11,23 @@ void UEffectComponent::SetStacks(const int NewStacks)
 	if (NewStacks <= 0)
 	{
 		Stacks = 0;
-		DestroyComponent();
+		DestroyComponent(); // TODO
 	} else
 	{
+		const int CachedStacks = Stacks;
 		Stacks = FMath::Clamp(NewStacks, 1, MaxStacks());
+		if (Stacks >= CachedStacks)
+			OnRefreshStacks();
 	}
 }
 
 int UEffectComponent::MaxStacks()
 {
 	return 1;
+}
+
+void UEffectComponent::OnRefreshStacks()
+{
 }
 
 float UEffectComponent::GetPriority()
@@ -53,14 +58,14 @@ void UEffectComponent::OnComponentCreated()
 	// Search owner for another component of the same name. If we find one, we don't attach---instead, we just up the
 	// stacks.	
 	TArray<UActorComponent*> InstanceComponents = GetOwner()->GetInstanceComponents();
+	UE_LOG(LogTemp, Warning, TEXT("Name is %s"), *(GetName().ToString()) )
 	for(UActorComponent* OtherComponent : InstanceComponents)
 	{
 		UEffectComponent* EffectComponent = dynamic_cast<UEffectComponent*>(OtherComponent);
 		if (EffectComponent && EffectComponent->GetName().EqualTo(GetName()))
 		{
-			EffectComponent->SetStacks(GetStacks()+1);
-			//Stacks = 0;	// Marks for destruction
-			UnregisterComponent();
+			EffectComponent->SetStacks(EffectComponent->GetStacks()+1);
+			SetStacks(0);
 			return;
 		}
 	}
@@ -73,6 +78,6 @@ void UEffectComponent::OnComponentCreated()
 
 void UEffectComponent::OnRegister()
 {
-	if (!IsValid(this))
+	if (IsValid(this))
 		Super::OnRegister();
 }
