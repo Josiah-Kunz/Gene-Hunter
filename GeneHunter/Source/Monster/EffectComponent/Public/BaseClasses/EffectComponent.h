@@ -17,7 +17,7 @@ class EFFECTCOMPONENT_API UEffectComponent : public UActorComponent
 	GENERATED_BODY()
 
 private:
-	int Stacks;
+	int Stacks = 1;
 
 public:
 	
@@ -74,5 +74,7 @@ public:
 	 * Retries the UStatsComponent.
 	 */
 	virtual void OnComponentCreated() override;
+
+	virtual void OnRegister() override;
 	
 };

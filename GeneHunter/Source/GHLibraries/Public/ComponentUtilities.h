@@ -8,6 +8,15 @@ class ComponentUtilities
 public:
 
 /**
+ * Creates and assigns the Component and then adds + registers it to Owner.
+ */
+#define ADD_COMPONENT(ComponentType, Component, Owner) \
+	Component = NewObject< ComponentType >( Owner ); \
+	Owner ->AddInstanceComponent( Component ); \
+	if ( Component ) \
+		Component ->RegisterComponent(); 
+
+/**
  * If the input Component is null, searches Owner for the ComponentType. If one is found, it is assigned as Component.
  *	Otherwise, a new one is created, added to Owner, and registered.
  *
@@ -17,9 +26,7 @@ public:
 	if ( Component == nullptr) { \
 		Component = Owner ->FindComponentByClass< ComponentType >(); \
 		if ( Component == nullptr){ \
-			Component = NewObject< ComponentType >( Owner ); \
-			Owner ->AddInstanceComponent( Component ); \
-			Component ->RegisterComponent(); \
+			ADD_COMPONENT( ComponentType , Component , Owner ) \
 		} \
 	} else { \
 		Owner ->AddInstanceComponent( Component ); \

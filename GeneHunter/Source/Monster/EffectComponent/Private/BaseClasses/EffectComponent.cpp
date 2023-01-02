@@ -10,7 +10,14 @@ int UEffectComponent::GetStacks()
 
 void UEffectComponent::SetStacks(const int NewStacks)
 {
-	Stacks = FMath::Clamp(NewStacks, 1, MaxStacks());
+	if (NewStacks <= 0)
+	{
+		Stacks = 0;
+		DestroyComponent();
+	} else
+	{
+		Stacks = FMath::Clamp(NewStacks, 1, MaxStacks());
+	}
 }
 
 int UEffectComponent::MaxStacks()
@@ -42,7 +49,7 @@ FText UEffectComponent::GetName()
 
 void UEffectComponent::OnComponentCreated()
 {
-
+	
 	// Search owner for another component of the same name. If we find one, we don't attach---instead, we just up the
 	// stacks.	
 	TArray<UActorComponent*> InstanceComponents = GetOwner()->GetInstanceComponents();
@@ -52,11 +59,20 @@ void UEffectComponent::OnComponentCreated()
 		if (EffectComponent && EffectComponent->GetName().EqualTo(GetName()))
 		{
 			EffectComponent->SetStacks(GetStacks()+1);
-			DestroyComponent();
+			//Stacks = 0;	// Marks for destruction
+			UnregisterComponent();
 			return;
 		}
 	}
-
+	
 	// Not killed, so must be novel
+	SetStacks(1);
 	Super::OnComponentCreated();
+	
+}
+
+void UEffectComponent::OnRegister()
+{
+	if (!IsValid(this))
+		Super::OnRegister();
 }
