@@ -8,6 +8,15 @@ UBerserkerGene::UBerserkerGene()
 
 void UBerserkerGene::OnComponentCreated()
 {
+
+	// Get StatsComponent
+	SEARCH_FOR_COMPONENT(UStatsComponent, StatsComponent, GetOwner(), true)
+
+	// No stats component?
+	if (StatsComponent == nullptr)
+		return;
+
+	// Must still be alive
 	Super::OnComponentCreated();
 
 	// Add to delegate array

@@ -24,7 +24,8 @@ public:
 	// The thing to attach to
 	// ----------------------
 	
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UStatsComponent* StatsComponent;
 
 	// Delegation variables
 	// --------------------

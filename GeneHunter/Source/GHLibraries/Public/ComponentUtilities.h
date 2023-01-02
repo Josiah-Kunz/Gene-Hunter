@@ -8,8 +8,8 @@ class ComponentUtilities
 public:
 
 /**
- * If null, searches Owner for the ComponentType. If one is found, it is assigned as Component. Otherwise, a new one is created,
- *	added to Owner, and registered.
+ * If the input Component is null, searches Owner for the ComponentType. If one is found, it is assigned as Component.
+ *	Otherwise, a new one is created, added to Owner, and registered.
  *
  * If not null, attaches it to the Owner and registers it.
  */
@@ -25,5 +25,17 @@ public:
 		Owner ->AddInstanceComponent( Component ); \
 		Component ->RegisterComponent(); \
 	}
+
+/**
+ * If the input Component is null, searches Owner for the ComponentType. If one is found, it is assigned as Component.
+ *
+ * If bTerminal and Component was not found, calls this->DestroyComponent().
+ */
+	#define SEARCH_FOR_COMPONENT(ComponentType, Component, Owner, bTerminal) \
+		if ( Component == nullptr) { \
+			Component = Owner ->FindComponentByClass< ComponentType >(); \
+			if ( Component == nullptr && bTerminal ) \
+				DestroyComponent(); \
+		}
 	
 };

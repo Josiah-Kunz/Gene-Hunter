@@ -26,8 +26,11 @@ public class EffectComponent : ModuleRules{
 			"Core",			// for IMPLEMENT_MODULE
 			"CoreUObject",	// for UObjects
 			"Engine",		// for AActor
+			
+			// Libraries and utilities
 			"GHLibraries",	// for RequireComponent
 			"BPLibraries",	// for SplitCamelCase
+			"UI",			 // for SupportingText
 		});
 	}
 }

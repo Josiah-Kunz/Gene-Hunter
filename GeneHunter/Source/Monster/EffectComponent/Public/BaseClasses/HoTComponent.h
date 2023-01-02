@@ -15,8 +15,11 @@ class EFFECTCOMPONENT_API UHoTComponent : public UBuffComponent
 
 public:
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UStatsComponent* StatsComponent;
+
 	/**
-	 * 
+	 * When RemainingTime <= NextModTime, the stat will be modified.
 	 */
 	int NextModTime = -1;
 

@@ -16,11 +16,6 @@ class EFFECTCOMPONENT_API UEffectComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UStatsComponent* StatsComponent;
-
 private:
 	int Stacks;
 

@@ -42,8 +42,21 @@ FText UEffectComponent::GetName()
 
 void UEffectComponent::OnComponentCreated()
 {
-	Super::OnComponentCreated();
 
-	// Find the StatsComponent and assign it
-	REQUIRE_COMPONENT(UStatsComponent, StatsComponent, GetOwner())
+	// Search owner for another component of the same name. If we find one, we don't attach---instead, we just up the
+	// stacks.	
+	TArray<UActorComponent*> InstanceComponents = GetOwner()->GetInstanceComponents();
+	for(UActorComponent* OtherComponent : InstanceComponents)
+	{
+		UEffectComponent* EffectComponent = dynamic_cast<UEffectComponent*>(OtherComponent);
+		if (EffectComponent && EffectComponent->GetName().EqualTo(GetName()))
+		{
+			EffectComponent->SetStacks(GetStacks()+1);
+			DestroyComponent();
+			return;
+		}
+	}
+
+	// Not killed, so must be novel
+	Super::OnComponentCreated();
 }
