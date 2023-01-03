@@ -53,15 +53,9 @@ FSupportingText UEffectComponent::GetSupportingText()
 
 FText UEffectComponent::GetName()
 {
-	FString ShortName = "";
+	FString ShortName = "__ERROR!__";
 	GetFullName().Split(" ", &ShortName, nullptr);
-	return FText::FromString(
-		ShortName
-		);
-	FString Name = typeid(this).name();
-	Name.RemoveAt(0);	// Removes the "U"
-	Name = UUtilityFunctionLibrary::SplitCamelCase(Name);
-	return FText::FromString(Name);
+	return FText::FromString(ShortName);
 }
 
 void UEffectComponent::OnComponentCreated()
