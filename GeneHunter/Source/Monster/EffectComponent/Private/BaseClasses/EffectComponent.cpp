@@ -1,6 +1,13 @@
 #include "EffectComponent.h"
 #include "BPLibraries/Public/UtilityFunctionLibrary.h"
 
+
+bool UEffectComponent::IsComponentTickEnabled() const
+{
+	UE_LOG(LogTemp, Warning, TEXT("HEREEEEE"))
+	return Super::IsComponentTickEnabled();
+}
+
 int UEffectComponent::GetStacks()
 {
 	return Stacks;
@@ -11,7 +18,7 @@ void UEffectComponent::SetStacks(const int NewStacks)
 	if (NewStacks <= 0)
 	{
 		Stacks = 0;
-		DestroyComponent(); // TODO
+		//DestroyComponent(); // TODO
 	} else
 	{
 		const int CachedStacks = Stacks;
@@ -46,6 +53,11 @@ FSupportingText UEffectComponent::GetSupportingText()
 
 FText UEffectComponent::GetName()
 {
+	FString ShortName = "";
+	GetFullName().Split(" ", &ShortName, nullptr);
+	return FText::FromString(
+		ShortName
+		);
 	FString Name = typeid(this).name();
 	Name.RemoveAt(0);	// Removes the "U"
 	Name = UUtilityFunctionLibrary::SplitCamelCase(Name);

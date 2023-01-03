@@ -20,6 +20,8 @@ private:
 	int Stacks = 1;
 
 public:
+
+	virtual bool IsComponentTickEnabled() const override;
 	
 	/**
 	 * When an EffectComponent is attached to an Actor, it looks for duplicate EffectComponents. If such a duplicate
