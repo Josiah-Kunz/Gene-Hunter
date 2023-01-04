@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "BuffComponent.h"
+#include "StatsComponent.h"
 #include "HoTComponent.generated.h"
 
 

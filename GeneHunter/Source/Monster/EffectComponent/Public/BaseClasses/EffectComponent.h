@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "StatsComponent.h"
 #include "SupportingText.h"
 #include "Components/ActorComponent.h"
 
@@ -20,18 +19,26 @@ private:
 
 public:
 
+	
+	/**
+	 * Applies the EffectComponent to the target Actor. If one already exists on the Actor, it increases the Stacks by
+	 * 1. If one doesn't exist, an EffectComponent is created and attached.
+	 *
+	template <typename T>
+	static T* ApplyEffect(AActor* Owner);
+
+	/**
+	 * Alias for ApplyEffect.
+	 *
+	template <typename T>
+	static T AddEffect(AActor* Owner);
+	*/
+
 	/**
 	 * Applies the EffectComponent to the target Actor. If one already exists on the Actor, it increases the Stacks by
 	 * 1. If one doesn't exist, an EffectComponent is created and attached.
 	 */
-	template <typename T>
-	static T ApplyEffect(AActor* Owner);
-
-	/**
-	 * Alias for ApplyEffect.
-	 */
-	template <typename T>
-	static T AddEffect(AActor* Owner);
+	static void AddEffect(TSubclassOf<UEffectComponent> EffectClass, AActor* Owner);
 
 
 	virtual bool IsComponentTickEnabled() const override;

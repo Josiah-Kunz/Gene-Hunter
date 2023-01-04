@@ -5,8 +5,6 @@
 
 #pragma once
 
-#include "ComponentUtilities.h"
-#include "MathUtil.h"
 #include "StatUnitTestUtilities.h"
 #include "BerserkerGene.h"
 #include "Stacks_Multiple_UNITTEST.h"
@@ -23,18 +21,12 @@ bool UEffectComponent_Components_Stacks::RunTest(const FString& Parameters)
 	DUMMY_BASE_STATS_BLOCK
 
 	// Attach 2x effects (max is 3)
-	
-	UStacks_Multiple_UNITTEST* MultiStacker1 = nullptr;
-	ADD_COMPONENT(UStacks_Multiple_UNITTEST, MultiStacker1, DummyActor)
+	UStacks_Multiple_UNITTEST::AddEffect(UStacks_Multiple_UNITTEST::StaticClass(), DummyActor);
+	UActorComponent* TmpComponent = DummyActor->GetComponentByClass(UStacks_Multiple_UNITTEST::StaticClass());
+	UStacks_Multiple_UNITTEST* MultiStacker1 = dynamic_cast<UStacks_Multiple_UNITTEST*>(TmpComponent);
 
-	UStacks_Multiple_UNITTEST* MultiStacker2 = nullptr;
-	//ADD_COMPONENT(UStacks_Multiple_UNITTEST, MultiStacker2, DummyActor)
-	MultiStacker2 = NewObject< UStacks_Multiple_UNITTEST >( DummyActor );
-	if ( MultiStacker2 )
-	{
-		DummyActor ->AddInstanceComponent( MultiStacker2 );
-		MultiStacker2 ->RegisterComponent();
-	}
+	// Second one
+	UStacks_Multiple_UNITTEST::AddEffect(UStacks_Multiple_UNITTEST::StaticClass(), DummyActor);
 
 	// Compare stacks
 	constexpr int ExpectedStacks = 2;
@@ -45,7 +37,7 @@ bool UEffectComponent_Components_Stacks::RunTest(const FString& Parameters)
 
 	// Find how many components there are
 	int ComponentCount = 0;
-	TArray<UActorComponent*> InstancedComponents = DummyActor->GetInstanceComponents();
+	TSet<UActorComponent*> InstancedComponents = DummyActor->GetComponents();
 	for(UActorComponent* ActorComponent : InstancedComponents)
 	{
 		if (dynamic_cast<UStacks_Multiple_UNITTEST*>(ActorComponent))
@@ -60,10 +52,12 @@ bool UEffectComponent_Components_Stacks::RunTest(const FString& Parameters)
 	ExpectedComponents - ComponentCount == 0);
 
 	// Get a single stacker and try to add more than its max stacks (i.e., >1)
-	UStacks_Single_UNITTEST* SingleStacker1 = nullptr;
-	REQUIRE_COMPONENT(UStacks_Single_UNITTEST, SingleStacker1, DummyActor)
-	UStacks_Single_UNITTEST* SingleStacker2 = nullptr;
-	ADD_COMPONENT(UStacks_Single_UNITTEST, SingleStacker2, DummyActor)
+	UStacks_Single_UNITTEST::AddEffect(UStacks_Single_UNITTEST::StaticClass(), DummyActor);
+	TmpComponent = DummyActor->GetComponentByClass(UStacks_Single_UNITTEST::StaticClass());
+	UStacks_Single_UNITTEST* SingleStacker1 = dynamic_cast<UStacks_Single_UNITTEST*>(TmpComponent);
+
+	// Add another
+	UStacks_Single_UNITTEST::AddEffect(UStacks_Single_UNITTEST::StaticClass(), DummyActor);
 
 	// Compare stacks
 	TestTrue(FString::Printf(TEXT("EffectComponent number of stacks mismatch: Expected [%s] | Actual [%s]"),
