@@ -8,8 +8,7 @@
 #include "EffectComponent.generated.h"
 
 /**
- * A struct to hold data (e.g., Priority) and code (how effects are actually implemented). Implementation of this data
- *	happens in EffectsComponent.
+ * A class to hold data (e.g., Priority) and code (how effects are actually implemented). Add to an Actor via UEffectComponent::ApplyEffect(Actor).
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class EFFECTCOMPONENT_API UEffectComponent : public UActorComponent
@@ -20,6 +19,20 @@ private:
 	int Stacks = 1;
 
 public:
+
+	/**
+	 * Applies the EffectComponent to the target Actor. If one already exists on the Actor, it increases the Stacks by
+	 * 1. If one doesn't exist, an EffectComponent is created and attached.
+	 */
+	template <typename T>
+	static T ApplyEffect(AActor* Owner);
+
+	/**
+	 * Alias for ApplyEffect.
+	 */
+	template <typename T>
+	static T AddEffect(AActor* Owner);
+
 
 	virtual bool IsComponentTickEnabled() const override;
 	
@@ -75,10 +88,8 @@ public:
 	virtual FText GetName();
 
 	/**
-	 * Retries the UStatsComponent.
+	 * Sets stacks to 1.
 	 */
 	virtual void OnComponentCreated() override;
-
-	virtual void OnRegister() override;
 	
 };

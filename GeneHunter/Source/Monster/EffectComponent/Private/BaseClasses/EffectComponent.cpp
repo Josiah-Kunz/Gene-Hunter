@@ -1,10 +1,36 @@
 #include "EffectComponent.h"
-#include "BPLibraries/Public/UtilityFunctionLibrary.h"
 
+template <typename T>
+T UEffectComponent::ApplyEffect(AActor* Owner)
+{
+
+	// Search owner for another component of the same name. If we find one, we don't attach---instead, we just up the
+	// stacks.
+	T ExistingEffect = Owner->FindComponentByClass<T>();
+	if (IsValid(ExistingEffect))
+	{
+		ExistingEffect->SetStacks(ExistingEffect->GetStacks()+1);
+		return ExistingEffect;
+	}
+
+	// None exist---let's add a new one
+	T Effect = NewObject<T>(Owner);
+	if (Effect)
+	{
+		Owner->AddInstanceComponent(Effect);  
+		Effect->RegisterComponent();
+	}
+	return Effect;
+}
+
+template <typename T>
+T UEffectComponent::AddEffect(AActor* Owner)
+{
+	return ApplyEffect<T>(Owner);
+}
 
 bool UEffectComponent::IsComponentTickEnabled() const
 {
-	UE_LOG(LogTemp, Warning, TEXT("HEREEEEE"))
 	return Super::IsComponentTickEnabled();
 }
 
@@ -58,32 +84,9 @@ FText UEffectComponent::GetName()
 	return FText::FromString(ShortName);
 }
 
-void UEffectComponent::OnComponentCreated()
+auto UEffectComponent::OnComponentCreated() -> void
 {
-	
-	// Search owner for another component of the same name. If we find one, we don't attach---instead, we just up the
-	// stacks.	
-	TArray<UActorComponent*> InstanceComponents = GetOwner()->GetInstanceComponents();
-	UE_LOG(LogTemp, Warning, TEXT("Name is %s"), *(GetName().ToString()) )
-	for(UActorComponent* OtherComponent : InstanceComponents)
-	{
-		UEffectComponent* EffectComponent = dynamic_cast<UEffectComponent*>(OtherComponent);
-		if (EffectComponent && EffectComponent->GetName().EqualTo(GetName()))
-		{
-			EffectComponent->SetStacks(EffectComponent->GetStacks()+1);
-			SetStacks(0);
-			return;
-		}
-	}
-	
-	// Not killed, so must be novel
 	SetStacks(1);
 	Super::OnComponentCreated();
 	
-}
-
-void UEffectComponent::OnRegister()
-{
-	if (IsValid(this))
-		Super::OnRegister();
 }
