@@ -16,17 +16,12 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Components_Stacks,
 
 bool UEffectComponent_Components_Stacks::RunTest(const FString& Parameters)
 {
-	
 	// Get dummy
 	DUMMY_BASE_STATS_BLOCK
 
 	// Attach 2x effects (max is 3)
-	UStacks_Multiple_UNITTEST::AddEffect(UStacks_Multiple_UNITTEST::StaticClass(), DummyActor);
-	UActorComponent* TmpComponent = DummyActor->GetComponentByClass(UStacks_Multiple_UNITTEST::StaticClass());
-	UStacks_Multiple_UNITTEST* MultiStacker1 = dynamic_cast<UStacks_Multiple_UNITTEST*>(TmpComponent);
-
-	// Second one
-	UStacks_Multiple_UNITTEST::AddEffect(UStacks_Multiple_UNITTEST::StaticClass(), DummyActor);
+	ADD_EFFECT(UStacks_Multiple_UNITTEST, DummyActor, MultiStacker1)
+	ADD_EFFECT(UStacks_Multiple_UNITTEST, DummyActor, MultiStacker2)
 
 	// Compare stacks
 	constexpr int ExpectedStacks = 2;
@@ -52,12 +47,8 @@ bool UEffectComponent_Components_Stacks::RunTest(const FString& Parameters)
 	ExpectedComponents - ComponentCount == 0);
 
 	// Get a single stacker and try to add more than its max stacks (i.e., >1)
-	UStacks_Single_UNITTEST::AddEffect(UStacks_Single_UNITTEST::StaticClass(), DummyActor);
-	TmpComponent = DummyActor->GetComponentByClass(UStacks_Single_UNITTEST::StaticClass());
-	UStacks_Single_UNITTEST* SingleStacker1 = dynamic_cast<UStacks_Single_UNITTEST*>(TmpComponent);
-
-	// Add another
-	UStacks_Single_UNITTEST::AddEffect(UStacks_Single_UNITTEST::StaticClass(), DummyActor);
+	ADD_EFFECT(UStacks_Single_UNITTEST, DummyActor, SingleStacker1)
+	ADD_EFFECT(UStacks_Single_UNITTEST, DummyActor, SingleStacker2)
 
 	// Compare stacks
 	TestTrue(FString::Printf(TEXT("EffectComponent number of stacks mismatch: Expected [%s] | Actual [%s]"),

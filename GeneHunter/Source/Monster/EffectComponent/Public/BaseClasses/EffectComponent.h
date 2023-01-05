@@ -19,26 +19,23 @@ private:
 
 public:
 
-	
-	/**
-	 * Applies the EffectComponent to the target Actor. If one already exists on the Actor, it increases the Stacks by
-	 * 1. If one doesn't exist, an EffectComponent is created and attached.
-	 *
-	template <typename T>
-	static T* ApplyEffect(AActor* Owner);
-
-	/**
-	 * Alias for ApplyEffect.
-	 *
-	template <typename T>
-	static T AddEffect(AActor* Owner);
-	*/
-
-	/**
-	 * Applies the EffectComponent to the target Actor. If one already exists on the Actor, it increases the Stacks by
-	 * 1. If one doesn't exist, an EffectComponent is created and attached.
-	 */
-	static void AddEffect(TSubclassOf<UEffectComponent> EffectClass, AActor* Owner);
+/**
+ * Applies the EffectComponent to the target Owner. If one already exists on the Owner, it increases the Stacks by
+ * 1. If one doesn't exist, an EffectComponent is created and attached.
+ */
+#define ADD_EFFECT(EffectType, Owner, OutName) \
+	EffectType * OutName = Owner ->FindComponentByClass< EffectType >(); \
+	if (IsValid( OutName )) \
+	{ \
+		OutName ->SetStacks( OutName ->GetStacks()+1); \
+	} else { \
+		OutName = NewObject< EffectType >( Owner ); \
+		if ( OutName ) \
+		{ \
+			Owner ->AddInstanceComponent( OutName );  \
+			OutName ->RegisterComponent(); \
+		} \
+	}
 
 
 	virtual bool IsComponentTickEnabled() const override;
