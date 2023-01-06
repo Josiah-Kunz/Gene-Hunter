@@ -7,14 +7,27 @@ class ComponentUtilities
 
 public:
 
+	/**
+	 * Note: The following must be macros to be generic enough. Otherwise, we'd have to #include all component.h for the
+	 *	functions to work.
+	 */
+
 /**
- * Creates and assigns the Component and then adds + registers it to Owner.
+ * Creates a new variable as the Component and then adds + registers it to Owner.
+ */
+#define ADD_NEW_COMPONENT(ComponentType, NewVariableName, Owner) \
+	ComponentType * NewVariableName; \
+	ADD_COMPONENT( ComponentType, NewVariableName, Owner)
+
+/**
+ * Creates and assigns the Component from an existing variable and then adds + registers it to Owner.
  */
 #define ADD_COMPONENT(ComponentType, Component, Owner) \
 	Component = NewObject< ComponentType >( Owner ); \
-	Owner ->AddInstanceComponent( Component ); \
-	if ( Component ) \
-		Component ->RegisterComponent(); 
+	if ( Component ){ \
+		Owner ->AddInstanceComponent( Component ); \
+		Component ->RegisterComponent(); \
+	}
 
 /**
  * If the input Component is null, searches Owner for the ComponentType. If one is found, it is assigned as Component.
@@ -38,11 +51,11 @@ public:
  *
  * If bTerminal and Component was not found, calls this->DestroyComponent().
  */
-	#define SEARCH_FOR_COMPONENT(ComponentType, Component, Owner, bTerminal) \
-		if ( Component == nullptr) { \
-			Component = Owner ->FindComponentByClass< ComponentType >(); \
-			if ( Component == nullptr && bTerminal ) \
-				DestroyComponent(); \
-		}
+#define SEARCH_FOR_COMPONENT(ComponentType, Component, Owner, bTerminal) \
+	if ( Component == nullptr) { \
+		Component = Owner ->FindComponentByClass< ComponentType >(); \
+		if ( Component == nullptr && bTerminal ) \
+			DestroyComponent(); \
+	}
 	
 };

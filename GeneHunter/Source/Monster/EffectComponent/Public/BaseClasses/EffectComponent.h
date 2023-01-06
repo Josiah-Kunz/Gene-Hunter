@@ -15,27 +15,11 @@ class EFFECTCOMPONENT_API UEffectComponent : public UActorComponent
 	GENERATED_BODY()
 
 private:
-	int Stacks = 1;
+	int Stacks = 0;
 
 public:
 
-/**
- * Applies the EffectComponent to the target Owner. If one already exists on the Owner, it increases the Stacks by
- * 1. If one doesn't exist, an EffectComponent is created and attached.
- */
-#define ADD_EFFECT(EffectType, Owner, OutName) \
-	EffectType * OutName = Owner ->FindComponentByClass< EffectType >(); \
-	if (IsValid( OutName )) \
-	{ \
-		OutName ->SetStacks( OutName ->GetStacks()+1); \
-	} else { \
-		OutName = NewObject< EffectType >( Owner ); \
-		if ( OutName ) \
-		{ \
-			Owner ->AddInstanceComponent( OutName );  \
-			OutName ->RegisterComponent(); \
-		} \
-	}
+	UEffectComponent();
 
 
 	virtual bool IsComponentTickEnabled() const override;
@@ -89,7 +73,7 @@ public:
 	 * How this EffectComponent will be displayed in the UI. Defaults to class name (minus the "U") split by camel case.
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
-	virtual FText GetName();
+	virtual FText GetDisplayName();
 
 	/**
 	 * Sets stacks to 1.

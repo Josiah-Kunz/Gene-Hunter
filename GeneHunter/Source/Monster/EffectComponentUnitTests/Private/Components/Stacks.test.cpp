@@ -7,6 +7,7 @@
 
 #include "StatUnitTestUtilities.h"
 #include "BerserkerGene.h"
+#include "ComponentUtilities.h"
 #include "Stacks_Multiple_UNITTEST.h"
 #include "Stacks_Single_UNITTEST.h"
 
@@ -20,8 +21,8 @@ bool UEffectComponent_Components_Stacks::RunTest(const FString& Parameters)
 	DUMMY_BASE_STATS_BLOCK
 
 	// Attach 2x effects (max is 3)
-	ADD_EFFECT(UStacks_Multiple_UNITTEST, DummyActor, MultiStacker1)
-	ADD_EFFECT(UStacks_Multiple_UNITTEST, DummyActor, MultiStacker2)
+	ADD_NEW_COMPONENT(UStacks_Multiple_UNITTEST, MultiStacker1, DummyActor);
+	ADD_NEW_COMPONENT(UStacks_Multiple_UNITTEST, MultiStacker2, DummyActor);
 
 	// Compare stacks
 	constexpr int ExpectedStacks = 2;
@@ -47,8 +48,8 @@ bool UEffectComponent_Components_Stacks::RunTest(const FString& Parameters)
 	ExpectedComponents - ComponentCount == 0);
 
 	// Get a single stacker and try to add more than its max stacks (i.e., >1)
-	ADD_EFFECT(UStacks_Single_UNITTEST, DummyActor, SingleStacker1)
-	ADD_EFFECT(UStacks_Single_UNITTEST, DummyActor, SingleStacker2)
+	ADD_NEW_COMPONENT(UStacks_Single_UNITTEST, SingleStacker1, DummyActor)
+	ADD_NEW_COMPONENT(UStacks_Single_UNITTEST, SingleStacker2, DummyActor)
 
 	// Compare stacks
 	TestTrue(FString::Printf(TEXT("EffectComponent number of stacks mismatch: Expected [%s] | Actual [%s]"),
