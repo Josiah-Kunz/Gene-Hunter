@@ -18,6 +18,7 @@
 
 // Utilities
 #include "ModificationMode.h"
+#include "StatEnum.h"
 #include "StatValueType.h"
 
 // .gen
@@ -53,31 +54,38 @@ protected:
 #pragma endregion
 
 #pragma region Stat variables
+	
 public:
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
 	ULevelComponent* LevelComponent;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
+private:
+	
+	UPROPERTY()
 	FHealth Health;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
+	UPROPERTY()
 	FPhysicalAttack PhysicalAttack;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
+	UPROPERTY()
 	FPhysicalDefense PhysicalDefense;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
+	UPROPERTY()
 	FSpecialAttack SpecialAttack;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
+	UPROPERTY()
 	FSpecialDefense SpecialDefense;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
+	UPROPERTY()
 	FHaste Haste;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Current Stats")
+	UPROPERTY()
 	FCriticalHit CriticalHit;
+
+public:
+
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	FStat& GetStat(const EStatEnum Stat);
 
 #pragma endregion
 
@@ -85,27 +93,27 @@ public:
 
 public:
 
-	TArray<FStat*> StatsArray = {
-		&Health,
-		&PhysicalAttack,
-		&PhysicalDefense,
-		&SpecialAttack,
-		&SpecialDefense,
-		&Haste,
-		&CriticalHit
+	TArray<EStatEnum> StatsArray = {
+		EStatEnum::Health,
+		EStatEnum::PhysicalAttack,
+		EStatEnum::PhysicalDefense,
+		EStatEnum::SpecialAttack,
+		EStatEnum::SpecialDefense,
+		EStatEnum::Haste,
+		EStatEnum::CriticalHit
 	};
 
-	TArray<FStat*> NonPercentageStats = {
-		&Health,
-		&PhysicalAttack,
-		&PhysicalDefense,
-		&SpecialAttack,
-		&SpecialDefense
+	TArray<EStatEnum> NonPercentageStats = {
+		EStatEnum::Health,
+		EStatEnum::PhysicalAttack,
+		EStatEnum::PhysicalDefense,
+		EStatEnum::SpecialAttack,
+		EStatEnum::SpecialDefense
 	};
 
-	TArray<FStat*> PercentageStats = {
-		&Haste,
-		&CriticalHit
+	TArray<EStatEnum> PercentageStats = {
+		EStatEnum::Haste,
+		EStatEnum::CriticalHit
 	};
 
 
@@ -135,7 +143,7 @@ public:
 	/**
 	 * Modifies (that is, increases, decreases, or sets) a single Stat in this StatsComponent.
 	 */
-	void ModifyStat(FStat* Stat, const float Value, const EStatValueType ValueType, const EModificationMode Mode);
+	void ModifyStat(EStatEnum Stat, const float Value, const EStatValueType ValueType, const EModificationMode Mode);
 	
 	
 	/**
@@ -157,10 +165,10 @@ public:
 
 	/**
 	 * Parameters:
-	 *	- The targeted FStat pointer
+	 *	- The targeted EStatEnum
 	 *	- bResetCurrent
 	 */
-	EFFECT_DELEGATES_TwoParams(RecalculateStats, FStat*, bool)
+	EFFECT_DELEGATES_TwoParams(RecalculateStats, EStatEnum, bool)
 
 private:
 
@@ -168,13 +176,13 @@ private:
 	 * All in-code modifications should pass through here rather than doing Stat->ModifyValue(...). This ensures that 
 	 * the effect delegates are called.
 	 */
-	void ModifyStatInternal(FStat* Stat, float Value, EStatValueType ValueType, EModificationMode Mode);
+	void ModifyStatInternal(EStatEnum Stat, float Value, EStatValueType ValueType, EModificationMode Mode);
 
 public:
 	
 	EFFECT_DELEGATES_FourParams(
 		ModifyStat,
-		FStat*
+		EStatEnum
 		, float&				
 		, EStatValueType&		
 		, EModificationMode&)
@@ -208,7 +216,7 @@ public:
 	/**
 	 * If the given FStat would be reduced, it is instead not reduced.
 	 */
-	static void AvertReduction(FStat* Stat, float& Value, const EStatValueType ValueType,
+	void AvertReduction(EStatEnum Stat, float& Value, const EStatValueType ValueType,
 		const EModificationMode Mode);
 
 #pragma endregion

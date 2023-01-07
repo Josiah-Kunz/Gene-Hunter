@@ -32,25 +32,22 @@ public:
 	// Delegation variables
 	// --------------------
 	
-	std::function<void(FStat*, const bool)> Lambda = [this](FStat* InStat, const bool bResetCurrent)
+	std::function<void(EStatEnum, const bool)> Lambda = [this](EStatEnum InStat, const bool bResetCurrent)
 	{
-		if (InStat->Name().Equals(StatsComponent->PhysicalAttack.Name()))
+		switch(InStat)
 		{
-			InStat->ModifyValue(15, EStatValueType::Permanent, EModificationMode::AddPercentage);
-			if (bResetCurrent)
-				InStat->ModifyValue(15, EStatValueType::Current, EModificationMode::AddPercentage);
-		}
-		if (InStat->Name().Equals(StatsComponent->PhysicalDefense.Name()))
-		{
-			InStat->ModifyValue(-10, EStatValueType::Permanent, EModificationMode::AddPercentage);
-			if (bResetCurrent)
-				InStat->ModifyValue(-10, EStatValueType::Current, EModificationMode::AddPercentage);
-		}
-		if (InStat->Name().Equals(StatsComponent->SpecialDefense.Name()))
-		{
-			InStat->ModifyValue(-10, EStatValueType::Permanent, EModificationMode::AddPercentage);
-			if (bResetCurrent)
-				InStat->ModifyValue(-10, EStatValueType::Current, EModificationMode::AddPercentage);
+		case EStatEnum::PhysicalAttack:
+				StatsComponent->GetStat(InStat).ModifyValue(15, EStatValueType::Permanent, EModificationMode::AddPercentage);
+				if (bResetCurrent)
+					StatsComponent->GetStat(InStat).ModifyValue(15, EStatValueType::Current, EModificationMode::AddPercentage);
+			break;
+		case EStatEnum::PhysicalDefense: case EStatEnum::SpecialDefense:
+				StatsComponent->GetStat(InStat).ModifyValue(-10, EStatValueType::Permanent, EModificationMode::AddPercentage);
+				if (bResetCurrent)
+					StatsComponent->GetStat(InStat).ModifyValue(-10, EStatValueType::Current, EModificationMode::AddPercentage);
+			break;
+		default:
+			break;
 		}
 	};
 	UStatsComponent::FRecalculateStatsDelegate Delegate;

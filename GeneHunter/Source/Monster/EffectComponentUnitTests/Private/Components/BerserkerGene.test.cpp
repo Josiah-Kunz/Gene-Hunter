@@ -19,9 +19,9 @@ bool UEffectComponent_Components_BerserkerGene::RunTest(const FString& Parameter
 	DUMMY_BASE_STATS_BLOCK
 
 	// Get expected
-	const float ExpectedPhA = StatsComponent->PhysicalAttack.GetPermanentValue() * 1.15f;
-	const float ExpectedPhD = StatsComponent->PhysicalDefense.GetPermanentValue() * 0.9f;
-	const float ExpectedSpD = StatsComponent->SpecialDefense.GetPermanentValue() * 0.9f;
+	const float ExpectedPhA =StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetPermanentValue() * 1.15f;
+	const float ExpectedPhD =StatsComponent->GetStat(EStatEnum::PhysicalDefense).GetPermanentValue() * 0.9f;
+	const float ExpectedSpD =StatsComponent->GetStat(EStatEnum::SpecialDefense).GetPermanentValue() * 0.9f;
 
 	// Attach BerserkerGene
 	UBerserkerGene* BerserkerGene = NewObject<UBerserkerGene>(DummyActor);
@@ -31,9 +31,9 @@ bool UEffectComponent_Components_BerserkerGene::RunTest(const FString& Parameter
 	StatsComponent->RecalculateStats(true);
 
 	// Get actual
-	const float ActualPhA = StatsComponent->PhysicalAttack.GetCurrentValue();
-	const float ActualPhD = StatsComponent->PhysicalDefense.GetCurrentValue();
-	const float ActualSpD = StatsComponent->SpecialDefense.GetCurrentValue();
+	const float ActualPhA =StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetCurrentValue();
+	const float ActualPhD =StatsComponent->GetStat(EStatEnum::PhysicalDefense).GetCurrentValue();
+	const float ActualSpD =StatsComponent->GetStat(EStatEnum::SpecialDefense).GetCurrentValue();
 
 	// Test PhA
 	TestTrue(

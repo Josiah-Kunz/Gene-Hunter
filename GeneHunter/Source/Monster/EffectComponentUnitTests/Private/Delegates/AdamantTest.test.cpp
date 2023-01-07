@@ -19,28 +19,28 @@ bool UEffectComponent_Delegates_RecalculateStats::RunTest(const FString& Paramet
 
 	// Get baseline
 	StatsComponent->RecalculateStats(true);
-	const float OriginalPhA = StatsComponent->PhysicalAttack.GetCurrentValue();
-	const float OriginalSpA = StatsComponent->SpecialAttack.GetCurrentValue();
+	const float OriginalPhA = StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetCurrentValue();
+	const float OriginalSpA = StatsComponent->GetStat(EStatEnum::SpecialAttack).GetCurrentValue();
 	
 	// Define "adamant" delegate (+10% PhA/-10% SpA)
 	UStatsComponent::FRecalculateStatsDelegate AdamantRecalculateDelegate;
-	AdamantRecalculateDelegate.BindLambda([StatsComponent](FStat* Stat, bool bResetCurrent)
+	AdamantRecalculateDelegate.BindLambda([StatsComponent](EStatEnum Stat, bool bResetCurrent)
 	{
 
 		// +10% PhA
-		if ( Stat->Name() == StatsComponent->PhysicalAttack.Name())
+		if ( StatsComponent->GetStat(Stat).Name() == StatsComponent->GetStat(EStatEnum::PhysicalAttack).Name())
 		{
-			Stat->ModifyValue(10, EStatValueType::Permanent, EModificationMode::AddPercentage);
+			StatsComponent->GetStat(Stat).ModifyValue(10, EStatValueType::Permanent, EModificationMode::AddPercentage);
 			if (bResetCurrent)
-				Stat->ModifyValue(10, EStatValueType::Current, EModificationMode::AddPercentage);
+				StatsComponent->GetStat(Stat).ModifyValue(10, EStatValueType::Current, EModificationMode::AddPercentage);
 		}
 
 		// -10% SpA
-		if ( Stat->Name() == StatsComponent->SpecialAttack.Name())
+		if ( StatsComponent->GetStat(Stat).Name() == StatsComponent->GetStat(EStatEnum::SpecialAttack).Name())
 		{
-			Stat->ModifyValue(-10, EStatValueType::Permanent, EModificationMode::AddPercentage);
+			StatsComponent->GetStat(Stat).ModifyValue(-10, EStatValueType::Permanent, EModificationMode::AddPercentage);
 			if (bResetCurrent)
-				Stat->ModifyValue(-10, EStatValueType::Current, EModificationMode::AddPercentage);
+				StatsComponent->GetStat(Stat).ModifyValue(-10, EStatValueType::Current, EModificationMode::AddPercentage);
 		}
 			
 	});
@@ -53,8 +53,8 @@ bool UEffectComponent_Delegates_RecalculateStats::RunTest(const FString& Paramet
 	const float ExpectedPhA = OriginalPhA * 1.1f;
 	TestTrue(FString::Printf(TEXT("Increase PhA by 10 percent?: Expected [%s] vs Actual [%s]"),
 		*FString::SanitizeFloat(ExpectedPhA),
-		*FString::SanitizeFloat(StatsComponent->PhysicalAttack.GetCurrentValue())),
-	FMathf::Abs(ExpectedPhA - StatsComponent->PhysicalAttack.GetCurrentValue())
+		*FString::SanitizeFloat(StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetCurrentValue())),
+	FMathf::Abs(ExpectedPhA - StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetCurrentValue())
 		< UStatUnitTestUtilities::TOLERANCE);
 
 	// Check SpA
@@ -62,8 +62,8 @@ bool UEffectComponent_Delegates_RecalculateStats::RunTest(const FString& Paramet
 	TestTrue(FString::Printf(TEXT("Decrease SpA by 10 percent?: Original [%s] | Expected [%s] vs Actual [%s]"),
 		*FString::SanitizeFloat(OriginalSpA),
 		*FString::SanitizeFloat(ExpectedSpA),
-		*FString::SanitizeFloat(StatsComponent->SpecialAttack.GetCurrentValue())),
-	FMathf::Abs(ExpectedSpA - StatsComponent->SpecialAttack.GetCurrentValue())
+		*FString::SanitizeFloat(StatsComponent->GetStat(EStatEnum::SpecialAttack).GetCurrentValue())),
+	FMathf::Abs(ExpectedSpA - StatsComponent->GetStat(EStatEnum::SpecialAttack).GetCurrentValue())
 		< UStatUnitTestUtilities::TOLERANCE);
 	
 	// Return

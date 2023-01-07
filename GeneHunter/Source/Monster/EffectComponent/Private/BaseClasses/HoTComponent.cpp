@@ -5,7 +5,7 @@
 
 float UHoTComponent::GetAmount()
 {
-	return StatsComponent->Health.GetPermanentValue() * 0.01f * GetStacks();
+	return StatsComponent->GetStat(EStatEnum::Health).GetPermanentValue() * 0.01f * GetStacks();
 }
 
 float UHoTComponent::GetTickRate()
@@ -38,7 +38,7 @@ void UHoTComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 	if (RemainingTime <= NextModTime)
 	{
 		NextModTime -= GetTickRate();
-		StatsComponent->ModifyStat(&StatsComponent->Health, GetAmount(), EStatValueType::Current,
+		StatsComponent->ModifyStat(EStatEnum::Health, GetAmount(), EStatValueType::Current,
 			EModificationMode::AddAbsolute);
 	}
 }

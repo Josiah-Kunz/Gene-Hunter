@@ -20,36 +20,18 @@ bool UEffectComponent_Delegates_ModifyStats::RunTest(const FString& Parameters)
 
 	// Get baseline
 	StatsComponent->RecalculateStats(true);
-	const float OriginalPhA = StatsComponent->PhysicalAttack.GetCurrentValue();
-	const float OriginalHP = StatsComponent->Health.GetCurrentValue();
+	const float OriginalPhA = StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetCurrentValue();
+	const float OriginalHP = StatsComponent->GetStat(EStatEnum::Health).GetCurrentValue();
 	
 	// Define "clear body" delegate 
 	UStatsComponent::FModifyStatDelegate ClearBodyDelegate;
-	ClearBodyDelegate.BindLambda([StatsComponent](FStat* Stat, float& Value, EStatValueType& ValueType, EModificationMode& Mode)
+	ClearBodyDelegate.BindLambda([StatsComponent](EStatEnum Stat, float& Value, EStatValueType& ValueType, EModificationMode& Mode)
 	{
+		
 
 		// Determine if there is an attempted reduction in a non-HP stat. If so, set a non-modifying value.
-		if (!Stat->Name().Equals(StatsComponent->Health.Name()))
-		{
-			switch(Mode)
-			{
-			case EModificationMode::AddAbsolute: case EModificationMode::AddFraction: case EModificationMode::AddPercentage:
-				if (Value < 0)
-					Value = 0;
-				break;
-			case EModificationMode::MultiplyAbsolute:
-				if (Value < 1)
-					Value = 1;
-				break;
-			case EModificationMode::MultiplyPercentage:
-				if (Value < 100)
-					Value = 100;
-				break;
-			case EModificationMode::SetDirectly:
-				if (Value < Stat->GetValue(ValueType))
-					Value = Stat->GetValue(ValueType);
-			}
-		}
+		if (Stat != EStatEnum::Health)
+			StatsComponent->AvertReduction(Stat, Value, ValueType, Mode);
 	});
 
 	// Add clear body to delegate array
@@ -62,16 +44,16 @@ bool UEffectComponent_Delegates_ModifyStats::RunTest(const FString& Parameters)
 	const float ExpectedPhA = OriginalPhA;
 	TestTrue(FString::Printf(TEXT("Unable to decrease PhA?: Expected [%s] vs Actual [%s]"),
 		*FString::SanitizeFloat(ExpectedPhA),
-		*FString::SanitizeFloat(StatsComponent->PhysicalAttack.GetCurrentValue())),
-	FMathf::Abs(ExpectedPhA - StatsComponent->PhysicalAttack.GetCurrentValue())
+		*FString::SanitizeFloat(StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetCurrentValue())),
+	FMathf::Abs(ExpectedPhA - StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetCurrentValue())
 		< UStatUnitTestUtilities::TOLERANCE);
 
 	// Check HP
 	const float ExpectedHP = OriginalHP * 0.9f;
 	TestTrue(FString::Printf(TEXT("HP decreased?: Expected [%s] vs Actual [%s]"),
 		*FString::SanitizeFloat(ExpectedHP),
-		*FString::SanitizeFloat(StatsComponent->Health.GetCurrentValue())),
-	FMathf::Abs(ExpectedHP - StatsComponent->Health.GetCurrentValue())
+		*FString::SanitizeFloat(StatsComponent->GetStat(EStatEnum::Health).GetCurrentValue())),
+	FMathf::Abs(ExpectedHP - StatsComponent->GetStat(EStatEnum::Health).GetCurrentValue())
 		< UStatUnitTestUtilities::TOLERANCE);
 	
 	// Return

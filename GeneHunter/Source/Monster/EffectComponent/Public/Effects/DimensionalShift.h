@@ -30,11 +30,11 @@ public:
 	// Delegation variables
 	// --------------------
 	
-	std::function<void(FStat*, float&, const EStatValueType, const EModificationMode)> Lambda =
-		[this](FStat* InStat, float& InValue, const EStatValueType InValueType, const EModificationMode InMode)
+	std::function<void(EStatEnum, float&, const EStatValueType, const EModificationMode)> Lambda =
+		[this](const EStatEnum InStat, float& InValue, const EStatValueType InValueType, const EModificationMode InMode)
 	{
-		if (InStat->Name().Equals(StatsComponent->Health.Name()))
-			UStatsComponent::AvertReduction(InStat, InValue, InValueType, InMode);
+		if (InStat == EStatEnum::Health)
+			StatsComponent->AvertReduction(InStat, InValue, InValueType, InMode);
 	};
 	UStatsComponent::FModifyStatDelegate Delegate;
 

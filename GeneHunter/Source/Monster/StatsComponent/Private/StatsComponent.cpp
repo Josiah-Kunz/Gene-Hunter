@@ -54,6 +54,31 @@ void UStatsComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
+FStat& UStatsComponent::GetStat(const EStatEnum Stat){
+	switch(Stat)
+	{
+	case EStatEnum::Health:
+		return Health;
+	case EStatEnum::PhysicalAttack:
+		return PhysicalAttack;
+	case EStatEnum::PhysicalDefense:
+		return PhysicalDefense;
+	case EStatEnum::SpecialAttack:
+		return SpecialAttack;
+	case EStatEnum::SpecialDefense:
+		return SpecialDefense;
+	case EStatEnum::Haste:
+		return Haste;
+	case EStatEnum::CriticalHit:
+		return CriticalHit;
+	default:
+		UE_LOG(LogTemp, Error, TEXT("EStatEnum::%s not coded! Please update the source files."),
+			*(UEnum::GetValueAsString(Stat))
+		)
+		return Health;
+	}
+}
+
 void UStatsComponent::RandomizeStats(
 	int MinBaseStat, int MaxBaseStat,
 	int MinBasePairs, int MaxBasePairs)
@@ -61,13 +86,13 @@ void UStatsComponent::RandomizeStats(
 
 	ExecuteBeforeRandomizeStats(MinBaseStat, MaxBaseStat, MinBasePairs, MaxBasePairs);
 	
-	for(FStat* Stat : StatsArray)
+	for(EStatEnum Stat : StatsArray)
 	{
 		if (MaxBaseStat > MinBaseStat)
-			Stat->BaseStat = FMath::RandRange(MinBaseStat, MaxBaseStat);
+			GetStat(Stat).BaseStat = FMath::RandRange(MinBaseStat, MaxBaseStat);
 		if (MaxBasePairs > MinBasePairs)
-			Stat->BasePairs = FMath::RandRange(MinBasePairs, MaxBasePairs);
-		Stat->Update(LevelComponent->GetLevel());
+			GetStat(Stat).BasePairs = FMath::RandRange(MinBasePairs, MaxBasePairs);
+		GetStat(Stat).Update(LevelComponent->GetLevel());
 	}
 
 	ExecuteAfterRandomizeStats(MinBaseStat, MaxBaseStat, MinBasePairs, MaxBasePairs);
@@ -83,7 +108,7 @@ void UStatsComponent::RandomizeBaseStats(const int MinBaseStats, const int MaxBa
 	RandomizeStats(MinBaseStats, MaxBaseStats, 0, -1);
 }
 
-void UStatsComponent::ModifyStat(FStat* Stat, const float Value, const EStatValueType ValueType,
+void UStatsComponent::ModifyStat(EStatEnum Stat, const float Value, const EStatValueType ValueType,
 	const EModificationMode Mode)
 {
 	ModifyStatInternal(Stat, Value, ValueType, Mode);
@@ -99,24 +124,24 @@ void UStatsComponent::ModifyStats(TArray<float>& Values, const EStatValueType Va
 void UStatsComponent::ModifyStatsUniformly(const float UniformMod, const EStatValueType ValueType,
 	const EModificationMode Mode)
 {
-	for(FStat* Stat : StatsArray)
+	for(EStatEnum Stat : StatsArray)
 		ModifyStat(Stat, UniformMod, ValueType, Mode);
 }
 
 void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 {
-	for(FStat* Stat : StatsArray)
+	for(EStatEnum Stat : StatsArray)
 	{
 		ExecuteBeforeRecalculateStats(Stat, bResetCurrent);
-		Stat->Update(LevelComponent->GetLevel(), bResetCurrent);
+		GetStat(Stat).Update(LevelComponent->GetLevel(), bResetCurrent);
 		ExecuteAfterRecalculateStats(Stat, bResetCurrent);
 	}
 }
 
-void UStatsComponent::ModifyStatInternal(FStat* Stat, float Value, EStatValueType ValueType, EModificationMode Mode)
+void UStatsComponent::ModifyStatInternal(EStatEnum Stat, float Value, EStatValueType ValueType, EModificationMode Mode)
 {
 	ExecuteBeforeModifyStat(Stat, Value, ValueType, Mode);
-	Stat->ModifyValue(Value, ValueType, Mode);
+	GetStat(Stat).ModifyValue(Value, ValueType, Mode);
 	ExecuteAfterModifyStat(Stat, Value, ValueType, Mode);
 }
 
@@ -128,11 +153,11 @@ bool UStatsComponent::IsEqual(UStatsComponent* Other, const EStatValueType Value
 		switch(ValueType)
 		{
 		case EStatValueType::Current:
-			if (FMathf::Abs(StatsArray[i]->GetCurrentValue() - Other->StatsArray[i]->GetCurrentValue() > Tolerance))
+			if (FMathf::Abs(GetStat(StatsArray[i]).GetCurrentValue() - Other->GetStat(StatsArray[i]).GetCurrentValue() > Tolerance))
 				return false;
 			break;
 		case EStatValueType::Permanent:
-			if (FMathf::Abs(StatsArray[i]->GetPermanentValue() - Other->StatsArray[i]->GetPermanentValue() > Tolerance))
+			if (FMathf::Abs(GetStat(StatsArray[i]).GetPermanentValue() - Other->GetStat(StatsArray[i]).GetPermanentValue() > Tolerance))
 				return false;
 			break;
 		default:
@@ -147,8 +172,8 @@ bool UStatsComponent::IsEqual(UStatsComponent* Other, const EStatValueType Value
 float UStatsComponent::BaseStatTotal()
 {
 	float Ret = 0;
-	for(const FStat* Stat : StatsArray)
-		Ret += Stat->BaseStat;
+	for(const EStatEnum Stat : StatsArray)
+		Ret += GetStat(Stat).BaseStat;
 	return Ret;
 }
 
@@ -179,7 +204,7 @@ float UStatsComponent::BaseStatEffectiveAverage()
 	return BST/Denominator;
 }
 
-void UStatsComponent::AvertReduction(FStat* Stat, float& Value, const EStatValueType ValueType,
+void UStatsComponent::AvertReduction(EStatEnum Stat, float& Value, const EStatValueType ValueType,
 	const EModificationMode Mode)
 {
 	switch(Mode)
@@ -197,8 +222,8 @@ void UStatsComponent::AvertReduction(FStat* Stat, float& Value, const EStatValue
 			Value = 100;
 		break;
 	case EModificationMode::SetDirectly:
-		if (Value < Stat->GetValue(ValueType))
-			Value = Stat->GetValue(ValueType);
+		if (Value < GetStat(Stat).GetValue(ValueType))
+			Value = GetStat(Stat).GetValue(ValueType);
 	}
 
 	UE_LOG(LogTemp, Error, TEXT("AvertReduction cannot handle specified Mode [%s]!"), *UEnum::GetValueAsString(Mode))
