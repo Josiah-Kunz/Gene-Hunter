@@ -18,7 +18,9 @@ class GHLIBRARIES_API UEffectableComponent : public UActorComponent
 public:
 
 #define EFFECT_DELEGATES_BEFORE_AND_AFTER_ARRAYS(BaseName) \
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays") \
 	TArray<F##BaseName##Delegate> Before##BaseName##Array ; \
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays") \
 	TArray<F##BaseName##Delegate> After##BaseName##Array ;
 	
 

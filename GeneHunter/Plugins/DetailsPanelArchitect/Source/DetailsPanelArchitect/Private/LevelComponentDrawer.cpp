@@ -109,7 +109,8 @@ void LevelComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 						LevelComponent->AddExp(DiffXP);
 
 					// Refresh either way
-					DetailBuilder.ForceRefreshDetails();
+					SaveAndRefresh(DetailBuilder);
+					//DetailBuilder.ForceRefreshDetails();
 				})
 			.TextBoxTooltip(FText::FromString(FString::Printf(
 			TEXT("%s"),
@@ -162,7 +163,8 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 						LevelComponent->SetCumulativeExp(UUtilityFunctionLibrary::FromSI(InText));
 
 					// Refresh either way
-					DetailBuilder.ForceRefreshDetails();
+					SaveAndRefresh(DetailBuilder);
+					//DetailBuilder.ForceRefreshDetails();
 				})
 			.TextBoxTooltip(FText::FromString(FString::Printf(
 					TEXT("%s"),

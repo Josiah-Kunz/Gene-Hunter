@@ -76,12 +76,12 @@ public:
 
 #pragma region Exp
 	
-private:
+public:
 
 	/**
 	 * The total experience accumulated points across all levels.
 	 */
-	UPROPERTY(VisibleDefaultsOnly, Category = "Level")
+	UPROPERTY(VisibleDefaultsOnly, Category = "Level", meta=(AllowPrivateAccess))
 	int CumulativeExp = 1;
 
 public:

@@ -39,6 +39,7 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 				const int NewLevel = ULevelComponent::GetLevelFromCXP(NewCXP);
 				if (NewLevel != OldLevel)
 					RecalculateStats();
+				UE_LOG(LogTemp, Warning, TEXT("Level Lambda"))
 			});
 			LevelComponent->AfterSetCumulativeExpArray.Add(UpdateStatsAfterLevelUp);
 	
@@ -72,7 +73,7 @@ FStat& UStatsComponent::GetStat(const EStatEnum Stat){
 	case EStatEnum::CriticalHit:
 		return CriticalHit;
 	default:
-		UE_LOG(LogTemp, Error, TEXT("EStatEnum::%s not coded! Please update the source files."),
+		UE_LOG(LogTemp, Error, TEXT("UStatsComponent::GetStat(EStatEnum::%s) not coded! Please update the source files."),
 			*(UEnum::GetValueAsString(Stat))
 		)
 		return Health;
@@ -86,7 +87,7 @@ void UStatsComponent::RandomizeStats(
 
 	ExecuteBeforeRandomizeStats(MinBaseStat, MaxBaseStat, MinBasePairs, MaxBasePairs);
 	
-	for(EStatEnum Stat : StatsArray)
+	for(const EStatEnum Stat : StatsArray)
 	{
 		if (MaxBaseStat > MinBaseStat)
 			GetStat(Stat).BaseStat = FMath::RandRange(MinBaseStat, MaxBaseStat);
@@ -124,13 +125,14 @@ void UStatsComponent::ModifyStats(TArray<float>& Values, const EStatValueType Va
 void UStatsComponent::ModifyStatsUniformly(const float UniformMod, const EStatValueType ValueType,
 	const EModificationMode Mode)
 {
-	for(EStatEnum Stat : StatsArray)
+	for(const EStatEnum Stat : StatsArray)
 		ModifyStat(Stat, UniformMod, ValueType, Mode);
 }
 
 void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 {
-	for(EStatEnum Stat : StatsArray)
+	UE_LOG(LogTemp, Warning, TEXT("Recalc"))
+	for(const EStatEnum Stat : StatsArray)
 	{
 		ExecuteBeforeRecalculateStats(Stat, bResetCurrent);
 		GetStat(Stat).Update(LevelComponent->GetLevel(), bResetCurrent);
@@ -140,6 +142,7 @@ void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 
 void UStatsComponent::ModifyStatInternal(EStatEnum Stat, float Value, EStatValueType ValueType, EModificationMode Mode)
 {
+	UE_LOG(LogTemp, Warning, TEXT("ModifyInternal"))
 	ExecuteBeforeModifyStat(Stat, Value, ValueType, Mode);
 	GetStat(Stat).ModifyValue(Value, ValueType, Mode);
 	ExecuteAfterModifyStat(Stat, Value, ValueType, Mode);

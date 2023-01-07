@@ -56,7 +56,7 @@ protected:
 #pragma region Stat variables
 	
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category = "Level")
 	ULevelComponent* LevelComponent;
 	
 private:

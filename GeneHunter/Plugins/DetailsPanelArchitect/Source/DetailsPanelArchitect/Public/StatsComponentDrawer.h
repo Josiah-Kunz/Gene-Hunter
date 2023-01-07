@@ -80,7 +80,7 @@ private:
 
 	/** Gets the maximum based on the StatType (e.g., 100 for percentage-based; highest permanent for
 	 *	current/permanent; etc.). */
-	static float MaxStat (UStatsComponent* StatsComponent, const EStatValueType StatType, const bool bPercentage);
+	static float MaxStat(UStatsComponent* StatsComponent, const EStatValueType StatType, const bool bPercentage);
 
 	/** Converts the value to FText depending on whether or not its an integer. */
 	static FText FloatToFText(const float Value, const bool bIntegerOnly);

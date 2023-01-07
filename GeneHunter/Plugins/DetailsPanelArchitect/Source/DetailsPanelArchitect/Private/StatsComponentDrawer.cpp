@@ -207,9 +207,10 @@ TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTe
 	IDetailLayoutBuilder& DetailBuilder, const EStatEnum TargetStat,
 	const EStatValueType StatValueType, const bool bPercentage) const
 {
-	return [this, &DetailBuilder, &TargetStat, StatValueType, bPercentage]
+	return [this, &DetailBuilder, TargetStat, StatValueType, bPercentage]
 				(const FText& InText, const ETextCommit::Type InTextCommit)
 	{
+
 		// Check to see if anything changed (avoids rounding errors)
 		if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetStat(TargetStat).GetValue(StatValueType), SigFigs, !bPercentage)))
 			return;
@@ -308,7 +309,7 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDeta
 	const EStatEnum TargetStat, const EStatValueType StatValueType,
 	const float OverallMaxValue, const bool bPercentage) const
 {
-
+	
 	// Get the (local) max value
 	const float MaxStatValue = StatValueType == EStatValueType::Current ?
 					StatsComponent->GetStat(TargetStat).GetValue(EStatValueType::Permanent) :
@@ -334,7 +335,7 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDeta
 			.BarTooltip(StatsComponent->GetStat(TargetStat).SupportingText().Description)
 		).OverrideResetToDefault(
 			FResetToDefaultOverride::Create( 
-				TAttribute<bool>::CreateLambda([this, &TargetStat, StatValueType, MaxStatValue]() 
+				TAttribute<bool>::CreateLambda([this, TargetStat, StatValueType, MaxStatValue]() 
 				{
 					switch(StatValueType)
 					{
@@ -353,7 +354,7 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDeta
 FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, const EStatEnum TargetStat,
 	const EStatValueType StatValueType, const float MaxStatValue) const
 {
-
+	
 	// Set up "on reset" button delegate
 	FSimpleDelegate ResetClicked;
 	switch(StatValueType)
@@ -380,7 +381,7 @@ FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& 
 		break;
 	default:
 		ResetClicked = FSimpleDelegate::CreateLambda(
-			[this, &DetailBuilder, &TargetStat, MaxStatValue, StatValueType]() 
+			[this, &DetailBuilder, TargetStat, MaxStatValue, StatValueType]() 
 			{
 				StatsComponent->ModifyStat(TargetStat, MaxStatValue, StatValueType, EModificationMode::SetDirectly);
 				SaveAndRefresh(DetailBuilder);
