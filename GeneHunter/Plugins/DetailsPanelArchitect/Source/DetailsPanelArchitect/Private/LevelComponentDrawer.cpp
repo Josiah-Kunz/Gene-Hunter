@@ -200,6 +200,7 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 
 void LevelComponentDrawer::SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const
 {
+	UE_LOG(LogTemp, Warning, TEXT("Saved %s"), *LevelComponent->GetName())
 	UKismetSystemLibrary::TransactObject(LevelComponent);
 	DetailBuilder.ForceRefreshDetails();
 }
@@ -228,7 +229,7 @@ ULevelComponent* LevelComponentDrawer::GetLevelComponent(const IDetailLayoutBuil
 
 	// Guard again
 	if (!Ret) return nullptr;
-
+	UE_LOG(LogTemp, Warning, TEXT("NOT returning nullptr"))
 	// Return
 	return Ret;
 }

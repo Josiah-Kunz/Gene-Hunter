@@ -82,7 +82,7 @@ public:
 	 * The total experience accumulated points across all levels.
 	 */
 	UPROPERTY(VisibleDefaultsOnly, Category = "Level", meta=(AllowPrivateAccess))
-	int CumulativeExp = 1;
+	int CumulativeExp = 33;
 
 public:
 

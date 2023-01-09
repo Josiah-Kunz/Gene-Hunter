@@ -1,11 +1,14 @@
 ﻿#pragma once
 #include "DetailLayoutBuilder.h"
+#include "GHComponentDrawer__BaseClass.h"
 #include "PropertyEditor/Public/IDetailCustomization.h"
 #include "StatsComponent.h"
 
 
-class StatsComponentDrawer : public IDetailCustomization
+class StatsComponentDrawer : public GHComponentDrawer__BaseClass
 {
+
+	COMPONENT_SETUP(StatsComponent)
 
 #pragma region Variables
 
@@ -18,23 +21,13 @@ public:
 	inline constexpr static float MaxHeight = 20;
 	inline constexpr static int SigFigs = 3;
 
-private:
-	UStatsComponent* StatsComponent = nullptr;
-
-
 #pragma endregion
 
 #pragma region Boilerplate
 	
 public:
 
-	static TSharedRef<IDetailCustomization> MakeInstance();
-
 	virtual void CustomizeDetails(IDetailLayoutBuilder& DetailBuilder) override;
-
-private:
-
-	TArray<TWeakObjectPtr<UObject>> ObjectsToEdit;
 
 #pragma endregion
 
@@ -57,9 +50,6 @@ private:
 
 public:
 
-	/** Marks the StatsComponent as dirty via transaction and refreshes the entire DetailBuilder. */
-	void SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const;
-
 	/** Creates the delegate for when the EditableTextBox is committed depending on the StatValueType
 	 * (current, base stat, etc.). */
 	TFunction<void(const FText&, ETextCommit::Type&)> StatOnTextCommitted(
@@ -74,9 +64,6 @@ public:
 #pragma region Private utility functions
 	
 private:
-
-	/** Retrieves the current StatsComponent that is being edited. Could be nullptr. */
-	UStatsComponent* GetStatsComponent(const IDetailLayoutBuilder& DetailBuilder);
 
 	/** Gets the maximum based on the StatType (e.g., 100 for percentage-based; highest permanent for
 	 *	current/permanent; etc.). */

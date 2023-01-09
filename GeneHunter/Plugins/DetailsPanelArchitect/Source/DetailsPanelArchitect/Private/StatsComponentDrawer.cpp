@@ -9,14 +9,8 @@
 #include "Widgets/Colors/SColorBlock.h"
 #include "Widgets/Input/SEditableTextBox.h"
 #include "SStatsBar.h"
-#include "Kismet/KismetSystemLibrary.h"
 
 #pragma region Boilerplate
-
-TSharedRef<IDetailCustomization> StatsComponentDrawer::MakeInstance()
-{
-	return MakeShareable(new StatsComponentDrawer);
-}
 
 void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 {
@@ -196,12 +190,6 @@ void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& Detai
 
 #pragma region Public utility functions
 
-void StatsComponentDrawer::SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const
-{
-	UKismetSystemLibrary::TransactObject(StatsComponent);
-	DetailBuilder.ForceRefreshDetails();
-}
-
 
 TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTextCommitted(
 	IDetailLayoutBuilder& DetailBuilder, const EStatEnum TargetStat,
@@ -250,26 +238,6 @@ bool StatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
 #pragma endregion
 
 #pragma region Private utility functions
-
-UStatsComponent* StatsComponentDrawer::GetStatsComponent(const IDetailLayoutBuilder& DetailBuilder)
-{
-	// Get object from array
-	DetailBuilder.GetObjectsBeingCustomized(ObjectsToEdit);
-	if (ObjectsToEdit.Num() == 0) return nullptr;
-	
-	// Object guard
-	const TWeakObjectPtr<UObject> Object = ObjectsToEdit[0];
-	if (!Object.IsValid()) return nullptr;
-
-	// Get
-	UStatsComponent* Ret = Cast<UStatsComponent>(Object.Get());
-
-	// Guard again
-	if (!Ret) return nullptr;
-
-	// Return
-	return Ret;
-}
 
 float StatsComponentDrawer::MaxStat(UStatsComponent* StatsComponent, const EStatValueType StatType, const bool bPercentage)
 {
