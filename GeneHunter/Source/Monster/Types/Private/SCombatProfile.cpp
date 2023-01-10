@@ -68,8 +68,8 @@ void SCombatProfile::MakeCombatProfile(const FArguments& InArgs, const TSharedRe
 			[
 				SNew(STextBlock)
 				.Text(FText::FromString(RangeLabelPair.Value))
-				.Font(FEditorStyle::GetFontStyle("BoldFont"))
-				.TextStyle(FEditorStyle::Get(), "Menu.Heading")
+				.Font(FAppStyle::GetFontStyle("BoldFont"))
+				.TextStyle(FAppStyle::Get(), "Menu.Heading")
 				.ColorAndOpacity(FLinearColor::White)
 				.ShadowColorAndOpacity(FLinearColor::Black)
 				.ShadowOffset(FVector2D{1, 1})
@@ -140,8 +140,8 @@ TSharedRef<SWidget> SCombatProfile::DrawNoCombatProfile() const
 {
 	return SNew(STextBlock)
 			.Text(FText::FromString("All Neutral"))
-			.Font(FEditorStyle::GetFontStyle("BoldFont"))
-			.TextStyle(FEditorStyle::Get(), "Menu.Heading")
+			.Font(FAppStyle::GetFontStyle("BoldFont"))
+			.TextStyle(FAppStyle::Get(), "Menu.Heading")
 			.ColorAndOpacity(FLinearColor::White)
 			.ShadowColorAndOpacity(FLinearColor::Black)
 			.ShadowOffset(FVector2D{1, 1});

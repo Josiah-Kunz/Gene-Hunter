@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.0",
+	"EngineAssociation": "5.1",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -9,7 +9,6 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
-
 		{
 			"Name": "AffinitiesComponent",
 			"Type": "Runtime",
@@ -50,8 +49,6 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
-
-
 		{
 			"Name": "EffectComponentUnitTests",
 			"Type": "Editor",
