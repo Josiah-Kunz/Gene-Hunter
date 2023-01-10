@@ -38,4 +38,14 @@ class GHComponentDrawer__BaseClass : public IDetailCustomization
 		DetailBuilder.ForceRefreshDetails(); \
 	};
 
+public:
+
+	/** Converts the value to FText depending on whether or not its an integer. */
+	static FText FloatToFText(const float Value, const bool bIntegerOnly){
+		return FText::FromString(
+			bIntegerOnly ?
+			FString::FromInt(FMath::RoundToInt(Value)) :
+			FString::SanitizeFloat(Value));
+	};
+
 };

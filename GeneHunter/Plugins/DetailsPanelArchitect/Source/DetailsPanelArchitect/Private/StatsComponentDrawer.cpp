@@ -265,14 +265,6 @@ float StatsComponentDrawer::MaxStat(UStatsComponent* StatsComponent, const EStat
 	return Max;
 }
 
-FText StatsComponentDrawer::FloatToFText(const float Value, const bool bIntegerOnly)
-{
-	return FText::FromString(
-		bIntegerOnly ?
-		FString::FromInt(FMath::RoundToInt(Value)) :
-		FString::SanitizeFloat(Value));
-}
-
 void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget,
 	const EStatEnum TargetStat, const EStatValueType StatValueType,
 	const float OverallMaxValue, const bool bPercentage) const

@@ -71,7 +71,6 @@ int ULevelComponent::GetCumulativeExp()
 
 void ULevelComponent::SetCumulativeExp(int NewCumulativeExp)
 {
-
 	// Delegate
 	ExecuteBeforeSetCumulativeExp(GetCumulativeExp(), NewCumulativeExp);
 	
@@ -96,7 +95,7 @@ void ULevelComponent::SetCumulativeExp(int NewCumulativeExp)
 
 	// Delegate
 	ExecuteAfterSetCumulativeExp(OldCEXP, CumulativeExp);
-	UE_LOG(LogTemp, Warning, TEXT("SetCXP to %i"), CumulativeExp)
+	CumulativeExp = NewCumulativeExp;
 }
 
 void ULevelComponent::AddExp(int AddedCumulativeExp)

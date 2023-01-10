@@ -76,13 +76,17 @@ public:
 
 #pragma region Exp
 	
-public:
+private:
 
+	
 	/**
-	 * The total experience accumulated points across all levels.
+	 * Completely unsure why I need this. If we delete it, we cannot serialize CumulativeExp.
+	 * This has got to bee a ue5 issue.
 	 */
-	UPROPERTY(VisibleDefaultsOnly, Category = "Level", meta=(AllowPrivateAccess))
-	int CumulativeExp = 33;
+	int __dontuseme__;
+
+	UPROPERTY()
+	int CumulativeExp;
 
 public:
 

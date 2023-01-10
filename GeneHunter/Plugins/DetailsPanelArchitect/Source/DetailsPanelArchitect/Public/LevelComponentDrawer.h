@@ -1,19 +1,21 @@
 ﻿#pragma once
 #include "DetailLayoutBuilder.h"
+#include "GHComponentDrawer__BaseClass.h"
 #include "PropertyEditor/Public/IDetailCustomization.h"
 #include "LevelComponent.h"
 
 
-class LevelComponentDrawer : public IDetailCustomization
+class LevelComponentDrawer : public GHComponentDrawer__BaseClass
 {
+
+	COMPONENT_SETUP(LevelComponent)
 
 #pragma region Variables
 
 	
 private:
-	ULevelComponent* LevelComponent = nullptr;
 
-	const FString LevelCategoryName = "Level";
+	const FString LevelCategoryName = "Level and Experience";
 
 
 #pragma endregion
@@ -22,13 +24,7 @@ private:
 	
 public:
 
-	static TSharedRef<IDetailCustomization> MakeInstance();
-
 	virtual void CustomizeDetails(IDetailLayoutBuilder& DetailBuilder) override;
-
-private:
-
-	TArray<TWeakObjectPtr<UObject>> ObjectsToEdit;
 
 #pragma endregion
 
@@ -51,23 +47,8 @@ private:
 
 public:
 
-	/** Marks the LevelComponent as dirty via transaction and refreshes the entire DetailBuilder. */
-	void SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const;
-
 	/** Checks whether or not it was the user that committed the text via OnEnter or OnUserMovedFocus. */
 	static bool UserCommitted(const ETextCommit::Type CommitType);
-
-#pragma endregion
-
-#pragma region Private utility functions
-	
-private:
-
-	/** Retrieves the current LevelComponent that is being edited. Could be nullptr. */
-	ULevelComponent* GetLevelComponent(const IDetailLayoutBuilder& DetailBuilder);
-	
-	/** Converts the value to FText depending on whether or not its an integer. */
-	static FText FloatToFText(const float Value, const bool bIntegerOnly);
 
 #pragma endregion
 	

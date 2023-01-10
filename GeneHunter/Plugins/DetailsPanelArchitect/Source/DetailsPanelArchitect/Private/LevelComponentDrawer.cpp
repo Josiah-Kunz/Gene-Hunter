@@ -14,11 +14,6 @@
 
 #pragma region Boilerplate
 
-TSharedRef<IDetailCustomization> LevelComponentDrawer::MakeInstance()
-{
-	return MakeShareable(new LevelComponentDrawer);
-}
-
 void LevelComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 	
@@ -26,8 +21,8 @@ void LevelComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 	LevelComponent = GetLevelComponent(DetailBuilder);
 
 	// Details
-	CustomizeLevelDetails(DetailBuilder);
-	CustomizeExpDetails(DetailBuilder);
+	//CustomizeLevelDetails(DetailBuilder);
+	//CustomizeExpDetails(DetailBuilder);
 	CustomizeCXPDetails(DetailBuilder);
 }
 
@@ -74,7 +69,7 @@ void LevelComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 				FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
 				{ 
 					LevelComponent->SetLevel(1);
-					DetailBuilder.ForceRefreshDetails();
+					SaveAndRefresh(DetailBuilder);
 				})
 			))
 	;
@@ -110,7 +105,6 @@ void LevelComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 
 					// Refresh either way
 					SaveAndRefresh(DetailBuilder);
-					//DetailBuilder.ForceRefreshDetails();
 				})
 			.TextBoxTooltip(FText::FromString(FString::Printf(
 			TEXT("%s"),
@@ -132,7 +126,7 @@ void LevelComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 					FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
 					{ 
 						LevelComponent->SetCumulativeExp(LevelComponent->GetCumulativeExpFromLevel(LevelComponent->GetLevel()));
-						DetailBuilder.ForceRefreshDetails();
+						SaveAndRefresh(DetailBuilder);
 					})
 				))
 	;
@@ -143,7 +137,7 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
 	FName(LevelCategoryName),
 	FText::FromString(LevelCategoryName),
-	ECategoryPriority::Important);
+	ECategoryPriority::Default);
 
 	Category.AddCustomRow(LOCTEXT("Keyword", "CXP")).WholeRowContent()[
 		SNew(SStatsBar)
@@ -164,7 +158,6 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 
 					// Refresh either way
 					SaveAndRefresh(DetailBuilder);
-					//DetailBuilder.ForceRefreshDetails();
 				})
 			.TextBoxTooltip(FText::FromString(FString::Printf(
 					TEXT("%s"),
@@ -188,7 +181,7 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 					FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
 					{ 
 						LevelComponent->SetCumulativeExp(0);
-						DetailBuilder.ForceRefreshDetails();
+						SaveAndRefresh(DetailBuilder);
 					})
 				))
 	;
@@ -198,48 +191,9 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 
 #pragma region Public utility functions
 
-void LevelComponentDrawer::SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const
-{
-	UE_LOG(LogTemp, Warning, TEXT("Saved %s"), *LevelComponent->GetName())
-	UKismetSystemLibrary::TransactObject(LevelComponent);
-	DetailBuilder.ForceRefreshDetails();
-}
-
 bool LevelComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
 {
 	return CommitType == ETextCommit::Type::OnEnter || CommitType == ETextCommit::Type::OnUserMovedFocus;
-}
-
-#pragma endregion
-
-#pragma region Private utility functions
-
-ULevelComponent* LevelComponentDrawer::GetLevelComponent(const IDetailLayoutBuilder& DetailBuilder)
-{
-	// Get object from array
-	DetailBuilder.GetObjectsBeingCustomized(ObjectsToEdit);
-	if (ObjectsToEdit.Num() == 0) return nullptr;
-	
-	// Object guard
-	const TWeakObjectPtr<UObject> Object = ObjectsToEdit[0];
-	if (!Object.IsValid()) return nullptr;
-
-	// Get
-	ULevelComponent* Ret = Cast<ULevelComponent>(Object.Get());
-
-	// Guard again
-	if (!Ret) return nullptr;
-	UE_LOG(LogTemp, Warning, TEXT("NOT returning nullptr"))
-	// Return
-	return Ret;
-}
-
-FText LevelComponentDrawer::FloatToFText(const float Value, const bool bIntegerOnly)
-{
-	return FText::FromString(
-		bIntegerOnly ?
-		FString::FromInt(FMath::RoundToInt(Value)) :
-		FString::SanitizeFloat(Value));
 }
 
 #pragma endregion

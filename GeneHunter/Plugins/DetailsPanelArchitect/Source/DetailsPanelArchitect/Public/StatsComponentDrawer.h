@@ -69,9 +69,6 @@ private:
 	 *	current/permanent; etc.). */
 	static float MaxStat(UStatsComponent* StatsComponent, const EStatValueType StatType, const bool bPercentage);
 
-	/** Converts the value to FText depending on whether or not its an integer. */
-	static FText FloatToFText(const float Value, const bool bIntegerOnly);
-
 	/** Constructs a "stats widget" depending on the StatValueType (base stat, current/permanent, etc.). */
 	void StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget, 
 			const EStatEnum TargetStat, const EStatValueType StatValueType,
