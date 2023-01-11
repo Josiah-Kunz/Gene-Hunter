@@ -17,10 +17,30 @@ class GHLIBRARIES_API UEffectableComponent : public UActorComponent
 	
 public:
 
-#define EFFECT_DELEGATES_BEFORE_AND_AFTER_ARRAYS(BaseName) \
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays") \
-	TArray<F##BaseName##Delegate> Before##BaseName##Array ; \
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays") \
+/**
+ * Declares the array itself. Must be declared after the EFFECT_DELEGATES_PARAMS macro.
+ *
+ * Don't forget to do the UPROPERTY before you declare this macro:
+ * 
+ *	public:
+ *		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
+ *
+ *	(the macro itself cannot do it since you can't wrap UMacros inside C++ macros)
+ */
+#define EFFECT_DELEGATE_BEFORE_ARRAY(BaseName) \
+	TArray<F##BaseName##Delegate> Before##BaseName##Array ;
+
+/**
+ * Declares the array itself. Must be declared after the EFFECT_DELEGATES_PARAMS macro.
+ *
+ * Don't forget to do the UPROPERTY before you declare this macro:
+ * 
+ *	public:
+ *		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
+ *
+ *	(the macro itself cannot do it since you can't wrap UMacros inside C++ macros)
+ */
+#define EFFECT_DELEGATE_AFTER_ARRAY(BaseName) \
 	TArray<F##BaseName##Delegate> After##BaseName##Array ;
 	
 
@@ -29,7 +49,6 @@ public:
  */
 #define EFFECT_DELEGATES_FourParams(BaseName, Param1, Param2, Param3, Param4) \
 	DECLARE_DELEGATE_FourParams (F##BaseName##Delegate , Param1, Param2, Param3, Param4);\
-	EFFECT_DELEGATES_BEFORE_AND_AFTER_ARRAYS(BaseName) \
 	void ExecuteBefore##BaseName (Param1 BaseName##P1, Param2 BaseName##P2, Param3 BaseName##P3, Param4 BaseName##P4){ \
 	for(F##BaseName##Delegate Delegate : Before##BaseName##Array) \
 	Delegate.Execute( BaseName##P1, BaseName##P2 , BaseName##P3 , BaseName##P4 );} \
@@ -42,7 +61,6 @@ public:
  */
 #define EFFECT_DELEGATES_ThreeParams(BaseName, Param1, Param2, Param3) \
 	DECLARE_DELEGATE_ThreeParams (F##BaseName##Delegate , Param1, Param2, Param3); \
-	EFFECT_DELEGATES_BEFORE_AND_AFTER_ARRAYS(BaseName) \
 	void ExecuteBefore##BaseName (Param1 BaseName##P1, Param2 BaseName##P2, Param3 BaseName##P3){ \
 	for(F##BaseName##Delegate Delegate : Before##BaseName##Array) \
 	Delegate.Execute( BaseName##P1, BaseName##P2 , BaseName##P3 );} \
@@ -55,7 +73,6 @@ public:
  */
 #define EFFECT_DELEGATES_TwoParams(BaseName, Param1, Param2) \
 	DECLARE_DELEGATE_TwoParams (F##BaseName##Delegate , Param1, Param2); \
-	EFFECT_DELEGATES_BEFORE_AND_AFTER_ARRAYS(BaseName) \
 	void ExecuteBefore##BaseName (Param1 BaseName##P1, Param2 BaseName##P2){ \
 	for(F##BaseName##Delegate Delegate : Before##BaseName##Array) \
 	Delegate.Execute( BaseName##P1, BaseName##P2 );} \
@@ -68,7 +85,6 @@ public:
  */
 #define EFFECT_DELEGATES_OneParam(BaseName, Param1) \
 	DECLARE_DELEGATE_OneParam (F##BaseName##Delegate , Param1);\
-	EFFECT_DELEGATES_BEFORE_AND_AFTER_ARRAYS(BaseName) \
 	void ExecuteBefore##BaseName (Param1 BaseName##P1){ \
 	for(F##BaseName##Delegate Delegate : Before##BaseName##Array) \
 	Delegate.Execute( BaseName##P1 );} \
@@ -84,7 +100,6 @@ public:
  */
 #define EFFECT_DELEGATES(BaseName) \
 	DECLARE_DELEGATE (F##BaseName##Delegate );\
-	EFFECT_DELEGATES_BEFORE_AND_AFTER_ARRAYS(BaseName) \
 	void ExecuteBefore##BaseName (){ \
 	for(F##BaseName##Delegate Delegate : Before##BaseName##Array) \
 	Delegate.Execute();} \

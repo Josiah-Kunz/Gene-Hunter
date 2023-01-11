@@ -39,7 +39,6 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 				const int NewLevel = ULevelComponent::GetLevelFromCXP(NewCXP);
 				if (NewLevel != OldLevel)
 					RecalculateStats();
-				UE_LOG(LogTemp, Warning, TEXT("Level Lambda"))
 			});
 			LevelComponent->AfterSetCumulativeExpArray.Add(UpdateStatsAfterLevelUp);
 	
@@ -131,7 +130,6 @@ void UStatsComponent::ModifyStatsUniformly(const float UniformMod, const EStatVa
 
 void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Recalc"))
 	for(const EStatEnum Stat : StatsArray)
 	{
 		ExecuteBeforeRecalculateStats(Stat, bResetCurrent);
@@ -142,7 +140,6 @@ void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 
 void UStatsComponent::ModifyStatInternal(EStatEnum Stat, float Value, EStatValueType ValueType, EModificationMode Mode)
 {
-	UE_LOG(LogTemp, Warning, TEXT("ModifyInternal"))
 	ExecuteBeforeModifyStat(Stat, Value, ValueType, Mode);
 	GetStat(Stat).ModifyValue(Value, ValueType, Mode);
 	ExecuteAfterModifyStat(Stat, Value, ValueType, Mode);

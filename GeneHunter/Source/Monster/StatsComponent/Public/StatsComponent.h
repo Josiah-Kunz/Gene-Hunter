@@ -133,6 +133,12 @@ public:
 		int MinBasePairs = 1, int MaxBasePairs = 100);
 
 	EFFECT_DELEGATES_FourParams(RandomizeStats, int&, int&, int&, int&)
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
+	EFFECT_DELEGATE_BEFORE_ARRAY(RandomizeStats)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
+	EFFECT_DELEGATE_AFTER_ARRAY(RandomizeStats)
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
 	void RandomizeBasePairs(const int MinBasePairs = 1, const int MaxBasePairs = 100);
@@ -169,6 +175,12 @@ public:
 	 *	- bResetCurrent
 	 */
 	EFFECT_DELEGATES_TwoParams(RecalculateStats, EStatEnum, bool)
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
+	EFFECT_DELEGATE_BEFORE_ARRAY(RecalculateStats)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
+	EFFECT_DELEGATE_AFTER_ARRAY(RecalculateStats)
 
 private:
 
@@ -186,6 +198,12 @@ public:
 		, float&				
 		, EStatValueType&		
 		, EModificationMode&)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
+	EFFECT_DELEGATE_BEFORE_ARRAY(ModifyStat)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
+	EFFECT_DELEGATE_AFTER_ARRAY(ModifyStat)
 
 #pragma endregion
 
