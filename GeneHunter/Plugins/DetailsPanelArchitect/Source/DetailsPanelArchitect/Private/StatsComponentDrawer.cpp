@@ -6,8 +6,6 @@
 #include "DetailWidgetRow.h"
 #include "MathUtil.h"
 #include "BPLibraries/Public/UtilityFunctionLibrary.h"
-#include "Widgets/Colors/SColorBlock.h"
-#include "Widgets/Input/SEditableTextBox.h"
 #include "SStatsBar.h"
 
 #pragma region Boilerplate
@@ -93,7 +91,7 @@ void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& Detai
 				.ToolTipText(FText::FromString("Randomizes all Base Stats between 80 and 120."))
 				.HAlign(HAlign_Center)
 				.VAlign(VAlign_Center)
-				.TextStyle(FEditorStyle::Get(), "GraphBreadcrumbButtonText")
+				.TextStyle(FAppStyle::Get(), "GraphBreadcrumbButtonText")
 				.OnClicked_Lambda([this, &DetailBuilder]()
 				{
 					StatsComponent->RandomizeBaseStats();
@@ -157,7 +155,7 @@ void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& Detai
 				.ToolTipText(FText::FromString("Randomizes all Base Pairs between 1 and 100."))
 				.HAlign(HAlign_Center)
 				.VAlign(VAlign_Center)
-				.TextStyle(FEditorStyle::Get(), "GraphBreadcrumbButtonText")
+				.TextStyle(FAppStyle::Get(), "GraphBreadcrumbButtonText")
 				.OnClicked_Lambda([this, &DetailBuilder]()
 				{
 					StatsComponent->RandomizeBasePairs();

@@ -3,14 +3,11 @@
 #include "DetailCategoryBuilder.h"
 #include "DetailWidgetRow.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "Widgets/SCanvas.h"
 #include "Widgets/Images/SImage.h"
-#include "EditorStyleSet.h"
 #include "SAffinityNameContent.h"
 #include "SAffinityValueContent.h"
 #include "SCombatProfile.h"
 #include "Widgets/Input/SEditableTextBox.h"
-#include "WidgetFunctionLibrary.h"
 
 #define LOCTEXT_NAMESPACE "AffinitiesComponentDrawer"
 
@@ -207,7 +204,7 @@ void AffinitiesComponentDrawer::DrawArrayMutator(IDetailLayoutBuilder& DetailBui
 			.ToolTipText(FText::FromString("Add an affinity to the array."))
 			[
 				SNew(SImage)
-				.Image(FEditorStyle::GetBrush(TEXT("Icons.Plus")))
+				.Image(FAppStyle::GetBrush(TEXT("Icons.Plus")))
 				.DesiredSizeOverride(FVector2D{16, 16})
 			]
 		]
@@ -233,7 +230,7 @@ void AffinitiesComponentDrawer::DrawArrayMutator(IDetailLayoutBuilder& DetailBui
 			.ToolTipText(FText::FromString("Removes the last affinity from the array."))
 			[
 				SNew(SImage)
-				.Image(FEditorStyle::GetBrush(TEXT("Icons.Minus")))
+				.Image(FAppStyle::GetBrush(TEXT("Icons.Minus")))
 				.DesiredSizeOverride(FVector2D{16, 16})
 			]
 		]
@@ -257,7 +254,7 @@ void AffinitiesComponentDrawer::DrawArrayMutator(IDetailLayoutBuilder& DetailBui
 			.ToolTipText(FText::FromString("Remove all affinities except the first one."))
 			[
 				SNew(SImage)
-				.Image(FEditorStyle::GetBrush("FoliageEditMode.Remove"))
+				.Image(FAppStyle::GetBrush("FoliageEditMode.Remove"))
 				.DesiredSizeOverride(FVector2D{16, 16})
 			]
 		]
@@ -334,7 +331,7 @@ OnComboBoxChanged(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity)
 		} else
 		{
 			UE_LOG(LogTemp, Warning,
-				TEXT("Selected Type %s is nullptr in AffinitiesComponentDrawer! Surely this is an error. Reverting to default value."),
+				TEXT("Selected Type %p is nullptr in AffinitiesComponentDrawer! Surely this is an error. Reverting to default value."),
 				Selection.Get()
 			)
 			if (GetAllTypes().Num() > 0)

@@ -21,8 +21,8 @@ void LevelComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 	LevelComponent = GetLevelComponent(DetailBuilder);
 
 	// Details
-	CustomizeLevelDetails(DetailBuilder);
-	CustomizeExpDetails(DetailBuilder);
+	//CustomizeLevelDetails(DetailBuilder);
+	//CustomizeExpDetails(DetailBuilder);
 	CustomizeCXPDetails(DetailBuilder);
 }
 

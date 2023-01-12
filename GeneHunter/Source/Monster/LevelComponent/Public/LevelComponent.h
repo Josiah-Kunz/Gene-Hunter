@@ -95,6 +95,7 @@ public:
 #pragma region Exp
 	
 private:
+	
 	/**
 	 * The total experience accumulated points across all levels. Sometimes also called CXP.
 	*/
