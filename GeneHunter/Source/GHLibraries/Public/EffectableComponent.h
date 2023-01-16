@@ -7,6 +7,12 @@
 /**
  * The base class for so-called "effectable" components, which can house effects. Example: UStatsComponent should
  *	inherit from this, as you can create effects that "plug in" to UStatsComponent.
+ *
+ *	For each effect, four macros should be declared:
+ *		- EFFECT_DELEGATES_xParams(BaseName, ...) before the class declaration to define the delegate type
+ *		- EFFECT_DELEGATE_BEFORE_ARRAY(BaseName) as public/uproperty variable
+ *		- EFFECT_DELEGATE_AFTER_ARRAY(BaseName) as public/uproperty variable
+ *		- EFFECT_FUNCTIONS_xParams(BaseName, ...) to define executable functions
  */
 UCLASS()
 class GHLIBRARIES_API UEffectableComponent : public UActorComponent
@@ -19,31 +25,31 @@ class GHLIBRARIES_API UEffectableComponent : public UActorComponent
  * Same as DECLARE_DELEGATE_FourParams but with the naming convention FBaseNameDelegate.
  */
 #define EFFECT_DELEGATES_FourParams(BaseName, Param1, Param2, Param3, Param4) \
-	DECLARE_DELEGATE_FourParams (F##BaseName##Delegate , Param1, Param2, Param3, Param4);
+	DECLARE_DELEGATE_FourParams (F##BaseName##Delegate , Param1, Param2, Param3, Param4 )
 
 /**
  * Same as DECLARE_DELEGATE_ThreeParams but with the naming convention FBaseNameDelegate.
  */
 #define EFFECT_DELEGATES_ThreeParams(BaseName, Param1, Param2, Param3) \
-	DECLARE_DELEGATE_ThreeParams (F##BaseName##Delegate , Param1, Param2, Param3); 
+	DECLARE_DELEGATE_ThreeParams (F##BaseName##Delegate , Param1, Param2, Param3 )
 
 /**
  * Same as DECLARE_DELEGATE_TwoParams but with the naming convention FBaseNameDelegate.
  */
 #define EFFECT_DELEGATES_TwoParams(BaseName, Param1, Param2) \
-	DECLARE_DELEGATE_TwoParams (F##BaseName##Delegate , Param1, Param2);
+	DECLARE_DELEGATE_TwoParams (F##BaseName##Delegate , Param1, Param2 )
 
 /**
  * Same as DECLARE_DELEGATE_OneParams but with the naming convention FBaseNameDelegate.
  */
 #define EFFECT_DELEGATES_OneParam(BaseName, Param1) \
-	DECLARE_DELEGATE_OneParam (F##BaseName##Delegate , Param1);
+	DECLARE_DELEGATE_OneParam(F##BaseName##Delegate , Param1 )
 
 /**
  * Same as DECLARE_DELEGATE but with the naming convention FBaseNameDelegate.
  */
 #define EFFECT_DELEGATES(BaseName) \
-	DECLARE_DELEGATE (F##BaseName##Delegate );
+	DECLARE_DELEGATE (F##BaseName##Delegate )
 	
 public:
 

@@ -9,6 +9,56 @@
 // .gen
 #include "LevelComponent.generated.h"
 
+#pragma region Effect delegates
+
+/**
+* Parameters:
+*	- Unaltered base exp yield
+*/
+EFFECT_DELEGATES_OneParam(GetBaseExpYield, int);
+
+/**
+ * Parameters:
+ *	- Unaltered base exp yield
+ *	- The attempted value that's being set
+ */
+EFFECT_DELEGATES_TwoParams(SetBaseExpYield, int, int&);
+
+EFFECT_DELEGATES_TwoParams(GetExpYield, ULevelComponent*, float&);
+
+/**
+ * Parameters:
+ *	- Current CXP
+ */
+EFFECT_DELEGATES_OneParam(GetCumulativeExp, int&);
+
+/**
+ * The ultimate root of adding/setting/changing level or experience points. Parameters:
+ *	- Current CXP
+ *	- Attempted CXP
+ */
+EFFECT_DELEGATES_TwoParams(SetCumulativeExp, int, int&);
+
+/**
+ * Goes though SetCumulativeExp. Parameters:
+ *	- Current exp
+ *	- Added exp
+ */
+EFFECT_DELEGATES_TwoParams(AddExp, int, int&);
+
+/**
+ * Goes though SetCumulativeExp. Parameters:
+ *	- Current level
+ *	- Attempted level to set
+ */
+EFFECT_DELEGATES_TwoParams(SetLevel, int, int&);
+
+EFFECT_DELEGATES_OneParam(MaxLevel, int&);
+
+EFFECT_DELEGATES_OneParam(MinLevel, int&);
+
+#pragma endregion
+
 /**
  * A class to hold, track, and calculate level, current exp, cumulative exp, and exp yield. 
  */
@@ -17,7 +67,7 @@ class LEVELCOMPONENT_API ULevelComponent : public UEffectableComponent
 {
 	
 #pragma region Standard stuff
-	
+
 	GENERATED_BODY()
 
 public:
@@ -50,12 +100,6 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category="Level")
 	void SetBaseExpYield(int NewBaseExpYield);
-	
-	/**
-	 * Parameters:
-	 *	- Unaltered base exp yield
-	 */
-	EFFECT_DELEGATES_OneParam(GetBaseExpYield, int)
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_BEFORE_ARRAY(GetBaseExpYield)
@@ -63,12 +107,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_AFTER_ARRAY(GetBaseExpYield)
 
-	/**
-	 * Parameters:
-	 *	- Unaltered base exp yield
-	 *	- The attempted value that's being set
-	 */
-	EFFECT_DELEGATES_TwoParams(SetBaseExpYield, int, int&)
+	EFFECT_FUNCTIONS_OneParam(GetBaseExpYield, int)
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_BEFORE_ARRAY(SetBaseExpYield)
@@ -76,19 +115,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_AFTER_ARRAY(SetBaseExpYield)
 
+	EFFECT_FUNCTIONS_TwoParams(SetBaseExpYield, int, int&)
+
 	/**
 	 * Gets the amount of experience this Monster yields when defeated.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
 	float GetExpYield(ULevelComponent* VictoriousMonster);
 
-	EFFECT_DELEGATES_TwoParams(GetExpYield, ULevelComponent*, float&)
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_BEFORE_ARRAY(GetExpYield)
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_AFTER_ARRAY(GetExpYield)
+
+	EFFECT_FUNCTIONS_TwoParams(GetExpYield, ULevelComponent*, float&)
 
 #pragma endregion
 
@@ -110,11 +153,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
 	int GetCumulativeExp();
 
-	/**
-	 * Parameters:
-	 *	- Current CXP
-	 */
-	EFFECT_DELEGATES_OneParam(GetCumulativeExp, int&)
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_BEFORE_ARRAY(GetCumulativeExp)
@@ -122,18 +161,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_AFTER_ARRAY(GetCumulativeExp)
 
+	EFFECT_FUNCTIONS_OneParam(GetCumulativeExp, int&)
+
 	/**
 	 * Sets the total experience accumulated points across all levels.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Level")
 	void SetCumulativeExp(int NewCumulativeExp);
-
-	/**
-	 * The ultimate root of adding/setting/changing level or experience points. Parameters:
-	 *	- Current CXP
-	 *	- Attempted CXP
-	 */
-	EFFECT_DELEGATES_TwoParams(SetCumulativeExp, int, int&)
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_BEFORE_ARRAY(SetCumulativeExp)
@@ -141,24 +175,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_AFTER_ARRAY(SetCumulativeExp)
 
+	EFFECT_FUNCTIONS_TwoParams(SetCumulativeExp, int, int&)
+
 	/**
 	 * Adds to the total accumulated experience points across all levels.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Level")
 	void AddExp(int AddedCumulativeExp);
 
-	/**
-	 * Goes though SetCumulativeExp. Parameters:
-	 *	- Current exp
-	 *	- Added exp
-	 */
-	EFFECT_DELEGATES_TwoParams(AddExp, int, int&)
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_BEFORE_ARRAY(AddExp)
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_AFTER_ARRAY(AddExp)
+
+	EFFECT_FUNCTIONS_TwoParams(AddExp, int, int&)
 
 #pragma endregion
 
@@ -181,18 +212,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Level")
 	void SetLevel(int NewLevel);
 
-	/**
-	 * Goes though SetCumulativeExp. Parameters:
-	 *	- Current level
-	 *	- Attempted level to set
-	 */
-	EFFECT_DELEGATES_TwoParams(SetLevel, int, int&)
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_BEFORE_ARRAY(SetLevel)
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_AFTER_ARRAY(SetLevel)
+
+	EFFECT_FUNCTIONS_TwoParams(SetLevel, int, int&)
 
 	/**
 	 * Adds to the current level.
@@ -206,13 +232,13 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
 	virtual int MaxLevel();
 
-	EFFECT_DELEGATES_OneParam(MaxLevel, int&)
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_BEFORE_ARRAY(MaxLevel)
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_AFTER_ARRAY(MaxLevel)
+
+	EFFECT_FUNCTIONS_OneParam(MaxLevel, int&)
 	
 	/**
      * The minimum level. Overrideable.
@@ -220,13 +246,13 @@ public:
     UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
     virtual int MinLevel();
 
-	EFFECT_DELEGATES_OneParam(MinLevel, int&)
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_BEFORE_ARRAY(MinLevel)
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	EFFECT_DELEGATE_AFTER_ARRAY(MinLevel)
+
+	EFFECT_FUNCTIONS_OneParam(MinLevel, int&)
 
 #pragma endregion
 
