@@ -15,7 +15,8 @@
 * Parameters:
 *	- Unaltered base exp yield
 */
-EFFECT_DELEGATES_OneParam(GetBaseExpYield, int);
+DECLARE_DELEGATE_OneParam(FGetBaseExpYieldDelegate, int);
+//EFFECT_DELEGATES_OneParam(GetBaseExpYield, int);
 
 /**
  * Parameters:
@@ -102,10 +103,10 @@ public:
 	void SetBaseExpYield(int NewBaseExpYield);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
-	EFFECT_DELEGATE_BEFORE_ARRAY(GetBaseExpYield)
+	TArray<FGetBaseExpYieldDelegate> BeforeGetBaseExpYieldArray;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
-	EFFECT_DELEGATE_AFTER_ARRAY(GetBaseExpYield)
+	TArray<FGetBaseExpYieldDelegate> AfterGetBaseExpYieldArray;
 
 	EFFECT_FUNCTIONS_OneParam(GetBaseExpYield, int)
 	
