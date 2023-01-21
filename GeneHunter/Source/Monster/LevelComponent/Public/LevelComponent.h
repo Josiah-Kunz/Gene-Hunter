@@ -15,7 +15,7 @@
 * Parameters:
 *	- Unaltered base exp yield
 */
-DECLARE_DELEGATE_OneParam(FGetBaseExpYieldDelegate, int);
+
 //EFFECT_DELEGATES_OneParam(GetBaseExpYield, int);
 
 /**
@@ -101,6 +101,10 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category="Level")
 	void SetBaseExpYield(int NewBaseExpYield);
+
+	DECLARE_DYNAMIC_DELEGATE_OneParam(FGetBaseExpYieldDelegate, int);
+
+	FGetBaseExpYieldDelegate Ok;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
 	TArray<FGetBaseExpYieldDelegate> BeforeGetBaseExpYieldArray;
