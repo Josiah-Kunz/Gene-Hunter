@@ -47,8 +47,8 @@ public:
 	virtual void OnRefreshStacks();
 	
 	/**
-	 * The lower the priority, the farther away it is from execution. If two priorities are tied, the execution order is
-	 * randomized. Order is set externally by EffectsComponent. Order:
+	 * The lower the priority, the farther away it is from execution. If two priorities are tied, the most recent effect
+	 * is executed first. Order is set externally by EffectsComponent. Order:
 	 *
 	 *		-	Intrinsic delegates (no Effect attached)
 	 *		-	"Before" delegates

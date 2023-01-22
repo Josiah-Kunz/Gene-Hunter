@@ -16,9 +16,10 @@ ULevelComponent::ULevelComponent()
 
 int ULevelComponent::GetBaseExpYield() 
 {
-	ExecuteBeforeGetBaseExpYield(BaseExpYield);
-	ExecuteAfterGetBaseExpYield(BaseExpYield);
-	return BaseExpYield;
+	float Ret = BaseExpYield;
+	GetBaseExpYieldDelegate.ExecuteBefore(Ret);
+	GetBaseExpYieldDelegate.ExecuteAfter(Ret);
+	return Ret;
 }
 
 void ULevelComponent::SetBaseExpYield(int NewBaseExpYield)
