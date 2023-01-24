@@ -15,14 +15,14 @@ void UDimensionalShift::OnComponentCreated()
 	Super::OnComponentCreated();
 
 	// Add to delegate array
-	Delegate.BindLambda(Lambda);
-	StatsComponent->BeforeModifyStatArray.Add(Delegate);
+	//Delegate.BindLambda(Lambda);
+	//StatsComponent->BeforeModifyStatArray.Add(Delegate);
 }
 
 void UDimensionalShift::OnComponentDestroyed(bool bDestroyingHierarchy)
 {
 	Super::OnComponentDestroyed(bDestroyingHierarchy);
-
+/*
 	auto ModifyStatArray = StatsComponent->BeforeModifyStatArray;
 	for(int i=ModifyStatArray.Num() - 1; i>=0; i--)
 	{
@@ -32,6 +32,8 @@ void UDimensionalShift::OnComponentDestroyed(bool bDestroyingHierarchy)
 			break;
 		}
 	}
+
+	*/
 }
 
 FSupportingText UDimensionalShift::GetSupportingText()

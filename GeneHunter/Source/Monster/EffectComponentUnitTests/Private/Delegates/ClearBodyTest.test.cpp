@@ -14,6 +14,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Delegates_ModifyStats,
 
 bool UEffectComponent_Delegates_ModifyStats::RunTest(const FString& Parameters)
 {
+
+	return false;
+	//todo
+	/*
 	
 	// Get dummy
 	DUMMY_BASE_STATS_BLOCK
@@ -59,4 +63,5 @@ bool UEffectComponent_Delegates_ModifyStats::RunTest(const FString& Parameters)
 	// Return
 	BASESTATS_GC
 	return true;
+	*/
 }

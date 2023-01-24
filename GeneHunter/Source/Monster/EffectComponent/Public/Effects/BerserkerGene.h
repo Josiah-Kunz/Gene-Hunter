@@ -50,7 +50,7 @@ public:
 			break;
 		}
 	};
-	UStatsComponent::FRecalculateStatsDelegate Delegate;
+	//todo UStatsComponent::FRecalculateStatsDelegate Delegate;
 
 #pragma endregion
 

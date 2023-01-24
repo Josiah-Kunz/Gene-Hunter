@@ -5,7 +5,6 @@
 
 // Other components
 #include "EffectableComponent.h"
-#include "DelegateClasses/GetBaseExpYield.h"
 
 // .gen
 #include "LevelComponent.generated.h"
@@ -45,8 +44,6 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
 	int GetBaseExpYield();
-
-	FDGetBaseExpYield GetBaseExpYieldDelegate;
 
 	/**
 	 * Sets the value of BaseExpYield.

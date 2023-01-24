@@ -17,16 +17,16 @@ ULevelComponent::ULevelComponent()
 int ULevelComponent::GetBaseExpYield() 
 {
 	float Ret = BaseExpYield;
-	GetBaseExpYieldDelegate.ExecuteBefore(Ret);
-	GetBaseExpYieldDelegate.ExecuteAfter(Ret);
+	//GetBaseExpYieldDelegate.ExecuteBefore(Ret);
+	//GetBaseExpYieldDelegate.ExecuteAfter(Ret);
 	return Ret;
 }
 
 void ULevelComponent::SetBaseExpYield(int NewBaseExpYield)
 {
-	ExecuteBeforeSetBaseExpYield(GetBaseExpYield(), NewBaseExpYield);
+	//ExecuteBeforeSetBaseExpYield(GetBaseExpYield(), NewBaseExpYield);
 	BaseExpYield = NewBaseExpYield;
-	ExecuteAfterSetBaseExpYield(GetBaseExpYield(), NewBaseExpYield);
+	//ExecuteAfterSetBaseExpYield(GetBaseExpYield(), NewBaseExpYield);
 }
 
 
@@ -52,8 +52,8 @@ float ULevelComponent::GetExpYield(ULevelComponent* VictoriousMonster)
 	;
 
 	// Delegates
-	ExecuteBeforeGetExpYield(VictoriousMonster, Yield);
-	ExecuteAfterGetExpYield(VictoriousMonster, Yield);
+	//ExecuteBeforeGetExpYield(VictoriousMonster, Yield);
+	//ExecuteAfterGetExpYield(VictoriousMonster, Yield);
 
 	// Return
 	return Yield;
@@ -65,15 +65,15 @@ float ULevelComponent::GetExpYield(ULevelComponent* VictoriousMonster)
 
 int ULevelComponent::GetCumulativeExp()
 {
-	ExecuteBeforeGetCumulativeExp(CumulativeExp);
-	ExecuteAfterGetCumulativeExp(CumulativeExp);
+	//ExecuteBeforeGetCumulativeExp(CumulativeExp);
+	//ExecuteAfterGetCumulativeExp(CumulativeExp);
 	return CumulativeExp;
 }
 
 void ULevelComponent::SetCumulativeExp(int NewCumulativeExp)
 {
 	// Delegate
-	ExecuteBeforeSetCumulativeExp(GetCumulativeExp(), NewCumulativeExp);
+	//ExecuteBeforeSetCumulativeExp(GetCumulativeExp(), NewCumulativeExp);
 	
 	// Cache old (it's a surprise tool that will help us later!)
 	const int OldCEXP = CumulativeExp;
@@ -95,15 +95,15 @@ void ULevelComponent::SetCumulativeExp(int NewCumulativeExp)
 	}
 
 	// Delegate
-	ExecuteAfterSetCumulativeExp(OldCEXP, CumulativeExp);
+	//ExecuteAfterSetCumulativeExp(OldCEXP, CumulativeExp);
 	CumulativeExp = NewCumulativeExp;
 }
 
 void ULevelComponent::AddExp(int AddedCumulativeExp)
 {
-	ExecuteBeforeAddExp(GetCumulativeExp(), AddedCumulativeExp);
+	//ExecuteBeforeAddExp(GetCumulativeExp(), AddedCumulativeExp);
 	SetCumulativeExp(GetCumulativeExp() + AddedCumulativeExp);
-	ExecuteAfterAddExp(GetCumulativeExp(), AddedCumulativeExp);
+	//ExecuteAfterAddExp(GetCumulativeExp(), AddedCumulativeExp);
 }
 
 #pragma endregion
@@ -122,10 +122,10 @@ int ULevelComponent::GetLevelFromCXP(const int CXP)
 
 void ULevelComponent::SetLevel(int NewLevel)
 {
-	ExecuteBeforeSetLevel(GetLevel(), NewLevel);
+	//ExecuteBeforeSetLevel(GetLevel(), NewLevel);
 	const int Level = FMathf::Clamp(NewLevel, MinLevel(), MaxLevel());
 	SetCumulativeExp(GetCumulativeExpFromLevel(Level));
-	ExecuteAfterSetLevel(GetLevel(), NewLevel);
+	//ExecuteAfterSetLevel(GetLevel(), NewLevel);
 }
 
 void ULevelComponent::AddLevels(const int AddedLevels)
@@ -136,16 +136,16 @@ void ULevelComponent::AddLevels(const int AddedLevels)
 int ULevelComponent::MaxLevel()
 {
 	int MaxLevel = 100;
-	ExecuteBeforeMaxLevel(MaxLevel);
-	ExecuteAfterMaxLevel(MaxLevel);
+	//ExecuteBeforeMaxLevel(MaxLevel);
+	//ExecuteAfterMaxLevel(MaxLevel);
 	return MaxLevel;
 }
 
 int ULevelComponent::MinLevel()
 {
 	int MinLevel = 1;
-	ExecuteBeforeMinLevel(MinLevel);
-	ExecuteAfterMinLevel(MinLevel);
+	//ExecuteBeforeMinLevel(MinLevel);
+	//ExecuteAfterMinLevel(MinLevel);
 	return MinLevel;
 }
 

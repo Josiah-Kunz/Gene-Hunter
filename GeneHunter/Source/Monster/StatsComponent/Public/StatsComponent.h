@@ -24,22 +24,6 @@
 // .gen
 #include "StatsComponent.generated.h"
 
-#pragma region Effect delegates
-
-EFFECT_DELEGATES_FourParams(RandomizeStats, int&, int&, int&, int&)
-
-/**
- * Parameters:
- *	- The targeted EStatEnum
- *	- bResetCurrent
- */
-EFFECT_DELEGATES_TwoParams(RecalculateStats, EStatEnum, bool)
-
-EFFECT_DELEGATES_FourParams(ModifyStat, EStatEnum, float&, EStatValueType&, EModificationMode&)
-
-
-#pragma endregion
-
 /**
  * A class to hold, track, and calculate FStats such as Health, Physical Attack, and Haste, but also
  *	level and exp yield. It should only be used for "invisible" stats (think command line simulator) and *not* be used
@@ -147,14 +131,6 @@ public:
 	void RandomizeStats(
 		int MinBaseStat = 50, int MaxBaseStat = 150,
 		int MinBasePairs = 1, int MaxBasePairs = 100);
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
-	EFFECT_DELEGATE_BEFORE_ARRAY(RandomizeStats)
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
-	EFFECT_DELEGATE_AFTER_ARRAY(RandomizeStats)
-
-	EFFECT_FUNCTIONS_FourParams(RandomizeStats, int&, int&, int&, int&)
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
 	void RandomizeBasePairs(const int MinBasePairs = 1, const int MaxBasePairs = 100);
@@ -185,14 +161,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RecalculateStats(bool bResetCurrent = true);
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
-	EFFECT_DELEGATE_BEFORE_ARRAY(RecalculateStats)
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
-	EFFECT_DELEGATE_AFTER_ARRAY(RecalculateStats)
-
-	EFFECT_FUNCTIONS_TwoParams(RecalculateStats, EStatEnum, bool)
-	
 private:
 
 	/**
@@ -200,16 +168,6 @@ private:
 	 * the effect delegates are called.
 	 */
 	void ModifyStatInternal(EStatEnum Stat, float Value, EStatValueType ValueType, EModificationMode Mode);
-
-public:
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
-	EFFECT_DELEGATE_BEFORE_ARRAY(ModifyStat)
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
-	EFFECT_DELEGATE_AFTER_ARRAY(ModifyStat)
-
-	EFFECT_FUNCTIONS_FourParams(ModifyStat, EStatEnum, float&, EStatValueType&, EModificationMode&)
 
 #pragma endregion
 

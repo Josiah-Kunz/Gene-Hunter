@@ -36,7 +36,7 @@ public:
 		if (InStat == EStatEnum::Health)
 			StatsComponent->AvertReduction(InStat, InValue, InValueType, InMode);
 	};
-	UStatsComponent::FModifyStatDelegate Delegate;
+	//todo UStatsComponent::FModifyStatDelegate Delegate;
 
 #pragma endregion
 

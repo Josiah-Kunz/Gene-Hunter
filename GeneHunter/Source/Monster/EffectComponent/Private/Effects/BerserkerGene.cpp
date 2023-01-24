@@ -20,14 +20,15 @@ void UBerserkerGene::OnComponentCreated()
 	Super::OnComponentCreated();
 
 	// Add to delegate array
-	Delegate.BindLambda(Lambda);
-	StatsComponent->AfterRecalculateStatsArray.Add(Delegate);
+	//Delegate.BindLambda(Lambda);
+	//StatsComponent->AfterRecalculateStatsArray.Add(Delegate);
 }
 
 void UBerserkerGene::OnComponentDestroyed(bool bDestroyingHierarchy)
 {
 	Super::OnComponentDestroyed(bDestroyingHierarchy);
 
+	/*
 	auto RecalculateStatsArray = StatsComponent->AfterRecalculateStatsArray;
 	for(int i=RecalculateStatsArray.Num() - 1; i>=0; i--)
 	{
@@ -37,6 +38,7 @@ void UBerserkerGene::OnComponentDestroyed(bool bDestroyingHierarchy)
 			break;
 		}
 	}
+	*/
 }
 
 FSupportingText UBerserkerGene::GetSupportingText()

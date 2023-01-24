@@ -57,36 +57,11 @@ public:
 	int GetUnspentPoints();
 
 	/**
-	 * Parameters:
-	 *	- Unspent points
-	 */
-	EFFECT_DELEGATES_OneParam(GetUnspentPoints, int&)
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
-	EFFECT_DELEGATE_BEFORE_ARRAY(GetUnspentPoints)
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
-	EFFECT_DELEGATE_AFTER_ARRAY(GetUnspentPoints)
-
-	/**
 	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any
 	 * new Monster so that affinities can be customized from the get-go (so the player has agency which makes for more
 	 * exciting gameplay).
 	 */
 	void SetUnspentPoints(int NewPoints);
-
-	/**
-	 * Parameters:
-	 *	- Unspent points
-	 *	- Attempted value
-	 */
-	EFFECT_DELEGATES_TwoParams(SetUnspentPoints, int&, int&)
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
-	EFFECT_DELEGATE_BEFORE_ARRAY(SetUnspentPoints)
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegate Arrays")
-	EFFECT_DELEGATE_AFTER_ARRAY(SetUnspentPoints)
 
 	/**
 	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any

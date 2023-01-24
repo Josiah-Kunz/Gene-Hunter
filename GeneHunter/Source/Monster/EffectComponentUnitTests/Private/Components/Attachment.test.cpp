@@ -15,7 +15,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Components_Attachment,
 
 bool UEffectComponent_Components_Attachment::RunTest(const FString& Parameters)
 {
-	
+	return false;
+
+	//todo
+
+	/*
 	// Get dummy
 	DUMMY_BASE_STATS_BLOCK
 
@@ -38,4 +42,5 @@ bool UEffectComponent_Components_Attachment::RunTest(const FString& Parameters)
 	// Return
 	BASESTATS_GC
 	return true;
+	*/
 }

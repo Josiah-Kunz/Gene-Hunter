@@ -31,6 +31,7 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 		// Anything changed?
 		if (LevelComponent != nullptr && LevelComponent != OldLevelComponent)
 		{
+			/*
 			// Delegate for changing stats on level up
 			ULevelComponent::FSetCumulativeExpDelegate UpdateStatsAfterLevelUp;
 			UpdateStatsAfterLevelUp.BindLambda([this](const int OldCXP, const int NewCXP)
@@ -41,7 +42,7 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 					RecalculateStats();
 			});
 			LevelComponent->AfterSetCumulativeExpArray.Add(UpdateStatsAfterLevelUp);
-	
+			*/
 			// Start with random stats
 			RandomizeStats();
 		}
@@ -84,7 +85,7 @@ void UStatsComponent::RandomizeStats(
 	int MinBasePairs, int MaxBasePairs)
 {
 
-	ExecuteBeforeRandomizeStats(MinBaseStat, MaxBaseStat, MinBasePairs, MaxBasePairs);
+	//ExecuteBeforeRandomizeStats(MinBaseStat, MaxBaseStat, MinBasePairs, MaxBasePairs);
 	
 	for(const EStatEnum Stat : StatsArray)
 	{
@@ -95,7 +96,7 @@ void UStatsComponent::RandomizeStats(
 		GetStat(Stat).Update(LevelComponent->GetLevel());
 	}
 
-	ExecuteAfterRandomizeStats(MinBaseStat, MaxBaseStat, MinBasePairs, MaxBasePairs);
+	//ExecuteAfterRandomizeStats(MinBaseStat, MaxBaseStat, MinBasePairs, MaxBasePairs);
 }
 
 void UStatsComponent::RandomizeBasePairs(const int MinBasePairs, const int MaxBasePairs)
@@ -132,17 +133,17 @@ void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 {
 	for(const EStatEnum Stat : StatsArray)
 	{
-		ExecuteBeforeRecalculateStats(Stat, bResetCurrent);
+		//ExecuteBeforeRecalculateStats(Stat, bResetCurrent);
 		GetStat(Stat).Update(LevelComponent->GetLevel(), bResetCurrent);
-		ExecuteAfterRecalculateStats(Stat, bResetCurrent);
+		//ExecuteAfterRecalculateStats(Stat, bResetCurrent);
 	}
 }
 
 void UStatsComponent::ModifyStatInternal(EStatEnum Stat, float Value, EStatValueType ValueType, EModificationMode Mode)
 {
-	ExecuteBeforeModifyStat(Stat, Value, ValueType, Mode);
+	//ExecuteBeforeModifyStat(Stat, Value, ValueType, Mode);
 	GetStat(Stat).ModifyValue(Value, ValueType, Mode);
-	ExecuteAfterModifyStat(Stat, Value, ValueType, Mode);
+	//ExecuteAfterModifyStat(Stat, Value, ValueType, Mode);
 }
 
 bool UStatsComponent::IsEqual(UStatsComponent* Other, const EStatValueType ValueType, const float Tolerance)
