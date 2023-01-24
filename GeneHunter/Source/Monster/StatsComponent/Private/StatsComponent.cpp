@@ -31,6 +31,10 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 		// Anything changed?
 		if (LevelComponent != nullptr && LevelComponent != OldLevelComponent)
 		{
+
+			
+
+			
 			/*
 			// Delegate for changing stats on level up
 			ULevelComponent::FSetCumulativeExpDelegate UpdateStatsAfterLevelUp;
