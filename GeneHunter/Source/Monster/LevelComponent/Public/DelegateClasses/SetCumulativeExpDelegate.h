@@ -2,6 +2,9 @@
 
 #include "SetCumulativeExpDelegate.generated.h"
 
+UDELEGATE()
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FSetCumulativeExpDelegateDelegate, int, CurrentCXP, int&, AttemptedCXP);
+
 /**
  * 
  */
@@ -11,10 +14,8 @@ struct LEVELCOMPONENT_API FSetCumulativeExpDelegate
 	GENERATED_BODY()
 
 public:
-
-	DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegate, int, CurrentCXP, int&, AttemptedCXP);
 	
-	FDelegate Delegate;
+	FSetCumulativeExpDelegateDelegate Delegate;
 
 	UPROPERTY()
 	float Priority = 50;

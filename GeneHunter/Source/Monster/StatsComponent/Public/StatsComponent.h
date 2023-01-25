@@ -44,8 +44,12 @@ public:
 	UStatsComponent();
 
 	virtual void OnComponentCreated() override;
-
+	
 	void EnsureLevelComponent(AActor* Owner);
+
+private:
+
+	void ChangeStatsOnLevelChange(const int OldCXP, int& AttemptedCXP);
 
 protected:
 	// Called when the game starts
