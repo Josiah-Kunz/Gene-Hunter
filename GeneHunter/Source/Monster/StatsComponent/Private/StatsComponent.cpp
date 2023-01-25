@@ -2,7 +2,7 @@
 
 #include "ComponentUtilities.h"
 #include "MathUtil.h"
-//#include "DelegateClasses/SetCumulativeExpDelegate.h"
+#include "LevelComponent/Public/DelegateClasses/SetCumulativeExpDelegate.h"
 
 #pragma region Standard stuff
 
@@ -33,7 +33,7 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 		if (LevelComponent != nullptr && LevelComponent != OldLevelComponent)
 		{
 
-			//FSetCumulativeExpDelegate UpdateStatsAfterLevelUp;
+			FSetCumulativeExpWrapper UpdateStatsAfterLevelUp;
 			//UpdateStatsAfterLevelUp.Delegate.BindUFunction(this,
 			//	GET_FUNCTION_NAME_CHECKED_TwoParams(UStatsComponent, ChangeStatsOnLevelChange, int, int&));
 

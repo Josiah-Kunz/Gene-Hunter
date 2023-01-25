@@ -14,10 +14,10 @@ struct LEVELCOMPONENT_API FSetCumulativeExpOutlet
 private:
 
 	UPROPERTY()
-	TArray<FSetCumulativeExpDelegate> Before;
+	TArray<FSetCumulativeExpWrapper> Before;
 
 	UPROPERTY()
-	TArray<FSetCumulativeExpDelegate> After;
+	TArray<FSetCumulativeExpWrapper> After;
 
 public:
 
@@ -26,7 +26,7 @@ public:
 	 */
 	void ExecuteBefore(const int CurrentCXP, int& AttemptedCXP)
 	{
-		for(FSetCumulativeExpDelegate BeforeDelegate : Before)
+		for(FSetCumulativeExpWrapper BeforeDelegate : Before)
 		{
 			BeforeDelegate.Delegate.Execute(CurrentCXP, AttemptedCXP);
 		}	
@@ -37,7 +37,7 @@ public:
 	 */
 	void ExecuteAfter(const int CurrentCXP, int& AttemptedCXP)
 	{
-		for(FSetCumulativeExpDelegate AfterDelegate : After)
+		for(FSetCumulativeExpWrapper AfterDelegate : After)
 		{
 			AfterDelegate.Delegate.Execute(CurrentCXP, AttemptedCXP);
 		}	
@@ -46,7 +46,7 @@ public:
 	/**
 	 * Adds a delegate to the "before execution" array at the correct (sorted) index based on priority.
 	 */
-	void AddDelegateBefore(const FSetCumulativeExpDelegate DelegateToAdd, const float Priority)
+	void AddDelegateBefore(const FSetCumulativeExpWrapper DelegateToAdd, const float Priority)
 	{
 		bool bAdded = false;
 		for(int i=0; i<Before.Num();i++)
@@ -67,7 +67,7 @@ public:
 	/**
 	 * Adds a delegate to the "after execution" array at the correct (sorted) index based on priority.
 	 */
-	void AddDelegateAfter(const FSetCumulativeExpDelegate DelegateToAdd, const float Priority)
+	void AddDelegateAfter(const FSetCumulativeExpWrapper DelegateToAdd, const float Priority)
 	{
 		bool bAdded = false;
 		for(int i=0; i<After.Num();i++)
