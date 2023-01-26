@@ -5,8 +5,7 @@
 
 // Other components
 #include "EffectableComponent.h"
-#include "Outlets/GetBaseExpYieldOutlet.h"
-#include "Outlets/SetCumulativeExpOutlet.h"
+#include "SetCumulativeExpOutlet.h"
 
 // .gen
 #include "LevelComponent.generated.h"
@@ -47,8 +46,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
 	int GetBaseExpYield();
 
-	FGetBaseExpYieldOutlet GetBaseExpYieldOutlet;
-
 	/**
 	 * Sets the value of BaseExpYield.
 	 */
@@ -87,7 +84,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Level")
 	void SetCumulativeExp(int NewCumulativeExp);
 
-	FSetCumulativeExpOutlet SetCumulativeExpOutlet;
+	UPROPERTY()
+	TArray<FSetCumulativeExpOutlet> AfterSetCumulativeExp;
 
 	/**
 	 * Adds to the total accumulated experience points across all levels.

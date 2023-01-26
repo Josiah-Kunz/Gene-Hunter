@@ -17,10 +17,6 @@ ULevelComponent::ULevelComponent()
 int ULevelComponent::GetBaseExpYield() 
 {
 	float Ret = BaseExpYield;
-	GetBaseExpYieldOutlet.ExecuteBefore(Ret);
-	GetBaseExpYieldOutlet.ExecuteAfter(Ret);
-	//GetBaseExpYieldDelegate.ExecuteBefore(Ret);
-	//GetBaseExpYieldDelegate.ExecuteAfter(Ret);
 	return Ret;
 }
 
@@ -76,7 +72,7 @@ void ULevelComponent::SetCumulativeExp(int NewCumulativeExp)
 {
 	// Delegate
 	//ExecuteBeforeSetCumulativeExp(GetCumulativeExp(), NewCumulativeExp);
-	SetCumulativeExpOutlet.ExecuteBefore(GetCumulativeExp(), NewCumulativeExp);
+	//SetCumulativeExpOutlet.ExecuteBefore(GetCumulativeExp(), NewCumulativeExp);
 	
 	// Cache old (it's a surprise tool that will help us later!)
 	const int OldCEXP = CumulativeExp;
@@ -99,7 +95,8 @@ void ULevelComponent::SetCumulativeExp(int NewCumulativeExp)
 
 	// Delegate
 	//ExecuteAfterSetCumulativeExp(OldCEXP, CumulativeExp);
-	SetCumulativeExpOutlet.ExecuteAfter(GetCumulativeExp(), NewCumulativeExp);
+	for(FSetCumulativeExpOutlet Outlet : AfterSetCumulativeExp)
+		Outlet.SetCumulativeExpDelegate.ExecuteIfBound(GetCumulativeExp(), CumulativeExp);
 	CumulativeExp = NewCumulativeExp;
 }
 

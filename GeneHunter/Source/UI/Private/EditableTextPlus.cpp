@@ -12,19 +12,19 @@ TSharedRef<SWidget> UEditableTextPlus::RebuildWidget()
 {
 	MyEditableText = SNew( SEditableText )
 		.Style( &WidgetStyle )
-		.MinDesiredWidth( MinimumDesiredWidth )
-		.IsCaretMovedWhenGainFocus( IsCaretMovedWhenGainFocus )
-		.SelectAllTextWhenFocused( SelectAllTextWhenFocused )
-		.RevertTextOnEscape( RevertTextOnEscape )
-		.ClearKeyboardFocusOnCommit( ClearKeyboardFocusOnCommit )
-		.SelectAllTextOnCommit( SelectAllTextOnCommit )
+		.MinDesiredWidth( GetMinimumDesiredWidth() )
+		.IsCaretMovedWhenGainFocus( GetIsCaretMovedWhenGainFocus() )
+		.SelectAllTextWhenFocused( GetSelectAllTextWhenFocused() )
+		.RevertTextOnEscape( GetRevertTextOnEscape() )
+		.ClearKeyboardFocusOnCommit( GetClearKeyboardFocusOnCommit() )
+		.SelectAllTextOnCommit( GetSelectAllTextOnCommit() )
 		.OnTextChanged( BIND_UOBJECT_DELEGATE( FOnTextChanged, HandleOnTextChangedOverride ) ) // <--- This is the only line that's changed from EditableText.h
 		.OnTextCommitted( BIND_UOBJECT_DELEGATE( FOnTextCommitted, HandleOnTextCommitted ) )
 		.VirtualKeyboardType( EVirtualKeyboardType::AsKeyboardType( KeyboardType.GetValue() ) )
 		.VirtualKeyboardOptions(VirtualKeyboardOptions)
 		.VirtualKeyboardTrigger(VirtualKeyboardTrigger)
 		.VirtualKeyboardDismissAction(VirtualKeyboardDismissAction)
-		.Justification( Justification )
+		.Justification( GetJustification() )
 	;
 	return MyEditableText.ToSharedRef();
 }

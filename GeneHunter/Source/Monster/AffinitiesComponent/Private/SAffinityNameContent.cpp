@@ -42,7 +42,7 @@ void SAffinityNameContent::Construct(const FArguments& InArgs)
 	// Lock
 	+SOverlay::Slot()[
 		SNew(SButton)
-		.ButtonStyle( FEditorStyle::Get(), "NoBorder" )
+		.ButtonStyle( FAppStyle::Get(), "NoBorder" )
 		.OnClicked_Lambda(InArgs._OnLockClicked.Get())
 		.IsEnabled(InArgs._IsLockEnabled.Get())
 		.ToolTipText(
@@ -52,7 +52,7 @@ void SAffinityNameContent::Construct(const FArguments& InArgs)
 		)
 		[
 			SNew(SImage)
-			.Image(FEditorStyle::GetBrush(
+			.Image(FAppStyle::GetBrush(
 				Affinity.IsLocked() ?
 				TEXT("Sequencer.LockSequence") :
 				TEXT("Sequencer.UnlockSequence")

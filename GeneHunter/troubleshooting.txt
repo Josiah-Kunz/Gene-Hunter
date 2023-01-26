@@ -1,0 +1,7 @@
+Rider refuses to build and exits with code 6
+	- Close Rider
+	- Open Visual Studio (ewwww)
+	- Right-click the .sln
+	- Clean
+	- Rebuild
+	- gg
