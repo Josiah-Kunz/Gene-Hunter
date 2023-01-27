@@ -32,10 +32,10 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 		if (LevelComponent != nullptr && LevelComponent != OldLevelComponent)
 		{
 
-			FSetCumulativeExpOutlet UpdateStatsAfterLevel;
+			UpdateStatsAfterLevel.SetCumulativeExpDelegate.Clear();
 			UpdateStatsAfterLevel.SetCumulativeExpDelegate.BindUFunction(this,
 				GET_FUNCTION_NAME_CHECKED(UStatsComponent, ChangeStatsOnLevelChange));
-
+			LevelComponent->AfterSetCumulativeExp.Add(UpdateStatsAfterLevel);
 			
 			/*
 			

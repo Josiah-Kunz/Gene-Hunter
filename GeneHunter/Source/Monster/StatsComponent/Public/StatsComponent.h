@@ -49,6 +49,9 @@ public:
 
 private:
 
+	UPROPERTY();
+	FSetCumulativeExpOutlet UpdateStatsAfterLevel;
+	
 	void ChangeStatsOnLevelChange(const int OldCXP, int& AttemptedCXP);
 
 protected:
