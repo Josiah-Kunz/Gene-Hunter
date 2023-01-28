@@ -95,9 +95,15 @@ void ULevelComponent::SetCumulativeExp(int NewCumulativeExp)
 
 	// Delegate
 	//ExecuteAfterSetCumulativeExp(OldCEXP, CumulativeExp);
-	for(FSetCumulativeExpOutlet Outlet : AfterSetCumulativeExp)
-		Outlet.SetCumulativeExpDelegate.ExecuteIfBound(GetCumulativeExp(), CumulativeExp);
+
+	// Set exp
 	CumulativeExp = NewCumulativeExp;
+
+	// Call after delegates
+	for(FSetCumulativeExpOutlet Outlet : AfterSetCumulativeExp)
+	{
+		Outlet.SetCumulativeExpDelegate.ExecuteIfBound(GetCumulativeExp(), NewCumulativeExp);
+	}
 }
 
 void ULevelComponent::AddExp(int AddedCumulativeExp)

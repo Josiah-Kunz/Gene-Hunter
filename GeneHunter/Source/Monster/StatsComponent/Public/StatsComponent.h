@@ -51,8 +51,9 @@ private:
 
 	UPROPERTY();
 	FSetCumulativeExpOutlet UpdateStatsAfterLevel;
-	
-	void ChangeStatsOnLevelChange(const int OldCXP, int& AttemptedCXP);
+
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	void ChangeStatsOnLevelChange(int OldCXP, int& AttemptedCXP);
 
 protected:
 	// Called when the game starts

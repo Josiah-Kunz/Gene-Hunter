@@ -33,36 +33,23 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 		{
 
 			UpdateStatsAfterLevel.SetCumulativeExpDelegate.Clear();
-			UpdateStatsAfterLevel.SetCumulativeExpDelegate.BindUFunction(this,
-				GET_FUNCTION_NAME_CHECKED(UStatsComponent, ChangeStatsOnLevelChange));
+			UpdateStatsAfterLevel.SetCumulativeExpDelegate.BindDynamic(this, &UStatsComponent::ChangeStatsOnLevelChange);
 			LevelComponent->AfterSetCumulativeExp.Add(UpdateStatsAfterLevel);
 			
-			/*
-			
-			// Delegate for changing stats on level up
-			ULevelComponent::FSetCumulativeExpDelegate UpdateStatsAfterLevelUp;
-			UpdateStatsAfterLevelUp.BindLambda([this](const int OldCXP, const int NewCXP)
-			{
-				const int OldLevel = ULevelComponent::GetLevelFromCXP(OldCXP);
-				const int NewLevel = ULevelComponent::GetLevelFromCXP(NewCXP);
-				if (NewLevel != OldLevel)
-					RecalculateStats();
-			});
-			LevelComponent->AfterSetCumulativeExpArray.Add(UpdateStatsAfterLevelUp);
-			*/
 			// Start with random stats
 			RandomizeStats();
 		}
 	}
 }
 
-void UStatsComponent::ChangeStatsOnLevelChange(const int OldCXP, int& AttemptedCXP)
+void UStatsComponent::ChangeStatsOnLevelChange(int OldCXP, int& AttemptedCXP)
 {
 	const int OldLevel = ULevelComponent::GetLevelFromCXP(OldCXP);
 	const int NewLevel = ULevelComponent::GetLevelFromCXP(AttemptedCXP);
+	UE_LOG(LogTemp, Warning, TEXT("Calling Change Stats"))
 	if (NewLevel != OldLevel)
 	{
-		RecalculateStats();
+		RecalculateStats(true);
 		UE_LOG(LogTemp, Warning, TEXT("CHANGED ON LEVEL UP!"))
 	}
 }
