@@ -75,7 +75,7 @@ void ULevelComponent::SetCumulativeExp(int NewCumulativeExp)
 	//SetCumulativeExpOutlet.ExecuteBefore(GetCumulativeExp(), NewCumulativeExp);
 	
 	// Cache old (it's a surprise tool that will help us later!)
-	const int OldCEXP = CumulativeExp;
+	const int OldCXP = CumulativeExp;
 
 	// Set and clamp exp
 	CumulativeExp = FMath::Clamp(NewCumulativeExp, 1, GetMaxExp());
@@ -96,13 +96,13 @@ void ULevelComponent::SetCumulativeExp(int NewCumulativeExp)
 	// Delegate
 	//ExecuteAfterSetCumulativeExp(OldCEXP, CumulativeExp);
 
-	// Set exp
-	CumulativeExp = NewCumulativeExp;
+	// Set new exp for delegates
+	const int NewCXP = GetCumulativeExp();
 
 	// Call after delegates
 	for(FSetCumulativeExpOutlet Outlet : AfterSetCumulativeExp)
 	{
-		Outlet.SetCumulativeExpDelegate.ExecuteIfBound(GetCumulativeExp(), NewCumulativeExp);
+		Outlet.SetCumulativeExpDelegate.ExecuteIfBound(OldCXP, NewCXP);
 	}
 }
 

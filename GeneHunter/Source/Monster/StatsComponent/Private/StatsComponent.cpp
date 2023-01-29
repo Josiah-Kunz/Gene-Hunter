@@ -42,11 +42,14 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 	}
 }
 
-void UStatsComponent::ChangeStatsOnLevelChange(int OldCXP, int& AttemptedCXP)
+void UStatsComponent::ChangeStatsOnLevelChange(const int OldCXP, const int AttemptedCXP)
 {
 	const int OldLevel = ULevelComponent::GetLevelFromCXP(OldCXP);
 	const int NewLevel = ULevelComponent::GetLevelFromCXP(AttemptedCXP);
-	UE_LOG(LogTemp, Warning, TEXT("Calling Change Stats"))
+	UE_LOG(LogTemp, Warning, TEXT("Calling Change Stats: OldLevel/EXP [%i/%i] | NewLevel/EXP [%i/%i]"),
+		OldLevel, OldCXP,
+		NewLevel, AttemptedCXP
+	)
 	if (NewLevel != OldLevel)
 	{
 		RecalculateStats(true);
