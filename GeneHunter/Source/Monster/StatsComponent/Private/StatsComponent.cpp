@@ -32,9 +32,10 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 		if (LevelComponent != nullptr && LevelComponent != OldLevelComponent)
 		{
 
-			UpdateStatsAfterLevel.SetCumulativeExpDelegate.Clear();
-			UpdateStatsAfterLevel.SetCumulativeExpDelegate.BindDynamic(this, &UStatsComponent::ChangeStatsOnLevelChange);
-			LevelComponent->AfterSetCumulativeExp.Add(UpdateStatsAfterLevel);
+			// Delegate to ensure refreshing stats upon level change
+			UpdateStatsAfterLevel.AfterSetCXPDelegate.Clear();
+			UpdateStatsAfterLevel.AfterSetCXPDelegate.BindDynamic(this, &UStatsComponent::ChangeStatsOnLevelChange);
+			//LevelComponent->AddAfterSetCXP(UpdateStatsAfterLevel, IntrinsicPriority);
 			
 			// Start with random stats
 			RandomizeStats();

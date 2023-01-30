@@ -121,11 +121,11 @@ void LevelComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
 					TAttribute<bool>::CreateLambda([this]() 
 					{ 
-						return LevelComponent->GetCumulativeExp() != LevelComponent->GetCumulativeExpFromLevel(LevelComponent->GetLevel());
+						return LevelComponent->GetCXP() != LevelComponent->GetCXPFromLevel(LevelComponent->GetLevel());
 					}), 
 					FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
 					{ 
-						LevelComponent->SetCumulativeExp(LevelComponent->GetCumulativeExpFromLevel(LevelComponent->GetLevel()));
+						LevelComponent->SetCXP(LevelComponent->GetCXPFromLevel(LevelComponent->GetLevel()));
 						SaveAndRefresh(DetailBuilder);
 					})
 				))
@@ -143,25 +143,25 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 		SNew(SStatsBar)
 			.LabelText(FText::FromString("CXP"))
 			.LabelTooltip(FText::FromString("Cumulative experience points"))
-			.TextBoxText(UUtilityFunctionLibrary::ToSI(LevelComponent->GetCumulativeExp(), StatsComponentDrawer::SigFigs, true))
+			.TextBoxText(UUtilityFunctionLibrary::ToSI(LevelComponent->GetCXP(), StatsComponentDrawer::SigFigs, true))
 			.OnTextCommitted(
 				[this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
 				{
 
 					// Check to see if anything changed (avoids rounding errors)
-					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(LevelComponent->GetCumulativeExp(), StatsComponentDrawer::SigFigs, true)))
+					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(LevelComponent->GetCXP(), StatsComponentDrawer::SigFigs, true)))
 						return;
 
 					// Change depending on commit type (might have hit "esc", so no changes)
 					if (UserCommitted(CommitType))
-						LevelComponent->SetCumulativeExp(UUtilityFunctionLibrary::FromSI(InText));
+						LevelComponent->SetCXP(UUtilityFunctionLibrary::FromSI(InText));
 
 					// Refresh either way
 					SaveAndRefresh(DetailBuilder);
 				})
 			.TextBoxTooltip(FText::FromString(FString::Printf(
 					TEXT("%s"),
-					*FloatToFText(LevelComponent->GetCumulativeExp(), true).ToString()
+					*FloatToFText(LevelComponent->GetCXP(), true).ToString()
 					)))
 			.MaxText(UUtilityFunctionLibrary::ToSI(LevelComponent->GetMaxExp(), StatsComponentDrawer::SigFigs, true))
 			.MaxTooltip(FText::FromString(FString::Printf(
@@ -170,17 +170,17 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 				*FloatToFText(LevelComponent->GetMaxExp(), true).ToString()
 				)))
 			.BarColor(FLinearColor{0.5f, 0, 0.5f})
-			.BarFraction(LevelComponent->GetCumulativeExp()/LevelComponent->GetMaxExp())
+			.BarFraction(LevelComponent->GetCXP()/LevelComponent->GetMaxExp())
 			.BarTooltip(FText::FromString("Change in exp = change in level"))
 			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
 					TAttribute<bool>::CreateLambda([this]() 
 					{ 
-						return LevelComponent->GetCumulativeExp() != LevelComponent->GetCumulativeExpFromLevel(LevelComponent->MinLevel());
+						return LevelComponent->GetCXP() != LevelComponent->GetCXPFromLevel(LevelComponent->MinLevel());
 						
 					}), 
 					FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
 					{ 
-						LevelComponent->SetCumulativeExp(0);
+						LevelComponent->SetCXP(0);
 						SaveAndRefresh(DetailBuilder);
 					})
 				))

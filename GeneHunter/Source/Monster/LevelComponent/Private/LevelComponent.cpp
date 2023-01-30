@@ -61,14 +61,14 @@ float ULevelComponent::GetExpYield(ULevelComponent* VictoriousMonster)
 
 #pragma region Exp
 
-int ULevelComponent::GetCumulativeExp()
+int ULevelComponent::GetCXP()
 {
 	//ExecuteBeforeGetCumulativeExp(CumulativeExp);
 	//ExecuteAfterGetCumulativeExp(CumulativeExp);
 	return CumulativeExp;
 }
 
-void ULevelComponent::SetCumulativeExp(int NewCumulativeExp)
+void ULevelComponent::SetCXP(int NewCumulativeExp)
 {
 	// Delegate
 	//ExecuteBeforeSetCumulativeExp(GetCumulativeExp(), NewCumulativeExp);
@@ -85,31 +85,28 @@ void ULevelComponent::SetCumulativeExp(int NewCumulativeExp)
 	if (NewLevel < MinLevel())
 	{
 		NewLevel = MinLevel();
-		CumulativeExp = GetCumulativeExpFromLevel(MinLevel());
+		CumulativeExp = GetCXPFromLevel(MinLevel());
 	}
 	if (NewLevel > MaxLevel())
 	{
 		NewLevel = MaxLevel();
-		CumulativeExp = GetCumulativeExpFromLevel(MaxLevel());
+		CumulativeExp = GetCXPFromLevel(MaxLevel());
 	}
 
 	// Delegate
 	//ExecuteAfterSetCumulativeExp(OldCEXP, CumulativeExp);
 
 	// Set new exp for delegates
-	const int NewCXP = GetCumulativeExp();
+	const int NewCXP = GetCXP();
 
 	// Call after delegates
-	for(FSetCumulativeExpOutlet Outlet : AfterSetCumulativeExp)
-	{
-		Outlet.SetCumulativeExpDelegate.ExecuteIfBound(OldCXP, NewCXP);
-	}
+	//ExecuteAfterSetCXP(OldCXP, NewCXP);
 }
 
 void ULevelComponent::AddExp(int AddedCumulativeExp)
 {
 	//ExecuteBeforeAddExp(GetCumulativeExp(), AddedCumulativeExp);
-	SetCumulativeExp(GetCumulativeExp() + AddedCumulativeExp);
+	SetCXP(GetCXP() + AddedCumulativeExp);
 	//ExecuteAfterAddExp(GetCumulativeExp(), AddedCumulativeExp);
 }
 
@@ -119,7 +116,7 @@ void ULevelComponent::AddExp(int AddedCumulativeExp)
 
 int ULevelComponent::GetLevel() 
 {
-	return GetLevelFromCXP(GetCumulativeExp());
+	return GetLevelFromCXP(GetCXP());
 }
 
 int ULevelComponent::GetLevelFromCXP(const int CXP)
@@ -131,7 +128,7 @@ void ULevelComponent::SetLevel(int NewLevel)
 {
 	//ExecuteBeforeSetLevel(GetLevel(), NewLevel);
 	const int Level = FMathf::Clamp(NewLevel, MinLevel(), MaxLevel());
-	SetCumulativeExp(GetCumulativeExpFromLevel(Level));
+	SetCXP(GetCXPFromLevel(Level));
 	//ExecuteAfterSetLevel(GetLevel(), NewLevel);
 }
 
@@ -165,7 +162,7 @@ float ULevelComponent::ExpExponent()
 	return 3;
 }
 
-float ULevelComponent::GetCumulativeExpFromLevel(const int TargetLevel)
+float ULevelComponent::GetCXPFromLevel(const int TargetLevel)
 {
 	return FMathf::Pow(TargetLevel, ExpExponent());
 }
@@ -174,7 +171,7 @@ float ULevelComponent::GetExpToLevel()
 {
 	if (GetLevel() == MaxLevel())
 		return 0;
-	const float NextLevelExp = GetCumulativeExpFromLevel(GetLevel() + 1);
+	const float NextLevelExp = GetCXPFromLevel(GetLevel() + 1);
 	return NextLevelExp - GetLevelExp();
 }
 
@@ -182,19 +179,19 @@ float ULevelComponent::GetTotalLevelExp()
 {
 	if (GetLevel() == MaxLevel())
 		return 0;
-	const float ThisLevelExp = GetCumulativeExpFromLevel(GetLevel());
-	const float NextLevelExp = GetCumulativeExpFromLevel(GetLevel() + 1);
+	const float ThisLevelExp = GetCXPFromLevel(GetLevel());
+	const float NextLevelExp = GetCXPFromLevel(GetLevel() + 1);
 	return NextLevelExp - ThisLevelExp;
 }
 
 float ULevelComponent::GetLevelExp()
 {
-	return GetCumulativeExp() - GetCumulativeExpFromLevel(GetLevel());
+	return GetCXP() - GetCXPFromLevel(GetLevel());
 }
 
 float ULevelComponent::GetMaxExp()
 {
-	return GetCumulativeExpFromLevel(MaxLevel());
+	return GetCXPFromLevel(MaxLevel());
 }
 
 #pragma endregion

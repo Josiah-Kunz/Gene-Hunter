@@ -50,7 +50,7 @@ public:
 private:
 
 	UPROPERTY();
-	FSetCumulativeExpOutlet UpdateStatsAfterLevel;
+	FAfterSetCXPOutlet UpdateStatsAfterLevel;
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
 	void ChangeStatsOnLevelChange(const int OldCXP, const int AttemptedCXP);

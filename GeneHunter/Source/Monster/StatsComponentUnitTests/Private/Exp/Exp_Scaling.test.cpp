@@ -15,39 +15,39 @@ bool FExp_Scaling::RunTest(const FString& Parameters)
 	// Test level 1
 	TestEqual(
 			"1 exp to start",
-			StatsComponent->LevelComponent->GetCumulativeExp(),
+			StatsComponent->LevelComponent->GetCXP(),
 			1,
 			UStatUnitTestUtilities::TOLERANCE);
 
 	// Test basic setter
-	StatsComponent->LevelComponent->SetCumulativeExp(10);
+	StatsComponent->LevelComponent->SetCXP(10);
 	TestEqual(
 			"Set to 10",
-			StatsComponent->LevelComponent->GetCumulativeExp(),
+			StatsComponent->LevelComponent->GetCXP(),
 			10,
 			UStatUnitTestUtilities::TOLERANCE);
 
 	// Test setter over max (1M1)
-	StatsComponent->LevelComponent->SetCumulativeExp(1000001);
+	StatsComponent->LevelComponent->SetCXP(1000001);
 	TestEqual(
 			"Set to 1M1 | should cap at 1M",
-			StatsComponent->LevelComponent->GetCumulativeExp(),
+			StatsComponent->LevelComponent->GetCXP(),
 			1000000,
 			UStatUnitTestUtilities::TOLERANCE);
 
 	// Test setter 0
-	StatsComponent->LevelComponent->SetCumulativeExp(0);
+	StatsComponent->LevelComponent->SetCXP(0);
 	TestEqual(
 			"Set to 0 | should min at 1",
-			StatsComponent->LevelComponent->GetCumulativeExp(),
+			StatsComponent->LevelComponent->GetCXP(),
 			1,
 			UStatUnitTestUtilities::TOLERANCE);
 
 	// Test setter -1
-	StatsComponent->LevelComponent->SetCumulativeExp(-1);
+	StatsComponent->LevelComponent->SetCXP(-1);
 	TestEqual(
 			"Set to -1 | should min at 1",
-			StatsComponent->LevelComponent->GetCumulativeExp(),
+			StatsComponent->LevelComponent->GetCXP(),
 			1,
 			UStatUnitTestUtilities::TOLERANCE);
 
@@ -55,7 +55,7 @@ bool FExp_Scaling::RunTest(const FString& Parameters)
 	StatsComponent->LevelComponent->SetLevel(50);
 	TestEqual(
 			"Level 50",
-			StatsComponent->LevelComponent->GetCumulativeExp(),
+			StatsComponent->LevelComponent->GetCXP(),
 			125000,
 			UStatUnitTestUtilities::TOLERANCE);
 
@@ -63,7 +63,7 @@ bool FExp_Scaling::RunTest(const FString& Parameters)
 	StatsComponent->LevelComponent->SetLevel(100);
 	TestEqual(
 			"Level 100",
-			StatsComponent->LevelComponent->GetCumulativeExp(),
+			StatsComponent->LevelComponent->GetCXP(),
 			1000000,
 			UStatUnitTestUtilities::TOLERANCE);
 
@@ -71,7 +71,7 @@ bool FExp_Scaling::RunTest(const FString& Parameters)
 	StatsComponent->LevelComponent->SetLevel(0);
 	TestEqual(
 			"Level 0",
-			StatsComponent->LevelComponent->GetCumulativeExp(),
+			StatsComponent->LevelComponent->GetCXP(),
 			1,
 			UStatUnitTestUtilities::TOLERANCE);
 
@@ -79,7 +79,7 @@ bool FExp_Scaling::RunTest(const FString& Parameters)
 	StatsComponent->LevelComponent->SetLevel(-1);
 	TestEqual(
 			"Level -1",
-			StatsComponent->LevelComponent->GetCumulativeExp(),
+			StatsComponent->LevelComponent->GetCXP(),
 			1,
 			UStatUnitTestUtilities::TOLERANCE);
 
@@ -87,7 +87,7 @@ bool FExp_Scaling::RunTest(const FString& Parameters)
 	StatsComponent->LevelComponent->SetLevel(101);
 	TestEqual(
 			"Level 101",
-			StatsComponent->LevelComponent->GetCumulativeExp(),
+			StatsComponent->LevelComponent->GetCXP(),
 			1000000,
 			UStatUnitTestUtilities::TOLERANCE);
 
