@@ -149,7 +149,8 @@ void UType::GetAllTypeAssets(TArray<FAssetData>& TypeAssets, const bool bSortABC
 
 	// Get the assets
 	const FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
-	AssetRegistryModule.Get().GetAssetsByClass(FTopLevelAssetPath(TEXT("Type")), TypeAssets, false);
+	//AssetRegistryModule.Get().GetAssetsByClass(FTopLevelAssetPath(TEXT("Type")), TypeAssets, false);
+	AssetRegistryModule.Get().GetAssetsByClass(UType::StaticClass()->GetClassPathName(), TypeAssets, false);
 
 	// Remove dummies or reals
 	for(int i=TypeAssets.Num() - 1; i>=0; i--)

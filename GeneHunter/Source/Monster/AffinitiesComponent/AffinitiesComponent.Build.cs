@@ -27,8 +27,8 @@ public class AffinitiesComponent : ModuleRules{
 			"CoreUObject",	// for UObjects
 			"EditorStyle",	// for, e.g., FEditorStyle::Get()
 			"Slate",		// for SButton
-			"SlateCore",	// for SCompoundWidget
-			  
+			"SlateCore", 	// for SCompoundWidget
+
 			// Other modules
 		});
 	}

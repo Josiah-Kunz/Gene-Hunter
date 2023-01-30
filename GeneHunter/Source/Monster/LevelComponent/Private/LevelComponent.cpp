@@ -100,7 +100,7 @@ void ULevelComponent::SetCXP(int NewCumulativeExp)
 	const int NewCXP = GetCXP();
 
 	// Call after delegates
-	//ExecuteAfterSetCXP(OldCXP, NewCXP);
+	ExecuteAfterSetCXP(OldCXP, NewCXP);
 }
 
 void ULevelComponent::AddExp(int AddedCumulativeExp)

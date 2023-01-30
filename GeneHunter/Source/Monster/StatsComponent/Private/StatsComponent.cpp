@@ -33,9 +33,10 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 		{
 
 			// Delegate to ensure refreshing stats upon level change
-			UpdateStatsAfterLevel.AfterSetCXPDelegate.Clear();
-			UpdateStatsAfterLevel.AfterSetCXPDelegate.BindDynamic(this, &UStatsComponent::ChangeStatsOnLevelChange);
-			//LevelComponent->AddAfterSetCXP(UpdateStatsAfterLevel, IntrinsicPriority);
+			UpdateStatsAfterLevel.Delegate.Clear();
+			UpdateStatsAfterLevel.Priority = IntrinsicPriority;
+			UpdateStatsAfterLevel.Delegate.BindDynamic(this, &UStatsComponent::ChangeStatsOnLevelChange);
+			LevelComponent->AddAfterSetCXP(UpdateStatsAfterLevel);
 			
 			// Start with random stats
 			RandomizeStats();
@@ -47,14 +48,9 @@ void UStatsComponent::ChangeStatsOnLevelChange(const int OldCXP, const int Attem
 {
 	const int OldLevel = ULevelComponent::GetLevelFromCXP(OldCXP);
 	const int NewLevel = ULevelComponent::GetLevelFromCXP(AttemptedCXP);
-	UE_LOG(LogTemp, Warning, TEXT("Calling Change Stats: OldLevel/EXP [%i/%i] | NewLevel/EXP [%i/%i]"),
-		OldLevel, OldCXP,
-		NewLevel, AttemptedCXP
-	)
 	if (NewLevel != OldLevel)
 	{
 		RecalculateStats(true);
-		UE_LOG(LogTemp, Warning, TEXT("CHANGED ON LEVEL UP!"))
 	}
 }
 

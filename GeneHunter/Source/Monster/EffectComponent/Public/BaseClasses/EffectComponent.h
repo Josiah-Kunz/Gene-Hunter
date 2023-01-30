@@ -47,18 +47,20 @@ public:
 	virtual void OnRefreshStacks();
 	
 	/**
-	 * The lower the priority, the farther away it is from execution. If two priorities are tied, the most recent effect
+	 * The lower the priority, the farther away it is from execution. If two priorities are tied, the older effect
 	 * is executed first. Order is set externally by EffectsComponent. Order:
 	 *
 	 *		-	Intrinsic delegates (no Effect attached)
 	 *		-	"Before" delegates
 	 *			-	Priority 1
-	 *			-	Priority 2
+	 *			-	Priority 2.a (older)
+	 *			-	Priority 2.b (newer)
 	 *			-	...
 	 *		-	[Function executes]
 	 *		-	"After" delegates
 	 *			-	...
-	 *			-	Priority 2
+	 *			-	Priority 2.b (newer)
+	 *			-	Priority 2.a (older)
 	 *			-	Priority 1
 	 *		-	Intrinsic delegates
 	 * 

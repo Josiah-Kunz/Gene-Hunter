@@ -30,8 +30,8 @@ public:
 	// =====
 
 	// Geometry
-	, _CirclePadding(2)
-	, _CircleSizeEmpty(20)
+	, _CirclePadding(0.5f)
+	, _CircleSizeEmpty(18)
 	, _CircleSizeFilled(16)
 	, _PlusMinusSize(12)
 

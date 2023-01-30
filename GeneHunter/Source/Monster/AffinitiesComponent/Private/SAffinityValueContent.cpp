@@ -2,7 +2,6 @@
 
 
 #include "SAffinityValueContent.h"
-
 #include "EditorStyleSet.h"
 #include "SlateOptMacros.h"
 #include "Widgets/Images/SImage.h"
@@ -64,7 +63,6 @@ TSharedPtr<SHorizontalBox> SAffinityValueContent::AffinityValueSlate(const FArgu
 			SNew(SButton)
 			.ButtonStyle( FAppStyle::Get(), "NoBorder" )
 			.ToolTipText(InArgs._CircleToolTipText)
-			//.OnClicked_Lambda(InArgs._OnCircleClicked.Get())
 			.OnClicked_Lambda([InArgs, i, CurrentPoints]()
 			{
 				return InArgs._OnCircleClicked.Get().operator()(i, CurrentPoints);
@@ -74,9 +72,10 @@ TSharedPtr<SHorizontalBox> SAffinityValueContent::AffinityValueSlate(const FArgu
 
 				+SOverlay::Slot()[
 					SNew(SImage)
-					.Image(FAppStyle::Get().GetBrush("TutorialLaunch.Circle"))
+					//.Image(FAppStyle::Get().GetBrush("TutorialLaunch.Circle"))
+					.Image(FAppStyle::Get().GetBrush("Sequencer.KeyCircle"))
 					.DesiredSizeOverride(FVector2D{InArgs._CircleSizeEmpty, InArgs._CircleSizeEmpty})
-					.ColorAndOpacity(FLinearColor{0.2f, 0.2f, 0.2f})
+					.ColorAndOpacity(FLinearColor{0.05f, 0.05f, 0.05f})
 					]
 
 				+SOverlay::Slot()[

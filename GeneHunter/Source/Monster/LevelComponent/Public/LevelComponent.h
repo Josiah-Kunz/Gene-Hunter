@@ -87,19 +87,16 @@ public:
 private:
 	
 	UPROPERTY()
-	TMap<FAfterSetCXPOutlet, float> AfterSetCXP;
+	TArray<FAfterSetCXPOutlet> AfterSetCXP;
 
-	//DECLARE_AFTER_OUTLET_FUNCTIONS_TwoParams(FAfterSetCXPOutlet, AfterSetCXP, AfterSetCXPDelegate, const int, const int);
-	
+	DECLARE_AFTER_OUTLET_FUNCTIONS_TwoParams(FAfterSetCXPOutlet, AfterSetCXP, Delegate, const int, const int);
+
+	/*
 	void ExecuteAfterSetCXP(const int OldCXP, const int NewCXP)
 	{
-		AfterSetCXP.ValueSort([](const float PriorityA, const float PriorityB)
+		for(FAfterSetCXPOutlet& Outlet : AfterSetCXP)
 		{
-			return PriorityA < PriorityB;
-		});
-		for(auto& Pair : AfterSetCXP)
-		{
-			if (!Pair.Key.AfterSetCXPDelegate.ExecuteIfBound(OldCXP, NewCXP))
+			if (!Outlet.Delegate.ExecuteIfBound(OldCXP, NewCXP))
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Outlet type \"AfterSetCXP\" no longer bound! Surely this is an error."))
 			}
@@ -107,10 +104,21 @@ private:
 	}
 
 public:
-	void AddAfterSetCXP(const FAfterSetCXPOutlet Outlet, const float Priority)
+	void AddAfterSetCXP(const FAfterSetCXPOutlet NewOutlet, const float Priority)
 	{
-		AfterSetCXP.Add(Outlet, Priority);
+		bool bAdded = false;
+		for(int i=0; i<AfterSetCXP.Num(); i++)
+		{
+			if (Priority < AfterSetCXP[i].Priority)
+			{
+				AfterSetCXP.Insert(NewOutlet, i);
+				bAdded = true;
+			}
+		}
+		if (!bAdded)
+			AfterSetCXP.Add(NewOutlet);
 	}
+	*/
 
 	/**
 	 * Adds to the total accumulated experience points across all levels.
