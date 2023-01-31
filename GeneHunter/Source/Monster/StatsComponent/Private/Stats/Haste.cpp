@@ -3,7 +3,7 @@
 #include "MathUtil.h"
 #include "UtilityFunctionLibrary.h" // for using, e.g., RoundToDecimal
 
-float FHaste::CalculateValue(const int Level)
+float FHaste::CalculateValue(const uint16 Level)
 {
 	const float BaseStatScaling = 0.00002f;
 	const float LevelScaling = 0.017f;

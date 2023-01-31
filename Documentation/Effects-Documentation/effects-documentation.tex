@@ -9,28 +9,30 @@
 \newcommand{\SubItem}[1]{\begin{itemize}\item{#1}\end{itemize}}
 
 \begin{itemize}
-	\item{\textbf{\code{EffectableComponent}s} are \code{ActorComponent}s that allow for delegation (effects). They have predefined places that allow for code modification. 
-		\SubItem{Let's use \code{StatsComponent} as an example. Say we want a Pok\'{e}mon-style ``Adamant'' nature ($+$10\% PhA/$-$10\%SpA). One such place for modification is in the function \code{RecalculateStats}.}
+	\item{\textbf{\code{EffectableComponent}s} are \code{ActorComponent}s that allow for delegation (effects). They have predefined places called ``\code{Outlet}s'' that allow for code modification. Think of \code{Outlet}s like electrical outlets waiting to be plugged into.
+		\SubItem{Let's use \code{StatsComponent} as an example. Say we want a Pok\'{e}mon-style ``Adamant'' nature ($+$10\% PhA/$-$10\%SpA). One such place for modification is in the function \code{RecalculateStats}. \todo{Update picture!}}
 		\begin{center}
 			\includegraphics[scale=2.5]{recalculate-stats-code}
 		\end{center}
 		}
-	\item{\textbf{Delegate arrays} are variables inside of \code{EffectableComponent}s. They hold functions that execute when needed.
-		\SubItem{Let's use \code{StatsComponent}'s \code{AfterRecalculateStatsArray} in our example. In this case, after stats are recalculated (say, on level-up), the base PhA would increase by 10\% and the base SpA would decrease by 10\% (additively): }
+	\item{\textbf{\code{Outlet} arrays} are variables inside of \code{EffectableComponent}s. They hold \code{Outlet}s whose delegates execute when needed.
+		\SubItem{\todo{Update this!} Let's use \code{StatsComponent}'s \code{AfterRecalculateStatsArray} in our example. In this case, after stats are recalculated (say, on level-up), the base PhA would increase by 10\% and the base SpA would decrease by 10\% (additively): }
 		\begin{center}
 			\includegraphics[scale=2.5]{adamant-code}
 		\end{center}		 
 		}
+	\item{\textbf{\code{EffectComponent}s} are \code{ActorComponent}s that plug into \code{Outlet}s. These come in many forms, but an easy example is a \code{Buff}. \todo{Describe how this happens with pictures!}}
 \end{itemize}
 
-\sect{List of \code{EffectableComponent}s and Delegate Arrays}
+\sect{List of \code{EffectableComponent}s and \code{Outlet} Arrays}
 
 The following tables show all implemented \code{EffectableComponent}s and their delegate arrays. Note the ``base name'' indicates existence of:
 
 \begin{enumerate}
-	\item{the delegate type \code{FBaseNameDelegate};}
-	\item{the before/after arrays of delegates: \\\code{TArray<FBaseNameDelegate> BeforeBaseNameArray}; and}
+	\item{the delegate signature \code{FBaseNameSignature};}
+	\item{the private before/after arrays of \code{Outlet}s: \\\code{TArray<FBaseNameOutlet> BeforeBaseName}; and}
 	\item{a function for each before/after to execute the arrays: \code{ExecuteBeforeBaseName (...)}.}
+	\item{\code{AddBeforeBaseName}, a function to add an \code{Outlet} to the private array \code{BeforeBaseName} (which also puts it in the right order based on priority).}
 \end{enumerate}
 
 \noindent Note that the philosophy applies to what is \textit{probable} rather than what is \textit{possible}. Hence the list meant to be practical rather than exhaustive.

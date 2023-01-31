@@ -10,12 +10,12 @@ bool UEffectComponent::IsComponentTickEnabled() const
 	return Super::IsComponentTickEnabled();
 }
 
-int UEffectComponent::GetStacks()
+int32 UEffectComponent::GetStacks()
 {
 	return Stacks;
 }
 
-void UEffectComponent::SetStacks(const int NewStacks)
+void UEffectComponent::SetStacks(const int32 NewStacks)
 {
 	if (NewStacks <= 0)
 	{
@@ -23,14 +23,14 @@ void UEffectComponent::SetStacks(const int NewStacks)
 		DestroyComponent();
 	} else
 	{
-		const int CachedStacks = Stacks;
+		const uint16 CachedStacks = Stacks;
 		Stacks = FMath::Clamp(NewStacks, 1, MaxStacks());
 		if (Stacks >= CachedStacks)
 			OnRefreshStacks();
 	}
 }
 
-int UEffectComponent::MaxStacks()
+int32 UEffectComponent::MaxStacks()
 {
 	return 1;
 }

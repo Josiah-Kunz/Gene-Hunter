@@ -26,21 +26,21 @@ void UAffinitiesComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
-int UAffinitiesComponent::GetUnspentPoints()
+uint8 UAffinitiesComponent::GetUnspentPoints()
 {
 	//ExecuteBeforeGetUnspentPoints(UnspentPoints);
 	//ExecuteAfterGetUnspentPoints(UnspentPoints);
 	return UnspentPoints;
 }
 
-void UAffinitiesComponent::SetUnspentPoints(int NewPoints)
+void UAffinitiesComponent::SetUnspentPoints(uint8 NewPoints)
 {
 	//ExecuteBeforeSetUnspentPoints(UnspentPoints, NewPoints);
 	UnspentPoints = NewPoints;
 	//ExecuteAfterSetUnspentPoints(UnspentPoints, NewPoints);
 }
 
-void UAffinitiesComponent::AddUnspentPoints(const int AddedPoints)
+void UAffinitiesComponent::AddUnspentPoints(const uint8 AddedPoints)
 {
 	SetUnspentPoints(GetUnspentPoints() + AddedPoints);
 }
@@ -58,27 +58,27 @@ void UAffinitiesComponent::GetTypes(TArray<UType*>& Types)
 			Types.Add(Affinity.Type);
 }
 
-int UAffinitiesComponent::GetNumTypes()
+uint8 UAffinitiesComponent::GetNumTypes()
 {
 	TArray<UType*> Types;
 	GetTypes(Types);
 	return Types.Num();
 }
 
-int UAffinitiesComponent::GetMaxUsableAffinities() const
+uint8 UAffinitiesComponent::GetMaxUsableAffinities() const
 {
 	return MaxUsableAffinities;
 }
 
-void UAffinitiesComponent::SetMaxUsableAffinities(const int NewMax)
+void UAffinitiesComponent::SetMaxUsableAffinities(const uint8 NewMax)
 {
-	MaxUsableAffinities = FMath::Max(1, NewMax);
+	MaxUsableAffinities = FMath::Max(static_cast<uint8>(1), NewMax);
 	ReconcileMax();
 }
 
 void UAffinitiesComponent::ReconcileMax()
 {
-	int Count=0;
+	uint8 Count=0;
 	for(FAffinity& Affinity : Affinities)
 	{
 		if (Affinity.GetCurrentPoints() > 0)

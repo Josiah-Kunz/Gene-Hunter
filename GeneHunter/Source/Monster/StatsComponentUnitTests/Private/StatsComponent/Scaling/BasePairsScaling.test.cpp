@@ -16,7 +16,7 @@ bool FUStat_StatsComponent_Scaling_BasePairsScaling::RunTest(const FString& Para
 	// Set up
 	FPhysicalAttack PhA = {};
 	PhA.BaseStat = 100;
-	const int Level = 100;
+	const uint16 Level = 100;
 
 	// Map of <#BasePairs, ExpectedValue>
 	TMap<int, float> ExpectedValues = {

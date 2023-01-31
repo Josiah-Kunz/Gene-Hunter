@@ -22,7 +22,7 @@ public:
 	/**
 	 * When RemainingTime <= NextModTime, the stat will be modified.
 	 */
-	int NextModTime = -1;
+	float NextModTime = -1;
 
 public:
 	

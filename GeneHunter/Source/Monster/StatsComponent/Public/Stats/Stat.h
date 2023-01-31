@@ -24,13 +24,13 @@ public:
 	 * The "base" from which to calculate the CurrentValue or PermanentValue.
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int BaseStat = 1;
+	int32 BaseStat = 1;
 
 	/**
 	 * The DNA base pair count that augment this Stat. See the Stats document for relevant equations.
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int BasePairs = 1;
+	int32 BasePairs = 1;
 
 #pragma endregion
 
@@ -51,7 +51,7 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Level")
 	float PermanentValue = 1;
 
-	virtual float StatJump(const int Level);
+	virtual float StatJump(const uint16 Level);
 
 #pragma endregion
 
@@ -90,20 +90,20 @@ public:
 	/**
 	 * Updates both PermanentValue and CurrentValue (in that order) based on the level.
 	 */
-	virtual void Update(const int Level, const bool bResetCurrent = true);
+	virtual void Update(const uint16 Level, const bool bResetCurrent = true);
 	
 	/**
 	 * Updates the PermanentValue based on the input level.
 	 * @param Level The level (always positive).
 	 * @param ResetCurrent If true, CurrentValue will match PermanentValue after the calculation is done.
 	 */
-	virtual void UpdatePermanent(const int Level, const bool ResetCurrent = true);
+	virtual void UpdatePermanent(const uint16 Level, const bool ResetCurrent = true);
 
 	/**
 	 * Updates the CurrentValue based on the input level.
 	 * @param Level The level (always positive).
 	 */
-	virtual void UpdateCurrent(const int Level);
+	virtual void UpdateCurrent(const uint16 Level);
 
 	virtual void ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode);
 
@@ -114,9 +114,9 @@ public:
 
 	FString ToString(const bool Inline = true) const;
 
-	void RandomizeBaseStat(const int Min = 50, const int Max = 150);
+	void RandomizeBaseStat(const int32 Min = 50, const int32 Max = 150);
 	
-	void RandomizeBasePairs(const int Min = 1, const int Max = 100);
+	void RandomizeBasePairs(const int32 Min = 1, const int32 Max = 100);
 
 #pragma endregion
 
@@ -128,7 +128,7 @@ public:
 	 * Calculates the value of this Stat based on a unique formula. See the Stats document for relevant equations.
 	 * @param Level The level (always positive).
 	 */
-	virtual float CalculateValue(const int Level);
+	virtual float CalculateValue(const uint16 Level);
 
 	/**
 	 * This Stat's description and such.
@@ -155,7 +155,7 @@ public:
 #pragma region Private functions
 
 private:
-	static float GetModification(const int Original, const EModificationMode Mode, const float Modification);
+	static float GetModification(const float Original, const EModificationMode Mode, const float Modification);
 
 #pragma endregion
 	

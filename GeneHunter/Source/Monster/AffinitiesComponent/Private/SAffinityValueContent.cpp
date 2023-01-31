@@ -2,7 +2,6 @@
 
 
 #include "SAffinityValueContent.h"
-#include "EditorStyleSet.h"
 #include "SlateOptMacros.h"
 #include "Widgets/Images/SImage.h"
 
@@ -56,7 +55,7 @@ TSharedPtr<SHorizontalBox> SAffinityValueContent::AffinityValueSlate(const FArgu
 	// Circles
 	for(int i=0; i<InArgs._Affinity.GetMaxPoints(); i++)
 	{
-		const int CurrentPoints = InArgs._Affinity.GetCurrentPoints();
+		const uint8 CurrentPoints = InArgs._Affinity.GetCurrentPoints();
 		const bool bFilled = i < CurrentPoints;
 		Ret->AddSlot()[
 

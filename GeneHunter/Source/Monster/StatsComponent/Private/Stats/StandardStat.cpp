@@ -3,7 +3,7 @@
 #include "MathUtil.h"
 #include "UtilityFunctionLibrary.h" // for using, e.g., RoundToDecimal
 
-float FStandardStat::CalculateValue(const int Level)
+float FStandardStat::CalculateValue(const uint16 Level)
 {
 	return FMathf::Floor(
 		UUtilityFunctionLibrary::RoundToDecimals(

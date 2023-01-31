@@ -3,7 +3,7 @@
 #include "MathUtil.h"
 #include "UtilityFunctionLibrary.h" // for using, e.g., RoundToDecimal
 
-float FCriticalHit::CalculateValue(const int Level)
+float FCriticalHit::CalculateValue(const uint16 Level)
 {
 
 	// Get prev- and next-decalevel data
@@ -44,7 +44,7 @@ FSupportingText const FCriticalHit::SupportingText() const
 	return SupportingText;
 }
 
-float FCriticalHit::SubCrit(const int Level)
+float FCriticalHit::SubCrit(const uint16 Level)
 {
 	return BaseStatScaling * FMathf::Pow(BaseStat*1.0f, BaseStatExponent) *
 		FMathf::Ceil( UUtilityFunctionLibrary::RoundToDecimals(Level/10.0f, 3)) *

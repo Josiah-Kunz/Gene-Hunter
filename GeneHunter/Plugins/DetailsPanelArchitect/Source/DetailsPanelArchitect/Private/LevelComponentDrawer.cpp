@@ -45,7 +45,7 @@ void LevelComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 				.TextBoxTooltip(FText::FromString(FString::Printf(TEXT("%i"), LevelComponent->GetLevel())))
 				.OnTextCommitted([this, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
 					{
-						const int NewLevel = UUtilityFunctionLibrary::FromSI(InText);
+						const uint16 NewLevel = UUtilityFunctionLibrary::FromSI(InText);
 						if (NewLevel == LevelComponent->GetLevel())
 							return;
 						if (UserCommitted(InTextCommit))
@@ -91,7 +91,7 @@ void LevelComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 				{
 
 					// Check if anything happened
-					const int DiffXP = UUtilityFunctionLibrary::FromSI(InText) - LevelComponent->GetLevelExp();
+					const uint32 DiffXP = UUtilityFunctionLibrary::FromSI(InText) - LevelComponent->GetLevelExp();
 					if (DiffXP == 0)
 						return;
 

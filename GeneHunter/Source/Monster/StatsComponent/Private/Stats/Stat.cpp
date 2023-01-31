@@ -2,7 +2,7 @@
 
 #include "MathUtil.h"				// For inherited classes using, e.g., FMathf::Floor
 
-float FStat::StatJump(const int Level)
+float FStat::StatJump(const uint16 Level)
 {
 	return FMathf::Pow(3.0f, FMathf::Floor(Level/10.0f));
 }
@@ -39,20 +39,20 @@ void FStat::SetPermanentValue(const float NewValue)
 
 #pragma region Public functions
 
-void FStat::Update(const int Level, const bool bResetCurrent)
+void FStat::Update(const uint16 Level, const bool bResetCurrent)
 {
 	UpdatePermanent(Level, true);
 }
 
 
-void FStat::UpdatePermanent(const int Level, const bool ResetCurrent)
+void FStat::UpdatePermanent(const uint16 Level, const bool ResetCurrent)
 {
 	SetPermanentValue(CalculateValue(Level));
 	if (ResetCurrent)
 		SetCurrentValue(PermanentValue);
 }
 
-void FStat::UpdateCurrent(const int Level)
+void FStat::UpdateCurrent(const uint16 Level)
 {
 	SetCurrentValue(CalculateValue(Level));
 }
@@ -115,12 +115,12 @@ FString FStat::ToString(const bool Inline) const
 		);
 }
 
-void FStat::RandomizeBaseStat(const int Min, const int Max)
+void FStat::RandomizeBaseStat(const int32 Min, const int32 Max)
 {
 	BaseStat = FMath::RandRange(Min, Max);
 }
 
-void FStat::RandomizeBasePairs(const int Min, const int Max)
+void FStat::RandomizeBasePairs(const int32 Min, const int32 Max)
 {
 	BasePairs = FMath::RandRange(Min, Max);
 }
@@ -130,7 +130,7 @@ void FStat::RandomizeBasePairs(const int Min, const int Max)
 
 #pragma region Things that should be overridden!
 
-float FStat::CalculateValue(const int Level)
+float FStat::CalculateValue(const uint16 Level)
 {
 	return 1; // Override this!
 }
@@ -167,7 +167,7 @@ FLinearColor const FStat::Color() const
 
 #pragma region Private functions
 
-float FStat::GetModification(const int Original, const EModificationMode Mode, const float Modification)
+float FStat::GetModification(const float Original, const EModificationMode Mode, const float Modification)
 {
 	switch(Mode)
 	{

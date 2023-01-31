@@ -1,9 +1,8 @@
 ﻿#include "TypeUtilities.h"
 
-#include "DiffResults.h"
 #include "UtilityFunctionLibrary.h"
 
-void UTypeUtilities::PrintStatistics(const int NumAttackers, const int NumDefenders, const FFloatRange Range,
+void UTypeUtilities::PrintStatistics(const int32 NumAttackers, const int32 NumDefenders, const FFloatRange Range,
 	const EAttackModifierMode Mode, const bool bAtk, const bool bPrintToConsole, const bool bPrintToFile,
 	const bool bPrintToFileLaTeX, TArray<UType*>& Exclude, const FString PrintDirectory)
 {
@@ -196,7 +195,7 @@ void UTypeUtilities::PrintStatistics(const int NumAttackers, const int NumDefend
 }
 
 
-void UTypeUtilities::GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes,
+void UTypeUtilities::GetAllTypeCombinations(const TArray<UType*>& Types, const uint8 NumTypes,
 	TArray<FTypeArray1D>& TypeCombinations)
 {
 	
@@ -260,7 +259,7 @@ void UTypeUtilities::Analyze(const TArray<UType*>& TypesToAnalyze,
 	}
 }
 
-void UTypeUtilities::AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
+void UTypeUtilities::AnalyzeAll(TArray<UType*>& Types, const uint8 NumTestedTypes, const uint8 NumUntestedTypes,
 	const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode, TArray<FTypeArray2D>& Result)
 {
 
@@ -317,7 +316,7 @@ void UTypeUtilities::AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes,
 	TArray TestedIndices = {0};				// The indices of the Types in TestedTypes. E.g., if Fire/Water is being tested, this may be {4, 13} (or whatever).
 	TArray UntestedIndices = {0};			// Same with what's being tested against
 	TArray<UType*> TypeCandidates;			// If bAtk, the combination that is defending
-	int i;									// Dummy int
+	int32 i;									// Dummy int
 	TArray<UType*> AtkTypes, DefTypes;
 	float Modifier;							// The result of the (incremental) test
 	
@@ -326,7 +325,7 @@ void UTypeUtilities::AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes,
 		TestedIndices.Add(TestedIndices[i-1] + 1);	// {0, 1, 2, 3}
 	
 	// Loop until all options are exhausted
-	int Failsafe1 = 0, Failsafe2;
+	uint16 Failsafe1 = 0, Failsafe2;
 	while (Failsafe1 < UConstLibrary::MaxIterations && TestedIndices[0] <= Types.Num() - NumTestedTypes)
 	{
 
@@ -438,9 +437,9 @@ void UTypeUtilities::ArrayOfTypeArray1DToArrayOfTypes(const TArray<FTypeArray1D>
 }
 
 void UTypeUtilities::ArrayOfTypesToArrayOfTypeArray1D(const TArray<UType*>& Original,
-	TArray<FTypeArray1D>& Result, const int Wrap)
+	TArray<FTypeArray1D>& Result, const int32 Wrap)
 {
-	int i=0;
+	int32 i=0;
 	TArray<UType*> Types = {};
 	for(UType* Type : Original)
 	{

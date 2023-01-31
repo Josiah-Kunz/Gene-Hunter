@@ -29,22 +29,22 @@ void UUtilityFunctionLibrary::RangeToString(const FFloatRange& Range, FString& O
 		);
 }
 
-float UUtilityFunctionLibrary::RoundToDecimals(const float Original, const int NumDecimals)
+float UUtilityFunctionLibrary::RoundToDecimals(const float Original, const int32 NumDecimals)
 {
 	const float PowerOfTen = FMathf::Pow(10, NumDecimals);
 	return FMathf::Round( PowerOfTen * Original) / PowerOfTen;
 }
 
-FString UUtilityFunctionLibrary::FloatSigFigs(const float Value, const int NumSigFigs)
+FString UUtilityFunctionLibrary::FloatSigFigs(const float Value, const int32 NumSigFigs)
 {
 
 	// Setup
 	FString Ret = "";
 	FString ValueString = FString::SanitizeFloat(Value);
-	int SigFigs = 0;
+	int32 SigFigs = 0;
 	bool bDecimal = false;
-	int ValueIndex = 0;
-	int Failsafe = 0;
+	int32 ValueIndex = 0;
+	int32 Failsafe = 0;
 
 	// Go through entire string -or- until sigfigs are satisfied
 	while(!bDecimal || SigFigs < NumSigFigs)
@@ -134,7 +134,7 @@ FString UUtilityFunctionLibrary::FloatSigFigs(const float Value, const int NumSi
 }
 
 
-FText UUtilityFunctionLibrary::ToSI(const float Value, const int NumSigFigs, const bool bIntegerOnly)
+FText UUtilityFunctionLibrary::ToSI(const float Value, const int32 NumSigFigs, const bool bIntegerOnly)
 {
 
 	// Set up values
@@ -151,8 +151,8 @@ FText UUtilityFunctionLibrary::ToSI(const float Value, const int NumSigFigs, con
 
 	// Degree: 10^(3*Degree)
 	// Scaled: just the number
-	int Degree = FMath::RoundToInt(FMath::Floor(FMath::LogX(10, FMath::Abs(Val))/3));
-	float Scaled = Val * FMathf::Pow(1000, -Degree);
+	const int32 Degree = FMath::RoundToInt(FMath::Floor(FMath::LogX(10, FMath::Abs(Val))/3));
+	const float Scaled = Val * FMathf::Pow(1000, -Degree);
 
 	// No prefix
 	if (0.001f < Val && Val < 1000)

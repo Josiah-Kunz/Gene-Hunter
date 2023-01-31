@@ -44,13 +44,13 @@ public:
 	 * Linearly multiplies the amount of experience points yielded when defeating this Monster.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	int GetBaseExpYield();
+	float GetBaseExpYield();
 
 	/**
 	 * Sets the value of BaseExpYield.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Level")
-	void SetBaseExpYield(int NewBaseExpYield);
+	void SetBaseExpYield(float NewBaseExpYield);
 
 	/**
 	 * Gets the amount of experience this Monster yields when defeated.
@@ -68,7 +68,7 @@ private:
 	 * The total experience accumulated points across all levels. Sometimes also called CXP.
 	*/
 	UPROPERTY()
-	int CumulativeExp;
+	uint32 CumulativeExp;
 
 public:
 
@@ -76,13 +76,13 @@ public:
 	 * Gets the total experience accumulated points across all levels.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	int GetCXP();
+	int32 GetCXP();
 
 	/**
 	 * Sets the total experience accumulated points across all levels.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Level")
-	void SetCXP(int NewCumulativeExp);
+	void SetCXP(int32 NewCumulativeExp);
 
 private:
 	
@@ -124,7 +124,7 @@ public:
 	 * Adds to the total accumulated experience points across all levels.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Level")
-	void AddExp(int AddedCumulativeExp);
+	void AddExp(int32 AddedCumulativeExp);
 
 #pragma endregion
 
@@ -136,34 +136,34 @@ public:
 	 * Gets the current level based on the amount of cumulative experience points.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	int GetLevel();
+	int32 GetLevel();
 
 	/**
 	 * Retrieves the level from the given amount of cumulative experience points.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	static int GetLevelFromCXP(const int CXP);
+	static int32 GetLevelFromCXP(const int32 CXP);
 	
 	UFUNCTION(BlueprintCallable, Category="Level")
-	void SetLevel(int NewLevel);
+	void SetLevel(int32 NewLevel);
 
 	/**
 	 * Adds to the current level.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Level")
-	void AddLevels(const int AddedLevels);
+	void AddLevels(const int32 AddedLevels);
 	
 	/**
 	 * The maximum level. Overrideable.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	virtual int MaxLevel();
+	virtual int32 MaxLevel();
 	
 	/**
      * The minimum level. Overrideable.
      */
     UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-    virtual int MinLevel();
+    virtual int32 MinLevel();
 
 #pragma endregion
 
@@ -182,31 +182,31 @@ public:
 	 * Retrieves the minimum amount of (cumulative) experience points required for the target level.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	static float GetCXPFromLevel(const int TargetLevel);
+	static int32 GetCXPFromLevel(const int32 TargetLevel);
 
 	/**
 	 * Gets the additional experience points required for the next level, taking current exp into account.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	float GetExpToLevel();
+	int32 GetExpToLevel();
 
 	/**
 	 * Gets the experience points required from the previous level to the next level. Useful for display purposes.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	float GetTotalLevelExp();
+	int32 GetTotalLevelExp();
 
 	/**
 	 * Gets the amount of (non-cumulative) experience points into this level. Useful for display purposes.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	float GetLevelExp();
+	int32 GetLevelExp();
 
 	/**
 	 * Gets the amount of cumulative exp at max level.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	float GetMaxExp();
+	int32 GetMaxExp();
 
 #pragma endregion
 	

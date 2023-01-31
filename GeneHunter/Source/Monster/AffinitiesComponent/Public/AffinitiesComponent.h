@@ -45,7 +45,7 @@ private:
 	 * exciting gameplay).
 	 */
 	UPROPERTY(VisibleDefaultsOnly, Category = "Level")
-	int UnspentPoints = 1;
+	uint8 UnspentPoints = 1;
 
 public:
 
@@ -54,21 +54,21 @@ public:
 	 * new Monster so that affinities can be customized from the get-go (so the player has agency which makes for more
 	 * exciting gameplay).
 	 */
-	int GetUnspentPoints();
+	uint8 GetUnspentPoints();
 
 	/**
 	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any
 	 * new Monster so that affinities can be customized from the get-go (so the player has agency which makes for more
 	 * exciting gameplay).
 	 */
-	void SetUnspentPoints(int NewPoints);
+	void SetUnspentPoints(uint8 NewPoints);
 
 	/**
 	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any
 	 * new Monster so that affinities can be customized from the get-go (so the player has agency which makes for more
 	 * exciting gameplay).
 	 */
-	void AddUnspentPoints(int AddedPoints = 1);
+	void AddUnspentPoints(const uint8 AddedPoints = 1);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Affinities")
 	TArray<FAffinity> Affinities;
@@ -90,21 +90,21 @@ public:
 	 * Retrieves the number of Types based on the current point allocation.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Affinities")
-	int GetNumTypes();
+	uint8 GetNumTypes();
 
 	/**
 	 * Gets the number of Types this Monster may have. For example, if MaxUsableAffinities is 2, this Monster may be
 	 * dual-typed.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Affinities")
-	int GetMaxUsableAffinities() const;
+	uint8 GetMaxUsableAffinities() const;
 
 	/**
 	 * Sets the number of Types this Monster may have. For example, if MaxUsableAffinities is 2, this Monster may be
 	 * dual-typed.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Affinities")
-	void SetMaxUsableAffinities(const int NewMax);
+	void SetMaxUsableAffinities(const uint8 NewMax);
 
 private:
 
@@ -113,7 +113,7 @@ private:
 	 * dual-typed.
 	 */
 	UPROPERTY(VisibleDefaultsOnly, Category = "Affinities")
-	int MaxUsableAffinities = 2;
+	uint8 MaxUsableAffinities = 2;
 	
 	/**
 	 * If the actual number of affinities with points exceeds MaxUsableAffinities, these excessive affinities will

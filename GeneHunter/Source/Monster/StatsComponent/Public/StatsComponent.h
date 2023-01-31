@@ -53,7 +53,7 @@ private:
 	FAfterSetCXPOutlet UpdateStatsAfterLevel;
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
-	void ChangeStatsOnLevelChange(const int OldCXP, const int AttemptedCXP);
+	void ChangeStatsOnLevelChange(const int32 OldCXP, const int32 AttemptedCXP);
 
 protected:
 	// Called when the game starts
@@ -137,14 +137,14 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
 	void RandomizeStats(
-		int MinBaseStat = 50, int MaxBaseStat = 150,
-		int MinBasePairs = 1, int MaxBasePairs = 100);
+		int32 MinBaseStat = 50, int32 MaxBaseStat = 150,
+		int32 MinBasePairs = 1, int32 MaxBasePairs = 100);
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
-	void RandomizeBasePairs(const int MinBasePairs = 1, const int MaxBasePairs = 100);
+	void RandomizeBasePairs(const int32 MinBasePairs = 1, const int32 MaxBasePairs = 100);
 	
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
-	void RandomizeBaseStats(const int MinBaseStats = 80, const int MaxBaseStats = 120);
+	void RandomizeBaseStats(const int32 MinBaseStats = 80, const int32 MaxBaseStats = 120);
 
 	/**
 	 * Modifies (that is, increases, decreases, or sets) a single Stat in this StatsComponent.

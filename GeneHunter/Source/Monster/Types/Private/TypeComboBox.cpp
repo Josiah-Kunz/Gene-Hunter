@@ -19,7 +19,7 @@ UType* UTypeComboBox::GetSelectedType()
 }
 
 
-UType* UTypeComboBox::GetType(const int Index)
+UType* UTypeComboBox::GetType(const int32 Index)
 {
 	if (Index <= 0 || Types.Num() < Index)
 		return nullptr;

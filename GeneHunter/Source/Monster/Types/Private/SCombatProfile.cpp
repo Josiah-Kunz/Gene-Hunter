@@ -119,7 +119,7 @@ void SCombatProfile::MakeCombatProfile(const FArguments& InArgs, const TSharedRe
 }
 
 TSharedRef<SWidget> SCombatProfile::MakeTypeRowWidget(const FArguments& InArgs, TArray<FTypeArray1D>& Analysis,
-	const int ArrayIndex)
+	const uint16 ArrayIndex)
 {
 	// Check within array range
 	if (ArrayIndex >= Analysis.Num())

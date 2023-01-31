@@ -44,10 +44,10 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 	}
 }
 
-void UStatsComponent::ChangeStatsOnLevelChange(const int OldCXP, const int AttemptedCXP)
+void UStatsComponent::ChangeStatsOnLevelChange(const int32 OldCXP, const int32 AttemptedCXP)
 {
-	const int OldLevel = ULevelComponent::GetLevelFromCXP(OldCXP);
-	const int NewLevel = ULevelComponent::GetLevelFromCXP(AttemptedCXP);
+	const uint32 OldLevel = ULevelComponent::GetLevelFromCXP(OldCXP);
+	const uint32 NewLevel = ULevelComponent::GetLevelFromCXP(AttemptedCXP);
 	if (NewLevel != OldLevel)
 	{
 		RecalculateStats(true);
@@ -86,8 +86,8 @@ FStat& UStatsComponent::GetStat(const EStatEnum Stat){
 }
 
 void UStatsComponent::RandomizeStats(
-	int MinBaseStat, int MaxBaseStat,
-	int MinBasePairs, int MaxBasePairs)
+	int32 MinBaseStat, int32 MaxBaseStat,
+	int32 MinBasePairs, int32 MaxBasePairs)
 {
 
 	//ExecuteBeforeRandomizeStats(MinBaseStat, MaxBaseStat, MinBasePairs, MaxBasePairs);
@@ -104,12 +104,12 @@ void UStatsComponent::RandomizeStats(
 	//ExecuteAfterRandomizeStats(MinBaseStat, MaxBaseStat, MinBasePairs, MaxBasePairs);
 }
 
-void UStatsComponent::RandomizeBasePairs(const int MinBasePairs, const int MaxBasePairs)
+void UStatsComponent::RandomizeBasePairs(const int32 MinBasePairs, const int32 MaxBasePairs)
 {
 	RandomizeStats(0, -1, MinBasePairs, MaxBasePairs);
 }
 
-void UStatsComponent::RandomizeBaseStats(const int MinBaseStats, const int MaxBaseStats)
+void UStatsComponent::RandomizeBaseStats(const int32 MinBaseStats, const int32 MaxBaseStats)
 {
 	RandomizeStats(MinBaseStats, MaxBaseStats, 0, -1);
 }
@@ -190,7 +190,7 @@ float UStatsComponent::BaseStatEffectiveAverage()
 	float BST = BaseStatTotal();
 	
 	// Number to divide by
-	int Denominator = StatsArray.Num();
+	uint8 Denominator = StatsArray.Num();
 
 	// Adjust: determine if we're using one or both
 	const bool bUsePhA = PhysicalAttack.BaseStat > 0.9f * SpecialAttack.BaseStat;

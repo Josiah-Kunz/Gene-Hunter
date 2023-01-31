@@ -28,13 +28,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)	
 	UType* Type = nullptr;
 
-	int GetCurrentPoints() const;
+	uint8 GetCurrentPoints() const;
 	
-	void SetCurrentPoints(const int NewPoints);
+	void SetCurrentPoints(const uint8 NewPoints);
 
-	int GetMaxPoints() const;
+	uint8 GetMaxPoints() const;
 
-	void SetMaxPoints(const int NewMax);
+	void SetMaxPoints(const uint8 NewMax);
 
 private:
 
@@ -48,12 +48,12 @@ private:
 	 * The current number of points put into this Affinity.
 	 */
 	UPROPERTY(VisibleDefaultsOnly)
-	int CurrentPoints = 0;
+	uint8 CurrentPoints = 0;
 
 	/**
 	 * The maximum number of possible points to put into this Affinity.
 	 */
 	UPROPERTY(VisibleDefaultsOnly)
-	int MaxPoints = 3;
+	uint8 MaxPoints = 3;
 	
 };

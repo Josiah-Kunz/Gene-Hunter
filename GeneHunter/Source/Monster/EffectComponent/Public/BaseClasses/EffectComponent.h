@@ -15,7 +15,7 @@ class EFFECTCOMPONENT_API UEffectComponent : public UActorComponent
 	GENERATED_BODY()
 
 private:
-	int Stacks = 0;
+	uint16 Stacks = 0;
 
 public:
 
@@ -29,20 +29,20 @@ public:
 	 * exists, it increases the number of Stacks (up to MaxStacks) rather than attaching a new EffectComponent.
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
-	int GetStacks();
+	int32 GetStacks();
 
 	/**
 	 * When an EffectComponent is attached to an Actor, it looks for duplicate EffectComponents. If such a duplicate
 	 * exists, it increases the number of Stacks (up to MaxStacks) rather than attaching a new EffectComponent.
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
-	void SetStacks(const int NewStacks);
+	void SetStacks(const int32 NewStacks);
 
 	/**
 	 * The maximum number of times this stacks.
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
-	virtual int MaxStacks();
+	virtual int32 MaxStacks();
 
 	virtual void OnRefreshStacks();
 	

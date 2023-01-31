@@ -18,7 +18,7 @@ public:
 	 * Calculates the value of this Stat based on a unique formula. See the Stats document for relevant equations.
 	 * @param Level The level (always positive).
 	 */
-	virtual float CalculateValue(const int Level) override;
+	virtual float CalculateValue(const uint16 Level) override;
 
 	/**
 	 * This Stat's description and such.

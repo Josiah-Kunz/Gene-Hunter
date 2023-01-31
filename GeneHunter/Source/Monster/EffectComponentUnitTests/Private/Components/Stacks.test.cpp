@@ -25,7 +25,7 @@ bool UEffectComponent_Components_Stacks::RunTest(const FString& Parameters)
 	ADD_NEW_COMPONENT(UStacks_Multiple_UNITTEST, MultiStacker2, DummyActor);
 
 	// Compare stacks
-	constexpr int ExpectedStacks = 2;
+	constexpr uint8 ExpectedStacks = 2;
 	TestTrue(FString::Printf(TEXT("EffectComponent number of stacks mismatch: Expected [%s] | Actual [%s]"),
 		*FString::FromInt(ExpectedStacks),
 		*FString::FromInt(MultiStacker1->GetStacks())),
@@ -41,7 +41,7 @@ bool UEffectComponent_Components_Stacks::RunTest(const FString& Parameters)
 	}
 
 	// Compare components
-	constexpr int ExpectedComponents = 1;
+	constexpr uint8 ExpectedComponents = 1;
 	TestTrue(FString::Printf(TEXT("EffectComponent number of components mismatch: Expected [%s] | Actual [%s]"),
 		*FString::FromInt(ExpectedComponents),
 		*FString::FromInt(ComponentCount)),

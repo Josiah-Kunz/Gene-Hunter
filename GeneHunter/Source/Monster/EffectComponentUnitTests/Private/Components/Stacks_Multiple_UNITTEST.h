@@ -13,6 +13,6 @@ class EFFECTCOMPONENTUNITTESTS_API UStacks_Multiple_UNITTEST : public UEffectCom
 	GENERATED_BODY()
 
 public:
-	virtual int MaxStacks() override{return 3;}
+	virtual int32 MaxStacks() override{return 3;}
 
 };

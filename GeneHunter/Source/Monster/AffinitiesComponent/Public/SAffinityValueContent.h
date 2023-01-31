@@ -31,7 +31,7 @@ public:
 	// Events
 	, _OnMinusClicked([](){return FReply::Unhandled();})
 	, _OnPlusClicked([](){return FReply::Unhandled();})
-	, _OnCircleClicked([](int AffinityIndex, int CurrentPoints){return FReply::Unhandled();})
+	, _OnCircleClicked([](uint8 AffinityIndex, uint8 CurrentPoints){return FReply::Unhandled();})
 	, _Enabled([](){return true;})
 		{}
 

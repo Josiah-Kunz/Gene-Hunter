@@ -5,7 +5,7 @@
 
 
 bool UTypeUnitTestUtilities::TestCombatAnalysis(const TArray<UType*>& AllTypes, const TArray<UType*>& TypesToAnalyze,
-                                                const int NumOpponentTypes, const FFloatRange Range, const bool bAtk, const EAttackModifierMode Mode,
+                                                const uint8 NumOpponentTypes, const FFloatRange Range, const bool bAtk, const EAttackModifierMode Mode,
                                                 const TArray<FTypeArray1D>& Expected, FString& Description, const bool bDebug)
 {
 	// Get array of FTypeArray1D (either defenders or attackers)
@@ -26,7 +26,7 @@ bool UTypeUnitTestUtilities::TestCombatAnalysis(const TArray<UType*>& AllTypes, 
 	return FTypeArray1D::ArrayOfTypeArray1DsAreEqual(Analysis, Expected, Description);
 }
 
-bool UTypeUnitTestUtilities::TestAnalyzeAll(TArray<UType*>& AllTypes, const int NumTestedTypes, const int NumUntestedTypes,
+bool UTypeUnitTestUtilities::TestAnalyzeAll(TArray<UType*>& AllTypes, const uint8 NumTestedTypes, const uint8 NumUntestedTypes,
 		const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode,
 		const TArray<FTypeArray2D*>& Expected, FString& Description)
 {
