@@ -34,5 +34,5 @@ private:
 	UPROPERTY()
 	TArray<FAfterSetCXPDelegate> Delegates;
 	
-	DECLARE_AFTER_OUTLET_FUNCTIONS_TwoParams(FAfterSetCXPDelegate, Delegates, Delegate, const uint32, const uint32);
+	DECLARE_OUTLET_FUNCTIONS_TwoParams(EDelegateTriggerTiming::After, FAfterSetCXPDelegate, Delegates, Delegate, const uint32, const uint32);
 };

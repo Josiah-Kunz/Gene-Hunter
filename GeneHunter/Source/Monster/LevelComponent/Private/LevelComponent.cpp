@@ -70,12 +70,12 @@ int32 ULevelComponent::GetCXP()
 
 void ULevelComponent::SetCXP(int32 NewCumulativeExp)
 {
-	// Delegate
-	//ExecuteBeforeSetCumulativeExp(GetCumulativeExp(), NewCumulativeExp);
-	//SetCumulativeExpOutlet.ExecuteBefore(GetCumulativeExp(), NewCumulativeExp);
 	
-	// Cache old (it's a surprise tool that will help us later!)
+	// Cache old (for the delegates)
 	const uint32 OldCXP = CumulativeExp;
+
+	// Delegate
+	BeforeSetCXPOutlet.Execute(OldCXP, NewCumulativeExp);
 
 	// Set and clamp exp
 	CumulativeExp = FMath::Clamp(NewCumulativeExp, 1, GetMaxExp());

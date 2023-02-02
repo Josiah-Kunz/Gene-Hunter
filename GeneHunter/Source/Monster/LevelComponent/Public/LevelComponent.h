@@ -6,6 +6,7 @@
 // Other components
 #include "EffectableComponent.h"
 #include "AfterSetCXPOutlet.h"
+#include "BeforeSetCXPOutlet.h"
 
 // .gen
 #include "LevelComponent.generated.h"
@@ -84,6 +85,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Level")
 	void SetCXP(int32 NewCumulativeExp);
 
+	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
+	FBeforeSetCXPOutlet BeforeSetCXPOutlet;
+	
 	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
 	FAfterSetCXPOutlet AfterSetCXPOutlet;
 	
