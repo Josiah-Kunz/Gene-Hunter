@@ -48,4 +48,20 @@ public:
 			FString::SanitizeFloat(Value));
 	};
 
+	/**
+	 * Gets the fraction [0, ...) between two int32s. This is useful for, e.g., the level bar, especially at max level
+	 * when the denominator would be zero.
+	 */
+	static float GetFraction(const int32 Numerator, const int32 Denominator)
+	{
+		// Avoid divide by zero error and negative bars
+		if (Denominator <= 0)
+		{
+			return 1;
+		}
+
+		// Convert to float
+		return Numerator/static_cast<float>(Denominator);
+	};
+
 };

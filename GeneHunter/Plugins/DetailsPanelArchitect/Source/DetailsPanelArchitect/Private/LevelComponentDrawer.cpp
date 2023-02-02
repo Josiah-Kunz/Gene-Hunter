@@ -4,13 +4,9 @@
 
 #include "DetailCategoryBuilder.h"
 #include "DetailWidgetRow.h"
-#include "MathUtil.h"
 #include "BPLibraries/Public/UtilityFunctionLibrary.h"
-#include "Widgets/Colors/SColorBlock.h"
-#include "Widgets/Input/SEditableTextBox.h"
 #include "SStatsBar.h"
 #include "StatsComponentDrawer.h"
-#include "Kismet/KismetSystemLibrary.h"
 
 #pragma region Boilerplate
 
@@ -45,6 +41,14 @@ void LevelComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 				.TextBoxTooltip(FText::FromString(FString::Printf(TEXT("%i"), LevelComponent->GetLevel())))
 				.OnTextCommitted([this, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
 					{
+						// Blank text? Just refresh
+						if (InText.IsEmptyOrWhitespace())
+						{
+							SaveAndRefresh(DetailBuilder);
+							return;
+						}
+
+						// Non-blank; get new level
 						const uint16 NewLevel = UUtilityFunctionLibrary::FromSI(InText);
 						if (NewLevel == LevelComponent->GetLevel())
 							return;
@@ -55,7 +59,7 @@ void LevelComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 				.MaxText(FText::FromString(FString::FromInt(LevelComponent->MaxLevel())))
 				.MaxTooltip(FText::FromString(FString::FromInt(LevelComponent->MaxLevel())))
 				.BarColor(FLinearColor::Green)
-				.BarFraction((1.0f * LevelComponent->GetLevel())/LevelComponent->MaxLevel())
+				.BarFraction(GetFraction(LevelComponent->GetLevel(), LevelComponent->MaxLevel()))
 				.BarTooltip(FText::FromString(
 					FString::Printf(TEXT(
 					"The higher the level, the stronger the stats! The max level is %s."),
@@ -90,10 +94,19 @@ void LevelComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 			.OnTextCommitted([this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
 				{
 
+					// Blank text? Just refresh
+					if (InText.IsEmptyOrWhitespace())
+					{
+						SaveAndRefresh(DetailBuilder);
+						return;
+					}
+				
 					// Check if anything happened
 					const uint32 DiffXP = UUtilityFunctionLibrary::FromSI(InText) - LevelComponent->GetLevelExp();
 					if (DiffXP == 0)
+					{
 						return;
+					}
 
 					// Check to see if anything changed (avoids rounding errors)
 					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(LevelComponent->GetLevelExp(), StatsComponentDrawer::SigFigs, true)))
@@ -116,7 +129,7 @@ void LevelComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 				*FloatToFText(LevelComponent->GetTotalLevelExp(), true).ToString()
 				)))
 			.BarColor(FLinearColor{0.878f, 0.690f, 1.0f, 1.0f})
-			.BarFraction(LevelComponent->GetLevelExp()/LevelComponent->GetTotalLevelExp())
+			.BarFraction(GetFraction(LevelComponent->GetLevelExp(), LevelComponent->GetTotalLevelExp()))
 			.BarTooltip(FText::FromString("Change in exp = change in level"))
 			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
 					TAttribute<bool>::CreateLambda([this]() 
@@ -148,6 +161,13 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 				[this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
 				{
 
+					// Blank text? Just refresh
+					if (InText.IsEmptyOrWhitespace())
+					{
+						SaveAndRefresh(DetailBuilder);
+						return;
+					}
+
 					// Check to see if anything changed (avoids rounding errors)
 					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(LevelComponent->GetCXP(), StatsComponentDrawer::SigFigs, true)))
 						return;
@@ -170,7 +190,7 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 				*FloatToFText(LevelComponent->GetMaxExp(), true).ToString()
 				)))
 			.BarColor(FLinearColor{0.5f, 0, 0.5f})
-			.BarFraction(LevelComponent->GetCXP()/LevelComponent->GetMaxExp())
+			.BarFraction(GetFraction(LevelComponent->GetCXP(), LevelComponent->GetMaxExp()))
 			.BarTooltip(FText::FromString("Change in exp = change in level"))
 			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
 					TAttribute<bool>::CreateLambda([this]() 

@@ -197,6 +197,13 @@ TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTe
 				(const FText& InText, const ETextCommit::Type InTextCommit)
 	{
 
+		// Blank text? Just refresh
+		if (InText.IsEmptyOrWhitespace())
+		{
+			SaveAndRefresh(DetailBuilder);
+			return;
+		}
+
 		// Check to see if anything changed (avoids rounding errors)
 		if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetStat(TargetStat).GetValue(StatValueType), SigFigs, !bPercentage)))
 			return;
@@ -289,7 +296,7 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDeta
 			.MaxText(UUtilityFunctionLibrary::ToSI(MaxStatValue, SigFigs, !bPercentage))
 			.MaxTooltip(FloatToFText(MaxStatValue, !bPercentage))
 			.BarColor(StatsComponent->GetStat(TargetStat).Color())
-			.BarFraction(StatsComponent->GetStat(TargetStat).GetValue(StatValueType) / OverallMaxValue)
+			.BarFraction(GetFraction(StatsComponent->GetStat(TargetStat).GetValue(StatValueType), OverallMaxValue))
 			.BarTooltip(StatsComponent->GetStat(TargetStat).SupportingText().Description)
 		).OverrideResetToDefault(
 			FResetToDefaultOverride::Create( 
