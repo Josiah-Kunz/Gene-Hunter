@@ -100,7 +100,7 @@ void ULevelComponent::SetCXP(int32 NewCumulativeExp)
 	const uint32 NewCXP = GetCXP();
 
 	// Call after delegates
-	ExecuteAfterSetCXP(OldCXP, NewCXP);
+	AfterSetCXPOutlet.Execute(OldCXP, NewCXP);
 }
 
 void ULevelComponent::AddExp(int32 AddedCumulativeExp)

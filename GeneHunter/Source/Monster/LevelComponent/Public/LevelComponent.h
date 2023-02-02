@@ -84,13 +84,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Level")
 	void SetCXP(int32 NewCumulativeExp);
 
-private:
+	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
+	FAfterSetCXPOutlet AfterSetCXPOutlet;
 	
-	UPROPERTY()
-	TArray<FAfterSetCXPOutlet> AfterSetCXP;
-
-	DECLARE_AFTER_OUTLET_FUNCTIONS_TwoParams(FAfterSetCXPOutlet, AfterSetCXP, Delegate, const int, const int);
-
 	/*
 	void ExecuteAfterSetCXP(const int OldCXP, const int NewCXP)
 	{

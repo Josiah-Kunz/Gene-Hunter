@@ -36,7 +36,7 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 			UpdateStatsAfterLevel.Delegate.Clear();
 			UpdateStatsAfterLevel.Priority = IntrinsicPriority;
 			UpdateStatsAfterLevel.Delegate.BindDynamic(this, &UStatsComponent::ChangeStatsOnLevelChange);
-			LevelComponent->AddAfterSetCXP(UpdateStatsAfterLevel);
+			LevelComponent->AfterSetCXPOutlet.Add(UpdateStatsAfterLevel);
 			
 			// Start with random stats
 			RandomizeStats();
@@ -44,7 +44,7 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 	}
 }
 
-void UStatsComponent::ChangeStatsOnLevelChange(const int32 OldCXP, const int32 AttemptedCXP)
+void UStatsComponent::ChangeStatsOnLevelChange(const uint32 OldCXP, const uint32 AttemptedCXP)
 {
 	const uint32 OldLevel = ULevelComponent::GetLevelFromCXP(OldCXP);
 	const uint32 NewLevel = ULevelComponent::GetLevelFromCXP(AttemptedCXP);

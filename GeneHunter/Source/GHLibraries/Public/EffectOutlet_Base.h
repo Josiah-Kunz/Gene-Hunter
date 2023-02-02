@@ -17,37 +17,38 @@ struct GHLIBRARIES_API FEffectOutlet_Base
 
 public:
 
-	/** Affects effect execution order (see UEffectComponent::GetPriority). */
-	float Priority = 50;
-
-#define DECLARE_AFTER_OUTLET_FUNCTIONS_TwoParams(OutletStructName, OutletTArrayName, OutletDelegateName, Param1Type, Param2Type) \
-private: \
-	void Execute##OutletTArrayName##( Param1Type OutletTArrayName##__P1, Param2Type OutletTArrayName##__P2) \
+/**
+ * Creates two functions:
+ *	- Execute, which called ExecuteIfBound on every Delegate in the array
+ *	- Add, which adds a Delegate to the array
+ */
+#define DECLARE_AFTER_OUTLET_FUNCTIONS_TwoParams(DelegateType, DelegateArray, DelegateVariable, Param1Type, Param2Type) \
+public: \
+	void Execute( Param1Type DelegateArray##__P1, Param2Type DelegateArray##__P2) \
 	{ \
-		for ( OutletStructName##& Outlet : OutletTArrayName ) \
+		for ( DelegateType##& Delegate : DelegateArray ) \
 		{ \
-			if (!Outlet.##OutletDelegateName##.ExecuteIfBound( OutletTArrayName##__P1, OutletTArrayName##__P2 ))\
+			if (!Delegate.##DelegateVariable##.ExecuteIfBound( DelegateArray##__P1, DelegateArray##__P2 ))\
 			{ \
 				UE_LOG(LogTemp, Warning, TEXT("Outlet no longer bound! Surely this is an error.")); \
 			} \
 		} \
 	} \
 \
-public: \
-	void Add##OutletTArrayName##(const OutletStructName NewOutlet) \
+	void Add(const DelegateType NewDelegate) \
 	{ \
 		bool bAdded = false; \
-		for(int i=0; i< OutletTArrayName##.Num(); i++) \
+		for(int i=0; i< DelegateArray##.Num(); i++) \
 		{ \
-			if (NewOutlet.Priority < OutletTArrayName##[i].Priority) \
+			if (NewDelegate.Priority < DelegateArray##[i].Priority) \
 			{ \
-				OutletTArrayName##.Insert(NewOutlet, i); \
+				DelegateArray##.Insert(NewDelegate, i); \
 				bAdded = true; \
 			} \
 		} \
 		if (!bAdded) \
 		{ \
-			OutletTArrayName##.Add(NewOutlet); \
+			DelegateArray##.Add(NewDelegate); \
 		} \
 	}
 	

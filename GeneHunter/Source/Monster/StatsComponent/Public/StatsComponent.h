@@ -50,10 +50,10 @@ public:
 private:
 
 	UPROPERTY();
-	FAfterSetCXPOutlet UpdateStatsAfterLevel;
+	FAfterSetCXPDelegate UpdateStatsAfterLevel;
 
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
-	void ChangeStatsOnLevelChange(const int32 OldCXP, const int32 AttemptedCXP);
+	UFUNCTION(CallInEditor, Category="Stats")
+	void ChangeStatsOnLevelChange(const uint32 OldCXP, const uint32 AttemptedCXP);
 
 protected:
 	// Called when the game starts
