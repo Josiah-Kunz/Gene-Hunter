@@ -37,6 +37,8 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 
 \noindent Note that the philosophy applies to what is \textit{probable} rather than what is \textit{possible}. Hence the list meant to be practical rather than exhaustive.
 
+%--------------------------
+
 \begin{longtblr}[
 	caption = {Delegate Arrays for \code{AffinitiesComponent}},
 	label = {delegate-arrays-affinitiescomponent},
@@ -47,12 +49,11 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 	row{1} = {font=\bfseries},
 }
 
-	Delegate Array Base Name	& Parameters	& Note\\
-	GetUnspentPoints			& \code{int\&} Unspent points\\
-	SetUnpentPoints				& \code{int\&} Current unspent points\\
-								& \code{int\&} Attempted value being set\\
+	Base Name	& Parameters	& Note\\
 	
 \end{longtblr}
+
+%--------------------------
 
 \begin{longtblr}[
 	caption = {Delegate Arrays for \code{LevelComponent}},
@@ -64,23 +65,16 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 	row{1} = {font=\bfseries},
 }
 
-	Delegate Array Base Name	& Parameters	& Note\\
-	GetBaseExpYield				& \code{int} Unaltered base exp yield\\
-	SetBaseExpYield				& \code{int} Unaltered base exp yield\\
-								& \code{int\&} Attempted value being set\\
-	GetExpYield					& \code{UStatsComponent*} Victorious Monster\\
-								& \code{float\&} Awarded exp\\
-	GetCumulativeExp			& \code{int\&} Current CXP\\
-	SetCumulativeExp			& \code{int} Current CXP	& All other level/exp setters go through here!\\
-								& \code{int\&} Attempted CXP\\
-	AddExp						& \code{int} Current exp	& No GetExp (=GetLevel)\\
-								& \code{int\&} Added exp\\
-	SetLevel					& \code{int} Current level	& No GetLevel\\
-								& \code{int\&} Attempted level\\
-	MaxLevel					& \code{int\&} The maximum level	& This is a getter function only\\
-	MinLevel					& \code{int\&} The minimum level	& This is a getter function only\\
+	Base Name		& Parameters	& Note\\
+	BeforeSetCXP	& {	\code{const uint32 OldCXP},\\ 
+						\code{int32\& AttemptedCXP}}	
+					& \code{AttemptedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.\\	
+	AfterSetCXP		& {	\code{const uint32 OldCXP}\\ 
+						\code{const uint32 NewCXP}} 
+					& \code{UStatsComponent} subscribes to this in order to change stats on level change.\\
 \end{longtblr}
 
+%--------------------------
 
 \begin{longtblr}[
 	caption = {Delegate Arrays for \code{StatsComponent}},
@@ -92,22 +86,43 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 	row{1} = {font=\bfseries},
 }
 
-	Delegate Array Base Name	& Parameters	& Note\\
-	RandomizeStats				& \code{int\&} Min base stat		& This is the one with four parameters, but is called by all others\\
-								& \code{int\&} Max base stat\\
-								& \code{int\&} Min base pairs\\
-								& \code{int\&} Max base pairs\\
-	RecalculateStats			& \code{FStat*} Each stat in the loop	& Rather than make each individual stat an \code{EffectableComponent}, you can go stat-by-stat here\\
-								& \code{bool} If true, reset the current stats to match the newly-calculated permanent stats\\
-	ModifyStat					& \code{FStat*} The stat being modified\\
-								& \code{float\&} The value of modification\\
-								& \code{EStatValueType\&} The value type (e.g., current or permanent)\\
-								& \code{EModificationMode\&} E.g., additive or multiplicative\\
+	Base Name	& Parameters	& Note\\
 	
 \end{longtblr}
 
+\sect{Making Your Own Outlet}
+
+As an example, let's use \code{BeforeGetBaseExpYield}. (You can imagine that this is an important Outlet for tweaking levelling curves.) Here's what to do:\\
+
+\begin{enumerate}
+	\item{\textbf{Go to the right directory.} We want to place the Outlet inside of \code{ULevelComponent}, so we'll go to that directory.}
+	\item{\textbf{Copy + paste file.} The easiest way is to copy + paste pre-existing Outlets. In this example, we'll copy + paste \code{AfterSetCXPOutlet.h} and name the new file \code{BeforeGetBaseExpYield.h}. \\
+	\begin{center}
+		\includegraphics[scale=2]{create-outlet-rename}
+	\end{center}
+	}
+	\item{\textbf{Replace old name.} Open the new file and you'll still see the base name ``AfterSetCXP'' everywhere. The easiest way is to do a find+replace ``AfterSetCXP'' $\rightarrow$ ``BeforeGetBaseExpYield''. This replaces everything from the \code{.generated} include to the delegate signature. If you're curious, you can look more in-depth and replace instances one-by-one.}
+	\item{\textbf{Declare delegate signature.} In this case, we want the delegate signature to take two arguments: the original, unmodified yield and the one that will be returned from the \code{GetBaseExpYield} function.\\
+	\begin{center}
+		\includegraphics[scale=2]{create-outlet-signature}
+	\end{center}
+	\textit{Note: yours might use more than two parameters or different parameter types. Modify accordingly.}
+	}
+	\item{\textbf{Declare Outlet functions.} In order to be able to call \code{Execute} on your Outlet, you need to tell it a few things. The figure below displays a few things in red you should look at:\\
+	\begin{center}
+		\includegraphics[scale=2]{create-outlet-functions}
+	\end{center}
+		\begin{itemize}
+			\item{Whether it's a \code{Before} or \code{After} type Outlet. This affects execution based on priority:
+				\todo{Priority explanation}
+			}
+			\item{The parameters you defined in the delegate's signature. I know, I know---anytime you repeat code, you're probably doing something wrong. The biggest issue here is the UHT. If you have a better way of automating this, \textit{tell me!}}
+		\end{itemize}
+	}
+\end{enumerate}
+
 \sect{Making Your Own Effects}
 
-Suppose you want to make your own effect from scratch. \todo{Lay this out!}
+Suppose you want to make your own effect from scratch. 
 
 \input{../postamble}
