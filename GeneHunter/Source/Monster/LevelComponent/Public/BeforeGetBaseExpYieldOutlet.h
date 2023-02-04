@@ -4,7 +4,8 @@
 
 #include "BeforeGetBaseExpYieldOutlet.generated.h"
 
-DECLARE_DYNAMIC_DELEGATE_TwoParams(FBeforeGetBaseExpYieldSignature, const float, OriginalYield, float&, Yield);
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FBeforeGetBaseExpYieldSignature,
+	const float, OriginalYield, float&, Yield);
 
 /**
  * Since delegates can't fit in TArrays, we need to wrap them in something.

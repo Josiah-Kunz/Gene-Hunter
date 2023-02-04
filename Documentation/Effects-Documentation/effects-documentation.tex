@@ -7,18 +7,19 @@
 \sect{Structure}
 
 \newcommand{\SubItem}[1]{\begin{itemize}\item{#1}\end{itemize}}
+\newcommand{\ScreenshotScale}{2.5}
 
 \begin{itemize}
 	\item{\textbf{\code{EffectableComponent}s} are \code{ActorComponent}s that allow for delegation (effects). They have predefined places called ``\code{Outlet}s'' that allow for code modification. Think of \code{Outlet}s like electrical outlets waiting to be plugged into.
 		\SubItem{Let's use \code{StatsComponent} as an example. Say we want a Pok\'{e}mon-style ``Adamant'' nature ($+$10\% PhA/$-$10\%SpA). One such place for modification is in the function \code{RecalculateStats}. \todo{Update picture!}}
 		\begin{center}
-			\includegraphics[scale=2.5]{recalculate-stats-code}
+			\includegraphics[scale=\ScreenshotScale]{recalculate-stats-code}
 		\end{center}
 		}
 	\item{\textbf{\code{Outlet} arrays} are variables inside of \code{EffectableComponent}s. They hold \code{Outlet}s whose delegates execute when needed.
 		\SubItem{\todo{Update this!} Let's use \code{StatsComponent}'s \code{AfterRecalculateStatsArray} in our example. In this case, after stats are recalculated (say, on level-up), the base PhA would increase by 10\% and the base SpA would decrease by 10\% (additively): }
 		\begin{center}
-			\includegraphics[scale=2.5]{adamant-code}
+			\includegraphics[scale=\ScreenshotScale]{adamant-code}
 		\end{center}		 
 		}
 	\item{\textbf{\code{EffectComponent}s} are \code{ActorComponent}s that plug into \code{Outlet}s. These come in many forms, but an easy example is a \code{Buff}. \todo{Describe how this happens with pictures!}}
@@ -98,31 +99,74 @@ As an example, let's use \code{BeforeGetBaseExpYield}. (You can imagine that thi
 	\item{\textbf{Go to the right directory.} We want to place the Outlet inside of \code{ULevelComponent}, so we'll go to that directory.}
 	\item{\textbf{Copy + paste file.} The easiest way is to copy + paste pre-existing Outlets. In this example, we'll copy + paste \code{AfterSetCXPOutlet.h} and name the new file \code{BeforeGetBaseExpYield.h}. \\
 	\begin{center}
-		\includegraphics[scale=2]{create-outlet-rename}
+		\includegraphics[scale=\ScreenshotScale]{create-outlet-rename}
 	\end{center}
 	}
 	\item{\textbf{Replace old name.} Open the new file and you'll still see the base name ``AfterSetCXP'' everywhere. The easiest way is to do a find+replace ``AfterSetCXP'' $\rightarrow$ ``BeforeGetBaseExpYield''. This replaces everything from the \code{.generated} include to the delegate signature. If you're curious, you can look more in-depth and replace instances one-by-one.}
 	\item{\textbf{Declare delegate signature.} In this case, we want the delegate signature to take two arguments: the original, unmodified yield and the one that will be returned from the \code{GetBaseExpYield} function.\\
 	\begin{center}
-		\includegraphics[scale=2]{create-outlet-signature}
+		\includegraphics[scale=\ScreenshotScale]{create-outlet-signature}
 	\end{center}
 	\textit{Note: yours might use more than two parameters or different parameter types. Modify accordingly.}
 	}
 	\item{\textbf{Declare Outlet functions.} In order to be able to call \code{Execute} on your Outlet, you need to tell it a few things. The figure below displays a few things in red you should look at:\\
 	\begin{center}
-		\includegraphics[scale=2]{create-outlet-functions}
+		\includegraphics[scale=\ScreenshotScale]{create-outlet-functions}
 	\end{center}
 		\begin{itemize}
 			\item{Whether it's a \code{Before} or \code{After} type Outlet. This affects execution based on priority:
-				\todo{Priority explanation}
+			\begin{tcolorbox}[colback=gray!20!white,colframe=blue!75!black,title=Priorities]
+			
+				The lower the priority, the farther away it is from execution. If two priorities are tied, the older effect is executed first. Order is set externally by EffectsComponent. Order:\\
+				\begin{itemize}
+					\item{Intrinsic ``before'' delegates (no Effect attached)}
+					\item{``Before'' delegates:
+						\begin{itemize}
+							\item{Priority 1}
+							\item{Priority 2.a (older)}
+							\item{Priority 2.b (newer)}
+							\item{...}
+						\end{itemize}
+						}
+					\item{[Function executes]}
+					\item{``After'' delegates:
+						\begin{itemize}
+							\item{...}
+							\item{Priority 2.b (newer)}
+							\item{Priority 2.a (older)}
+							\item{Priority 1}
+						\end{itemize}
+						}
+					\item{Intrinsic ``after'' delegates (have the final say)}
+				\end{itemize}
+				
+			As an example, consider two delegates: one that says you can't take damage no matter what (call the \code{UBuff} ``Invincible'') and another that says damage against you can't be avoided no matter what (call the \code{UDebuff} ``Weakened''). What happens when the target takes damage? Well, it depends on priority:
+			\begin{itemize}
+				\item{They're probably subscribed to the Outlet in \code{UStatsComponent} called \code{BeforeModifyStat} with the target \code{FStat} being \code{Health}.}
+				\item{Note that they're both ``Before'' delegates.}
+				\item{Let's say Invincible has higher Priority. The result is the target takes damage because:
+					\begin{enumerate}
+						\item[1)]{Invincible first sets the damage to zero.}
+						\item[2)]{Weakened then sets the damage to its original value.}
+					\end{enumerate}
+				}
+				\item{If Weakened has higher Priority, the result is flipped and the target takes no damage.}
+			\end{itemize}
+	 
+	 \end{tcolorbox}\vspace*{12pt}
 			}
-			\item{The parameters you defined in the delegate's signature. I know, I know---anytime you repeat code, you're probably doing something wrong. The biggest issue here is the UHT. If you have a better way of automating this, \textit{tell me!}}
+			\item{The parameters you defined in the delegate's signature. I know, I know---anytime you repeat code, you're probably doing something wrong. The biggest issue here is the UHT. The main (but not only) issue is that you can't have \code{UPROPERTY}s inside macros or the property won't register. If you have a better way of automating this, \textit{tell me!}}
 		\end{itemize}
+	}
+	\item{\textbf{Declare \code{UPROPERTY}.} Inside the \code{UEffectableComponent} (in this example, \code{ULevelComponent}), declare the Outlet as a variable. Note that it's custom to have this \code{UPROPERTY} as public and in the ``Outlets'' category. It's also a good idea to comment the \code{UPROPERTY} with the parameters.
+	\begin{center}
+		\includegraphics[scale=\ScreenshotScale]{create-outlet-uproperty}
+	\end{center}
 	}
 \end{enumerate}
 
 \sect{Making Your Own Effects}
 
-Suppose you want to make your own effect from scratch. 
+Suppose you want to make your own effect from scratch. \todo{todo}
 
 \input{../postamble}

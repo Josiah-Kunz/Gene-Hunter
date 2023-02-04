@@ -6,6 +6,7 @@
 // Other components
 #include "EffectableComponent.h"
 #include "AfterSetCXPOutlet.h"
+#include "BeforeGetBaseExpYieldOutlet.h"
 #include "BeforeSetCXPOutlet.h"
 
 // .gen
@@ -48,6 +49,14 @@ public:
 	float GetBaseExpYield();
 
 	/**
+	 * Parameters:
+	 *	- [const float] original yield prior to modification
+	 *	- [float&] yield that is being set and then returned
+	 */
+	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
+	FBeforeGetBaseExpYieldOutlet BeforeGetBaseExpYieldOutlet;
+	
+	/**
 	 * Sets the value of BaseExpYield.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Level")
@@ -85,9 +94,19 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Level")
 	void SetCXP(int32 NewCumulativeExp);
 
+	/**
+	 * Parameters:
+	 *	- [const uint32] CXP prior to modification
+	 *	- [int32&] attempted CXP that is being set
+	 */
 	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
 	FBeforeSetCXPOutlet BeforeSetCXPOutlet;
-	
+
+	/**
+	 * Parameters:
+	 *	- [const uint32] CXP prior to modification
+	 *	- [const uint32] CXP that is being set
+	 */
 	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
 	FAfterSetCXPOutlet AfterSetCXPOutlet;
 	
