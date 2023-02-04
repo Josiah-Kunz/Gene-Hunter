@@ -67,12 +67,30 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 }
 
 	Base Name		& Parameters	& Note\\
-	BeforeSetCXP	& {	\code{const uint32 OldCXP},\\ 
-						\code{int32\& AttemptedCXP}}	
-					& \code{AttemptedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.\\	
-	AfterSetCXP		& {	\code{const uint32 OldCXP}\\ 
-						\code{const uint32 NewCXP}} 
-					& \code{UStatsComponent} subscribes to this in order to change stats on level change.\\
+	
+	BeforeGetBaseExpYield	
+		& {	\code{const float OriginalYield},\\
+			\code{float\& Yield}}
+		& 
+		\\
+		
+	AfterGetBaseExpYield	
+		& {	\code{const float OriginalYield},\\
+			\code{const float ReturnedYield}}
+		& 
+		\\
+	
+	BeforeSetCXP			
+		& {	\code{const uint32 OldCXP},\\ 
+			\code{int32\& AttemptedCXP}}	
+		& \code{AttemptedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.
+		\\	
+							
+	AfterSetCXP				
+		& {	\code{const uint32 OldCXP}\\ 
+			\code{const uint32 NewCXP}} 
+		& \code{UStatsComponent} subscribes to this in order to change stats on level change.
+		\\
 \end{longtblr}
 
 %--------------------------
