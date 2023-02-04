@@ -16,8 +16,18 @@ ULevelComponent::ULevelComponent()
 
 float ULevelComponent::GetBaseExpYield() 
 {
-	float Ret = BaseExpYield;
-	return Ret;
+	// Get original for delegates
+	const float OriginalBaseExpYield = BaseExpYield;
+
+	// Set up the modifiable return value
+	float ReturnedBaseExpYield = BaseExpYield;
+
+	// Call before/after delegates
+	BeforeGetBaseExpYieldOutlet.Execute(OriginalBaseExpYield, ReturnedBaseExpYield);
+	AfterGetBaseExpYieldOutlet.Execute(OriginalBaseExpYield, ReturnedBaseExpYield);
+	
+	// Return for use in other functions
+	return ReturnedBaseExpYield;
 }
 
 void ULevelComponent::SetBaseExpYield(float NewBaseExpYield)

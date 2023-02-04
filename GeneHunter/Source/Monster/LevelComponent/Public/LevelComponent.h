@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 
 // Other components
+#include "AfterGetBaseExpYieldOutlet.h"
 #include "EffectableComponent.h"
 #include "AfterSetCXPOutlet.h"
 #include "BeforeGetBaseExpYieldOutlet.h"
@@ -55,6 +56,14 @@ public:
 	 */
 	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
 	FBeforeGetBaseExpYieldOutlet BeforeGetBaseExpYieldOutlet;
+
+	/**
+	 * Parameters:
+	 *	- [const float] original yield prior to modification
+	 *	- [const float] yield that is being returned
+	 */
+	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
+	FAfterGetBaseExpYieldOutlet AfterGetBaseExpYieldOutlet;
 	
 	/**
 	 * Sets the value of BaseExpYield.

@@ -163,6 +163,17 @@ As an example, let's use \code{BeforeGetBaseExpYield}. (You can imagine that thi
 		\includegraphics[scale=\ScreenshotScale]{create-outlet-uproperty}
 	\end{center}
 	}
+	\item{\textbf{Implement.} Now it's time to place your Outlet in the appropriate place(s). For our example, it's pretty simple: place it inside of \code{GetBaseExpYield} in \code{ULevelComponent}'s \code{.cpp} file.
+	\begin{center}
+		\includegraphics[scale=\ScreenshotScale]{create-outlet-cpp}
+	\end{center}
+	Note that you might have to do things like cache original values. Also, it may not appear necessary to have both ``Before'' and ``After'' Outlets in a function like this. However, it is still recommended to do so.
+	}
+	\item{\textbf{Create complementary Outlet.} If you create a ``Before'' Outlet, you should probably also create an ``After'' Outlet. The easiest way is copy + paste, then replace ``Before'' with ``After''. You might also need to modify the delegate signature (e.g., reference ``\code{\&}'' to \code{const}).
+		\begin{itemize}
+			\item{An example where this would be necessary is an animation delegate. You only want to fire a ``bonus exp'' animation \textit{after} the amount of exp has been determined, checked, and is now constant.}
+		\end{itemize}
+	}
 \end{enumerate}
 
 \sect{Making Your Own Effects}
