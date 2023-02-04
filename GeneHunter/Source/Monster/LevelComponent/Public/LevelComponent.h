@@ -5,9 +5,11 @@
 
 // Other components
 #include "AfterGetBaseExpYieldOutlet.h"
+#include "AfterSetBaseExpYieldOutlet.h"
 #include "EffectableComponent.h"
 #include "AfterSetCXPOutlet.h"
 #include "BeforeGetBaseExpYieldOutlet.h"
+#include "BeforeSetBaseExpYieldOutlet.h"
 #include "BeforeSetCXPOutlet.h"
 
 // .gen
@@ -70,6 +72,22 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category="Level")
 	void SetBaseExpYield(float NewBaseExpYield);
+
+	/**
+	 * Parameters:
+	 *	- [const float] original yield prior to setting
+	 *	- [float&] attempted set yield
+	 */
+	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
+	FBeforeSetBaseExpYieldOutlet BeforeSetBaseExpYieldOutlet;
+
+	/**
+	 * Parameters:
+	 *	- [const float] original yield prior to setting
+	 *	- [const float] newly set yield
+	 */
+	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
+	FAfterSetBaseExpYieldOutlet AfterSetBaseExpYieldOutlet;
 
 	/**
 	 * Gets the amount of experience this Monster yields when defeated.

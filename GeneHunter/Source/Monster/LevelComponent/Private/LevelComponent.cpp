@@ -32,9 +32,14 @@ float ULevelComponent::GetBaseExpYield()
 
 void ULevelComponent::SetBaseExpYield(float NewBaseExpYield)
 {
-	//ExecuteBeforeSetBaseExpYield(GetBaseExpYield(), NewBaseExpYield);
+
+	// Get original for delegates
+	const float OriginalBaseExpYield = GetBaseExpYield();
+
+	// Call + execute + call
+	BeforeSetBaseExpYieldOutlet.Execute(OriginalBaseExpYield, NewBaseExpYield);
 	BaseExpYield = NewBaseExpYield;
-	//ExecuteAfterSetBaseExpYield(GetBaseExpYield(), NewBaseExpYield);
+	AfterSetBaseExpYieldOutlet.Execute(OriginalBaseExpYield, GetBaseExpYield());
 }
 
 

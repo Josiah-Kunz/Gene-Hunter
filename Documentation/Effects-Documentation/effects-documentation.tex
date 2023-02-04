@@ -41,52 +41,81 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 %--------------------------
 
 \begin{longtblr}[
-	caption = {Delegate Arrays for \code{AffinitiesComponent}},
-	label = {delegate-arrays-affinitiescomponent},
+	caption = {Delegate Arrays for \code{LevelComponent}},
+	label = {delegate-arrays-levelcomponent},
 ]{
-	colspec= {Q[r, wd=0.25\linewidth] Q[l, wd=0.35\linewidth] Q[l, wd=0.25\linewidth]},
+	colspec= {Q[l, wd=0.13\linewidth] Q[l, wd=0.35\linewidth] Q[l, wd=0.37\linewidth]},
 	hline{1,Z} = {2pt},
-	hlines,
-	row{1} = {font=\bfseries},
 }
-
-	Base Name	& Parameters	& Note\\
+	\todo{Todo}
 	
 \end{longtblr}
 
 %--------------------------
 
+\newcommand{\DelegateSpace}{\hspace*{1em}$\blacktriangleright$}
+
 \begin{longtblr}[
 	caption = {Delegate Arrays for \code{LevelComponent}},
 	label = {delegate-arrays-levelcomponent},
 ]{
-	colspec= {Q[r, wd=0.25\linewidth] Q[l, wd=0.35\linewidth] Q[l, wd=0.25\linewidth]},
+	colspec= {Q[l, wd=0.13\linewidth] Q[l, wd=0.35\linewidth] Q[l, wd=0.37\linewidth]},
 	hline{1,Z} = {2pt},
-	hlines,
-	row{1} = {font=\bfseries},
 }
 
-	Base Name		& Parameters	& Note\\
+	%----------------------
+	\hline
+	\SetCell[c=3]{l}{\color{ICBlue}\textbf{GetBaseExpYield}}\\
+	\hline
+	&&\textit{Note:}\\
+	%----------------------	
 	
-	BeforeGetBaseExpYield	
+	\DelegateSpace{} Before	
 		& {	\code{const float OriginalYield},\\
 			\code{float\& Yield}}
 		& 
 		\\
 		
-	AfterGetBaseExpYield	
+		
+	\DelegateSpace{} After	
 		& {	\code{const float OriginalYield},\\
 			\code{const float ReturnedYield}}
 		& 
 		\\
-	
-	BeforeSetCXP			
+		
+	%----------------------
+	\hline
+	\SetCell[c=3]{l}{\color{ICBlue}\textbf{SetBaseExpYield}}\\
+	\hline
+	&& \textit{Note}\\
+	%----------------------	
+
+	\DelegateSpace{} Before			
+		& {	\code{const float OldYield},\\ 
+			\code{float\& AttemptedYield}}	
+		& 
+		\\		
+							
+	\DelegateSpace{} After				
+		& {	\code{const float OldYield}\\ 
+			\code{const float NewYield}} 
+		&
+		\\
+		
+	%----------------------
+	\hline
+	\SetCell[c=3]{l}{\color{ICBlue}\textbf{SetCXP}}\\
+	\hline
+	&& \textit{Note}\\
+	%----------------------	
+
+	\DelegateSpace{} Before			
 		& {	\code{const uint32 OldCXP},\\ 
 			\code{int32\& AttemptedCXP}}	
 		& \code{AttemptedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.
-		\\	
+		\\		
 							
-	AfterSetCXP				
+	\DelegateSpace{} After				
 		& {	\code{const uint32 OldCXP}\\ 
 			\code{const uint32 NewCXP}} 
 		& \code{UStatsComponent} subscribes to this in order to change stats on level change.
@@ -96,16 +125,14 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 %--------------------------
 
 \begin{longtblr}[
-	caption = {Delegate Arrays for \code{StatsComponent}},
-	label = {delegate-arrays-statscomponent},
+	caption = {Delegate Arrays for \code{LevelComponent}},
+	label = {delegate-arrays-levelcomponent},
 ]{
-	colspec= {Q[r, wd=0.25\linewidth] Q[l, wd=0.35\linewidth] Q[l, wd=0.25\linewidth]},
+	colspec= {Q[l, wd=0.13\linewidth] Q[l, wd=0.35\linewidth] Q[l, wd=0.37\linewidth]},
 	hline{1,Z} = {2pt},
-	hlines,
-	row{1} = {font=\bfseries},
 }
 
-	Base Name	& Parameters	& Note\\
+	\todo{Todo}
 	
 \end{longtblr}
 
