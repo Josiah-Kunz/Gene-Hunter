@@ -85,9 +85,28 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 		
 	%----------------------
 	\hline
+	\SetCell[c=3]{l}{\color{ICBlue}\textbf{GetCXP}}\\
+	\hline
+	&& \textit{Note:}\\
+	%----------------------	
+
+	\DelegateSpace{} Before			
+		& {	\code{const uint32 OriginalCXP},\\ 
+			\code{int32\& ReturnedCXP}}	
+		& \code{ReturnedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.
+		\\		
+							
+	\DelegateSpace{} After				
+		& {	\code{const uint32 OriginalCXP}\\ 
+			\code{const int32 ReturnedCXP}} 
+		& \code{ReturnedCXP} is \code{const int32} instead of \code{const uint32} for Blueprint compatability.
+		\\
+		
+	%----------------------
+	\hline
 	\SetCell[c=3]{l}{\color{ICBlue}\textbf{SetBaseExpYield}}\\
 	\hline
-	&& \textit{Note}\\
+	&& \textit{Note:}\\
 	%----------------------	
 
 	\DelegateSpace{} Before			
@@ -106,7 +125,7 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 	\hline
 	\SetCell[c=3]{l}{\color{ICBlue}\textbf{SetCXP}}\\
 	\hline
-	&& \textit{Note}\\
+	&& \textit{Note:}\\
 	%----------------------	
 
 	\DelegateSpace{} Before			
@@ -120,6 +139,9 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 			\code{const uint32 NewCXP}} 
 		& \code{UStatsComponent} subscribes to this in order to change stats on level change.
 		\\
+		
+		
+		
 \end{longtblr}
 
 %--------------------------
@@ -136,23 +158,26 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 	
 \end{longtblr}
 
+%====================================================
+
 \sect{Making Your Own Outlet}
 
 As an example, let's use \code{BeforeGetBaseExpYield}. (You can imagine that this is an important Outlet for tweaking levelling curves.) Here's what to do:\\
 
 \begin{enumerate}
-	\item{\textbf{Go to the right directory.} We want to place the Outlet inside of \code{ULevelComponent}, so we'll go to that directory.}
-	\item{\textbf{Copy + paste file.} The easiest way is to copy + paste pre-existing Outlets. In this example, we'll copy + paste \code{AfterSetCXPOutlet.h} and name the new file \code{BeforeGetBaseExpYield.h}. \\
+	\item{\textbf{Go to the right directory.} We want to place the Outlet inside of \code{ULevelComponent}, so we'll start with that directory. If it doesn't contain an ``Outlets'' directory, create one and place your Outlet(s) there.}
+	\item{\textbf{Copy + paste file.} The easiest way is to copy + paste pre-existing Outlets. In this example, we'll copy + paste \code{SetCXPOutlet.h} and name the new file \code{GetBaseExpYield.h}. \\
 	\begin{center}
 		\includegraphics[scale=\ScreenshotScale]{create-outlet-rename}
 	\end{center}
+	\noindent \textit{Note: this includes both \code{BeforeGetBaseExpYield} and \code{AfterGetBaseExpYield} functionality, but we'll only talk about the ``Before'' variant.}
 	}
-	\item{\textbf{Replace old name.} Open the new file and you'll still see the base name ``AfterSetCXP'' everywhere. The easiest way is to do a find+replace ``AfterSetCXP'' $\rightarrow$ ``BeforeGetBaseExpYield''. This replaces everything from the \code{.generated} include to the delegate signature. If you're curious, you can look more in-depth and replace instances one-by-one.}
-	\item{\textbf{Declare delegate signature.} In this case, we want the delegate signature to take two arguments: the original, unmodified yield and the one that will be returned from the \code{GetBaseExpYield} function.\\
+	\item{\textbf{Replace old name.} Open the new file and you'll still see the base name ``SetCXP'' everywhere. The easiest way is to do a find+replace ``SetCXP'' $\rightarrow$ ``GetBaseExpYield''. This replaces everything from the \code{.generated} include to the delegate signature. If you're curious, you can look more in-depth and replace instances one-by-one.}
+	\item{\textbf{Declare delegate signature.} In this case, we want the ``Before'' delegate signature to take two arguments: the original, unmodified yield and the one that will be returned from the \code{GetBaseExpYield} function.\\
 	\begin{center}
 		\includegraphics[scale=\ScreenshotScale]{create-outlet-signature}
 	\end{center}
-	\textit{Note: yours might use more than two parameters or different parameter types. Modify accordingly.}
+	You can also set the ``After'' signature in the same manner. \textit{Note: yours might use more than two parameters or different parameter types. Modify accordingly.}
 	}
 	\item{\textbf{Declare Outlet functions.} In order to be able to call \code{Execute} on your Outlet, you need to tell it a few things. The figure below displays a few things in red you should look at:\\
 	\begin{center}
@@ -201,6 +226,7 @@ As an example, let's use \code{BeforeGetBaseExpYield}. (You can imagine that thi
 	 \end{tcolorbox}\vspace*{12pt}
 			}
 			\item{The parameters you defined in the delegate's signature. I know, I know---anytime you repeat code, you're probably doing something wrong. The biggest issue here is the UHT. The main (but not only) issue is that you can't have \code{UPROPERTY}s inside macros or the property won't register. If you have a better way of automating this, \textit{tell me!}}
+			\item{Repeat for the ``After'' variant.}
 		\end{itemize}
 	}
 	\item{\textbf{Declare \code{UPROPERTY}.} Inside the \code{UEffectableComponent} (in this example, \code{ULevelComponent}), declare the Outlet as a variable. Note that it's custom to have this \code{UPROPERTY} as public and in the ``Outlets'' category. It's also a good idea to comment the \code{UPROPERTY} with the parameters.
@@ -214,7 +240,7 @@ As an example, let's use \code{BeforeGetBaseExpYield}. (You can imagine that thi
 	\end{center}
 	Note that you might have to do things like cache original values. Also, it may not appear necessary to have both ``Before'' and ``After'' Outlets in a function like this. However, it is still recommended to do so.
 	}
-	\item{\textbf{Create complementary Outlet.} If you create a ``Before'' Outlet, you should probably also create an ``After'' Outlet. The easiest way is copy + paste, then replace ``Before'' with ``After''. You might also need to modify the delegate signature (e.g., reference ``\code{\&}'' to \code{const}).
+	\item{\textbf{A note on complementary Outlets.} If you create a ``Before'' Outlet, you should also create an ``After'' Outlet. The biggest difference might be the delegate signature (e.g., reference ``\code{\&}'' to \code{const}).
 		\begin{itemize}
 			\item{An example where this would be necessary is an animation delegate. You only want to fire a ``bonus exp'' animation \textit{after} the amount of exp has been determined, checked, and is now constant.}
 		\end{itemize}

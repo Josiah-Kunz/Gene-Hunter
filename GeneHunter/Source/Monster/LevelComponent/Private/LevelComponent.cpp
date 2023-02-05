@@ -78,9 +78,17 @@ float ULevelComponent::GetExpYield(ULevelComponent* VictoriousMonster)
 
 int32 ULevelComponent::GetCXP()
 {
-	//ExecuteBeforeGetCumulativeExp(CumulativeExp);
-	//ExecuteAfterGetCumulativeExp(CumulativeExp);
-	return CumulativeExp;
+
+	// Cache for delegates
+	const int32 OriginalCXP = CumulativeExp;
+	int32 ReturnedCXP;
+
+	// Delegates
+	BeforeGetCXPOutlet.Execute(OriginalCXP, ReturnedCXP);
+	AfterGetCXPOutlet.Execute(OriginalCXP, ReturnedCXP);
+
+	// Return
+	return ReturnedCXP;
 }
 
 void ULevelComponent::SetCXP(int32 NewCumulativeExp)

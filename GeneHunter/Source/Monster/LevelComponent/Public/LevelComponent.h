@@ -3,14 +3,15 @@
 // Engine
 #include "CoreMinimal.h"
 
+// Outlets
+#include "Outlets/GetBaseExpYieldOutlet.h"
+#include "Outlets/GetCXPOutlet.h"
+#include "Outlets/SetBaseExpYieldOutlet.h"
+#include "Outlets/SetCXPOutlet.h"
+
 // Other components
-#include "AfterGetBaseExpYieldOutlet.h"
-#include "AfterSetBaseExpYieldOutlet.h"
 #include "EffectableComponent.h"
-#include "AfterSetCXPOutlet.h"
-#include "BeforeGetBaseExpYieldOutlet.h"
-#include "BeforeSetBaseExpYieldOutlet.h"
-#include "BeforeSetCXPOutlet.h"
+
 
 // .gen
 #include "LevelComponent.generated.h"
@@ -114,6 +115,22 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
 	int32 GetCXP();
+
+	/**
+	 * Parameters:
+	 *	- [const uint32] CXP prior to modification
+	 *	- [int32&] attempted CXP that is being set
+	 */
+	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
+	FBeforeGetCXPOutlet BeforeGetCXPOutlet;
+
+	/**
+	 * Parameters:
+	 *	- [const uint32] CXP prior to modification
+	 *	- [const uint32] CXP that is being set
+	 */
+	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
+	FAfterGetCXPOutlet AfterGetCXPOutlet;
 
 	/**
 	 * Sets the total experience accumulated points across all levels.
