@@ -52,7 +52,7 @@ float ULevelComponent::GetExpYield(ULevelComponent* VictoriousMonster)
 	LevelDiff = FMath::Min(static_cast<uint16>(10), LevelDiff); // Cap benefits at +10 levels
 
 	// Return based on formula
-	float Yield =
+	float ReturnedYield =
 
 		// Base
 		BaseExpYield
@@ -64,12 +64,15 @@ float ULevelComponent::GetExpYield(ULevelComponent* VictoriousMonster)
 		* FMathf::Pow(1.5f, FMath::Floor((LevelDiff/2.0f)))
 	;
 
+	// Cache for delegates
+	const float OriginalYield = ReturnedYield;
+
 	// Delegates
-	//ExecuteBeforeGetExpYield(VictoriousMonster, Yield);
-	//ExecuteAfterGetExpYield(VictoriousMonster, Yield);
+	BeforeGetExpYieldOutlet.Execute(OriginalYield, ReturnedYield, GetLevel(), VictoriousMonster->GetLevel());
+	AfterGetExpYieldOutlet.Execute(OriginalYield, ReturnedYield, GetLevel(), VictoriousMonster->GetLevel());
 
 	// Return
-	return Yield;
+	return ReturnedYield;
 }
 
 #pragma endregion

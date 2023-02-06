@@ -118,7 +118,7 @@ public: \
  *	- Execute, which called ExecuteIfBound on every Delegate in the array
  *	- Add, which adds a Delegate to the array
  */
-#define DECLARE_AFTER_OUTLET_FUNCTIONS_ThreeParams(DelegateType, DelegateArray, DelegateVariable, Param1Type, Param2Type, Param3Type) \
+#define DECLARE_OUTLET_FUNCTIONS_ThreeParams(DelegateType, DelegateArray, DelegateVariable, Param1Type, Param2Type, Param3Type) \
 public: \
 	void Execute( Param1Type DelegateArray##__P1, Param2Type DelegateArray##__P2, Param3Type DelegateArray##__P3) \
 	{ \
@@ -138,7 +138,7 @@ public: \
  *	- Execute, which called ExecuteIfBound on every Delegate in the array
  *	- Add, which adds a Delegate to the array
  */
-#define DECLARE_AFTER_OUTLET_FUNCTIONS_FourParams(BeforeOrAfter, DelegateType, DelegateArray, DelegateVariable, Param1Type, Param2Type, Param3Type, Param4Type) \
+#define DECLARE_OUTLET_FUNCTIONS_FourParams(BeforeOrAfter, DelegateType, DelegateArray, DelegateVariable, Param1Type, Param2Type, Param3Type, Param4Type) \
 public: \
 	void Execute( Param1Type DelegateArray##__P1, Param2Type DelegateArray##__P2, Param3Type DelegateArray##__P3, Param4Type DelegateArray##__P4) \
 	{ \

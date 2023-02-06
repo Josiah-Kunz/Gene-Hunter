@@ -54,89 +54,123 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 %--------------------------
 
 \newcommand{\DelegateSpace}{\hspace*{1em}$\blacktriangleright$}
+\newcommand{\DelegateNote}{\hspace*{2em}\textit{Note:}}
 
 \begin{longtblr}[
 	caption = {Delegate Arrays for \code{LevelComponent}},
 	label = {delegate-arrays-levelcomponent},
 ]{
-	colspec= {Q[l, wd=0.13\linewidth] Q[l, wd=0.35\linewidth] Q[l, wd=0.37\linewidth]},
+	colspec= {Q[l, wd=0.13\linewidth] Q[l, wd=0.72\linewidth]},
 	hline{1,Z} = {2pt},
 }
 
 	%----------------------
 	\hline
-	\SetCell[c=3]{l}{\color{ICBlue}\textbf{GetBaseExpYield}}\\
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetBaseExpYield}}\\
 	\hline
-	&&\textit{Note:}\\
+	\\
 	%----------------------	
 	
 	\DelegateSpace{} Before	
 		& {	\code{const float OriginalYield},\\
 			\code{float\& Yield}}
-		& 
 		\\
 		
 		
 	\DelegateSpace{} After	
 		& {	\code{const float OriginalYield},\\
 			\code{const float ReturnedYield}}
-		& 
 		\\
 		
 	%----------------------
 	\hline
-	\SetCell[c=3]{l}{\color{ICBlue}\textbf{GetCXP}}\\
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetCXP}}\\
 	\hline
-	&& \textit{Note:}\\
+	\\
 	%----------------------	
 
 	\DelegateSpace{} Before			
 		& {	\code{const uint32 OriginalCXP},\\ 
 			\code{int32\& ReturnedCXP}}	
+		\\ 
+	\DelegateNote{}
 		& \code{ReturnedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.
 		\\		
 							
 	\DelegateSpace{} After				
 		& {	\code{const uint32 OriginalCXP}\\ 
 			\code{const int32 ReturnedCXP}} 
+		\\ 
+	\DelegateNote{}
 		& \code{ReturnedCXP} is \code{const int32} instead of \code{const uint32} for Blueprint compatability.
 		\\
 		
 	%----------------------
 	\hline
-	\SetCell[c=3]{l}{\color{ICBlue}\textbf{SetBaseExpYield}}\\
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetExpYield}}\\
 	\hline
-	&& \textit{Note:}\\
+	\\
+	%----------------------	
+
+	\DelegateSpace{} Before			
+		& {	\code{const float OriginalYield},\\ 
+			\code{float\& ReturnedYield},\\
+			\code{const uint16 DefeatedLevel},\\
+			\code{const uint16 VictoriousLevel}
+			}\\
+		\\
+	\DelegateNote{}
+		& ``Defeated'' and ``Victorious'' levels are provided for flexibility (e.g., in case you want to yield exp differently based on level difference, although technically you could always back-calculate the level difference based on the equation and \code{OriginalYield}).
+		\\		
+							
+	\DelegateSpace{} After			
+		& {	\code{const float OriginalYied},\\ 
+			\code{const float ReturnedYield},\\
+			\code{const uint16 DefeatedLevel},\\
+			\code{const uint16 VictoriousLevel}
+			}\\
+		\\
+	\DelegateNote{}
+		& ``Defeated'' and ``Victorious'' levels are provided for symmetry with respect to the ``Before'' delegate (since \code{ReturnedValue} is already calculated, I can't think of why you would need them, but you never know!).
+		\\
+		
+	%----------------------
+	\hline
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{SetBaseExpYield}}\\
+	\hline
+	\\
 	%----------------------	
 
 	\DelegateSpace{} Before			
 		& {	\code{const float OldYield},\\ 
 			\code{float\& AttemptedYield}}	
-		& 
 		\\		
 							
 	\DelegateSpace{} After				
 		& {	\code{const float OldYield}\\ 
 			\code{const float NewYield}} 
-		&
 		\\
 		
 	%----------------------
 	\hline
-	\SetCell[c=3]{l}{\color{ICBlue}\textbf{SetCXP}}\\
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{SetCXP}}\\
 	\hline
-	&& \textit{Note:}\\
+	\\
 	%----------------------	
 
 	\DelegateSpace{} Before			
 		& {	\code{const uint32 OldCXP},\\ 
 			\code{int32\& AttemptedCXP}}	
+		\\
+	\DelegateNote{}
 		& \code{AttemptedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.
 		\\		
 							
 	\DelegateSpace{} After				
 		& {	\code{const uint32 OldCXP}\\ 
 			\code{const uint32 NewCXP}} 
+		\\
+	\DelegateNote{}
 		& \code{UStatsComponent} subscribes to this in order to change stats on level change.
 		\\
 		
@@ -165,6 +199,7 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 As an example, let's use \code{BeforeGetBaseExpYield}. (You can imagine that this is an important Outlet for tweaking levelling curves.) Here's what to do:\\
 
 \begin{enumerate}
+	\item{\textbf{Plan ahead.} I would sincerely recommend you writing down what parameters your Outlet delegate takes on paper. We go to a few files and it's easy to be inconsistent.}
 	\item{\textbf{Go to the right directory.} We want to place the Outlet inside of \code{ULevelComponent}, so we'll start with that directory. If it doesn't contain an ``Outlets'' directory, create one and place your Outlet(s) there.}
 	\item{\textbf{Copy + paste file.} The easiest way is to copy + paste pre-existing Outlets. In this example, we'll copy + paste \code{SetCXPOutlet.h} and name the new file \code{GetBaseExpYield.h}. \\
 	\begin{center}
@@ -229,6 +264,7 @@ As an example, let's use \code{BeforeGetBaseExpYield}. (You can imagine that thi
 			\item{Repeat for the ``After'' variant.}
 		\end{itemize}
 	}
+	\item{\textbf{Check number of parameters.} I make a point of this because I find it's my most common error. Make sure your declared signature \textit{and} declared Outlet function macros have the correct number of params (two in our case). Explicitly, you might need to use \code{DECLARE\_DYNAMIC\_DELEGATE\_FourParams(...)}.}
 	\item{\textbf{Declare \code{UPROPERTY}.} Inside the \code{UEffectableComponent} (in this example, \code{ULevelComponent}), declare the Outlet as a variable. Note that it's custom to have this \code{UPROPERTY} as public and in the ``Outlets'' category. It's also a good idea to comment the \code{UPROPERTY} with the parameters.
 	\begin{center}
 		\includegraphics[scale=\ScreenshotScale]{create-outlet-uproperty}
