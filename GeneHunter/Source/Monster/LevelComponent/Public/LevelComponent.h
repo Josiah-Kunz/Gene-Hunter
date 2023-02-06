@@ -76,20 +76,16 @@ public:
 	void SetBaseExpYield(float NewBaseExpYield);
 
 	/**
-	 * Parameters:
+	 * Before parameters:
 	 *	- [const float] original yield prior to setting
 	 *	- [float&] attempted set yield
-	 */
-	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
-	FBeforeSetBaseExpYieldOutlet BeforeSetBaseExpYieldOutlet;
-
-	/**
-	 * Parameters:
+	 *
+	 *	After parameters:
 	 *	- [const float] original yield prior to setting
 	 *	- [const float] newly set yield
 	 */
 	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
-	FAfterSetBaseExpYieldOutlet AfterSetBaseExpYieldOutlet;
+	FSetBaseExpYieldOutlet SetBaseExpYieldOutlet;
 
 	/**
 	 * Gets the amount of experience this Monster yields when defeated.

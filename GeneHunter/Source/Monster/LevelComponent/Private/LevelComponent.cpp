@@ -23,8 +23,8 @@ float ULevelComponent::GetBaseExpYield()
 	float ReturnedBaseExpYield = BaseExpYield;
 
 	// Call before/after delegates
-	BeforeGetBaseExpYieldOutlet.Execute(OriginalBaseExpYield, ReturnedBaseExpYield);
-	AfterGetBaseExpYieldOutlet.Execute(OriginalBaseExpYield, ReturnedBaseExpYield);
+	BeforeGetBaseExpYieldOutlet.ExecuteBefore(OriginalBaseExpYield, ReturnedBaseExpYield);
+	AfterGetBaseExpYieldOutlet.ExecuteAfter(OriginalBaseExpYield, ReturnedBaseExpYield);
 	
 	// Return for use in other functions
 	return ReturnedBaseExpYield;
@@ -37,9 +37,9 @@ void ULevelComponent::SetBaseExpYield(float NewBaseExpYield)
 	const float OriginalBaseExpYield = GetBaseExpYield();
 
 	// Call + execute + call
-	BeforeSetBaseExpYieldOutlet.Execute(OriginalBaseExpYield, NewBaseExpYield);
+	SetBaseExpYieldOutlet.ExecuteBefore(OriginalBaseExpYield, NewBaseExpYield);
 	BaseExpYield = NewBaseExpYield;
-	AfterSetBaseExpYieldOutlet.Execute(OriginalBaseExpYield, GetBaseExpYield());
+	SetBaseExpYieldOutlet.ExecuteAfter(OriginalBaseExpYield, GetBaseExpYield());
 }
 
 

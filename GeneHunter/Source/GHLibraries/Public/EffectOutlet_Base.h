@@ -79,7 +79,7 @@ public: \
  */
 #define DECLARE_OUTLET_FUNCTIONS_OneParam(BeforeOrAfter, DelegateType, DelegateArray, DelegateVariable, Param1Type) \
 public: \
-	void Execute( Param1Type DelegateArray##__P1) \
+	void Execute##BeforeOrAfter##( Param1Type DelegateArray##__P1) \
 	{ \
 		for ( DelegateType##& Delegate : DelegateArray ) \
 		{ \
@@ -90,7 +90,7 @@ public: \
 		} \
 	} \
 	\
-	DECLARE_ADD_FUNCTION(DelegateType, DelegateArray);
+	DECLARE_ADD_FUNCTION(EDelegateTriggerTiming::##BeforeOrAfter , DelegateType, DelegateArray);
 	
 
 /**
@@ -100,7 +100,7 @@ public: \
  */
 #define DECLARE_OUTLET_FUNCTIONS_TwoParams(BeforeOrAfter, DelegateType, DelegateArray, DelegateVariable, Param1Type, Param2Type) \
 public: \
-	void Execute( Param1Type DelegateArray##__P1, Param2Type DelegateArray##__P2) \
+	void Execute##BeforeOrAfter##( Param1Type DelegateArray##__P1, Param2Type DelegateArray##__P2) \
 	{ \
 		for ( DelegateType##& Delegate : DelegateArray ) \
 		{ \
@@ -111,16 +111,16 @@ public: \
 		} \
 	} \
 	\
-	DECLARE_ADD_FUNCTION(BeforeOrAfter, DelegateType, DelegateArray);
-
+	DECLARE_ADD_FUNCTION(EDelegateTriggerTiming::##BeforeOrAfter , DelegateType, DelegateArray);
+	
 /**
  * Creates two functions:
  *	- Execute, which called ExecuteIfBound on every Delegate in the array
  *	- Add, which adds a Delegate to the array
  */
-#define DECLARE_OUTLET_FUNCTIONS_ThreeParams(DelegateType, DelegateArray, DelegateVariable, Param1Type, Param2Type, Param3Type) \
+#define DECLARE_OUTLET_FUNCTIONS_ThreeParams(BeforeOrAfter, DelegateType, DelegateArray, DelegateVariable, Param1Type, Param2Type, Param3Type) \
 public: \
-	void Execute( Param1Type DelegateArray##__P1, Param2Type DelegateArray##__P2, Param3Type DelegateArray##__P3) \
+	void Execute##BeforeOrAfter##( Param1Type DelegateArray##__P1, Param2Type DelegateArray##__P2, Param3Type DelegateArray##__P3) \
 	{ \
 		for ( DelegateType##& Delegate : DelegateArray ) \
 		{ \
@@ -131,7 +131,7 @@ public: \
 		} \
 	} \
 	\
-	DECLARE_ADD_FUNCTION(DelegateType, DelegateArray);
+	DECLARE_ADD_FUNCTION(EDelegateTriggerTiming::##BeforeOrAfter , DelegateType, DelegateArray);
 
 /**
  * Creates two functions:
@@ -140,7 +140,7 @@ public: \
  */
 #define DECLARE_OUTLET_FUNCTIONS_FourParams(BeforeOrAfter, DelegateType, DelegateArray, DelegateVariable, Param1Type, Param2Type, Param3Type, Param4Type) \
 public: \
-	void Execute( Param1Type DelegateArray##__P1, Param2Type DelegateArray##__P2, Param3Type DelegateArray##__P3, Param4Type DelegateArray##__P4) \
+	void Execute##BeforeOrAfter##( Param1Type DelegateArray##__P1, Param2Type DelegateArray##__P2, Param3Type DelegateArray##__P3, Param4Type DelegateArray##__P4) \
 	{ \
 		for ( DelegateType##& Delegate : DelegateArray ) \
 		{ \
@@ -151,7 +151,7 @@ public: \
 		} \
 	} \
 	\
-	DECLARE_ADD_FUNCTION(BeforeOrAfter, DelegateType, DelegateArray);
+	DECLARE_ADD_FUNCTION(EDelegateTriggerTiming::##BeforeOrAfter , DelegateType, DelegateArray);
 	
 };
 
