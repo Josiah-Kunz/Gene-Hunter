@@ -23,8 +23,8 @@ float ULevelComponent::GetBaseExpYield()
 	float ReturnedBaseExpYield = BaseExpYield;
 
 	// Call before/after delegates
-	BeforeGetBaseExpYieldOutlet.ExecuteBefore(OriginalBaseExpYield, ReturnedBaseExpYield);
-	AfterGetBaseExpYieldOutlet.ExecuteAfter(OriginalBaseExpYield, ReturnedBaseExpYield);
+	GetBaseExpYieldOutlet.ExecuteBefore(OriginalBaseExpYield, ReturnedBaseExpYield);
+	GetBaseExpYieldOutlet.ExecuteAfter(OriginalBaseExpYield, ReturnedBaseExpYield);
 	
 	// Return for use in other functions
 	return ReturnedBaseExpYield;
@@ -87,8 +87,8 @@ int32 ULevelComponent::GetCXP()
 	int32 ReturnedCXP;
 
 	// Delegates
-	BeforeGetCXPOutlet.Execute(OriginalCXP, ReturnedCXP);
-	AfterGetCXPOutlet.Execute(OriginalCXP, ReturnedCXP);
+	GetCXPOutlet.ExecuteBefore(OriginalCXP, ReturnedCXP);
+	GetCXPOutlet.ExecuteAfter(OriginalCXP, ReturnedCXP);
 
 	// Return
 	return ReturnedCXP;

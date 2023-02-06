@@ -7,7 +7,8 @@
 #pragma region Before
 
 DECLARE_DYNAMIC_DELEGATE_TwoParams(FBeforeGetBaseExpYieldSignature,
-	const float, OriginalYield, float&, Yield);
+	const float, OriginalYield,
+	float&, ReturnedYield);
 
 /**
  * Since delegates can't fit in TArrays, we need to wrap them in something.
@@ -24,29 +25,13 @@ public:
 	
 };
 
-/**
- * 
- */
-USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FBeforeGetBaseExpYieldOutlet : public FEffectOutlet_Base
-{
-	GENERATED_BODY()
-
-private:
-	
-	UPROPERTY()
-	TArray<FBeforeGetBaseExpYieldDelegate> Delegates;
-	
-	DECLARE_OUTLET_FUNCTIONS_TwoParams(EDelegateTriggerTiming::Before, FBeforeGetBaseExpYieldDelegate,
-		Delegates, Delegate, const float,float&);
-};
-
 #pragma endregion
 
 #pragma region After
 
 DECLARE_DYNAMIC_DELEGATE_TwoParams(FAfterGetBaseExpYieldSignature,
-	const float, OriginalYield, const float, ReturnedYield);
+	const float, OriginalYield,
+	const float, ReturnedYield);
 
 /**
  * Since delegates can't fit in TArrays, we need to wrap them in something.
@@ -63,21 +48,31 @@ public:
 	
 };
 
+#pragma endregion
+
+#pragma region Outlet
+
 /**
  * 
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FAfterGetBaseExpYieldOutlet : public FEffectOutlet_Base
+struct LEVELCOMPONENT_API FGetBaseExpYieldOutlet : public FEffectOutlet_Base
 {
 	GENERATED_BODY()
 
 private:
 	
 	UPROPERTY()
-	TArray<FAfterGetBaseExpYieldDelegate> Delegates;
+	TArray<FBeforeGetBaseExpYieldDelegate> BeforeDelegates;
 	
-	DECLARE_OUTLET_FUNCTIONS_TwoParams(EDelegateTriggerTiming::After, FAfterGetBaseExpYieldDelegate,
-		Delegates, Delegate, const float, const float);
+	DECLARE_OUTLET_FUNCTIONS_TwoParams(Before, FBeforeGetBaseExpYieldDelegate,
+		BeforeDelegates, Delegate, const float, float&);
+
+	UPROPERTY()
+	TArray<FAfterGetBaseExpYieldDelegate> AfterDelegates;
+	
+	DECLARE_OUTLET_FUNCTIONS_TwoParams(After, FAfterGetBaseExpYieldDelegate,
+		AfterDelegates, Delegate, const float, const float);
 };
 
 #pragma endregion
