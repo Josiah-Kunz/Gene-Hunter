@@ -54,20 +54,16 @@ public:
 	float GetBaseExpYield();
 
 	/**
-	 * Parameters:
+	 * Before Parameters:
 	 *	- [const float] original yield prior to modification
 	 *	- [float&] yield that is being set and then returned
-	 */
-	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
-	FBeforeGetBaseExpYieldOutlet BeforeGetBaseExpYieldOutlet;
-
-	/**
-	 * Parameters:
+	 *
+	 *	After Parameters:
 	 *	- [const float] original yield prior to modification
 	 *	- [const float] yield that is being returned
 	 */
 	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
-	FAfterGetBaseExpYieldOutlet AfterGetBaseExpYieldOutlet;
+	FGetBaseExpYieldOutlet GetBaseExpYieldOutlet;
 	
 	/**
 	 * Sets the value of BaseExpYield.
@@ -134,20 +130,16 @@ public:
 	int32 GetCXP();
 
 	/**
-	 * Parameters:
+	 * Before Parameters:
 	 *	- [const uint32] CXP prior to modification
 	 *	- [int32&] attempted CXP that is being set
-	 */
-	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
-	FBeforeGetCXPOutlet BeforeGetCXPOutlet;
-
-	/**
-	 * Parameters:
+	 *
+	 * After Parameters:
 	 *	- [const uint32] CXP prior to modification
 	 *	- [const uint32] CXP that is being set
 	 */
 	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
-	FAfterGetCXPOutlet AfterGetCXPOutlet;
+	FGetCXPOutlet GetCXPOutlet;
 
 	/**
 	 * Sets the total experience accumulated points across all levels.
