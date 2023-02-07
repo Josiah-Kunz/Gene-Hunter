@@ -28,23 +28,6 @@ public:
 	
 };
 
-/**
- * 
- */
-USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FBeforeGetExpYieldOutlet : public FEffectOutlet_Base
-{
-	GENERATED_BODY()
-
-private:
-	
-	UPROPERTY()
-	TArray<FBeforeGetExpYieldDelegate> Delegates;
-	
-	DECLARE_OUTLET_FUNCTIONS_FourParams(EDelegateTriggerTiming::Before, FBeforeGetExpYieldDelegate, Delegates, Delegate,
-		const float, float&, const uint16, const uint16);
-};
-
 #pragma endregion
 
 #pragma region After
@@ -71,22 +54,35 @@ public:
 	
 };
 
+#pragma endregion
+
+#pragma region Outlet
+
 /**
  * 
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FAfterGetExpYieldOutlet : public FEffectOutlet_Base
+struct LEVELCOMPONENT_API FGetExpYieldOutlet : public FEffectOutlet_Base
 {
 	GENERATED_BODY()
 
 private:
 	
 	UPROPERTY()
-	TArray<FAfterGetExpYieldDelegate> Delegates;
+	TArray<FBeforeGetExpYieldDelegate> BeforeDelegates;
 	
-	DECLARE_OUTLET_FUNCTIONS_FourParams(EDelegateTriggerTiming::After, FAfterGetExpYieldDelegate, Delegates, Delegate,
-		const float, const float, const uint16, const uint16);
-};
+	DECLARE_OUTLET_FUNCTIONS_FourParams(Before, FBeforeGetExpYieldDelegate,
+		BeforeDelegates, Delegate,
+		const float, float&, const uint16, const uint16
+		);
 
+	UPROPERTY()
+	TArray<FAfterGetExpYieldDelegate> AfterDelegates;
+	
+	DECLARE_OUTLET_FUNCTIONS_FourParams(After, FAfterGetExpYieldDelegate,
+		AfterDelegates, Delegate,
+		const float, const float, const uint16, const uint16
+		);
+};
 
 #pragma endregion

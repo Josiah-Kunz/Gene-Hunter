@@ -68,8 +68,8 @@ float ULevelComponent::GetExpYield(ULevelComponent* VictoriousMonster)
 	const float OriginalYield = ReturnedYield;
 
 	// Delegates
-	BeforeGetExpYieldOutlet.Execute(OriginalYield, ReturnedYield, GetLevel(), VictoriousMonster->GetLevel());
-	AfterGetExpYieldOutlet.Execute(OriginalYield, ReturnedYield, GetLevel(), VictoriousMonster->GetLevel());
+	GetExpYieldOutlet.ExecuteBefore(OriginalYield, ReturnedYield, GetLevel(), VictoriousMonster->GetLevel());
+	GetExpYieldOutlet.ExecuteAfter(OriginalYield, ReturnedYield, GetLevel(), VictoriousMonster->GetLevel());
 
 	// Return
 	return ReturnedYield;

@@ -90,24 +90,20 @@ public:
 	float GetExpYield(ULevelComponent* VictoriousMonster);
 
 	/**
-	 * Parameters:
+	 * Before parameters:
 	 *	- [const float] original yield from documented calculations
 	 *	- [float&] returned yield
 	 *	- [const uint16] level of the Monster that was defeated (and hence yielding the points)
 	 *	- [const uint16] level of the Monster that was victorious (and hence receives the points)
-	 */
-	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
-	FBeforeGetExpYieldOutlet BeforeGetExpYieldOutlet;
-
-	/**
-	 * Parameters:
+	 *
+	 * After parameters:
 	 *	- [const float] original yield from documented calculations
 	 *	- [const float] returned yield
 	 *	- [const uint16] level of the Monster that was defeated (and hence yielding the points)
 	 *	- [const uint16] level of the Monster that was victorious (and hence receives the points)
 	 */
 	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
-	FAfterGetExpYieldOutlet AfterGetExpYieldOutlet;
+	FGetExpYieldOutlet GetExpYieldOutlet;
 
 #pragma endregion
 
