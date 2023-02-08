@@ -101,39 +101,34 @@ void ULevelComponent::SetCXP(int32 NewCumulativeExp)
 	const uint32 OldCXP = CumulativeExp;
 
 	// Delegate
-	BeforeSetCXPOutlet.Execute(OldCXP, NewCumulativeExp);
+	SetCXPOutlet.ExecuteBefore(OldCXP, NewCumulativeExp);
 
 	// Set and clamp exp
 	CumulativeExp = FMath::Clamp(NewCumulativeExp, 1, GetMaxExp());
 
 	// Clamp level
 	uint16 NewLevel = GetLevel();
-	if (NewLevel < MinLevel())
+	if (NewLevel < GetMinLevel())
 	{
-		NewLevel = MinLevel();
-		CumulativeExp = GetCXPFromLevel(MinLevel());
+		NewLevel = GetMinLevel();
+		CumulativeExp = GetCXPFromLevel(GetMinLevel());
 	}
-	if (NewLevel > MaxLevel())
+	if (NewLevel > GetMaxLevel())
 	{
-		NewLevel = MaxLevel();
-		CumulativeExp = GetCXPFromLevel(MaxLevel());
+		NewLevel = GetMaxLevel();
+		CumulativeExp = GetCXPFromLevel(GetMaxLevel());
 	}
-
-	// Delegate
-	//ExecuteAfterSetCumulativeExp(OldCEXP, CumulativeExp);
 
 	// Set new exp for delegates
 	const uint32 NewCXP = GetCXP();
 
 	// Call after delegates
-	AfterSetCXPOutlet.Execute(OldCXP, NewCXP);
+	SetCXPOutlet.ExecuteAfter(OldCXP, NewCXP);
 }
 
-void ULevelComponent::AddExp(int32 AddedCumulativeExp)
+void ULevelComponent::AddExp(const int32 AddedCumulativeExp)
 {
-	//ExecuteBeforeAddExp(GetCumulativeExp(), AddedCumulativeExp);
 	SetCXP(GetCXP() + AddedCumulativeExp);
-	//ExecuteAfterAddExp(GetCumulativeExp(), AddedCumulativeExp);
 }
 
 #pragma endregion
@@ -153,7 +148,7 @@ int32 ULevelComponent::GetLevelFromCXP(const int32 CXP)
 void ULevelComponent::SetLevel(int32 NewLevel)
 {
 	//ExecuteBeforeSetLevel(GetLevel(), NewLevel);
-	const uint16 Level = FMathf::Clamp(NewLevel, MinLevel(), MaxLevel());
+	const uint16 Level = FMathf::Clamp(NewLevel, GetMinLevel(), GetMaxLevel());
 	SetCXP(GetCXPFromLevel(Level));
 	//ExecuteAfterSetLevel(GetLevel(), NewLevel);
 }
@@ -163,20 +158,22 @@ void ULevelComponent::AddLevels(const int32 AddedLevels)
 	SetLevel(GetLevel() + AddedLevels);
 }
 
-int32 ULevelComponent::MaxLevel()
+int32 ULevelComponent::GetMaxLevel()
 {
-	uint16 MaxLevel = 100;
-	//ExecuteBeforeMaxLevel(MaxLevel);
-	//ExecuteAfterMaxLevel(MaxLevel);
-	return MaxLevel;
+	constexpr uint16 DefaultMaxLevel = 100;
+	int32 ReturnedMax = DefaultMaxLevel;
+	GetMaxLevelOutlet.ExecuteBefore(DefaultMaxLevel, ReturnedMax);
+	GetMaxLevelOutlet.ExecuteAfter(DefaultMaxLevel, ReturnedMax);
+	return ReturnedMax;
 }
 
-int32 ULevelComponent::MinLevel()
+int32 ULevelComponent::GetMinLevel()
 {
-	uint16 MinLevel = 1;
-	//ExecuteBeforeMinLevel(MinLevel);
-	//ExecuteAfterMinLevel(MinLevel);
-	return MinLevel;
+	constexpr uint16 DefaultMinLevel = 1;
+	int32 ReturnedMin = DefaultMinLevel;
+	GetMinLevelOutlet.ExecuteBefore(DefaultMinLevel, ReturnedMin);
+	GetMinLevelOutlet.ExecuteAfter(DefaultMinLevel, ReturnedMin);
+	return ReturnedMin;
 }
 
 #pragma endregion
@@ -195,7 +192,7 @@ int32 ULevelComponent::GetCXPFromLevel(const int32 TargetLevel)
 
 int32 ULevelComponent::GetExpToLevel()
 {
-	if (GetLevel() == MaxLevel())
+	if (GetLevel() == GetMaxLevel())
 		return 0;
 	const float NextLevelExp = GetCXPFromLevel(GetLevel() + 1);
 	return NextLevelExp - GetLevelExp();
@@ -203,7 +200,7 @@ int32 ULevelComponent::GetExpToLevel()
 
 int32 ULevelComponent::GetTotalLevelExp()
 {
-	if (GetLevel() == MaxLevel())
+	if (GetLevel() == GetMaxLevel())
 		return 0;
 	const float ThisLevelExp = GetCXPFromLevel(GetLevel());
 	const float NextLevelExp = GetCXPFromLevel(GetLevel() + 1);
@@ -217,7 +214,7 @@ int32 ULevelComponent::GetLevelExp()
 
 int32 ULevelComponent::GetMaxExp()
 {
-	return GetCXPFromLevel(MaxLevel());
+	return GetCXPFromLevel(GetMaxLevel());
 }
 
 #pragma endregion

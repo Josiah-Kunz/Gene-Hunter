@@ -6,7 +6,10 @@
 
 #pragma region Before
 
-DECLARE_DYNAMIC_DELEGATE_TwoParams(FBeforeSetCXPSignature, const uint32, OldCXP, int32&, AttemptedCXP);
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FBeforeSetCXPSignature,
+	const uint32, OldCXP,
+	int32&, AttemptedCXP
+	);
 
 /**
  * Since delegates can't fit in TArrays, we need to wrap them in something.
@@ -23,27 +26,14 @@ public:
 	
 };
 
-/**
- * 
- */
-USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FBeforeSetCXPOutlet : public FEffectOutlet_Base
-{
-	GENERATED_BODY()
-
-private:
-	
-	UPROPERTY()
-	TArray<FBeforeSetCXPDelegate> Delegates;
-	
-	DECLARE_OUTLET_FUNCTIONS_TwoParams(EDelegateTriggerTiming::Before, FBeforeSetCXPDelegate, Delegates, Delegate, const uint32, int32&);
-};
-
 #pragma endregion
 
 #pragma region After
 
-DECLARE_DYNAMIC_DELEGATE_TwoParams(FAfterSetCXPSignature, const uint32, OldCXP, const uint32, NewCXP);
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FAfterSetCXPSignature,
+	const uint32, OldCXP,
+	const int32, NewCXP
+	);
 
 /**
  * Since delegates can't fit in TArrays, we need to wrap them in something.
@@ -60,21 +50,35 @@ public:
 	
 };
 
+#pragma endregion
+
+#pragma region Outlet
+
 /**
  * 
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FAfterSetCXPOutlet : public FEffectOutlet_Base
+struct LEVELCOMPONENT_API FSetCXPOutlet : public FEffectOutlet_Base
 {
 	GENERATED_BODY()
 
 private:
 	
 	UPROPERTY()
-	TArray<FAfterSetCXPDelegate> Delegates;
+	TArray<FBeforeSetCXPDelegate> BeforeDelegates;
 	
-	DECLARE_OUTLET_FUNCTIONS_TwoParams(EDelegateTriggerTiming::After, FAfterSetCXPDelegate, Delegates, Delegate, const uint32, const uint32);
-};
+	DECLARE_OUTLET_FUNCTIONS_TwoParams(Before, FBeforeSetCXPDelegate,
+		BeforeDelegates, Delegate,
+		const uint32, int32&
+		);
 
+	UPROPERTY()
+	TArray<FAfterSetCXPDelegate> AfterDelegates;
+	
+	DECLARE_OUTLET_FUNCTIONS_TwoParams(After, FAfterSetCXPDelegate,
+		AfterDelegates, Delegate,
+		const uint32, const int32
+		);
+};
 
 #pragma endregion

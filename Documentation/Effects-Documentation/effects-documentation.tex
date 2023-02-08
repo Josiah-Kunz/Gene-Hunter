@@ -136,6 +136,46 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 		
 	%----------------------
 	\hline
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetMaxLevel}}\\
+	\hline
+	\\
+	%----------------------	
+
+	\DelegateSpace{} Before			
+		& {	\code{const uint16 DefaultMax},\\ 
+			\code{int32\& AttemptedMax}}	
+		\\
+	\DelegateNote{}
+		& \code{DefaultMax} is defined in the code. It should normally be 100, but may change for certain subclasses (e.g., a \code{UBossLevelComponent} may have a max of 200 instead). Also, \code{AttemptedMax} is \code{int32\&} instead of \code{uint16\&} for Blueprint compatability.
+		\\		
+							
+	\DelegateSpace{} After				
+		& {	\code{const uint16 DefaultMax}\\ 
+			\code{const int32 ReturnedMax}} 
+		\\
+		
+	%----------------------
+	\hline
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetMinLevel}}\\
+	\hline
+	\\
+	%----------------------	
+
+	\DelegateSpace{} Before			
+		& {	\code{const uint16 DefaultMin},\\ 
+			\code{int32\& AttemptedMin}}	
+		\\
+	\DelegateNote{}
+		& \code{DefaultMin} is defined in the code. It should normally be 1, but may change for certain subclasses (e.g., a \code{UEggLevelComponent} may have a min of 0 instead for whatever reason). Also, \code{AttemptedMin} is \code{int32\&} instead of \code{uint16\&} for Blueprint compatability.
+		\\		
+							
+	\DelegateSpace{} After				
+		& {	\code{const uint16 DefaultMin}\\ 
+			\code{const int32 ReturnedMin}} 
+		\\		
+		
+	%----------------------
+	\hline
 	\SetCell[c=2]{l}{\color{ICBlue}\textbf{SetBaseExpYield}}\\
 	\hline
 	\\
@@ -196,11 +236,11 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 
 \sect{Making Your Own Outlet}
 
-As an example, let's use \code{BeforeGetBaseExpYield}. (You can imagine that this is an important Outlet for tweaking levelling curves.) Here's what to do:\\
+As an example, let's use \code{GetBaseExpYield}. (You can imagine that this is an important Outlet for tweaking levelling curves.) Here's what to do:\\
 
 \begin{enumerate}
-	\item{\textbf{Plan ahead.} I would sincerely recommend you writing down what parameters your Outlet delegate takes on paper. We go to a few files and it's easy to be inconsistent.}
-	\item{\textbf{Go to the right directory.} We want to place the Outlet inside of \code{ULevelComponent}, so we'll start with that directory. If it doesn't contain an ``Outlets'' directory, create one and place your Outlet(s) there.}
+	\item{\textbf{Plan ahead.} I would sincerely recommend you writing down what parameters your Outlet \code{Before} and \code{After} delegates take on paper. We go to a few files and it's easy to be inconsistent.}
+	\item{\textbf{Go to the right directory.} We want to place the Outlet inside of \code{ULevelComponent}, so we'll start with that directory. If yours doesn't contain an ``Outlets'' directory, create one and place your Outlet(s) there.}
 	\item{\textbf{Copy + paste file.} The easiest way is to copy + paste pre-existing Outlets. In this example, we'll copy + paste \code{SetCXPOutlet.h} and name the new file \code{GetBaseExpYield.h}. \\
 	\begin{center}
 		\includegraphics[scale=\ScreenshotScale]{create-outlet-rename}

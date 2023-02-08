@@ -12,6 +12,8 @@
 // Other components
 #include "EffectableComponent.h"
 #include "Outlets/GetExpYieldOutlet.h"
+#include "Outlets/GetMaxLevelOutlet.h"
+#include "Outlets/GetMinLevelOutlet.h"
 
 
 // .gen
@@ -144,49 +146,16 @@ public:
 	void SetCXP(int32 NewCumulativeExp);
 
 	/**
-	 * Parameters:
+	 * Before parameters:
 	 *	- [const uint32] CXP prior to modification
 	 *	- [int32&] attempted CXP that is being set
-	 */
-	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
-	FBeforeSetCXPOutlet BeforeSetCXPOutlet;
-
-	/**
-	 * Parameters:
+	 *
+	 *	After parameters:
 	 *	- [const uint32] CXP prior to modification
-	 *	- [const uint32] CXP that is being set
+	 *	- [const int32] CXP that was set
 	 */
 	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
-	FAfterSetCXPOutlet AfterSetCXPOutlet;
-	
-	/*
-	void ExecuteAfterSetCXP(const int OldCXP, const int NewCXP)
-	{
-		for(FAfterSetCXPOutlet& Outlet : AfterSetCXP)
-		{
-			if (!Outlet.Delegate.ExecuteIfBound(OldCXP, NewCXP))
-			{
-				UE_LOG(LogTemp, Warning, TEXT("Outlet type \"AfterSetCXP\" no longer bound! Surely this is an error."))
-			}
-		}
-	}
-
-public:
-	void AddAfterSetCXP(const FAfterSetCXPOutlet NewOutlet, const float Priority)
-	{
-		bool bAdded = false;
-		for(int i=0; i<AfterSetCXP.Num(); i++)
-		{
-			if (Priority < AfterSetCXP[i].Priority)
-			{
-				AfterSetCXP.Insert(NewOutlet, i);
-				bAdded = true;
-			}
-		}
-		if (!bAdded)
-			AfterSetCXP.Add(NewOutlet);
-	}
-	*/
+	FSetCXPOutlet SetCXPOutlet;
 
 	/**
 	 * Adds to the total accumulated experience points across all levels.
@@ -225,13 +194,37 @@ public:
 	 * The maximum level. Overrideable.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-	virtual int32 MaxLevel();
+	virtual int32 GetMaxLevel();
+
+	/**
+	 * Before parameters:
+	 *	- [const uint16] default max
+	 *	- [int32&] attempted max that is being set
+	 *
+	 *	After parameters:
+	 *	- [const uint16] default max
+	 *	- [const int32] max that was set
+	 */
+	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
+	FGetMaxLevelOutlet GetMaxLevelOutlet;
 	
 	/**
      * The minimum level. Overrideable.
      */
     UFUNCTION(BlueprintCallable, BlueprintPure, Category="Level")
-    virtual int32 MinLevel();
+    virtual int32 GetMinLevel();
+
+	/**
+	 * Before parameters:
+	 *	- [const uint16] default min
+	 *	- [int32&] attempted min that is being set
+	 *
+	 *	After parameters:
+	 *	- [const uint16] default min
+	 *	- [const int32] min that was set
+	 */
+	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
+	FGetMinLevelOutlet GetMinLevelOutlet;
 
 #pragma endregion
 

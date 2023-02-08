@@ -56,14 +56,14 @@ void LevelComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBui
 							LevelComponent->SetLevel(NewLevel);
 						SaveAndRefresh(DetailBuilder);
 					})
-				.MaxText(FText::FromString(FString::FromInt(LevelComponent->MaxLevel())))
-				.MaxTooltip(FText::FromString(FString::FromInt(LevelComponent->MaxLevel())))
+				.MaxText(FText::FromString(FString::FromInt(LevelComponent->GetMaxLevel())))
+				.MaxTooltip(FText::FromString(FString::FromInt(LevelComponent->GetMaxLevel())))
 				.BarColor(FLinearColor::Green)
-				.BarFraction(GetFraction(LevelComponent->GetLevel(), LevelComponent->MaxLevel()))
+				.BarFraction(GetFraction(LevelComponent->GetLevel(), LevelComponent->GetMaxLevel()))
 				.BarTooltip(FText::FromString(
 					FString::Printf(TEXT(
 					"The higher the level, the stronger the stats! The max level is %s."),
-					*FString::FromInt(LevelComponent->MaxLevel())
+					*FString::FromInt(LevelComponent->GetMaxLevel())
 					)))
 			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
 				TAttribute<bool>::CreateLambda([this]() 
@@ -186,7 +186,7 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 			.MaxText(UUtilityFunctionLibrary::ToSI(LevelComponent->GetMaxExp(), StatsComponentDrawer::SigFigs, true))
 			.MaxTooltip(FText::FromString(FString::Printf(
 				TEXT("Max cumulative exp at level %i is %s."),
-				LevelComponent->MaxLevel(),
+				LevelComponent->GetMaxLevel(),
 				*FloatToFText(LevelComponent->GetMaxExp(), true).ToString()
 				)))
 			.BarColor(FLinearColor{0.5f, 0, 0.5f})
@@ -195,7 +195,7 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
 					TAttribute<bool>::CreateLambda([this]() 
 					{ 
-						return LevelComponent->GetCXP() != LevelComponent->GetCXPFromLevel(LevelComponent->MinLevel());
+						return LevelComponent->GetCXP() != LevelComponent->GetCXPFromLevel(LevelComponent->GetMinLevel());
 						
 					}), 
 					FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
