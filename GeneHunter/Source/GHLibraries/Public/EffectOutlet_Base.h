@@ -55,12 +55,12 @@ public:
 /** Creates Add(), which inserts a Delegate to the DelegateArray based on its priority. */
 #define DECLARE_ADD_FUNCTION(BeforeOrAfter, DelegateType, DelegateArray) \
 public: \
-	void Add(const DelegateType NewDelegate) \
+	void Add##BeforeOrAfter(const DelegateType NewDelegate) \
 	{ \
 		bool bAdded = false; \
 		for(int i=0; i< DelegateArray##.Num(); i++) \
 		{ \
-			if (IsPriorityLowerIndex(NewDelegate.Priority, DelegateArray##[i].Priority, BeforeOrAfter)) \
+			if (IsPriorityLowerIndex(NewDelegate.Priority, DelegateArray##[i].Priority, EDelegateTriggerTiming::##BeforeOrAfter)) \
 			{ \
 				DelegateArray##.Insert(NewDelegate, i); \
 				bAdded = true; \
@@ -90,7 +90,7 @@ public: \
 		} \
 	} \
 	\
-	DECLARE_ADD_FUNCTION(EDelegateTriggerTiming::##BeforeOrAfter , DelegateType, DelegateArray);
+	DECLARE_ADD_FUNCTION( BeforeOrAfter , DelegateType, DelegateArray);
 	
 
 /**
@@ -111,7 +111,7 @@ public: \
 		} \
 	} \
 	\
-	DECLARE_ADD_FUNCTION(EDelegateTriggerTiming::##BeforeOrAfter , DelegateType, DelegateArray);
+	DECLARE_ADD_FUNCTION( BeforeOrAfter , DelegateType, DelegateArray);
 	
 /**
  * Creates two functions:
@@ -131,7 +131,7 @@ public: \
 		} \
 	} \
 	\
-	DECLARE_ADD_FUNCTION(EDelegateTriggerTiming::##BeforeOrAfter , DelegateType, DelegateArray);
+	DECLARE_ADD_FUNCTION( BeforeOrAfter , DelegateType, DelegateArray);
 
 /**
  * Creates two functions:
@@ -151,7 +151,7 @@ public: \
 		} \
 	} \
 	\
-	DECLARE_ADD_FUNCTION(EDelegateTriggerTiming::##BeforeOrAfter , DelegateType, DelegateArray);
+	DECLARE_ADD_FUNCTION( ##BeforeOrAfter , DelegateType, DelegateArray);
 	
 };
 

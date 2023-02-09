@@ -19,6 +19,7 @@
 // Utilities
 #include "ModificationMode.h"
 #include "StatEnum.h"
+#include "StatRandParams.h"
 #include "StatValueType.h"
 
 // .gen
@@ -53,7 +54,7 @@ private:
 	FAfterSetCXPDelegate UpdateStatsAfterLevel;
 
 	UFUNCTION(CallInEditor, Category="Stats")
-	void ChangeStatsOnLevelChange(const uint32 OldCXP, const uint32 AttemptedCXP);
+	void ChangeStatsOnLevelChange(const uint32 OldCXP, const int32 AttemptedCXP);
 
 protected:
 	// Called when the game starts
@@ -136,9 +137,7 @@ public:
 	 * If any max is greater than its corresponding min, it will be ignored.
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
-	void RandomizeStats(
-		int32 MinBaseStat = 50, int32 MaxBaseStat = 150,
-		int32 MinBasePairs = 1, int32 MaxBasePairs = 100);
+	void RandomizeStats(FStatRandParams Params = FStatRandParams{});
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
 	void RandomizeBasePairs(const int32 MinBasePairs = 1, const int32 MaxBasePairs = 100);
