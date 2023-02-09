@@ -236,15 +236,51 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 	%----------------------	
 	
 	\DelegateSpace{} Before	
-		& {	\code{const FStatRandParams OriginalParams},\\
-			\code{FStatRandParams\& ParamsToBeUsed}}
+		& {	
+			\code{const EStatEnum TargetStat},\\
+			\code{const FStatRandParams OriginalParams},\\
+			\code{FStatRandParams\& ParamsToBeUsed}
+		}
 		\\
 		
 		
 	\DelegateSpace{} After	
-		& {	\code{const FStatRandParams OriginalParams},\\
-			\code{const FStatRandParams UsedParams}}
+		& {	
+			\code{const EStatEnum TargetStat},\\
+			\code{const FStatRandParams OriginalParams},\\
+			\code{const FStatRandParams UsedParams}
+		}
 		\\
+		\DelegateNote{} 
+			& The \code{EStatEnum} is not the acutal \code{FStat}. To get the \code{FStat} (such as \code{FHealth}), use \code{UStatsComponent::GetStat(EStatEnum)}.
+		\\
+		
+	%----------------------
+	\hline
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{RecalculateStats}}\\
+	\hline
+	\\
+	%----------------------	
+	
+	\DelegateSpace{} Before	
+		& {	
+			\code{const EStatEnum TargetStat},\\
+			\code{const bool bResetCurrent},\\
+			\code{const float OriginalCurrent},\\
+			\code{const float OriginalPermanent}
+		}
+		\\
+		
+		
+	\DelegateSpace{} After	
+		& {	
+			\code{const EStatEnum TargetStat},\\
+			\code{const bool bResetCurrent},\\
+			\code{const float OriginalCurrent},\\
+			\code{const float OriginalPermanent}
+		}
+		\\
+			
 		
 	
 \end{longtblr}

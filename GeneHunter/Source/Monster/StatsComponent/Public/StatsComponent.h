@@ -21,6 +21,8 @@
 #include "StatEnum.h"
 #include "StatRandParams.h"
 #include "StatValueType.h"
+#include "Outlets/RandomizeStatsOutlet.h"
+#include "Outlets/RecalculateStatsOutlet.h"
 
 // .gen
 #include "StatsComponent.generated.h"
@@ -146,10 +148,25 @@ public:
 	void RandomizeBaseStats(const int32 MinBaseStats = 80, const int32 MaxBaseStats = 120);
 
 	/**
+	 * Before parameters:
+	 *  - [const EStatEnum] the stat that is being randomized (the actual function loops over all FStats)
+	 *	- [const FStatRandParams] original parameters to be used
+	 *	- [FStatRandParams&] parameters that will be used in randomization
+	 *
+	 *	After parameters:
+	 *	- [const EStatEnum] the stat that was randomized (the actual function loops over all FStats)
+	 *	- [const FStatRandParams] original parameters that would otherwise be used
+	 *	- [const FStatRandParams] parameters that were used
+	 *
+	 *	Note: All "Randomize" functions call RandomizeStats, which calls this.
+	 */
+	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
+	FRandomizeStatsOutlet RandomizeStatsOutlet;
+
+	/**
 	 * Modifies (that is, increases, decreases, or sets) a single Stat in this StatsComponent.
 	 */
 	void ModifyStat(EStatEnum Stat, const float Value, const EStatValueType ValueType, const EModificationMode Mode);
-	
 	
 	/**
 	 * Modifies (that is, increases, decreases, or sets) the Stats in this StatsComponent. Order is HP, PhA, PhD, SpA, SpD, Hst, Crt.
@@ -167,6 +184,16 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	void RecalculateStats(bool bResetCurrent = true);
+
+	/**
+	 * Before and After parameters are identical:
+	 *  - [const EStatEnum] the stat that is being recalculated (the actual function loops over all FStats)
+	 *	- [const bool] if true, the current stats will reset (permanent always reset)
+	 *	- [const float] the original current stats (prior to recalculation)
+	 *	- [const float] the original permanent stats (prior to recalculation)
+	 */
+	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
+	FRecalculateStatsOutlet RecalculateStatsOutlet;
 	
 private:
 

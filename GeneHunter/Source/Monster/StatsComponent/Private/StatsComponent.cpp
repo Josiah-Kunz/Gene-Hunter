@@ -88,18 +88,27 @@ FStat& UStatsComponent::GetStat(const EStatEnum Stat){
 void UStatsComponent::RandomizeStats(FStatRandParams Params)
 {
 
-	//ExecuteBeforeRandomizeStats(MinBaseStat, MaxBaseStat, MinBasePairs, MaxBasePairs);
+	// Cache original for delegates
+	const FStatRandParams OriginalParams = Params;
 	
 	for(const EStatEnum Stat : StatsArray)
 	{
+
+		// Before delegates
+		RandomizeStatsOutlet.ExecuteBefore(Stat, OriginalParams, Params);
+
+		// Special, intentional cases: if max <= min, don't randomize it
 		if (Params.MaxBaseStat > Params.MinBaseStat)
 			GetStat(Stat).BaseStat = FMath::RandRange(Params.MinBaseStat, Params.MaxBaseStat);
 		if (Params.MaxBasePairs > Params.MinBasePairs)
 			GetStat(Stat).BasePairs = FMath::RandRange(Params.MinBasePairs, Params.MaxBasePairs);
-		GetStat(Stat).Update(LevelComponent->GetLevel());
-	}
 
-	//ExecuteAfterRandomizeStats(MinBaseStat, MaxBaseStat, MinBasePairs, MaxBasePairs);
+		// Update it
+		GetStat(Stat).Update(LevelComponent->GetLevel());
+
+		// After delegate
+		RandomizeStatsOutlet.ExecuteAfter(Stat, OriginalParams, Params);
+	}
 }
 
 void UStatsComponent::RandomizeBasePairs(const int32 MinBasePairs, const int32 MaxBasePairs)
@@ -146,9 +155,16 @@ void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 {
 	for(const EStatEnum Stat : StatsArray)
 	{
-		//ExecuteBeforeRecalculateStats(Stat, bResetCurrent);
-		GetStat(Stat).Update(LevelComponent->GetLevel(), bResetCurrent);
-		//ExecuteAfterRecalculateStats(Stat, bResetCurrent);
+
+		// Cache for delegates
+		FStat& TargetStat = GetStat(Stat);
+		const float OriginalCurrent = TargetStat.GetCurrentValue();
+		const float OriginalPermanent = TargetStat.GetPermanentValue();
+
+		// Call + execute + call
+		RecalculateStatsOutlet.ExecuteBefore(Stat, bResetCurrent, OriginalCurrent, OriginalPermanent);
+		TargetStat.Update(LevelComponent->GetLevel(), bResetCurrent);
+		RecalculateStatsOutlet.ExecuteBefore(Stat, bResetCurrent, OriginalCurrent, OriginalPermanent);
 	}
 }
 
