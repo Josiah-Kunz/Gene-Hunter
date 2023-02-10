@@ -65,6 +65,37 @@
 \etocsetstyle{paragraph}{}{}{\etocsavedsubsubsectiontocline{\numberline{}\etocname}{\etocpage}}{}
 \etocsetstyle{subparagraph}{}{}{\etocsavedparagraphtocline{\numberline{}\etocname}{\etocpage}}{}
 
+% ==================================
+% Main file declaration (standalone)
+% ==================================
+
+\usepackage{currfile,filecontents}	% Allows use of the inputted filename when using \input{file.tex}
+\usepackage{xstring} % Allows \StrSubstitute
+
+% Put this as the second command (after \input{standalone})
+\def\defaultvariable{XxdefaultxX}
+\makeatletter
+\newcommand{\mainfile}{\defaultvariable}
+\makeatother
+\DeclareDocumentCommand{\trysetmain}{}{
+	\ifthenelse{\equal{\defaultvariable}{\mainfile}}{
+		\StrSubstitute{\currfilename}{}{}[\strA]
+		\renewcommand{\mainfile}{\strA}
+	}{}
+}
+
+% Put this as the last command
+\DeclareDocumentCommand{\postamble}{}{
+	\ifthenelse{\equal{\mainfile}{\currfilename}}{
+
+		\newpage	
+		\printbibliography
+		\end{document}
+	}{
+		% Other called file
+	}
+%	\clearpage % Clears fancyhdr when we compile everything
+}
 
 % Simple custom commands
 % ======================
@@ -100,6 +131,16 @@
 
 \definecolor{subsubsectColor}{rgb}{0.747, 0.458, 0}
 \def\subsubsect#1{\textcolor{subsubsectColor}{\subsubsection{#1}}}
+
+% Vertical spacing
+% ================
+\def\gap{
+	\begin{center}
+		\noindent\rule{4cm}{0.4pt}
+		$\bullet\ \bullet\ \bullet$
+		\noindent\rule{4cm}{0.4pt}
+	\end{center}
+}
 
 % TL; DR section
 % ==============
@@ -248,4 +289,4 @@
 
 
 
-\begin{document}
+%\begin{document}

@@ -1,0 +1,259 @@
+\input{../standalone}
+
+% Commands
+% ========
+
+\newcommand{\DelegateSpace}{\hspace*{1em}$\blacktriangleright$}
+
+\newcommand{\DelegateNote}{\hspace*{2em}\textit{Note:}}
+
+\newenvironment{OutletTable}[1]{%
+\begin{longtblr}[
+	caption = {\code{Outlet}s for \code{#1}},
+	label = {delegate-arrays-levelcomponent},
+]{
+	colspec= {Q[l, wd=0.13\linewidth] Q[l, wd=0.72\linewidth] Q[l, wd=0.37\linewidth]},
+	hline{1,Z} = {2pt},
+}
+}{%
+\end{longtblr}
+}
+
+\begin{OutletTable}{TEST}
+ok & ok
+\end{OutletTable}
+
+
+%--------------------------
+\gap{}
+
+\begin{OutletTable}{UAffinitiesComponent}
+	\todo{Todo}
+	
+\end{OutletTable}
+
+%--------------------------
+
+
+
+\begin{OutletTable}{ULevelComponent}
+
+	%----------------------
+	\hline
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetBaseExpYield}}\\
+	\hline
+	\\
+	%----------------------	
+	
+	\DelegateSpace{} Before	
+		& {	\code{const float OriginalYield},\\
+			\code{float\& ReturnedYield}}
+		\\
+		
+		
+	\DelegateSpace{} After	
+		& {	\code{const float OriginalYield},\\
+			\code{const float ReturnedYield}}
+		\\
+		
+	%----------------------
+	\hline
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetCXP}}\\
+	\hline
+	\\
+	%----------------------	
+
+	\DelegateSpace{} Before			
+		& {	\code{const uint32 OriginalCXP},\\ 
+			\code{int32\& ReturnedCXP}}	
+		\\ 
+	\DelegateNote{}
+		& \code{ReturnedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.
+		\\		
+							
+	\DelegateSpace{} After				
+		& {	\code{const uint32 OriginalCXP}\\ 
+			\code{const int32 ReturnedCXP}} 
+		\\ 
+	\DelegateNote{}
+		& \code{ReturnedCXP} is \code{const int32} instead of \code{const uint32} for Blueprint compatability.
+		\\
+		
+	%----------------------
+	\hline
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetExpYield}}\\
+	\hline
+	\\
+	%----------------------	
+
+	\DelegateSpace{} Before			
+		& {	\code{const float OriginalYield},\\ 
+			\code{float\& ReturnedYield},\\
+			\code{const uint16 DefeatedLevel},\\
+			\code{const uint16 VictoriousLevel}
+			}\\
+		\\
+	\DelegateNote{}
+		& ``Defeated'' and ``Victorious'' levels are provided for flexibility (e.g., in case you want to yield exp differently based on level difference, although technically you could always back-calculate the level difference based on the equation and \code{OriginalYield}).
+		\\		
+							
+	\DelegateSpace{} After			
+		& {	\code{const float OriginalYied},\\ 
+			\code{const float ReturnedYield},\\
+			\code{const uint16 DefeatedLevel},\\
+			\code{const uint16 VictoriousLevel}
+			}\\
+		\\
+	\DelegateNote{}
+		& ``Defeated'' and ``Victorious'' levels are provided for symmetry with respect to the \code{Before} delegate (since \code{ReturnedValue} is already calculated, I can't think of why you would need them, but you never know!).
+		\\
+		
+	%----------------------
+	\hline
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetMaxLevel}}\\
+	\hline
+	\\
+	%----------------------	
+
+	\DelegateSpace{} Before			
+		& {	\code{const uint16 DefaultMax},\\ 
+			\code{int32\& AttemptedMax}}	
+		\\
+	\DelegateNote{}
+		& \code{DefaultMax} is defined in the code. It should normally be 100, but may change for certain subclasses (e.g., a \code{UBossLevelComponent} may have a max of 200 instead). Also, \code{AttemptedMax} is \code{int32\&} instead of \code{uint16\&} for Blueprint compatability.
+		\\		
+							
+	\DelegateSpace{} After				
+		& {	\code{const uint16 DefaultMax}\\ 
+			\code{const int32 ReturnedMax}} 
+		\\
+		
+	%----------------------
+	\hline
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetMinLevel}}\\
+	\hline
+	\\
+	%----------------------	
+
+	\DelegateSpace{} Before			
+		& {	\code{const uint16 DefaultMin},\\ 
+			\code{int32\& AttemptedMin}}	
+		\\
+	\DelegateNote{}
+		& \code{DefaultMin} is defined in the code. It should normally be 1, but may change for certain subclasses (e.g., a \code{UEggLevelComponent} may have a min of 0 instead for whatever reason). Also, \code{AttemptedMin} is \code{int32\&} instead of \code{uint16\&} for Blueprint compatability.
+		\\		
+							
+	\DelegateSpace{} After				
+		& {	\code{const uint16 DefaultMin}\\ 
+			\code{const int32 ReturnedMin}} 
+		\\		
+		
+	%----------------------
+	\hline
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{SetBaseExpYield}}\\
+	\hline
+	\\
+	%----------------------	
+
+	\DelegateSpace{} Before			
+		& {	\code{const float OldYield},\\ 
+			\code{float\& AttemptedYield}}	
+		\\		
+							
+	\DelegateSpace{} After				
+		& {	\code{const float OldYield}\\ 
+			\code{const float NewYield}} 
+		\\
+		
+	%----------------------
+	\hline
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{SetCXP}}\\
+	\hline
+	\\
+	%----------------------	
+
+	\DelegateSpace{} Before			
+		& {	\code{const uint32 OldCXP},\\ 
+			\code{int32\& AttemptedCXP}}	
+		\\
+	\DelegateNote{}
+		& \code{AttemptedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.
+		\\		
+							
+	\DelegateSpace{} After				
+		& {	\code{const uint32 OldCXP}\\ 
+			\code{const uint32 NewCXP}} 
+		\\
+	\DelegateNote{}
+		& \code{UStatsComponent} subscribes to this in order to change stats on level change.
+		\\
+		
+		
+		
+\end{OutletTable}
+
+%--------------------------
+
+\begin{OutletTable}{UStatsComponent}
+
+	%----------------------
+	\hline
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{RandomizeStats}}\\
+	\hline
+	\\
+	%----------------------	
+	
+	\DelegateSpace{} Before	
+		& {	
+			\code{const EStatEnum TargetStat},\\
+			\code{const FStatRandParams OriginalParams},\\
+			\code{FStatRandParams\& ParamsToBeUsed}
+		}
+		\\
+		
+		
+	\DelegateSpace{} After	
+		& {	
+			\code{const EStatEnum TargetStat},\\
+			\code{const FStatRandParams OriginalParams},\\
+			\code{const FStatRandParams UsedParams}
+		}
+		\\
+		\DelegateNote{} 
+			& The \code{EStatEnum} is not the acutal \code{FStat}. To get the \code{FStat} (such as \code{FHealth}), use \code{UStatsComponent::GetStat(EStatEnum)}.
+		\\
+		
+	%----------------------
+	\hline
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{RecalculateStats}}\\
+	\hline
+	\\
+	%----------------------	
+	
+	\DelegateSpace{} Before	
+		& {	
+			\code{const EStatEnum TargetStat},\\
+			\code{const bool bResetCurrent},\\
+			\code{const float OriginalCurrent},\\
+			\code{const float OriginalPermanent}
+		}
+		\\
+		
+		
+	\DelegateSpace{} After	
+		& {	
+			\code{const EStatEnum TargetStat},\\
+			\code{const bool bResetCurrent},\\
+			\code{const float OriginalCurrent},\\
+			\code{const float OriginalPermanent}
+		}
+		\\
+			
+		
+	
+\end{OutletTable}
+
+%====================================================
+
+
+\postamble{}
