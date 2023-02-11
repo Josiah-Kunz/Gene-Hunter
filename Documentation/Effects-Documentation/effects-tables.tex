@@ -1,170 +1,15 @@
 \input{../standalone}
-
-% Commands
-% ========
-
-\newcommand{\DelegateSpace}{\hspace*{1em}$\blacktriangleright$}
-
-\newcommand{\DelegateNote}{\hspace*{2em}\textit{Note:}}
-
-\newenvironment{OutletTable}[1]{%
-\begin{longtblr}[
-	caption = {\code{Outlet}s for \code{#1}},
-	label = {delegate-arrays-levelcomponent},
-]{
-	colspec = {Q[l, wd=0.13\linewidth] Q[l, wd=0.72\linewidth]|},
-	cells = {gray!15},
-	hline{1} = {2pt},
-	hline{Z} = {4pt},
-	hline{2-Y} = {1pt},
-}
-}{%
-\end{longtblr}
-}
-
-
-
-\newenvironment{OutletTableee}[1]{%
-\begin{longtblr}[
-	caption = {\code{Outlet}s for \code{#1}},
-	label = {delegate-arrays-levelcomponent},
-]{
-	cells = {gray!15},
-	leftsep = 0pt,
-	rightsep = 0pt,
-	colspec={|Q[c, wd=\linewidth]|},
-	hline{2-Z}={2pt},
-	rowsep=-0.5em,
-	rows = {abovesep=-12pt},
-}
-}{%
-\end{longtblr}
-}
-
-% Keyword arguments
-\makeatletter
-\define@key{outletKeys}{title}{\def\outletKeys@title{#1}}
-\define@key{outletKeys}{beforeParams}{\def\outletKeys@beforeParams{#1}}
-\define@key{outletKeys}{afterParams}{\def\outletKeys@afterParams{#1}}
-\define@key{outletKeys}{beforeNote}{\def\outletKeys@beforeNote{#1}}
-\define@key{outletKeys}{afterNote}{\def\outletKeys@afterNote{#1}}
-
-% Kwargs
-\DeclareDocumentCommand{\OutletCell}{m}{
-
-	\begingroup
-	
-	% Set default kwargs
-	\setkeys{outletKeys}{title={0}, #1}
-	\setkeys{outletKeys}{beforeParams={0}, #1}
-	\setkeys{outletKeys}{afterParams={0}, #1}
-	\setkeys{outletKeys}{beforeNote={}, #1}
-	\setkeys{outletKeys}{afterNote={}, #1}
-
-	% Title
-	\begin{tblr}{
-		colspec={Q[l, wd=\linewidth]},
-		leftsep = 0pt,
-		rightsep = 0pt,
-		hline{1} = {2pt},
-		hline{2} = {1.5pt},
-	}
-	\color{ICBlue}\textbf{\hspace*{0.5em}\outletKeys@title}
-	\end{tblr}	
-	
-	% Before
-	\begin{tblr}{
-		colspec={Q[l, wd=0.2\linewidth] Q[l, wd=0.8\linewidth]},
-		leftsep = 0pt,
-		rightsep = 0pt,
-	}
-		\hspace*{1em}$\blacktriangleright$ Before	& {	\outletKeys@beforeParams }
-	\end{tblr}
-	
-	% Before note
-	\ifthenelse{\equal{\outletKeys@beforeNote}{}}{}{%
-		\begin{tblr}{
-			colspec={Q[l, wd=0.2\linewidth] Q[l, wd=0.8\linewidth]},
-			leftsep = 0pt,
-			rightsep = 0pt,
-		}
-			\hspace*{2em} \textit{Note:} & \outletKeys@beforeNote
-		\end{tblr}
-	}
-	
-	% After
-	\begin{tblr}{
-		colspec={Q[l, wd=0.2\linewidth] Q[l, wd=0.8\linewidth]},
-		leftsep = 0pt,
-		rightsep = 0pt,
-		hline{1} = 1pt,
-	}
-		\hspace*{1em}$\blacktriangleright$ After	& {	\outletKeys@afterParams }
-	\end{tblr}
-	
-	% After note
-	\ifthenelse{\equal{\outletKeys@afterNote}{}}{}{%
-		\begin{tblr}{
-			colspec={Q[l, wd=0.2\linewidth] Q[l, wd=0.8\linewidth]},
-			leftsep = 0pt,
-			rightsep = 0pt,
-		}
-			\hspace*{2em} \textit{Note:} & \outletKeys@afterNote
-		\end{tblr}
-	}
-	
-	\endgroup
-}
-\makeatother
-
-\newcommand{\Outlet}[1]{%
-	\begin{tblr}{
-		colspec={|Q[l, wd=0.15\linewidth] Q[l, wd=0.85\linewidth]|},
-		hline{1,Z} = {2pt},
-		cells = {gray!15},
-		leftsep = 0pt,
-		rightsep = 0pt,
-	}
-		\SetCell[c=2]{l}{\color{ICBlue}\textbf{\hspace*{0.5em} #1}}\\
-		\hline
-		\\
-		
-		\DelegateSpace{} Before	
-			& {	\code{const float OriginalYield},\\
-				\code{float\& ReturnedYield}}
-			\\
-		
-		
-		\DelegateSpace{} After	
-			& {	\code{const float OriginalYield},\\
-				\code{const float ReturnedYield}}
-			\\
-			
-		\DelegateNote{} & yersh \\
-	\end{tblr}
-}
+\input{outlet-table-defs}
 
 %--------------------------
 
-\begin{OutletTableee}{UAffinitiesComponent}
+\begin{OutletTable}{UAffinitiesComponent}
 
-	\OutletCell{title=ElIf, 
-				beforeParams={111}, 
-				beforeNote={Before note goes here!},
-				afterParams={\code{const float OriginalYield},\\
-							 \code{const float ReturnedYield}
-							},
-				afterNote={This is the after note.}
-				}\\
-				
-	\OutletCell{title=GetBaseExpYield, 
-				beforeParams={\code{const float OriginalYield},\\
-							\code{float\& ReturnedYield}},
-				afterParams={\code{const float OriginalYield},\\
-							\code{const float ReturnedYield}}
-				}
 	
-\end{OutletTableee}
+				
+	\todo{to do!}
+	
+\end{OutletTable}
 
 %--------------------------
 
@@ -172,158 +17,99 @@
 
 \begin{OutletTable}{ULevelComponent}
 
-	%----------------------
-	%\OutletTitle{GetBaseExpYield}\\
-	%----------------------	
-	
-	\DelegateSpace{} Before	
-		& {	\code{const float OriginalYield},\\
-			\code{float\& ReturnedYield}}
-		\\
-		
-		
-	\DelegateSpace{} After	
-		& {	\code{const float OriginalYield},\\
-			\code{const float ReturnedYield}}
-		\\
-	
-		
-	%----------------------
-	\hline
-	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetCXP}}\\
-	\hline
-	\\
-	%----------------------	
+	\OutletCell{title=GetBaseExpYield, 
+				beforeParams={\code{const float OriginalYield},\\
+							\code{float\& ReturnedYield}},
+				afterParams={\code{const float OriginalYield},\\
+							\code{const float ReturnedYield}}
+				}
+				\\
+				
+	% ----------------------------------------
+				
+	\OutletCell{title=GetCXP, 
+				beforeParams={\code{const uint32 OriginalCXP},\\ 
+							\code{int32\& ReturnedCXP}},
+				beforeNote={\code{ReturnedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.},
+				afterParams={\code{const uint32 OriginalCXP}\\ 
+							\code{const int32 ReturnedCXP}},
+				afterNote={\code{ReturnedCXP} is \code{const int32} instead of \code{const uint32} for Blueprint compatability.}
+				}	
+				\\			
 
-	\DelegateSpace{} Before			
-		& {	\code{const uint32 OriginalCXP},\\ 
-			\code{int32\& ReturnedCXP}}	
-		\\ 
-	\DelegateNote{}
-		& \code{ReturnedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.
-		\\		
-							
-	\DelegateSpace{} After				
-		& {	\code{const uint32 OriginalCXP}\\ 
-			\code{const int32 ReturnedCXP}} 
-		\\ 
-	\DelegateNote{}
-		& \code{ReturnedCXP} is \code{const int32} instead of \code{const uint32} for Blueprint compatability.
-		\\
-		
-	%----------------------
-	\hline
-	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetExpYield}}\\
-	\hline
-	\\
-	%----------------------	
+	% ----------------------------------------				
+				
+	\OutletCell{title=GetExpYield, 
+				beforeParams={\code{const float OriginalYield},\\ 
+							\code{float\& ReturnedYield},\\
+							\code{const uint16 DefeatedLevel},\\
+							\code{const uint16 VictoriousLevel}},
+				beforeNote={``Defeated'' and ``Victorious'' levels are provided for flexibility (e.g., in case you want to yield exp differently based on level difference, although technically you could always back-calculate the level difference based on the equation and \code{OriginalYield}).},
+				afterParams={\code{const float OriginalYied},\\ 
+							\code{const float ReturnedYield},\\
+							\code{const uint16 DefeatedLevel},\\
+							\code{const uint16 VictoriousLevel}},
+				afterNote={``Defeated'' and ``Victorious'' levels are provided for symmetry with respect to the \code{Before} delegate (since \code{ReturnedValue} is already calculated, I can't think of why you would need them, but you never know!).}
+				}
+				\\
+			
+	% ----------------------------------------			
+				
+	\OutletCell{title=GetMaxLevel, 
+				beforeParams={\code{const uint16 DefaultMax},\\ 
+							\code{int32\& AttemptedMax}},
+				beforeNote={\code{DefaultMax} is defined in the code. It should normally be 100, but may change for certain subclasses (e.g., a \code{UBossLevelComponent} may have a max of 200 instead). \\ 
+				\code{AttemptedMax} is \code{int32\&} instead of \code{uint16\&} for Blueprint compatability.
+				},
+				afterParams={\code{const uint16 DefaultMax}\\ 
+							\code{const int32 ReturnedMax}},
+				}
+				\\
 
-	\DelegateSpace{} Before			
-		& {	\code{const float OriginalYield},\\ 
-			\code{float\& ReturnedYield},\\
-			\code{const uint16 DefeatedLevel},\\
-			\code{const uint16 VictoriousLevel}
-			}\\
-		\\
-	\DelegateNote{}
-		& ``Defeated'' and ``Victorious'' levels are provided for flexibility (e.g., in case you want to yield exp differently based on level difference, although technically you could always back-calculate the level difference based on the equation and \code{OriginalYield}).
-		\\		
-							
-	\DelegateSpace{} After			
-		& {	\code{const float OriginalYied},\\ 
-			\code{const float ReturnedYield},\\
-			\code{const uint16 DefeatedLevel},\\
-			\code{const uint16 VictoriousLevel}
-			}\\
-		\\
-	\DelegateNote{}
-		& ``Defeated'' and ``Victorious'' levels are provided for symmetry with respect to the \code{Before} delegate (since \code{ReturnedValue} is already calculated, I can't think of why you would need them, but you never know!).
-		\\
-		
-	%----------------------
-	\hline
-	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetMaxLevel}}\\
-	\hline
-	\\
-	%----------------------	
+	% ----------------------------------------
 
-	\DelegateSpace{} Before			
-		& {	\code{const uint16 DefaultMax},\\ 
-			\code{int32\& AttemptedMax}}	
-		\\
-	\DelegateNote{}
-		& \code{DefaultMax} is defined in the code. It should normally be 100, but may change for certain subclasses (e.g., a \code{UBossLevelComponent} may have a max of 200 instead).
-		\\
-	\DelegateNote{}
-		& \code{AttemptedMax} is \code{int32\&} instead of \code{uint16\&} for Blueprint compatability.
-		\\		
-							
-	\DelegateSpace{} After				
-		& {	\code{const uint16 DefaultMax}\\ 
-			\code{const int32 ReturnedMax}} 
-		\\
+	\OutletCell{title=GetMinLevel, 
+				beforeParams={\code{const uint16 DefaultMin},\\ 
+							\code{int32\& AttemptedMin}},
+				beforeNote={\code{DefaultMin} is defined in the code. It should normally be 1, but may change for certain subclasses (e.g., a \code{UEggLevelComponent} may have a min of 0 instead for whatever reason).\\
+				\code{AttemptedMin} is \code{int32\&} instead of \code{uint16\&} for Blueprint compatability.},
+				afterParams={\code{const uint16 DefaultMin}\\ 
+							\code{const int32 ReturnedMin}},
+				afterNote={\code{ReturnedCXP} is \code{const int32} instead of \code{const uint32} for Blueprint compatability.}
+				}
+				\\
 		
-	%----------------------
-	\hline
-	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetMinLevel}}\\
-	\hline
-	\\
-	%----------------------	
-
-	\DelegateSpace{} Before			
-		& {	\code{const uint16 DefaultMin},\\ 
-			\code{int32\& AttemptedMin}}	
-		\\
-	\DelegateNote{}
-		& \code{DefaultMin} is defined in the code. It should normally be 1, but may change for certain subclasses (e.g., a \code{UEggLevelComponent} may have a min of 0 instead for whatever reason). Also, \code{AttemptedMin} is \code{int32\&} instead of \code{uint16\&} for Blueprint compatability.
-		\\		
-							
-	\DelegateSpace{} After				
-		& {	\code{const uint16 DefaultMin}\\ 
-			\code{const int32 ReturnedMin}} 
-		\\		
+	% ----------------------------------------		
+				
+	\OutletCell{title=GetBaseExpYield, 
+				beforeParams={\code{const float OriginalYield},\\
+							\code{float\& ReturnedYield}},
+				afterParams={\code{const float OriginalYield},\\
+							\code{const float ReturnedYield}}
+				}
+				\\
 		
-	%----------------------
-	\hline
-	\SetCell[c=2]{l}{\color{ICBlue}\textbf{SetBaseExpYield}}\\
-	\hline
-	\\
-	%----------------------	
-
-	\DelegateSpace{} Before			
-		& {	\code{const float OldYield},\\ 
-			\code{float\& AttemptedYield}}	
-		\\		
-							
-	\DelegateSpace{} After				
-		& {	\code{const float OldYield}\\ 
-			\code{const float NewYield}} 
-		\\
+	% ----------------------------------------		
+				
+	\OutletCell{title=SetBaseExpYield, 
+				beforeParams={\code{const float OldYield},\\ 
+							\code{float\& AttemptedYield}},
+				afterParams={\code{const float OldYield}\\ 
+							\code{const float NewYield}}
+				}
+				\\
 		
-	%----------------------
-	\hline
-	\SetCell[c=2]{l}{\color{ICBlue}\textbf{SetCXP}}\\
-	\hline
-	\\
-	%----------------------	
-
-	\DelegateSpace{} Before			
-		& {	\code{const uint32 OldCXP},\\ 
-			\code{int32\& AttemptedCXP}}	
-		\\
-	\DelegateNote{}
-		& \code{AttemptedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.
-		\\		
-							
-	\DelegateSpace{} After				
-		& {	\code{const uint32 OldCXP}\\ 
-			\code{const uint32 NewCXP}} 
-		\\
-	\DelegateNote{}
-		& \code{UStatsComponent} subscribes to this in order to change stats on level change.
-		\\
-		
-		
+	% ----------------------------------------		
+						
+	\OutletCell{title=SetCXP, 
+				beforeParams={\code{const uint32 OldCXP},\\ 
+							\code{int32\& AttemptedCXP}},
+				beforeNote={\code{AttemptedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.},
+				afterParams={\code{const uint32 OldCXP}\\ 
+							\code{const uint32 NewCXP}},
+				afterNote={\code{UStatsComponent} subscribes to this in order to change stats on level change.}
+				}
+				\\
 		
 \end{OutletTable}
 
@@ -333,64 +119,36 @@
 
 \begin{OutletTable}{UStatsComponent}
 
-	%----------------------
-	\hline
-	\SetCell[c=2]{l}{\color{ICBlue}\textbf{RandomizeStats}}\\
-	\hline
-	\\
-	%----------------------	
-	
-	\DelegateSpace{} Before	
-		& {	
-			\code{const EStatEnum TargetStat},\\
-			\code{const FStatRandParams OriginalParams},\\
-			\code{FStatRandParams\& ParamsToBeUsed}
-		}
-		\\
+	% ----------------------------------------		
+						
+	\OutletCell{title=RandomizeStats, 
+				beforeParams={\code{const EStatEnum TargetStat},\\
+							\code{const FStatRandParams OriginalParams},\\
+							\code{FStatRandParams\& ParamsToBeUsed}},
+				afterParams={\code{const EStatEnum TargetStat},\\
+							\code{const FStatRandParams OriginalParams},\\
+							\code{const FStatRandParams UsedParams}},
+				afterNote={The \code{EStatEnum} is not the acutal \code{FStat}. To get the \code{FStat} (such as \code{FHealth}), use \code{UStatsComponent::GetStat(EStatEnum)}}
+				}
+				\\
 		
-		
-	\DelegateSpace{} After	
-		& {	
-			\code{const EStatEnum TargetStat},\\
-			\code{const FStatRandParams OriginalParams},\\
-			\code{const FStatRandParams UsedParams}
-		}
-		\\
-		\DelegateNote{} 
-			& The \code{EStatEnum} is not the acutal \code{FStat}. To get the \code{FStat} (such as \code{FHealth}), use \code{UStatsComponent::GetStat(EStatEnum)}.
-		\\
-		
-	%----------------------
-	\hline
-	\SetCell[c=2]{l}{\color{ICBlue}\textbf{RecalculateStats}}\\
-	\hline
-	\\
-	%----------------------	
-	
-	\DelegateSpace{} Before	
-		& {	
-			\code{const EStatEnum TargetStat},\\
-			\code{const bool bResetCurrent},\\
-			\code{const float OriginalCurrent},\\
-			\code{const float OriginalPermanent}
-		}
-		\\
-		
-		
-	\DelegateSpace{} After	
-		& {	
-			\code{const EStatEnum TargetStat},\\
-			\code{const bool bResetCurrent},\\
-			\code{const float OriginalCurrent},\\
-			\code{const float OriginalPermanent}
-		}
-		\\
+	% ----------------------------------------		
+						
+	\OutletCell{title=RecalculateStats, 
+				beforeParams={\code{const EStatEnum TargetStat},\\
+							\code{const bool bResetCurrent},\\
+							\code{const float OriginalCurrent},\\
+							\code{const float OriginalPermanent}},
+				afterParams={\code{const EStatEnum TargetStat},\\
+							\code{const bool bResetCurrent},\\
+							\code{const float OriginalCurrent},\\
+							\code{const float OriginalPermanent}},
+				}
+				\\
 			
 		
 	
 \end{OutletTable}
-
-%====================================================
 
 
 \postamble{}

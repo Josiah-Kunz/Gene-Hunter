@@ -1,0 +1,114 @@
+
+% ===========================================================
+% Outlet cell function. Usage inside OutletTable environment:
+%	\OutletCell{title= ..., 
+%				beforeParams={ ... }, 
+%				beforeNote={ Optional! },
+%				afterParams={\code{const float OriginalYield},\\
+%							 \code{const float ReturnedYield}
+%							},
+%				afterNote={ Also optional! }
+%				}\\
+% ===========================================================
+
+% Keyword arguments
+\makeatletter
+\define@key{outletKeys}{title}{\def\outletKeys@title{#1}}
+\define@key{outletKeys}{beforeParams}{\def\outletKeys@beforeParams{#1}}
+\define@key{outletKeys}{afterParams}{\def\outletKeys@afterParams{#1}}
+\define@key{outletKeys}{beforeNote}{\def\outletKeys@beforeNote{#1}}
+\define@key{outletKeys}{afterNote}{\def\outletKeys@afterNote{#1}}
+
+% Kwargs
+\DeclareDocumentCommand{\OutletCell}{m}{
+
+	\begingroup
+	
+	% Set default kwargs
+	\setkeys{outletKeys}{title={0}, #1}
+	\setkeys{outletKeys}{beforeParams={0}, #1}
+	\setkeys{outletKeys}{afterParams={0}, #1}
+	\setkeys{outletKeys}{beforeNote={}, #1}
+	\setkeys{outletKeys}{afterNote={}, #1}
+
+	% Title
+	\begin{tblr}{
+		colspec={Q[l, wd=\linewidth]},
+		leftsep = 0pt,
+		rightsep = 0pt,
+		hline{1} = {2pt},
+		hline{2} = {1.5pt},
+	}
+	\color{ICBlue}\textbf{\hspace*{0.5em}\outletKeys@title}
+	\end{tblr}	
+	
+	% Before
+	\begin{tblr}{
+		colspec={Q[l, wd=0.2\linewidth] Q[l, wd=0.8\linewidth]},
+		leftsep = 0pt,
+		rightsep = 0pt,
+	}
+		\hspace*{1em}$\blacktriangleright$ Before	& {	\outletKeys@beforeParams }
+	\end{tblr}
+	
+	% Before note
+	\ifthenelse{\equal{\outletKeys@beforeNote}{}}{}{%
+		\begin{tblr}{
+			colspec={Q[l, wd=0.2\linewidth] Q[l, wd=0.8\linewidth]},
+			leftsep = 0pt,
+			rightsep = 0pt,
+		}
+			\hspace*{2em} \textit{Note:} & \outletKeys@beforeNote
+		\end{tblr}
+	}
+	
+	% After
+	\begin{tblr}{
+		colspec={Q[l, wd=0.2\linewidth] Q[l, wd=0.8\linewidth]},
+		leftsep = 0pt,
+		rightsep = 0pt,
+		hline{1} = 1pt,
+	}
+		\hspace*{1em}$\blacktriangleright$ After	& {	\outletKeys@afterParams }
+	\end{tblr}
+	
+	% After note
+	\ifthenelse{\equal{\outletKeys@afterNote}{}}{}{%
+		\begin{tblr}{
+			colspec={Q[l, wd=0.2\linewidth] Q[l, wd=0.8\linewidth]},
+			leftsep = 0pt,
+			rightsep = 0pt,
+		}
+			\hspace*{2em} \textit{Note:} & \outletKeys@afterNote
+		\end{tblr}
+	}
+	
+	\endgroup
+}
+\makeatother
+
+% ================================
+% Outlet table environment. Usage:
+%	\begin{OutletTable}{Title}
+%		...
+%		[Use \OutletCell}
+%		...
+%	\end{OutletTable}
+% ================================
+\newenvironment{OutletTable}[1]{%
+\begin{longtblr}[
+	caption = {\code{Outlet}s for \code{#1}},
+	label = {delegate-arrays-levelcomponent},
+]{
+	cells = {gray!15},
+	leftsep = 0pt,
+	rightsep = 0pt,
+	colspec={|Q[c, wd=\linewidth]|},
+	hline{2-Z}={2pt},
+	%rowsep=-0.5em,
+	rows = {abovesep=-12pt},
+}
+}{%
+\end{longtblr}
+}
+
