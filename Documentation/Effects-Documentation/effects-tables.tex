@@ -12,37 +12,133 @@
 	caption = {\code{Outlet}s for \code{#1}},
 	label = {delegate-arrays-levelcomponent},
 ]{
-	colspec= {Q[l, wd=0.13\linewidth] Q[l, wd=0.72\linewidth] Q[l, wd=0.37\linewidth]},
-	hline{1,Z} = {2pt},
+	colspec = {Q[l, wd=0.13\linewidth] Q[l, wd=0.72\linewidth]|},
+	cells = {gray!15},
+	hline{1} = {2pt},
+	hline{Z} = {4pt},
+	hline{2-Y} = {1pt},
 }
 }{%
 \end{longtblr}
 }
 
-\begin{OutletTable}{TEST}
-ok & ok
-\end{OutletTable}
 
 
-%--------------------------
-\gap{}
+\newenvironment{OutletTableee}[1]{%
+\begin{longtblr}[
+	caption = {\code{Outlet}s for \code{#1}},
+	label = {delegate-arrays-levelcomponent},
+]{
+	leftsep = 0pt,
+	rightsep = 0pt,
+	colspec={Q[c, wd=\linewidth]},
+}
+}{%
+\end{longtblr}
+}
 
-\begin{OutletTable}{UAffinitiesComponent}
-	\todo{Todo}
+% Keyword arguments
+\makeatletter
+\define@key{outletKeys}{title}{\def\outletKeys@title{#1}}
+\define@key{outletKeys}{beforeParams}{\def\outletKeys@beforeParams{#1}}
+\define@key{outletKeys}{afterParams}{\def\outletKeys@afterParams{#1}}
+\define@key{outletKeys}{beforeNote}{\def\outletKeys@beforeNote{#1}}
+\define@key{outletKeys}{afterNote}{\def\outletKeys@afterNote{#1}}
+
+% Kwargs
+\DeclareDocumentCommand{\OutletCell}{m}{
+
+	\begingroup
 	
-\end{OutletTable}
+	% Set default kwargs
+	\setkeys{outletKeys}{title={0}, #1}
+	\setkeys{outletKeys}{beforeParams={0}, #1}
+	\setkeys{outletKeys}{afterParams={0}, #1}
+	\setkeys{outletKeys}{beforeNote={}, #1}
+	\setkeys{outletKeys}{afterNote={}, #1}
+
+	% Start table
+	\begin{tblr}{
+		colspec={|Q[l, wd=0.2\linewidth] Q[l, wd=0.8\linewidth]|},
+		hline{1,Z} = {2pt},
+		cells = {gray!15},
+		leftsep = 0pt,
+		rightsep = 0pt,
+	}
+	
+	% Title
+	\SetCell[c=2]{l}{\color{ICBlue}\textbf{\hspace*{0.5em} \outletKeys@title}}\\
+		\hline
+		
+	% Before parameters
+	\hspace*{2em}$\blacktriangleright$ Before	
+			& {	\outletKeys@beforeParams }
+			\\
+			
+	\hline
+		
+	\hspace*{2em}$\blacktriangleright$ After	& {	\outletKeys@afterParams } \\		
+		
+	% Note
+	
+	% End table
+	\end{tblr}	
+	
+	\endgroup
+}
+\makeatother
+
+\newcommand{\Outlet}[1]{%
+	\begin{tblr}{
+		colspec={|Q[l, wd=0.15\linewidth] Q[l, wd=0.85\linewidth]|},
+		hline{1,Z} = {2pt},
+		cells = {gray!15},
+		leftsep = 0pt,
+		rightsep = 0pt,
+	}
+		\SetCell[c=2]{l}{\color{ICBlue}\textbf{\hspace*{0.5em} #1}}\\
+		\hline
+		\\
+		
+		\DelegateSpace{} Before	
+			& {	\code{const float OriginalYield},\\
+				\code{float\& ReturnedYield}}
+			\\
+		
+		
+		\DelegateSpace{} After	
+			& {	\code{const float OriginalYield},\\
+				\code{const float ReturnedYield}}
+			\\
+			
+		\DelegateNote{} & yersh \\
+	\end{tblr}
+}
 
 %--------------------------
 
+\begin{OutletTableee}{UAffinitiesComponent}
+%	\OutletTitle{Something!}\\
 
+	%& \Outlet{Else}\\
+
+	\OutletCell{title=ElIf, 
+				beforeParams={111}, 
+				afterParams={\code{const float OriginalYield},\\
+							 \code{const float ReturnedYield}
+							}
+				}
+	
+\end{OutletTableee}
+
+%--------------------------
+
+\gap{}
 
 \begin{OutletTable}{ULevelComponent}
 
 	%----------------------
-	\hline
-	\SetCell[c=2]{l}{\color{ICBlue}\textbf{GetBaseExpYield}}\\
-	\hline
-	\\
+	%\OutletTitle{GetBaseExpYield}\\
 	%----------------------	
 	
 	\DelegateSpace{} Before	
@@ -55,6 +151,7 @@ ok & ok
 		& {	\code{const float OriginalYield},\\
 			\code{const float ReturnedYield}}
 		\\
+	
 		
 	%----------------------
 	\hline
@@ -120,7 +217,10 @@ ok & ok
 			\code{int32\& AttemptedMax}}	
 		\\
 	\DelegateNote{}
-		& \code{DefaultMax} is defined in the code. It should normally be 100, but may change for certain subclasses (e.g., a \code{UBossLevelComponent} may have a max of 200 instead). Also, \code{AttemptedMax} is \code{int32\&} instead of \code{uint16\&} for Blueprint compatability.
+		& \code{DefaultMax} is defined in the code. It should normally be 100, but may change for certain subclasses (e.g., a \code{UBossLevelComponent} may have a max of 200 instead).
+		\\
+	\DelegateNote{}
+		& \code{AttemptedMax} is \code{int32\&} instead of \code{uint16\&} for Blueprint compatability.
 		\\		
 							
 	\DelegateSpace{} After				
@@ -193,6 +293,8 @@ ok & ok
 \end{OutletTable}
 
 %--------------------------
+
+\gap{}
 
 \begin{OutletTable}{UStatsComponent}
 
