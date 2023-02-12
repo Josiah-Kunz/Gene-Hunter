@@ -121,6 +121,25 @@
 
 	% ----------------------------------------		
 						
+	\OutletCell{title=ModifyStat, 
+				beforeParams={\code{const EStatEnum TargetStat},\\
+							\code{const EStatValueType ValueType},\\
+							\code{const EModificationMode Mode},\\
+							\code{const float OriginalValue},\\
+							\code{float\& AttemptedValue}
+							},
+				afterParams={\code{const EStatEnum TargetStat},\\
+							\code{const EStatValueType ValueType},\\
+							\code{const EModificationMode Mode},\\
+							\code{const float OriginalValue},\\
+							\code{const float NewValue}
+							},
+				afterNote={All ``ModifyStat'' functions from \code{UStatsComponent} (such as \code{ModifyStatsUniformly} or \code{RandomizeStats}) go through \code{ModifyStatInternal}, which calls this \code{Outlet}.}
+				}
+				\\
+
+	% ----------------------------------------		
+						
 	\OutletCell{title=RandomizeStats, 
 				beforeParams={\code{const EStatEnum TargetStat},\\
 							\code{const FStatRandParams OriginalParams},\\

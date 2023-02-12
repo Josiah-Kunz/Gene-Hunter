@@ -60,7 +60,13 @@ void UStatsComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-FStat& UStatsComponent::GetStat(const EStatEnum Stat){
+const FStat& UStatsComponent::GetStat(const EStatEnum Stat)
+{
+	return GetStatMutable(Stat);
+}
+
+FStat& UStatsComponent::GetStatMutable(const EStatEnum Stat)
+{
 	switch(Stat)
 	{
 	case EStatEnum::Health:
@@ -78,7 +84,8 @@ FStat& UStatsComponent::GetStat(const EStatEnum Stat){
 	case EStatEnum::CriticalHit:
 		return CriticalHit;
 	default:
-		UE_LOG(LogTemp, Error, TEXT("UStatsComponent::GetStat(EStatEnum::%s) not coded! Please update the source files."),
+		UE_LOG(LogTemp, Error, TEXT("%s::GetStat(EStatEnum::%s) not coded! Please update the source files."),
+			*UStatsComponent::StaticClass()->GetName(),
 			*(UEnum::GetValueAsString(Stat))
 		)
 		return Health;
@@ -99,12 +106,21 @@ void UStatsComponent::RandomizeStats(FStatRandParams Params)
 
 		// Special, intentional cases: if max <= min, don't randomize it
 		if (Params.MaxBaseStat > Params.MinBaseStat)
-			GetStat(Stat).BaseStat = FMath::RandRange(Params.MinBaseStat, Params.MaxBaseStat);
+		{
+			ModifyStat(Stat,
+				FMath::RandRange(Params.MinBaseStat, Params.MaxBaseStat),
+				EStatValueType::BaseStat,
+				EModificationMode::SetDirectly
+			);
+		}
 		if (Params.MaxBasePairs > Params.MinBasePairs)
-			GetStat(Stat).BasePairs = FMath::RandRange(Params.MinBasePairs, Params.MaxBasePairs);
-
-		// Update it
-		GetStat(Stat).Update(LevelComponent->GetLevel());
+		{
+			ModifyStat(Stat,
+				FMath::RandRange(Params.MinBasePairs, Params.MaxBasePairs),
+				EStatValueType::BasePairs,
+				EModificationMode::SetDirectly
+			);
+		}
 
 		// After delegate
 		RandomizeStatsOutlet.ExecuteAfter(Stat, OriginalParams, Params);
@@ -157,7 +173,7 @@ void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 	{
 
 		// Cache for delegates
-		FStat& TargetStat = GetStat(Stat);
+		FStat& TargetStat = GetStatMutable(Stat);
 		const float OriginalCurrent = TargetStat.GetCurrentValue();
 		const float OriginalPermanent = TargetStat.GetPermanentValue();
 
@@ -171,7 +187,11 @@ void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 void UStatsComponent::ModifyStatInternal(EStatEnum Stat, float Value, EStatValueType ValueType, EModificationMode Mode)
 {
 	//ExecuteBeforeModifyStat(Stat, Value, ValueType, Mode);
-	GetStat(Stat).ModifyValue(Value, ValueType, Mode);
+
+	// Get stat and modify it
+	FStat& TargetStat = GetStatMutable(Stat);
+	TargetStat.ModifyValue(Value, ValueType, Mode);
+	
 	//ExecuteAfterModifyStat(Stat, Value, ValueType, Mode);
 }
 
@@ -234,8 +254,8 @@ float UStatsComponent::BaseStatEffectiveAverage()
 	return BST/Denominator;
 }
 
-void UStatsComponent::AvertReduction(EStatEnum Stat, float& Value, const EStatValueType ValueType,
-	const EModificationMode Mode)
+void UStatsComponent::AvertReduction(const EStatEnum Stat, float& Value, const EStatValueType ValueType,
+                                     const EModificationMode Mode)
 {
 	switch(Mode)
 	{
@@ -252,8 +272,9 @@ void UStatsComponent::AvertReduction(EStatEnum Stat, float& Value, const EStatVa
 			Value = 100;
 		break;
 	case EModificationMode::SetDirectly:
-		if (Value < GetStat(Stat).GetValue(ValueType))
-			Value = GetStat(Stat).GetValue(ValueType);
+		const FStat& TargetStat = GetStat(Stat);
+		if (Value < TargetStat.GetValue(ValueType))
+			Value = TargetStat.GetValue(ValueType);
 	}
 
 	UE_LOG(LogTemp, Error, TEXT("AvertReduction cannot handle specified Mode [%s]!"), *UEnum::GetValueAsString(Mode))

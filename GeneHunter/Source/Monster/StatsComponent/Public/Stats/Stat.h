@@ -110,7 +110,7 @@ public:
 	/**
 	 * Gets a "value" associated with this Stat (e.g., BaseStat, PermanentValue, etc.). Useful for, e.g., modular drawers.
 	 */
-	virtual float GetValue(const EStatValueType ModifyType);
+	virtual float GetValue(const EStatValueType ModifyType) const;
 
 	FString ToString(const bool Inline = true) const;
 

@@ -155,3 +155,25 @@ public: \
 	
 };
 
+/**
+ * Creates two functions:
+ *	- Execute, which called ExecuteIfBound on every Delegate in the array
+ *	- Add, which adds a Delegate to the array
+ */
+#define DECLARE_OUTLET_FUNCTIONS_FiveParams(BeforeOrAfter, DelegateType, DelegateArray, DelegateVariable, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type) \
+public: \
+	void Execute##BeforeOrAfter##( Param1Type DelegateArray##__P1, Param2Type DelegateArray##__P2, Param3Type DelegateArray##__P3, Param4Type DelegateArray##__P4, Param5Type DelegateArray##__P5) \
+	{ \
+		for ( DelegateType##& Delegate : DelegateArray ) \
+		{ \
+		if (!Delegate.##DelegateVariable##.ExecuteIfBound( DelegateArray##__P1, DelegateArray##__P2, DelegateArray##__P3, DelegateArray##__P4 , DelegateArray##__P5 ))\
+			{ \
+			UE_LOG(LogTemp, Warning, TEXT("Outlet no longer bound! Surely this is an error.")); \
+			} \
+		} \
+	} \
+	\
+	DECLARE_ADD_FUNCTION( ##BeforeOrAfter , DelegateType, DelegateArray);
+	
+};
+

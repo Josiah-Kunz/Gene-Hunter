@@ -21,6 +21,7 @@
 #include "StatEnum.h"
 #include "StatRandParams.h"
 #include "StatValueType.h"
+#include "Outlets/ModifyStatOutlet.h"
 #include "Outlets/RandomizeStatsOutlet.h"
 #include "Outlets/RecalculateStatsOutlet.h"
 
@@ -95,8 +96,19 @@ private:
 
 public:
 
+	/**
+	 * Gets the read-only FStat by EStatEnum. If you'd like to modify the FStat, use ModifyStat (or similar).
+	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
-	FStat& GetStat(const EStatEnum Stat);
+	const FStat& GetStat(const EStatEnum Stat);
+
+private:
+
+	/**
+	 * The mutable version of GetStat. Use internally only and only if you really know what you're doing. Otherwise, you
+	 * may be modifying FStats without calling Outlets.
+	 */
+	FStat& GetStatMutable(const EStatEnum Stat);
 
 #pragma endregion
 
@@ -164,7 +176,8 @@ public:
 	FRandomizeStatsOutlet RandomizeStatsOutlet;
 
 	/**
-	 * Modifies (that is, increases, decreases, or sets) a single Stat in this StatsComponent.
+	 * Modifies (that is, increases, decreases, or sets) a single Stat in this StatsComponent. Does not call
+	 * FStat::Update because the level hasn't changed.
 	 */
 	void ModifyStat(EStatEnum Stat, const float Value, const EStatValueType ValueType, const EModificationMode Mode);
 	
@@ -172,6 +185,21 @@ public:
 	 * Modifies (that is, increases, decreases, or sets) the Stats in this StatsComponent. Order is HP, PhA, PhD, SpA, SpD, Hst, Crt.
 	 */
 	void ModifyStats(TArray<float>& Values, const EStatValueType ValueType, const EModificationMode Mode);
+
+	/**
+	 * Before parameters:
+	 *  - [const EStatEnum] the stat that is being randomized (the actual function loops over all FStats)
+	 *	- [const EStatValueType] the type of value, such as BaseStat or CurrentValue
+	 *	- [const EModificationMode] the mode of modification, such as SetDirectly or AddFraction
+	 *	- [const float OriginalValue] the value of the stat before modification
+	 *	- [float&] the value that is being attempted (and will be set)
+	 *
+	 *	After parameters:
+	 *	- same, but the last parameter is const float NewValue.
+	 *
+	 *	Note: All "Modify" functions call ModifyStatInternal, which calls this.
+	 */
+	FModifyStatOutlet ModifyStatOutlet;
 	
 	/**
 	 * Modifies (that is, increases, decreases, or sets) all Stats in this StatsComponent by the given amount.
@@ -180,7 +208,7 @@ public:
 	void ModifyStatsUniformly(const float UniformMod, const EStatValueType ValueType, const EModificationMode Mode);
 	
 	/**
-	 * Recalculates all stats based on the current level and resets current stats.
+	 * Recalculates all stats based on the current level and resets current stats. Also calls FStat::Update.
 	 */
 	UFUNCTION(BlueprintCallable)
 	void RecalculateStats(bool bResetCurrent = true);
@@ -230,9 +258,10 @@ public:
 	float BaseStatEffectiveAverage();
 
 	/**
-	 * If the given FStat would be reduced, it is instead not reduced.
+	 * If the given FStat would be reduced, it is instead not reduced. Note: his is a utility function that does only
+	 * manipulates Value and does *not* call ModifyStatInternal, so no Outlets are executed.
 	 */
-	void AvertReduction(EStatEnum Stat, float& Value, const EStatValueType ValueType,
+	void AvertReduction(const EStatEnum Stat, float& Value, const EStatValueType ValueType,
 		const EModificationMode Mode);
 
 #pragma endregion

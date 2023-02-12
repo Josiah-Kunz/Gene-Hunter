@@ -79,7 +79,7 @@ void FStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, c
 	}
 }
 
-float FStat::GetValue(const EStatValueType ModifyType)
+float FStat::GetValue(const EStatValueType ModifyType) const
 {
 	switch(ModifyType)
 	{
