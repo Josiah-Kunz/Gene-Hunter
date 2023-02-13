@@ -328,7 +328,7 @@ FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& 
 		ResetClicked = FSimpleDelegate::CreateLambda(
 			[this, &DetailBuilder, &TargetStat]() 
 			{
-				StatsComponent->GetStat(TargetStat).RandomizeBaseStat();
+				StatsComponent->RandomizeBaseStat(TargetStat);
 				StatsComponent->RecalculateStats();
 				SaveAndRefresh(DetailBuilder);
 			}
@@ -338,7 +338,7 @@ FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& 
 		ResetClicked = FSimpleDelegate::CreateLambda(
 			[this, &DetailBuilder, &TargetStat]() 
 			{
-				StatsComponent->GetStat(TargetStat).RandomizeBasePairs();
+				StatsComponent->RandomizeBasePair(TargetStat);
 				StatsComponent->RecalculateStats();
 				SaveAndRefresh(DetailBuilder);
 			}

@@ -57,7 +57,7 @@ private:
 	FAfterSetCXPDelegate UpdateStatsAfterLevel;
 
 	UFUNCTION(CallInEditor, Category="Stats")
-	void ChangeStatsOnLevelChange(const uint32 OldCXP, const int32 AttemptedCXP);
+	void ChangeStatsOnLevelChange(const uint32 OldCXP, const int32 InputCXP, const int32 AttemptedCXP);
 
 protected:
 	// Called when the game starts
@@ -144,7 +144,30 @@ public:
 
 #pragma region Stat manipulation
 
+private:
+
+	/**
+	 * Randomizes a single FStat uniformly by randomizing the BaseStats and BasePairs between Min and Max (inclusive).
+	 * If any max is greater than its corresponding min, it will be ignored.
+	 * All stat randomization goes through this, so the Outlets are called here.
+	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	void RandomizeStat_Internal(const EStatEnum Stat, const FStatRandParams OriginalParams, FStatRandParams Params);
+
 public:
+
+	/**
+	 * Randomizes a single FStat uniformly by randomizing the BaseStats and BasePairs between Min and Max (inclusive).
+	 * If any max is greater than its corresponding min, it will be ignored.
+	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	void RandomizeStat(const EStatEnum Stat, FStatRandParams Params);
+
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	void RandomizeBasePair(const EStatEnum Stat, const int32 MinBasePairs = 1, const int32 MaxBasePairs = 100);
+	
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	void RandomizeBaseStat(const EStatEnum Stat, const int32 MinBaseStats = 80, const int32 MaxBaseStats = 120);
 	
 	/**
 	 * Randomizes the Stats uniformly by randomizing the BaseStats and BasePairs between Min and Max (inclusive).

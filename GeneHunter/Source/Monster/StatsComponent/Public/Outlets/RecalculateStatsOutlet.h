@@ -18,7 +18,7 @@ DECLARE_DYNAMIC_DELEGATE_FourParams(FBeforeRecalculateStatsSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FBeforeRecalculateStatsDelegate : public FEffectDelegate_Base
+struct STATSCOMPONENT_API FBeforeRecalculateStatsDelegate : public FEffectDelegate_Base
 {
 	GENERATED_BODY()
 
@@ -44,7 +44,7 @@ DECLARE_DYNAMIC_DELEGATE_FourParams(FAfterRecalculateStatsSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FAfterRecalculateStatsDelegate : public FEffectDelegate_Base
+struct STATSCOMPONENT_API FAfterRecalculateStatsDelegate : public FEffectDelegate_Base
 {
 	GENERATED_BODY()
 
@@ -63,7 +63,7 @@ public:
  * 
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FRecalculateStatsOutlet : public FEffectOutlet_Base
+struct STATSCOMPONENT_API FRecalculateStatsOutlet : public FEffectOutlet_Base
 {
 	GENERATED_BODY()
 

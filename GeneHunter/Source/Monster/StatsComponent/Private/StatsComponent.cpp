@@ -39,12 +39,12 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 			LevelComponent->SetCXPOutlet.AddAfter(UpdateStatsAfterLevel);
 			
 			// Start with random stats
-			RandomizeStats();
+			RandomizeStats(FStatRandParams{});
 		}
 	}
 }
 
-void UStatsComponent::ChangeStatsOnLevelChange(const uint32 OldCXP, const int32 AttemptedCXP)
+void UStatsComponent::ChangeStatsOnLevelChange(const uint32 OldCXP, const int32 InputCXP, const int32 AttemptedCXP)
 {
 	const uint32 OldLevel = ULevelComponent::GetLevelFromCXP(OldCXP);
 	const uint32 NewLevel = ULevelComponent::GetLevelFromCXP(AttemptedCXP);
@@ -92,7 +92,63 @@ FStat& UStatsComponent::GetStatMutable(const EStatEnum Stat)
 	}
 }
 
-void UStatsComponent::RandomizeStats(FStatRandParams Params)
+void UStatsComponent::RandomizeStat_Internal(const EStatEnum Stat, const FStatRandParams OriginalParams, FStatRandParams Params)
+{
+	// Before delegates
+	RandomizeStatsOutlet.ExecuteBefore(Stat, OriginalParams, Params);
+
+	// Special, intentional cases: if max <= min, don't randomize it
+	if (Params.MaxBaseStat > Params.MinBaseStat)
+	{
+		ModifyStat(Stat,
+			FMath::RandRange(Params.MinBaseStat, Params.MaxBaseStat),
+			EStatValueType::BaseStat,
+			EModificationMode::SetDirectly
+		);
+	}
+	if (Params.MaxBasePairs > Params.MinBasePairs)
+	{
+		ModifyStat(Stat,
+			FMath::RandRange(Params.MinBasePairs, Params.MaxBasePairs),
+			EStatValueType::BasePairs,
+			EModificationMode::SetDirectly
+		);
+	}
+
+	// After delegate
+	RandomizeStatsOutlet.ExecuteAfter(Stat, OriginalParams, Params);
+}
+
+void UStatsComponent::RandomizeStat(const EStatEnum Stat, const FStatRandParams Params)
+{
+	// Cache original for delegates
+	const FStatRandParams OriginalParams = Params;
+
+	// Call internal
+	RandomizeStat_Internal(Stat, Params, Params);
+}
+
+void UStatsComponent::RandomizeBasePair(const EStatEnum Stat, const int32 MinBasePairs, const int32 MaxBasePairs)
+{
+	FStatRandParams Params;
+	Params.MinBaseStat = 0;
+	Params.MaxBaseStat = -1;
+	Params.MinBasePairs = MinBasePairs;
+	Params.MaxBasePairs = MaxBasePairs;
+	RandomizeStat(Stat, Params);
+}
+
+void UStatsComponent::RandomizeBaseStat(const EStatEnum Stat, const int32 MinBaseStats, const int32 MaxBaseStats)
+{
+	FStatRandParams Params;
+	Params.MinBaseStat = MinBaseStats;
+	Params.MaxBaseStat = MaxBaseStats;
+	Params.MinBasePairs = 0;
+	Params.MaxBasePairs = -1;
+	RandomizeStat(Stat, Params);
+}
+
+void UStatsComponent::RandomizeStats(const FStatRandParams Params)
 {
 
 	// Cache original for delegates
@@ -100,51 +156,28 @@ void UStatsComponent::RandomizeStats(FStatRandParams Params)
 	
 	for(const EStatEnum Stat : StatsArray)
 	{
-
-		// Before delegates
-		RandomizeStatsOutlet.ExecuteBefore(Stat, OriginalParams, Params);
-
-		// Special, intentional cases: if max <= min, don't randomize it
-		if (Params.MaxBaseStat > Params.MinBaseStat)
-		{
-			ModifyStat(Stat,
-				FMath::RandRange(Params.MinBaseStat, Params.MaxBaseStat),
-				EStatValueType::BaseStat,
-				EModificationMode::SetDirectly
-			);
-		}
-		if (Params.MaxBasePairs > Params.MinBasePairs)
-		{
-			ModifyStat(Stat,
-				FMath::RandRange(Params.MinBasePairs, Params.MaxBasePairs),
-				EStatValueType::BasePairs,
-				EModificationMode::SetDirectly
-			);
-		}
-
-		// After delegate
-		RandomizeStatsOutlet.ExecuteAfter(Stat, OriginalParams, Params);
+		RandomizeStat_Internal(Stat, OriginalParams, Params);
 	}
 }
 
 void UStatsComponent::RandomizeBasePairs(const int32 MinBasePairs, const int32 MaxBasePairs)
 {
-	RandomizeStats(FStatRandParams{
-		.MinBaseStat = 0,
-		.MaxBaseStat = -1,
-		.MinBasePairs = MinBasePairs,
-		.MaxBasePairs = MaxBasePairs,
-	});
+	FStatRandParams Params;
+	Params.MinBaseStat = 0;
+	Params.MaxBaseStat = -1;
+	Params.MinBasePairs = MinBasePairs;
+	Params.MaxBasePairs = MaxBasePairs;
+	RandomizeStats(Params);
 }
 
 void UStatsComponent::RandomizeBaseStats(const int32 MinBaseStats, const int32 MaxBaseStats)
 {
-	RandomizeStats({FStatRandParams{
-		.MinBaseStat = MinBaseStats,
-		.MaxBaseStat = MaxBaseStats,
-		.MinBasePairs = 0,
-		.MaxBasePairs = -1,
-	}});
+	FStatRandParams Params;
+	Params.MinBaseStat = MinBaseStats;
+	Params.MaxBaseStat = MaxBaseStats;
+	Params.MinBasePairs = 0;
+	Params.MaxBasePairs = -1;
+	RandomizeStats(Params);
 }
 
 void UStatsComponent::ModifyStat(EStatEnum Stat, const float Value, const EStatValueType ValueType,

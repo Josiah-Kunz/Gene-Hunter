@@ -9,6 +9,7 @@ UBerserkerGene::UBerserkerGene()
 void UBerserkerGene::OnComponentCreated()
 {
 
+	/* TODO
 	// Get StatsComponent
 	SEARCH_FOR_COMPONENT(UStatsComponent, StatsComponent, GetOwner(), true)
 
@@ -18,10 +19,11 @@ void UBerserkerGene::OnComponentCreated()
 
 	// Must still be alive
 	Super::OnComponentCreated();
-
+	
 	// Add to delegate array
-	//Delegate.BindLambda(Lambda);
-	//StatsComponent->AfterRecalculateStatsArray.Add(Delegate);
+	Delegate.BindLambda(Lambda);
+	StatsComponent->AfterRecalculateStatsArray.Add(Delegate);
+	*/
 }
 
 void UBerserkerGene::OnComponentDestroyed(bool bDestroyingHierarchy)

@@ -18,7 +18,7 @@ class EFFECTCOMPONENT_API UBerserkerGene : public UMutationComponent
 	GENERATED_BODY()
 
 	UBerserkerGene();
-
+/* //TODO all this
 #pragma region Public variables
 
 public:
@@ -53,6 +53,8 @@ public:
 	//todo UStatsComponent::FRecalculateStatsDelegate Delegate;
 
 #pragma endregion
+
+	*/
 
 #pragma region Overrides
 
