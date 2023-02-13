@@ -1,11 +1,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ModificationMode.h"
-#include "StatValueType.h"
-#include "SupportingText.h"
 
-#include "Stat.generated.h"
+#include "StatRandParams.generated.h"
 
 /**
  * A struct to hold information about randomizing stats.

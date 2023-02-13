@@ -152,8 +152,6 @@ public: \
 	} \
 	\
 	DECLARE_ADD_FUNCTION( ##BeforeOrAfter , DelegateType, DelegateArray);
-	
-};
 
 /**
  * Creates two functions:
@@ -174,6 +172,5 @@ public: \
 	} \
 	\
 	DECLARE_ADD_FUNCTION( ##BeforeOrAfter , DelegateType, DelegateArray);
-	
-};
 
+};

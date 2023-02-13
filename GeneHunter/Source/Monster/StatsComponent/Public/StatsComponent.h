@@ -151,7 +151,7 @@ public:
 	 * If any max is greater than its corresponding min, it will be ignored.
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
-	void RandomizeStats(FStatRandParams Params = FStatRandParams{});
+	void RandomizeStats(FStatRandParams Params);
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
 	void RandomizeBasePairs(const int32 MinBasePairs = 1, const int32 MaxBasePairs = 100);

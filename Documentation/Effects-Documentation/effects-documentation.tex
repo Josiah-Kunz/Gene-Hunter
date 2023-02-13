@@ -65,6 +65,11 @@ As an example, let's use \code{GetBaseExpYield}. (You can imagine that this is a
 	\end{center}
 	You should also set the \code{After} signature in the same manner. \textit{Note: yours might use more than two parameters or different parameter types. Modify accordingly.}
 	}
+	\item{\textbf{Module API.} Make sure your module API is correct. If not, you'll get mysterious errors about your dll.
+	\begin{center}
+		\includegraphics[scale=\ScreenshotScale]{create-outlet-api}
+	\end{center}
+	}
 	\item{\textbf{Declare \code{Outlet} functions.} In order to be able to call \code{ExecuteBefore} on your \code{Outlet}, you need to tell it a few things. The figure below displays a few things in red you should look at:\\
 	\begin{center}
 		\includegraphics[scale=\ScreenshotScale]{create-outlet-functions}

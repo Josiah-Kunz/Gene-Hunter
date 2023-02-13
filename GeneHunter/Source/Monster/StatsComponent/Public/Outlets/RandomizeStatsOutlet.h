@@ -17,7 +17,7 @@ DECLARE_DYNAMIC_DELEGATE_ThreeParams(FBeforeRandomizeStatsSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FBeforeRandomizeStatsDelegate : public FEffectDelegate_Base
+struct STATSCOMPONENT_API FBeforeRandomizeStatsDelegate : public FEffectDelegate_Base
 {
 	GENERATED_BODY()
 
@@ -42,7 +42,7 @@ DECLARE_DYNAMIC_DELEGATE_ThreeParams(FAfterRandomizeStatsSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FAfterRandomizeStatsDelegate : public FEffectDelegate_Base
+struct STATSCOMPONENT_API FAfterRandomizeStatsDelegate : public FEffectDelegate_Base
 {
 	GENERATED_BODY()
 
@@ -61,7 +61,7 @@ public:
  * 
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FRandomizeStatsOutlet : public FEffectOutlet_Base
+struct STATSCOMPONENT_API FRandomizeStatsOutlet : public FEffectOutlet_Base
 {
 	GENERATED_BODY()
 
@@ -80,7 +80,7 @@ private:
 	
 	DECLARE_OUTLET_FUNCTIONS_ThreeParams(After, FAfterRandomizeStatsDelegate,
 		AfterDelegates, Delegate,
-		const EStatEnum TargetStat, const FStatRandParams, const FStatRandParams
+		const EStatEnum, const FStatRandParams, const FStatRandParams
 		);
 };
 
