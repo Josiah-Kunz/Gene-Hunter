@@ -5,9 +5,23 @@
 
 \begin{OutletTable}{UAffinitiesComponent}
 
-	
+	\OutletCell{title=GetUnspentPoints, 
+				beforeParams={\code{const uint8 OriginalPoints},\\
+							\code{uint8\& ReturnedPoints}},
+				afterParams={\code{const uint8 OriginalPoints},\\
+							\code{const uint8 ReturnedPoints}}
+				}
+				\\
 				
-	\todo{to do!}
+	\OutletCell{title=SetUnspentPoints, 
+				beforeParams={\code{const uint8 OriginalPoints},\\
+							\code{const uint8 InputPoints},\\
+							\code{uint8\& SetPoints}},
+				afterParams={\code{const uint8 OriginalPoints},\\
+							\code{const uint8 InputPoints},\\
+							\code{const uint8 SetPoints}}
+				}
+				\\
 	
 \end{OutletTable}
 
@@ -92,10 +106,16 @@
 	% ----------------------------------------		
 				
 	\OutletCell{title=SetBaseExpYield, 
-				beforeParams={\code{const float OldYield},\\ 
+				beforeParams={\code{const float OldYield},\\
+							\code{const float InputYield},\\ 
 							\code{float\& AttemptedYield}},
-				afterParams={\code{const float OldYield}\\ 
-							\code{const float NewYield}}
+				afterParams={\code{const float OldYield}\\
+							\code{const float InputYield},\\ 
+							\code{const float NewYield}},
+				afterNote={$\triangleright$ \code{OldYield} is the yield prior to calling \code{SetBaseExpYield},\\
+							$\triangleright$ \code{InputYield} is the original, unmodified input to \code{SetBaseExpYield},\\
+							$\triangleright$ \code{AttemptedYield} is the modified value that will be used to set the base exp yield.
+							}
 				}
 				\\
 		
@@ -103,11 +123,17 @@
 						
 	\OutletCell{title=SetCXP, 
 				beforeParams={\code{const uint32 OldCXP},\\ 
+							\code{const int32 InputCXP},\\
 							\code{int32\& AttemptedCXP}},
 				beforeNote={\code{AttemptedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.},
 				afterParams={\code{const uint32 OldCXP}\\ 
+							\code{const int32 InputCXP},\\
 							\code{const uint32 NewCXP}},
-				afterNote={\code{UStatsComponent} subscribes to this in order to change stats on level change.}
+				afterNote={\code{UStatsComponent} subscribes to this in order to change stats on level change.\\
+							$\triangleright$ \code{OldCXP} is the cumulatie experience points prior to calling \code{SetCXP},\\
+							$\triangleright$ \code{InputCXP} is the original, unmodified input to \code{SetCXP},\\
+							$\triangleright$ \code{AttemptedCXP} is the modified value that will be used to set the cumulative experience points.		
+					}
 				}
 				\\
 		

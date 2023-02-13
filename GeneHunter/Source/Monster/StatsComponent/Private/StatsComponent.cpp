@@ -186,18 +186,36 @@ void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 
 void UStatsComponent::ModifyStatInternal(EStatEnum Stat, float Value, EStatValueType ValueType, EModificationMode Mode)
 {
-	//ExecuteBeforeModifyStat(Stat, Value, ValueType, Mode);
 
+	// Cache for outlets
+	const float OriginalValue = GetStat(Stat).GetValue(ValueType);
+	float AttemptedValue = Value;
+
+	// Before outlet
+	ModifyStatOutlet.ExecuteBefore(
+				Stat,
+				ValueType,
+				Mode,
+				OriginalValue,
+				AttemptedValue
+			);
+	
 	// Get stat and modify it
 	FStat& TargetStat = GetStatMutable(Stat);
-	TargetStat.ModifyValue(Value, ValueType, Mode);
+	TargetStat.ModifyValue(AttemptedValue, ValueType, Mode);
 	
-	//ExecuteAfterModifyStat(Stat, Value, ValueType, Mode);
+	// After outlet
+	ModifyStatOutlet.ExecuteAfter(
+				Stat,
+				ValueType,
+				Mode,
+				OriginalValue,
+				AttemptedValue
+			);
 }
 
 bool UStatsComponent::IsEqual(UStatsComponent* Other, const EStatValueType ValueType, const float Tolerance)
 {
-	
 	for(int i=0; i<StatsArray.Num(); i++)
 	{
 		switch(ValueType)

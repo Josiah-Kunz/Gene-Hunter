@@ -28,16 +28,23 @@ void UAffinitiesComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 uint8 UAffinitiesComponent::GetUnspentPoints()
 {
-	//ExecuteBeforeGetUnspentPoints(UnspentPoints);
-	//ExecuteAfterGetUnspentPoints(UnspentPoints);
-	return UnspentPoints;
+	const uint8 OriginalPoints = UnspentPoints;
+	uint8 ReturnedPoints = UnspentPoints;
+	GetUnspentPointsOutlet.ExecuteBefore(OriginalPoints, ReturnedPoints);
+	GetUnspentPointsOutlet.ExecuteAfter(OriginalPoints, ReturnedPoints);
+	return ReturnedPoints;
 }
 
 void UAffinitiesComponent::SetUnspentPoints(uint8 NewPoints)
 {
-	//ExecuteBeforeSetUnspentPoints(UnspentPoints, NewPoints);
+	// Cache for outlets
+	const uint8 OriginalPoints = UnspentPoints;
+	const uint8 InputPoints = NewPoints;
+
+	// Call + execute + call
+	SetUnspentPointsOutlet.ExecuteBefore(OriginalPoints, InputPoints, NewPoints);
 	UnspentPoints = NewPoints;
-	//ExecuteAfterSetUnspentPoints(UnspentPoints, NewPoints);
+	SetUnspentPointsOutlet.ExecuteAfter(OriginalPoints, InputPoints, NewPoints);
 }
 
 void UAffinitiesComponent::AddUnspentPoints(const uint8 AddedPoints)

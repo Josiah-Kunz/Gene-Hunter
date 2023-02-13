@@ -33,13 +33,14 @@ float ULevelComponent::GetBaseExpYield()
 void ULevelComponent::SetBaseExpYield(float NewBaseExpYield)
 {
 
-	// Get original for delegates
+	// Get outlet values
 	const float OriginalBaseExpYield = GetBaseExpYield();
+	const float InputBaseExpYield = NewBaseExpYield;
 
 	// Call + execute + call
-	SetBaseExpYieldOutlet.ExecuteBefore(OriginalBaseExpYield, NewBaseExpYield);
+	SetBaseExpYieldOutlet.ExecuteBefore(OriginalBaseExpYield, InputBaseExpYield, NewBaseExpYield);
 	BaseExpYield = NewBaseExpYield;
-	SetBaseExpYieldOutlet.ExecuteAfter(OriginalBaseExpYield, GetBaseExpYield());
+	SetBaseExpYieldOutlet.ExecuteAfter(OriginalBaseExpYield, InputBaseExpYield, GetBaseExpYield());
 }
 
 
@@ -99,9 +100,10 @@ void ULevelComponent::SetCXP(int32 NewCumulativeExp)
 	
 	// Cache old (for the delegates)
 	const uint32 OldCXP = CumulativeExp;
+	const int32 InputCXP = NewCumulativeExp;
 
 	// Delegate
-	SetCXPOutlet.ExecuteBefore(OldCXP, NewCumulativeExp);
+	SetCXPOutlet.ExecuteBefore(OldCXP, InputCXP, NewCumulativeExp);
 
 	// Set and clamp exp
 	CumulativeExp = FMath::Clamp(NewCumulativeExp, 1, GetMaxExp());
@@ -123,7 +125,7 @@ void ULevelComponent::SetCXP(int32 NewCumulativeExp)
 	const uint32 NewCXP = GetCXP();
 
 	// Call after delegates
-	SetCXPOutlet.ExecuteAfter(OldCXP, NewCXP);
+	SetCXPOutlet.ExecuteAfter(OldCXP, InputCXP, NewCXP);
 }
 
 void ULevelComponent::AddExp(const int32 AddedCumulativeExp)

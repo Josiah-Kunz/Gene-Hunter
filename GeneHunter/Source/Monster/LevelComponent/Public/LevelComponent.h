@@ -8,14 +8,12 @@
 #include "Outlets/GetCXPOutlet.h"
 #include "Outlets/SetBaseExpYieldOutlet.h"
 #include "Outlets/SetCXPOutlet.h"
-
-// Other components
-#include "EffectableComponent.h"
 #include "Outlets/GetExpYieldOutlet.h"
 #include "Outlets/GetMaxLevelOutlet.h"
 #include "Outlets/GetMinLevelOutlet.h"
 
-
+// Other components
+#include "EffectableComponent.h"
 // .gen
 #include "LevelComponent.generated.h"
 

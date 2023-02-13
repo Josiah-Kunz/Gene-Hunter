@@ -6,7 +6,8 @@
 // Monster utilities
 #include "Affinity.h"
 #include "EffectableComponent.h"
-#include "UtilityFunctionLibrary.h"
+#include "Outlets/GetUnspentPointsOutlet.h"
+#include "Outlets/SetUnspentPointsOutlet.h"
 
 // .gen
 #include "AffinitiesComponent.generated.h"
@@ -57,11 +58,31 @@ public:
 	uint8 GetUnspentPoints();
 
 	/**
+	 * Before parameters:
+	 *  - [const uint8] the original points that would have been returned
+	 *  - [uint8&] the newly modified returned points
+	 *
+	 *  After parameters:
+	 *  - same but returned points is const uint8
+	 */
+	FGetUnspentPointsOutlet GetUnspentPointsOutlet;
+
+	/**
 	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any
 	 * new Monster so that affinities can be customized from the get-go (so the player has agency which makes for more
 	 * exciting gameplay).
 	 */
 	void SetUnspentPoints(uint8 NewPoints);
+
+	/**
+	 * Before parameters:
+	 *  - [const uint8] the original points that would have been returned
+	 *  - [uint8&] the newly modified returned points
+	 *
+	 *  After parameters:
+	 *  - same but returned points is const uint8
+	 */
+	FSetUnspentPointsOutlet SetUnspentPointsOutlet;
 
 	/**
 	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any

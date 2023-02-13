@@ -6,9 +6,11 @@
 
 #pragma region Before
 
-DECLARE_DYNAMIC_DELEGATE_TwoParams(FBeforeSetBaseExpYieldSignature,
+DECLARE_DYNAMIC_DELEGATE_ThreeParams(FBeforeSetBaseExpYieldSignature,
 	const float, OldYield,
-	float&, AttemptedYield);
+	const float, InputYield,
+	float&, AttemptedYield
+	);
 
 /**
  * Since delegates can't fit in TArrays, we need to wrap them in something.
@@ -29,8 +31,9 @@ public:
 
 #pragma region After
 
-DECLARE_DYNAMIC_DELEGATE_TwoParams(FAfterSetBaseExpYieldSignature,
+DECLARE_DYNAMIC_DELEGATE_ThreeParams(FAfterSetBaseExpYieldSignature,
 	const float, OldYield,
+	const float, InputYield,
 	const float, NewYield);
 
 /**
@@ -65,14 +68,14 @@ private:
 	UPROPERTY()
 	TArray<FBeforeSetBaseExpYieldDelegate> BeforeDelegates;
 	
-	DECLARE_OUTLET_FUNCTIONS_TwoParams(Before, FBeforeSetBaseExpYieldDelegate,
-		BeforeDelegates, Delegate, const float, float&);
+	DECLARE_OUTLET_FUNCTIONS_ThreeParams(Before, FBeforeSetBaseExpYieldDelegate,
+		BeforeDelegates, Delegate, const float, const float, float&);
 
 	UPROPERTY()
 	TArray<FAfterSetBaseExpYieldDelegate> AfterDelegates;
 	
-	DECLARE_OUTLET_FUNCTIONS_TwoParams(After, FAfterSetBaseExpYieldDelegate,
-		AfterDelegates, Delegate, const float, const float);
+	DECLARE_OUTLET_FUNCTIONS_ThreeParams(After, FAfterSetBaseExpYieldDelegate,
+		AfterDelegates, Delegate, const float, const float, const float);
 };
 
 #pragma endregion
