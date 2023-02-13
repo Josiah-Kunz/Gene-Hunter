@@ -50,6 +50,11 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "AffinitiesComponentUnitTests",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "EffectComponentUnitTests",
 			"Type": "Editor",
 			"LoadingPhase": "Default"
