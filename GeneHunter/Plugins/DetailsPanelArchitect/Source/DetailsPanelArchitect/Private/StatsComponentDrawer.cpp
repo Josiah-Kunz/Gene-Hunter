@@ -1,6 +1,6 @@
-﻿#define LOCTEXT_NAMESPACE "StatsComponentDrawer"
+﻿#define LOCTEXT_NAMESPACE "CombatStatsComponentDrawer"
 
-#include "StatsComponentDrawer.h"
+#include "CombatStatsComponentDrawer.h"
 
 #include "DetailCategoryBuilder.h"
 #include "DetailWidgetRow.h"
@@ -10,11 +10,11 @@
 
 #pragma region Boilerplate
 
-void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
+void CombatStatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 	
 	// Get object
-	StatsComponent = GetStatsComponent(DetailBuilder);
+	CombatStatsComponent = GetCombatStatsComponent(DetailBuilder);
 
 	// Details
 	CustomizeCurrentStatsDetails(DetailBuilder);
@@ -26,12 +26,12 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 
 #pragma region Private customization functions
 
-void StatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& DetailBuilder)
+void CombatStatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 
 	// Get useful limits
-	const float MaxStatValue = MaxStat(StatsComponent, EStatValueType::Current, false);
-	const float MaxPercentValue = MaxStat(StatsComponent, EStatValueType::Current, true);
+	const float MaxStatValue = MaxStat(CombatStatsComponent, EStatValueType::Current, false);
+	const float MaxPercentValue = MaxStat(CombatStatsComponent, EStatValueType::Current, true);
 
 	// Get category
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
@@ -63,11 +63,11 @@ void StatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& De
 	
 }
 
-void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& DetailBuilder)
+void CombatStatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 	// Get useful limits
-	const float MaxStatValue = MaxStat(StatsComponent, EStatValueType::BaseStat, false);
-	const float MaxPercentValue = MaxStat(StatsComponent, EStatValueType::BaseStat, true);
+	const float MaxStatValue = MaxStat(CombatStatsComponent, EStatValueType::BaseStat, false);
+	const float MaxPercentValue = MaxStat(CombatStatsComponent, EStatValueType::BaseStat, true);
 
 	// Get category
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
@@ -94,7 +94,7 @@ void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& Detai
 				.TextStyle(FAppStyle::Get(), "GraphBreadcrumbButtonText")
 				.OnClicked_Lambda([this, &DetailBuilder]()
 				{
-					StatsComponent->RandomizeBaseStats();
+					CombatStatsComponent->RandomizeBaseStats();
 					DetailBuilder.ForceRefreshDetails();
 					return FReply::Handled();
 				})
@@ -127,8 +127,8 @@ void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& Detai
 		SNew(STextBlock)
 			.Text(FText::FromString(FString::Printf(
 					TEXT("BST: %i       EBSA: %i"),
-					FMath::RoundToInt(StatsComponent->BaseStatTotal()),
-					FMath::RoundToInt(StatsComponent->BaseStatEffectiveAverage())
+					FMath::RoundToInt(CombatStatsComponent->BaseStatTotal()),
+					FMath::RoundToInt(CombatStatsComponent->BaseStatEffectiveAverage())
 				)))
 			.TextStyle(&FCoreStyle::Get().GetWidgetStyle<FTextBlockStyle>( "SmallText"))
 			.ToolTipText(FText::FromString("Base Stat Total and Effective Base Stat Average"))
@@ -137,10 +137,10 @@ void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& Detai
 	;
 }
 
-void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& DetailBuilder)
+void CombatStatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 	// Get useful limits
-	const float MaxStatValue = MaxStat(StatsComponent, EStatValueType::BasePairs, false);
+	const float MaxStatValue = MaxStat(CombatStatsComponent, EStatValueType::BasePairs, false);
 
 	// Get category
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
@@ -158,7 +158,7 @@ void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& Detai
 				.TextStyle(FAppStyle::Get(), "GraphBreadcrumbButtonText")
 				.OnClicked_Lambda([this, &DetailBuilder]()
 				{
-					StatsComponent->RandomizeBasePairs();
+					CombatStatsComponent->RandomizeBasePairs();
 					DetailBuilder.ForceRefreshDetails();
 					return FReply::Handled();
 				})
@@ -189,7 +189,7 @@ void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& Detai
 #pragma region Public utility functions
 
 
-TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTextCommitted(
+TFunction<void(const FText&, ETextCommit::Type&)> CombatStatsComponentDrawer::StatOnTextCommitted(
 	IDetailLayoutBuilder& DetailBuilder, const EStatEnum TargetStat,
 	const EStatValueType StatValueType, const bool bPercentage) const
 {
@@ -205,14 +205,14 @@ TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTe
 		}
 
 		// Check to see if anything changed (avoids rounding errors)
-		if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetStat(TargetStat).GetValue(StatValueType), SigFigs, !bPercentage)))
+		if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(CombatStatsComponent->GetStat(TargetStat).GetValue(StatValueType), SigFigs, !bPercentage)))
 			return;
 
 		// Check commit method
 		if (this->UserCommitted(InTextCommit))
 		{
 			// Modify the stat, but see if it is intentional
-			StatsComponent->ModifyStat( TargetStat, UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
+			CombatStatsComponent->ModifyStat( TargetStat, UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
 			switch(StatValueType)
 			{
 			case EStatValueType::Current:
@@ -222,7 +222,7 @@ TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTe
 				break;
 			case EStatValueType::BaseStat:
 			case EStatValueType::BasePairs:
-				StatsComponent->RecalculateStats(true);
+				CombatStatsComponent->RecalculateStats(true);
 				break;
 			default:
 				UE_LOG(LogTemp, Error, TEXT("Unknown case not coded for; you should probably code this!"))
@@ -235,7 +235,7 @@ TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTe
 	};
 }
 
-bool StatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
+bool CombatStatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
 {
 	return CommitType == ETextCommit::Type::OnEnter || CommitType == ETextCommit::Type::OnUserMovedFocus;
 }
@@ -244,41 +244,41 @@ bool StatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
 
 #pragma region Private utility functions
 
-float StatsComponentDrawer::MaxStat(UStatsComponent* StatsComponent, const EStatValueType StatType, const bool bPercentage)
+float CombatStatsComponentDrawer::MaxStat(UCombatStatsComponent* CombatStatsComponent, const EStatValueType StatType, const bool bPercentage)
 {
 	float Max = (bPercentage ? 100 : -INFINITY);
-	for(const EStatEnum Stat : (bPercentage ? StatsComponent->PercentageStats : StatsComponent->NonPercentageStats))
+	for(const EStatEnum Stat : (bPercentage ? CombatStatsComponent->PercentageStats : CombatStatsComponent->NonPercentageStats))
 	{
 
 		// Get max depending on what you're after
 		switch(StatType)
 		{
 		case EStatValueType::Current:
-			Max = FMathf::Max(Max, StatsComponent->GetStat(Stat).GetCurrentValue());
+			Max = FMathf::Max(Max, CombatStatsComponent->GetStat(Stat).GetCurrentValue());
 			break;
 		case EStatValueType::Permanent:
-			Max = FMathf::Max(Max, StatsComponent->GetStat(Stat).GetPermanentValue());
+			Max = FMathf::Max(Max, CombatStatsComponent->GetStat(Stat).GetPermanentValue());
 			break;
 		case EStatValueType::BasePairs:
-			Max = FMathf::Max3(Max, StatsComponent->GetStat(Stat).BasePairs, 100);
+			Max = FMathf::Max3(Max, CombatStatsComponent->GetStat(Stat).BasePairs, 100);
 			break;
 		case EStatValueType::BaseStat:
-			Max = FMathf::Max3(Max, StatsComponent->GetStat(Stat).BaseStat, 120);
+			Max = FMathf::Max3(Max, CombatStatsComponent->GetStat(Stat).BaseStat, 120);
 			break;
 		}
 	}
 	return Max;
 }
 
-void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget,
+void CombatStatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget,
 	const EStatEnum TargetStat, const EStatValueType StatValueType,
 	const float OverallMaxValue, const bool bPercentage) const
 {
 	
 	// Get the (local) max value
 	const float MaxStatValue = StatValueType == EStatValueType::Current ?
-					StatsComponent->GetStat(TargetStat).GetValue(EStatValueType::Permanent) :
-					StatsComponent->GetStat(TargetStat).GetValue(StatValueType);
+					CombatStatsComponent->GetStat(TargetStat).GetValue(EStatValueType::Permanent) :
+					CombatStatsComponent->GetStat(TargetStat).GetValue(StatValueType);
 
 	// Reset button on the far right
 	const FSimpleDelegate ResetClicked = CreateResetDelegate(
@@ -287,17 +287,17 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDeta
 	// Build widget
 	Widget.operator[](
 		SNew(SStatsBar)
-			.LabelText(FText::FromString(StatsComponent->GetStat(TargetStat).Abbreviation()))
-			.LabelTooltip(FText::FromString(StatsComponent->GetStat(TargetStat).Name()))
-			.TextBoxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetStat(TargetStat).GetValue(StatValueType), SigFigs, !bPercentage))
-			.TextBoxTooltip(FloatToFText(StatsComponent->GetStat(TargetStat).GetValue(StatValueType), !bPercentage))
+			.LabelText(FText::FromString(CombatStatsComponent->GetStat(TargetStat).Abbreviation()))
+			.LabelTooltip(FText::FromString(CombatStatsComponent->GetStat(TargetStat).Name()))
+			.TextBoxText(UUtilityFunctionLibrary::ToSI(CombatStatsComponent->GetStat(TargetStat).GetValue(StatValueType), SigFigs, !bPercentage))
+			.TextBoxTooltip(FloatToFText(CombatStatsComponent->GetStat(TargetStat).GetValue(StatValueType), !bPercentage))
 			.OnTextCommitted(StatOnTextCommitted(DetailBuilder, TargetStat, StatValueType, bPercentage))
 			.IsPercentage(bPercentage)
 			.MaxText(UUtilityFunctionLibrary::ToSI(MaxStatValue, SigFigs, !bPercentage))
 			.MaxTooltip(FloatToFText(MaxStatValue, !bPercentage))
-			.BarColor(StatsComponent->GetStat(TargetStat).Color())
-			.BarFraction(GetFraction(StatsComponent->GetStat(TargetStat).GetValue(StatValueType), OverallMaxValue))
-			.BarTooltip(StatsComponent->GetStat(TargetStat).SupportingText().Description)
+			.BarColor(CombatStatsComponent->GetStat(TargetStat).Color())
+			.BarFraction(GetFraction(CombatStatsComponent->GetStat(TargetStat).GetValue(StatValueType), OverallMaxValue))
+			.BarTooltip(CombatStatsComponent->GetStat(TargetStat).SupportingText().Description)
 		).OverrideResetToDefault(
 			FResetToDefaultOverride::Create( 
 				TAttribute<bool>::CreateLambda([this, TargetStat, StatValueType, MaxStatValue]() 
@@ -305,7 +305,7 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDeta
 					switch(StatValueType)
 					{
 					case EStatValueType::Current:
-						return FMathf::Abs(StatsComponent->GetStat(TargetStat).GetValue(StatValueType) - MaxStatValue) > FMathf::Epsilon;
+						return FMathf::Abs(CombatStatsComponent->GetStat(TargetStat).GetValue(StatValueType) - MaxStatValue) > FMathf::Epsilon;
 					default:
 						return true;
 					}
@@ -316,7 +316,7 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDeta
 	;
 }
 
-FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, const EStatEnum TargetStat,
+FSimpleDelegate CombatStatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, const EStatEnum TargetStat,
 	const EStatValueType StatValueType, const float MaxStatValue) const
 {
 	
@@ -328,8 +328,8 @@ FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& 
 		ResetClicked = FSimpleDelegate::CreateLambda(
 			[this, &DetailBuilder, &TargetStat]() 
 			{
-				StatsComponent->RandomizeBaseStat(TargetStat);
-				StatsComponent->RecalculateStats();
+				CombatStatsComponent->RandomizeBaseStat(TargetStat);
+				CombatStatsComponent->RecalculateStats();
 				SaveAndRefresh(DetailBuilder);
 			}
 		);
@@ -338,8 +338,8 @@ FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& 
 		ResetClicked = FSimpleDelegate::CreateLambda(
 			[this, &DetailBuilder, &TargetStat]() 
 			{
-				StatsComponent->RandomizeBasePair(TargetStat);
-				StatsComponent->RecalculateStats();
+				CombatStatsComponent->RandomizeBasePair(TargetStat);
+				CombatStatsComponent->RecalculateStats();
 				SaveAndRefresh(DetailBuilder);
 			}
 		);
@@ -348,7 +348,7 @@ FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& 
 		ResetClicked = FSimpleDelegate::CreateLambda(
 			[this, &DetailBuilder, TargetStat, MaxStatValue, StatValueType]() 
 			{
-				StatsComponent->ModifyStat(TargetStat, MaxStatValue, StatValueType, EModificationMode::SetDirectly);
+				CombatStatsComponent->ModifyStat(TargetStat, MaxStatValue, StatValueType, EModificationMode::SetDirectly);
 				SaveAndRefresh(DetailBuilder);
 			}
 		) ;

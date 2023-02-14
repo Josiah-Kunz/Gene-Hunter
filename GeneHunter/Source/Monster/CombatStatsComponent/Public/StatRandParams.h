@@ -8,7 +8,7 @@
  * A struct to hold information about randomizing stats.
  */
 USTRUCT(Blueprintable)
-struct STATSCOMPONENT_API FStatRandParams
+struct COMBATSTATSCOMPONENT_API FStatRandParams
 {
 	GENERATED_BODY()
 

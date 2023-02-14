@@ -10,13 +10,13 @@ bool FUStat_StatsComponent_ModifyStats::RunTest(const FString& Parameters)
 {
 	
 	// Actual
-	UStatsComponent* Actual = NewObject<UStatsComponent>();
+	UCombatStatsComponent* Actual = NewObject<UCombatStatsComponent>();
 	Actual->ModifyStatsUniformly(200, EStatValueType::Permanent, EModificationMode::SetDirectly);
 	Actual->ModifyStatsUniformly(200, EStatValueType::Current, EModificationMode::SetDirectly);
 	Actual->ModifyStatsUniformly(10, EStatValueType::Current, EModificationMode::AddPercentage);
 	
 	// Expected
-	UStatsComponent* Expected = NewObject<UStatsComponent>();
+	UCombatStatsComponent* Expected = NewObject<UCombatStatsComponent>();
 	Expected->ModifyStatsUniformly(220, EStatValueType::Permanent, EModificationMode::SetDirectly);
 	Expected->ModifyStatsUniformly(220, EStatValueType::Current, EModificationMode::SetDirectly);
 

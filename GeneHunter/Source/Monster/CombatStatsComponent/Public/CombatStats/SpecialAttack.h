@@ -6,7 +6,7 @@
 #include "SpecialAttack.generated.h"
 
 USTRUCT(Blueprintable)
-struct STATSCOMPONENT_API FSpecialAttack : public FStandardStat
+struct COMBATSTATSCOMPONENT_API FSpecialAttack : public FStandardStat
 {
 	GENERATED_BODY()
 

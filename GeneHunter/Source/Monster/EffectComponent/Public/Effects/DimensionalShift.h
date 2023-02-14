@@ -2,10 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "BuffComponent.h"
-#include "Stat.h"
-#include "StatsComponent.h"
-#include "StatsComponent/Public/ModificationMode.h"
-#include "StatsComponent/Public/StatValueType.h"
+#include"CombatStat.h"
+#include "CombatStatsComponent.h"
+#include "CombatStatsComponent/Public/ModificationMode.h"
+#include "CombatStatsComponent/Public/StatValueType.h"
 #include "DimensionalShift.generated.h"
 
 /**
@@ -25,7 +25,7 @@ public:
 	// ----------------------
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UStatsComponent* StatsComponent;
+	UCombatStatsComponent* StatsComponent;
 
 	// Delegation variables
 	// --------------------
@@ -36,7 +36,7 @@ public:
 		if (InStat == EStatEnum::Health)
 			StatsComponent->AvertReduction(InStat, InValue, InValueType, InMode);
 	};
-	//todo UStatsComponent::FModifyStatDelegate Delegate;
+	//todo UCombatStatsComponent::FModifyStatDelegate Delegate;
 
 #pragma endregion
 

@@ -2,10 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "MutationComponent.h"
-#include "Stat.h"
-#include "StatsComponent.h"
-#include "StatsComponent/Public/ModificationMode.h"
-#include "StatsComponent/Public/StatValueType.h"
+#include"CombatStat.h"
+#include "CombatStatsComponent.h"
+#include "CombatStatsComponent/Public/ModificationMode.h"
+#include "CombatStatsComponent/Public/StatValueType.h"
 #include "BerserkerGene.generated.h"
 
 /**
@@ -27,7 +27,7 @@ public:
 	// ----------------------
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UStatsComponent* StatsComponent;
+	UCombatStatsComponent* StatsComponent;
 
 	// Delegation variables
 	// --------------------
@@ -50,7 +50,7 @@ public:
 			break;
 		}
 	};
-	//todo UStatsComponent::FRecalculateStatsDelegate Delegate;
+	//todo UCombatStatsComponent::FRecalculateStatsDelegate Delegate;
 
 #pragma endregion
 

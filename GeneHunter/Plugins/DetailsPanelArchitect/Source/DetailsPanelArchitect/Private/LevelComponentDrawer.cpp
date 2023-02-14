@@ -6,7 +6,7 @@
 #include "DetailWidgetRow.h"
 #include "BPLibraries/Public/UtilityFunctionLibrary.h"
 #include "SStatsBar.h"
-#include "StatsComponentDrawer.h"
+#include "CombatStatsComponentDrawer.h"
 
 #pragma region Boilerplate
 
@@ -90,7 +90,7 @@ void LevelComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 		SNew(SStatsBar)
 			.LabelText(FText::FromString("Exp"))
 			.LabelTooltip(FText::FromString("Experience points within the level (non-cumulative experience points)"))
-			.TextBoxText(UUtilityFunctionLibrary::ToSI(LevelComponent->GetLevelExp(), StatsComponentDrawer::SigFigs, true))
+			.TextBoxText(UUtilityFunctionLibrary::ToSI(LevelComponent->GetLevelExp(), CombatStatsComponentDrawer::SigFigs, true))
 			.OnTextCommitted([this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
 				{
 
@@ -109,7 +109,7 @@ void LevelComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 					}
 
 					// Check to see if anything changed (avoids rounding errors)
-					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(LevelComponent->GetLevelExp(), StatsComponentDrawer::SigFigs, true)))
+					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(LevelComponent->GetLevelExp(), CombatStatsComponentDrawer::SigFigs, true)))
 						return;
 
 					// Use did something
@@ -123,7 +123,7 @@ void LevelComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuild
 			TEXT("%s"),
 				*FloatToFText(LevelComponent->GetLevelExp(), true).ToString()
 				)))
-			.MaxText(UUtilityFunctionLibrary::ToSI(LevelComponent->GetTotalLevelExp(), StatsComponentDrawer::SigFigs, true))
+			.MaxText(UUtilityFunctionLibrary::ToSI(LevelComponent->GetTotalLevelExp(), CombatStatsComponentDrawer::SigFigs, true))
 			.MaxTooltip(FText::FromString(FString::Printf(
 				TEXT("%s"),
 				*FloatToFText(LevelComponent->GetTotalLevelExp(), true).ToString()
@@ -156,7 +156,7 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 		SNew(SStatsBar)
 			.LabelText(FText::FromString("CXP"))
 			.LabelTooltip(FText::FromString("Cumulative experience points"))
-			.TextBoxText(UUtilityFunctionLibrary::ToSI(LevelComponent->GetCXP(), StatsComponentDrawer::SigFigs, true))
+			.TextBoxText(UUtilityFunctionLibrary::ToSI(LevelComponent->GetCXP(), CombatStatsComponentDrawer::SigFigs, true))
 			.OnTextCommitted(
 				[this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
 				{
@@ -169,7 +169,7 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 					}
 
 					// Check to see if anything changed (avoids rounding errors)
-					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(LevelComponent->GetCXP(), StatsComponentDrawer::SigFigs, true)))
+					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(LevelComponent->GetCXP(), CombatStatsComponentDrawer::SigFigs, true)))
 						return;
 
 					// Change depending on commit type (might have hit "esc", so no changes)
@@ -183,7 +183,7 @@ void LevelComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuild
 					TEXT("%s"),
 					*FloatToFText(LevelComponent->GetCXP(), true).ToString()
 					)))
-			.MaxText(UUtilityFunctionLibrary::ToSI(LevelComponent->GetMaxExp(), StatsComponentDrawer::SigFigs, true))
+			.MaxText(UUtilityFunctionLibrary::ToSI(LevelComponent->GetMaxExp(), CombatStatsComponentDrawer::SigFigs, true))
 			.MaxTooltip(FText::FromString(FString::Printf(
 				TEXT("Max cumulative exp at level %i is %s."),
 				LevelComponent->GetMaxLevel(),

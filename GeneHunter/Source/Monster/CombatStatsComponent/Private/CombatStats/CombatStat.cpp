@@ -1,20 +1,20 @@
-#include "Stat.h"
+#include"CombatStat.h"
 
 #include "MathUtil.h"				// For inherited classes using, e.g., FMathf::Floor
 
-float FStat::StatJump(const uint16 Level)
+float FCombatStat::StatJump(const uint16 Level)
 {
 	return FMathf::Pow(3.0f, FMathf::Floor(Level/10.0f));
 }
 
 #pragma region Public functions for setters/getters
 
-float FStat::GetCurrentValue() const
+float FCombatStat::GetCurrentValue() const
 {
 	return CurrentValue;
 }
 
-void FStat::SetCurrentValue(const float NewValue)
+void FCombatStat::SetCurrentValue(const float NewValue)
 {
 	if (NewValue > 0)
 		CurrentValue = NewValue;
@@ -22,12 +22,12 @@ void FStat::SetCurrentValue(const float NewValue)
 		CurrentValue = 0;
 }
 
-float FStat::GetPermanentValue() const
+float FCombatStat::GetPermanentValue() const
 {
 	return PermanentValue;
 }
 
-void FStat::SetPermanentValue(const float NewValue)
+void FCombatStat::SetPermanentValue(const float NewValue)
 {
 	if (NewValue > 0)
 		PermanentValue = NewValue;
@@ -39,25 +39,25 @@ void FStat::SetPermanentValue(const float NewValue)
 
 #pragma region Public functions
 
-void FStat::Update(const uint16 Level, const bool bResetCurrent)
+void FCombatStat::Update(const uint16 Level, const bool bResetCurrent)
 {
 	UpdatePermanent(Level, true);
 }
 
 
-void FStat::UpdatePermanent(const uint16 Level, const bool ResetCurrent)
+void FCombatStat::UpdatePermanent(const uint16 Level, const bool ResetCurrent)
 {
 	SetPermanentValue(CalculateValue(Level));
 	if (ResetCurrent)
 		SetCurrentValue(PermanentValue);
 }
 
-void FStat::UpdateCurrent(const uint16 Level)
+void FCombatStat::UpdateCurrent(const uint16 Level)
 {
 	SetCurrentValue(CalculateValue(Level));
 }
 
-void FStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode)
+void FCombatStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode)
 {
 	switch(ModifyType)
 	{
@@ -79,7 +79,7 @@ void FStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, c
 	}
 }
 
-float FStat::GetValue(const EStatValueType ModifyType) const
+float FCombatStat::GetValue(const EStatValueType ModifyType) const
 {
 	switch(ModifyType)
 	{
@@ -92,11 +92,11 @@ float FStat::GetValue(const EStatValueType ModifyType) const
 	case EStatValueType::BasePairs:
 		return BasePairs;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Problem in FStat::GetValue! Enum value not defined!"))
+	UE_LOG(LogTemp, Warning, TEXT("Problem in FCombatStat::GetValue! Enum value not defined!"))
 	return GetCurrentValue();
 }
 
-FString FStat::ToString(const bool Inline) const
+FString FCombatStat::ToString(const bool Inline) const
 {
 	if (Inline)
 	return FString::Printf(TEXT("%s | %s/%s | BaseStat: %s | BasePairs: %s |"),
@@ -115,12 +115,12 @@ FString FStat::ToString(const bool Inline) const
 		);
 }
 
-void FStat::RandomizeBaseStat(const int32 Min, const int32 Max)
+void FCombatStat::RandomizeBaseStat(const int32 Min, const int32 Max)
 {
 	BaseStat = FMath::RandRange(Min, Max);
 }
 
-void FStat::RandomizeBasePairs(const int32 Min, const int32 Max)
+void FCombatStat::RandomizeBasePairs(const int32 Min, const int32 Max)
 {
 	BasePairs = FMath::RandRange(Min, Max);
 }
@@ -130,12 +130,12 @@ void FStat::RandomizeBasePairs(const int32 Min, const int32 Max)
 
 #pragma region Things that should be overridden!
 
-float FStat::CalculateValue(const uint16 Level)
+float FCombatStat::CalculateValue(const uint16 Level)
 {
 	return 1; // Override this!
 }
 
-FSupportingText const FStat::SupportingText() const
+FSupportingText const FCombatStat::SupportingText() const
 {
 	FSupportingText SupportingText = FSupportingText{
 		FText::FromString(""),
@@ -145,19 +145,19 @@ FSupportingText const FStat::SupportingText() const
 	return SupportingText;
 }
 
-FString const FStat::Name() const
+FString const FCombatStat::Name() const
 {
 	const FString Name = FString{"???"};
 	return Name;
 }
 
-FString const FStat::Abbreviation() const
+FString const FCombatStat::Abbreviation() const
 {
 	const FString Abbrev = FString{"???"};
 	return Abbrev;
 }
 
-FLinearColor const FStat::Color() const
+FLinearColor const FCombatStat::Color() const
 {
 	const FLinearColor Color = FLinearColor{0, 0, 0};
 	return Color;
@@ -167,7 +167,7 @@ FLinearColor const FStat::Color() const
 
 #pragma region Private functions
 
-float FStat::GetModification(const float Original, const EModificationMode Mode, const float Modification)
+float FCombatStat::GetModification(const float Original, const EModificationMode Mode, const float Modification)
 {
 	switch(Mode)
 	{

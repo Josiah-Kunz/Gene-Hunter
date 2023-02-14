@@ -11,7 +11,7 @@ void UBerserkerGene::OnComponentCreated()
 
 	/* TODO
 	// Get StatsComponent
-	SEARCH_FOR_COMPONENT(UStatsComponent, StatsComponent, GetOwner(), true)
+	SEARCH_FOR_COMPONENT(UCombatStatsComponent, StatsComponent, GetOwner(), true)
 
 	// No stats component?
 	if (StatsComponent == nullptr)

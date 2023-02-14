@@ -10,7 +10,7 @@ public class StatsComponentUnitTests : ModuleRules{
 			"Core"			// for FString
 		  , "CoreUObject"	// for UObjects (and their initializations)
 		  , "Engine"		// for UBlueprintFuncitonLibrary in StatUnitTestUtilities.h
-		  , "StatsComponent"	// for the type that we're testing
+		  , "CombatStatsComponent"	// for the type that we're testing
 		  , "LevelComponent"	// goes with StatsComponent
 		});
 	}

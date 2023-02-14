@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "BuffComponent.h"
-#include "StatsComponent.h"
+#include "CombatStatsComponent.h"
 #include "HoTComponent.generated.h"
 
 
@@ -17,7 +17,7 @@ class EFFECTCOMPONENT_API UHoTComponent : public UBuffComponent
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UStatsComponent* StatsComponent;
+	UCombatStatsComponent* StatsComponent;
 
 	/**
 	 * When RemainingTime <= NextModTime, the stat will be modified.

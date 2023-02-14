@@ -40,7 +40,7 @@
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "StatsComponent",
+			"Name": "CombatStatsComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},

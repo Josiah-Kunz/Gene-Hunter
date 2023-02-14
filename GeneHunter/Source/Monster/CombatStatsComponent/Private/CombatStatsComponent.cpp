@@ -1,23 +1,22 @@
-#include "StatsComponent.h"
-
+#include "CombatStatsComponent.h"
 #include "ComponentUtilities.h"
 #include "MathUtil.h"
 
 #pragma region Standard stuff
 
 // Sets default values for this component's properties
-UStatsComponent::UStatsComponent()
+UCombatStatsComponent::UCombatStatsComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UStatsComponent::OnComponentCreated()
+void UCombatStatsComponent::OnComponentCreated()
 {
 	Super::OnComponentCreated();
 	EnsureLevelComponent(GetOwner());
 }
 
-void UStatsComponent::EnsureLevelComponent(AActor* Owner)
+void UCombatStatsComponent::EnsureLevelComponent(AActor* Owner)
 {
 	if (Owner != nullptr)
 	{
@@ -35,7 +34,7 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 			// Delegate to ensure refreshing stats upon level change
 			UpdateStatsAfterLevel.Delegate.Clear();
 			UpdateStatsAfterLevel.Priority = IntrinsicPriority;
-			UpdateStatsAfterLevel.Delegate.BindDynamic(this, &UStatsComponent::ChangeStatsOnLevelChange);
+			UpdateStatsAfterLevel.Delegate.BindDynamic(this, &UCombatStatsComponent::ChangeStatsOnLevelChange);
 			LevelComponent->SetCXPOutlet.AddAfter(UpdateStatsAfterLevel);
 			
 			// Start with random stats
@@ -44,7 +43,7 @@ void UStatsComponent::EnsureLevelComponent(AActor* Owner)
 	}
 }
 
-void UStatsComponent::ChangeStatsOnLevelChange(const uint32 OldCXP, const int32 InputCXP, const int32 AttemptedCXP)
+void UCombatStatsComponent::ChangeStatsOnLevelChange(const uint32 OldCXP, const int32 InputCXP, const int32 AttemptedCXP)
 {
 	const uint32 OldLevel = ULevelComponent::GetLevelFromCXP(OldCXP);
 	const uint32 NewLevel = ULevelComponent::GetLevelFromCXP(AttemptedCXP);
@@ -55,17 +54,17 @@ void UStatsComponent::ChangeStatsOnLevelChange(const uint32 OldCXP, const int32 
 }
 
 // Called when the game starts
-void UStatsComponent::BeginPlay()
+void UCombatStatsComponent::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-const FStat& UStatsComponent::GetStat(const EStatEnum Stat)
+const FCombatStat& UCombatStatsComponent::GetStat(const EStatEnum Stat)
 {
 	return GetStatMutable(Stat);
 }
 
-FStat& UStatsComponent::GetStatMutable(const EStatEnum Stat)
+FCombatStat& UCombatStatsComponent::GetStatMutable(const EStatEnum Stat)
 {
 	switch(Stat)
 	{
@@ -85,14 +84,14 @@ FStat& UStatsComponent::GetStatMutable(const EStatEnum Stat)
 		return CriticalHit;
 	default:
 		UE_LOG(LogTemp, Error, TEXT("%s::GetStat(EStatEnum::%s) not coded! Please update the source files."),
-			*UStatsComponent::StaticClass()->GetName(),
+			*UCombatStatsComponent::StaticClass()->GetName(),
 			*(UEnum::GetValueAsString(Stat))
 		)
 		return Health;
 	}
 }
 
-void UStatsComponent::RandomizeStat_Internal(const EStatEnum Stat, const FStatRandParams OriginalParams, FStatRandParams Params)
+void UCombatStatsComponent::RandomizeStat_Internal(const EStatEnum Stat, const FStatRandParams OriginalParams, FStatRandParams Params)
 {
 	// Before delegates
 	RandomizeStatsOutlet.ExecuteBefore(Stat, OriginalParams, Params);
@@ -119,7 +118,7 @@ void UStatsComponent::RandomizeStat_Internal(const EStatEnum Stat, const FStatRa
 	RandomizeStatsOutlet.ExecuteAfter(Stat, OriginalParams, Params);
 }
 
-void UStatsComponent::RandomizeStat(const EStatEnum Stat, const FStatRandParams Params)
+void UCombatStatsComponent::RandomizeStat(const EStatEnum Stat, const FStatRandParams Params)
 {
 	// Cache original for delegates
 	const FStatRandParams OriginalParams = Params;
@@ -128,7 +127,7 @@ void UStatsComponent::RandomizeStat(const EStatEnum Stat, const FStatRandParams 
 	RandomizeStat_Internal(Stat, Params, Params);
 }
 
-void UStatsComponent::RandomizeBasePair(const EStatEnum Stat, const int32 MinBasePairs, const int32 MaxBasePairs)
+void UCombatStatsComponent::RandomizeBasePair(const EStatEnum Stat, const int32 MinBasePairs, const int32 MaxBasePairs)
 {
 	FStatRandParams Params;
 	Params.MinBaseStat = 0;
@@ -138,7 +137,7 @@ void UStatsComponent::RandomizeBasePair(const EStatEnum Stat, const int32 MinBas
 	RandomizeStat(Stat, Params);
 }
 
-void UStatsComponent::RandomizeBaseStat(const EStatEnum Stat, const int32 MinBaseStats, const int32 MaxBaseStats)
+void UCombatStatsComponent::RandomizeBaseStat(const EStatEnum Stat, const int32 MinBaseStats, const int32 MaxBaseStats)
 {
 	FStatRandParams Params;
 	Params.MinBaseStat = MinBaseStats;
@@ -148,7 +147,7 @@ void UStatsComponent::RandomizeBaseStat(const EStatEnum Stat, const int32 MinBas
 	RandomizeStat(Stat, Params);
 }
 
-void UStatsComponent::RandomizeStats(const FStatRandParams Params)
+void UCombatStatsComponent::RandomizeStats(const FStatRandParams Params)
 {
 
 	// Cache original for delegates
@@ -160,7 +159,7 @@ void UStatsComponent::RandomizeStats(const FStatRandParams Params)
 	}
 }
 
-void UStatsComponent::RandomizeBasePairs(const int32 MinBasePairs, const int32 MaxBasePairs)
+void UCombatStatsComponent::RandomizeBasePairs(const int32 MinBasePairs, const int32 MaxBasePairs)
 {
 	FStatRandParams Params;
 	Params.MinBaseStat = 0;
@@ -170,7 +169,7 @@ void UStatsComponent::RandomizeBasePairs(const int32 MinBasePairs, const int32 M
 	RandomizeStats(Params);
 }
 
-void UStatsComponent::RandomizeBaseStats(const int32 MinBaseStats, const int32 MaxBaseStats)
+void UCombatStatsComponent::RandomizeBaseStats(const int32 MinBaseStats, const int32 MaxBaseStats)
 {
 	FStatRandParams Params;
 	Params.MinBaseStat = MinBaseStats;
@@ -180,33 +179,33 @@ void UStatsComponent::RandomizeBaseStats(const int32 MinBaseStats, const int32 M
 	RandomizeStats(Params);
 }
 
-void UStatsComponent::ModifyStat(EStatEnum Stat, const float Value, const EStatValueType ValueType,
+void UCombatStatsComponent::ModifyStat(EStatEnum Stat, const float Value, const EStatValueType ValueType,
 	const EModificationMode Mode)
 {
 	ModifyStatInternal(Stat, Value, ValueType, Mode);
 }
 
 
-void UStatsComponent::ModifyStats(TArray<float>& Values, const EStatValueType ValueType, const EModificationMode Mode)
+void UCombatStatsComponent::ModifyStats(TArray<float>& Values, const EStatValueType ValueType, const EModificationMode Mode)
 {
 	for(int i=0; i<FMathf::Min(Values.Num(), StatsArray.Num()); i++)
 		ModifyStat(StatsArray[i], Values[i], ValueType, Mode);
 }
 
-void UStatsComponent::ModifyStatsUniformly(const float UniformMod, const EStatValueType ValueType,
+void UCombatStatsComponent::ModifyStatsUniformly(const float UniformMod, const EStatValueType ValueType,
 	const EModificationMode Mode)
 {
 	for(const EStatEnum Stat : StatsArray)
 		ModifyStat(Stat, UniformMod, ValueType, Mode);
 }
 
-void UStatsComponent::RecalculateStats(const bool bResetCurrent)
+void UCombatStatsComponent::RecalculateStats(const bool bResetCurrent)
 {
 	for(const EStatEnum Stat : StatsArray)
 	{
 
 		// Cache for delegates
-		FStat& TargetStat = GetStatMutable(Stat);
+		FCombatStat& TargetStat = GetStatMutable(Stat);
 		const float OriginalCurrent = TargetStat.GetCurrentValue();
 		const float OriginalPermanent = TargetStat.GetPermanentValue();
 
@@ -217,7 +216,7 @@ void UStatsComponent::RecalculateStats(const bool bResetCurrent)
 	}
 }
 
-void UStatsComponent::ModifyStatInternal(EStatEnum Stat, float Value, EStatValueType ValueType, EModificationMode Mode)
+void UCombatStatsComponent::ModifyStatInternal(EStatEnum Stat, float Value, EStatValueType ValueType, EModificationMode Mode)
 {
 
 	// Cache for outlets
@@ -234,7 +233,7 @@ void UStatsComponent::ModifyStatInternal(EStatEnum Stat, float Value, EStatValue
 			);
 	
 	// Get stat and modify it
-	FStat& TargetStat = GetStatMutable(Stat);
+	FCombatStat& TargetStat = GetStatMutable(Stat);
 	TargetStat.ModifyValue(AttemptedValue, ValueType, Mode);
 	
 	// After outlet
@@ -247,7 +246,7 @@ void UStatsComponent::ModifyStatInternal(EStatEnum Stat, float Value, EStatValue
 			);
 }
 
-bool UStatsComponent::IsEqual(UStatsComponent* Other, const EStatValueType ValueType, const float Tolerance)
+bool UCombatStatsComponent::IsEqual(UCombatStatsComponent* Other, const EStatValueType ValueType, const float Tolerance)
 {
 	for(int i=0; i<StatsArray.Num(); i++)
 	{
@@ -262,7 +261,7 @@ bool UStatsComponent::IsEqual(UStatsComponent* Other, const EStatValueType Value
 				return false;
 			break;
 		default:
-			UE_LOG(LogTemp, Error, TEXT("EStatValueType not coded for in UStatsComponent::IsEqual! Fix ASAP!"));
+			UE_LOG(LogTemp, Error, TEXT("EStatValueType not coded for in UCombatStatsComponent::IsEqual! Fix ASAP!"));
 			return false;
 		}
 		
@@ -270,7 +269,7 @@ bool UStatsComponent::IsEqual(UStatsComponent* Other, const EStatValueType Value
 	return true;
 }
 
-float UStatsComponent::BaseStatTotal()
+float UCombatStatsComponent::BaseStatTotal()
 {
 	float Ret = 0;
 	for(const EStatEnum Stat : StatsArray)
@@ -278,7 +277,7 @@ float UStatsComponent::BaseStatTotal()
 	return Ret;
 }
 
-float UStatsComponent::BaseStatEffectiveAverage()
+float UCombatStatsComponent::BaseStatEffectiveAverage()
 {
 
 	// Get base stat total
@@ -305,7 +304,7 @@ float UStatsComponent::BaseStatEffectiveAverage()
 	return BST/Denominator;
 }
 
-void UStatsComponent::AvertReduction(const EStatEnum Stat, float& Value, const EStatValueType ValueType,
+void UCombatStatsComponent::AvertReduction(const EStatEnum Stat, float& Value, const EStatValueType ValueType,
                                      const EModificationMode Mode)
 {
 	switch(Mode)
@@ -323,7 +322,7 @@ void UStatsComponent::AvertReduction(const EStatEnum Stat, float& Value, const E
 			Value = 100;
 		break;
 	case EModificationMode::SetDirectly:
-		const FStat& TargetStat = GetStat(Stat);
+		const FCombatStat& TargetStat = GetStat(Stat);
 		if (Value < TargetStat.GetValue(ValueType))
 			Value = TargetStat.GetValue(ValueType);
 	}

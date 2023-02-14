@@ -1,17 +1,17 @@
 ﻿using UnrealBuildTool;
 
-public class StatsComponent : ModuleRules{
+public class CombatStatsComponent : ModuleRules{
 
-	public StatsComponent(ReadOnlyTargetRules Target) : base(Target){
+	public CombatStatsComponent(ReadOnlyTargetRules Target) : base(Target){
 
 		PrivateIncludePaths.AddRange(new string[]{
-			"Monster/StatsComponent/Private",
-			"Monster/StatsComponent/Private/Stats"
+			"Monster/CombatStatsComponent/Private",
+			"Monster/CombatStatsComponent/Private/CombatStats"
 		});
 
 		PublicIncludePaths.AddRange(new string[]{
-			"Monster/StatsComponent/Public",
-			"Monster/StatsComponent/Public/Stats"
+			"Monster/CombatStatsComponent/Public",
+			"Monster/CombatStatsComponent/Public/CombatStats"
 		});
 		
 		PublicDependencyModuleNames.AddRange(new string[]{
@@ -29,7 +29,7 @@ public class StatsComponent : ModuleRules{
 			  
 			// Other modules
 			, "BPLibraries"		// for Stats using RoundToDecimal
-			, "GHLibraries"		// for REQUIRE_COMPONENT macro (since UStatsComponent depends on ULevelComponent)
+			, "GHLibraries"		// for REQUIRE_COMPONENT macro (since UCombatStatsComponent depends on ULevelComponent)
 		});
 	}
 }

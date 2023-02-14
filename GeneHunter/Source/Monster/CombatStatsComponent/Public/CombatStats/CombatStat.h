@@ -5,20 +5,20 @@
 #include "StatValueType.h"
 #include "SupportingText.h"
 
-#include "Stat.generated.h"
+#include "CombatStat.generated.h"
 
 /**
  * 
  */
 USTRUCT(Blueprintable)
-struct STATSCOMPONENT_API FStat
+struct COMBATSTATSCOMPONENT_API FCombatStat
 {
 	GENERATED_BODY()
 
 #pragma region Public variables
 
 public:
-	virtual ~FStat() = default;
+	virtual ~FCombatStat() = default;
 
 	/**
 	 * The "base" from which to calculate the CurrentValue or PermanentValue.

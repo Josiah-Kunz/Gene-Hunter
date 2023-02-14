@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "Stat.h"
+#include"CombatStat.h"
 #include "StandardStat.generated.h"
 
 USTRUCT(Blueprintable)
-struct STATSCOMPONENT_API FStandardStat : public FStat
+struct COMBATSTATSCOMPONENT_API FStandardStat : public FCombatStat
 {
 	GENERATED_BODY()
 	

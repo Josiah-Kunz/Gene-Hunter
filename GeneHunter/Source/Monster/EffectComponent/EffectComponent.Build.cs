@@ -17,7 +17,7 @@ public class EffectComponent : ModuleRules{
 		});
 		
 		PublicDependencyModuleNames.AddRange(new string[]{
-			"StatsComponent",	// for FStat in ModifyStat.h
+			"CombatStatsComponent",	// for FCombatStat in ModifyStat.h
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{

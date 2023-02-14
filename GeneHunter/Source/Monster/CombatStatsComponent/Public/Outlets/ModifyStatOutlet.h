@@ -19,7 +19,7 @@ DECLARE_DYNAMIC_DELEGATE_FiveParams(FBeforeModifyStatSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct STATSCOMPONENT_API FBeforeModifyStatDelegate : public FEffectDelegate_Base
+struct COMBATSTATSCOMPONENT_API FBeforeModifyStatDelegate : public FEffectDelegate_Base
 {
 	GENERATED_BODY()
 
@@ -46,7 +46,7 @@ DECLARE_DYNAMIC_DELEGATE_FiveParams(FAfterModifyStatSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct STATSCOMPONENT_API FAfterModifyStatDelegate : public FEffectDelegate_Base
+struct COMBATSTATSCOMPONENT_API FAfterModifyStatDelegate : public FEffectDelegate_Base
 {
 	GENERATED_BODY()
 
@@ -65,7 +65,7 @@ public:
  * 
  */
 USTRUCT(Blueprintable)
-struct STATSCOMPONENT_API FModifyStatOutlet : public FEffectOutlet_Base
+struct COMBATSTATSCOMPONENT_API FModifyStatOutlet : public FEffectOutlet_Base
 {
 	GENERATED_BODY()
 

@@ -29,7 +29,7 @@ bool UEffectComponent_Delegates_RecalculateStats::RunTest(const FString& Paramet
 	const float OriginalSpA = StatsComponent->GetStat(EStatEnum::SpecialAttack).GetCurrentValue();
 	
 	// Define "adamant" delegate (+10% PhA/-10% SpA)
-	UStatsComponent::FRecalculateStatsDelegate AdamantRecalculateDelegate;
+	UCombatStatsComponent::FRecalculateStatsDelegate AdamantRecalculateDelegate;
 	AdamantRecalculateDelegate.BindLambda([StatsComponent](EStatEnum Stat, bool bResetCurrent)
 	{
 

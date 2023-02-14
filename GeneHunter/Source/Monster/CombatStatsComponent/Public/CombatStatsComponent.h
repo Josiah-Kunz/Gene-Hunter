@@ -26,16 +26,16 @@
 #include "Outlets/RecalculateStatsOutlet.h"
 
 // .gen
-#include "StatsComponent.generated.h"
+#include "CombatStatsComponent.generated.h"
 
 /**
- * A class to hold, track, and calculate FStats such as Health, Physical Attack, and Haste, but also
+ * A class to hold, track, and calculate FCombatStat such as Health, Physical Attack, and Haste, but also
  *	level and exp yield. It should only be used for "invisible" stats (think command line simulator) and *not* be used
  *	for movement modifiers like run speed or jump height.
  */
 UCLASS(ClassGroup=(Monster), BlueprintType, meta=(BlueprintSpawnableComponent,
 	ShortTooltip = "Combat Stats"))
-class STATSCOMPONENT_API UStatsComponent : public UEffectableComponent
+class COMBATSTATSCOMPONENT_API UCombatStatsComponent : public UEffectableComponent
 {
 	
 #pragma region Inherited functions
@@ -45,7 +45,7 @@ class STATSCOMPONENT_API UStatsComponent : public UEffectableComponent
 public:
 	
 	// Sets default values for this component's properties
-	UStatsComponent();
+	UCombatStatsComponent();
 
 	virtual void OnComponentCreated() override;
 	
@@ -56,7 +56,7 @@ private:
 	UPROPERTY();
 	FAfterSetCXPDelegate UpdateStatsAfterLevel;
 
-	UFUNCTION(CallInEditor, Category="Stats")
+	UFUNCTION(CallInEditor, Category="CombatStats")
 	void ChangeStatsOnLevelChange(const uint32 OldCXP, const int32 InputCXP, const int32 AttemptedCXP);
 
 protected:
@@ -97,18 +97,18 @@ private:
 public:
 
 	/**
-	 * Gets the read-only FStat by EStatEnum. If you'd like to modify the FStat, use ModifyStat (or similar).
+	 * Gets the read-only FCombatStat by EStatEnum. If you'd like to modify the FStat, use ModifyStat (or similar).
 	 */
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
-	const FStat& GetStat(const EStatEnum Stat);
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
+	const FCombatStat& GetStat(const EStatEnum Stat);
 
 private:
 
 	/**
 	 * The mutable version of GetStat. Use internally only and only if you really know what you're doing. Otherwise, you
-	 * may be modifying FStats without calling Outlets.
+	 * may be modifying FCombatStat without calling Outlets.
 	 */
-	FStat& GetStatMutable(const EStatEnum Stat);
+	FCombatStat& GetStatMutable(const EStatEnum Stat);
 
 #pragma endregion
 
@@ -147,49 +147,49 @@ public:
 private:
 
 	/**
-	 * Randomizes a single FStat uniformly by randomizing the BaseStats and BasePairs between Min and Max (inclusive).
+	 * Randomizes a single FCombatStat uniformly by randomizing the BaseStats and BasePairs between Min and Max (inclusive).
 	 * If any max is greater than its corresponding min, it will be ignored.
 	 * All stat randomization goes through this, so the Outlets are called here.
 	 */
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	void RandomizeStat_Internal(const EStatEnum Stat, const FStatRandParams OriginalParams, FStatRandParams Params);
 
 public:
 
 	/**
-	 * Randomizes a single FStat uniformly by randomizing the BaseStats and BasePairs between Min and Max (inclusive).
+	 * Randomizes a single FCombatStat uniformly by randomizing the BaseStats and BasePairs between Min and Max (inclusive).
 	 * If any max is greater than its corresponding min, it will be ignored.
 	 */
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	void RandomizeStat(const EStatEnum Stat, FStatRandParams Params);
 
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	void RandomizeBasePair(const EStatEnum Stat, const int32 MinBasePairs = 1, const int32 MaxBasePairs = 100);
 	
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	void RandomizeBaseStat(const EStatEnum Stat, const int32 MinBaseStats = 80, const int32 MaxBaseStats = 120);
 	
 	/**
 	 * Randomizes the Stats uniformly by randomizing the BaseStats and BasePairs between Min and Max (inclusive).
 	 * If any max is greater than its corresponding min, it will be ignored.
 	 */
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	void RandomizeStats(FStatRandParams Params);
 
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	void RandomizeBasePairs(const int32 MinBasePairs = 1, const int32 MaxBasePairs = 100);
 	
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Stats")
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	void RandomizeBaseStats(const int32 MinBaseStats = 80, const int32 MaxBaseStats = 120);
 
 	/**
 	 * Before parameters:
-	 *  - [const EStatEnum] the stat that is being randomized (the actual function loops over all FStats)
+	 *  - [const EStatEnum] the stat that is being randomized (the actual function loops over all FCombatStat)
 	 *	- [const FStatRandParams] original parameters to be used
 	 *	- [FStatRandParams&] parameters that will be used in randomization
 	 *
 	 *	After parameters:
-	 *	- [const EStatEnum] the stat that was randomized (the actual function loops over all FStats)
+	 *	- [const EStatEnum] the stat that was randomized (the actual function loops over all FCombatStat)
 	 *	- [const FStatRandParams] original parameters that would otherwise be used
 	 *	- [const FStatRandParams] parameters that were used
 	 *
@@ -200,7 +200,7 @@ public:
 
 	/**
 	 * Modifies (that is, increases, decreases, or sets) a single Stat in this StatsComponent. Does not call
-	 * FStat::Update because the level hasn't changed.
+	 * FCombatStat::Update because the level hasn't changed.
 	 */
 	void ModifyStat(EStatEnum Stat, const float Value, const EStatValueType ValueType, const EModificationMode Mode);
 	
@@ -211,7 +211,7 @@ public:
 
 	/**
 	 * Before parameters:
-	 *  - [const EStatEnum] the stat that is being randomized (the actual function loops over all FStats)
+	 *  - [const EStatEnum] the stat that is being randomized (the actual function loops over all FCombatStat)
 	 *	- [const EStatValueType] the type of value, such as BaseStat or CurrentValue
 	 *	- [const EModificationMode] the mode of modification, such as SetDirectly or AddFraction
 	 *	- [const float OriginalValue] the value of the stat before modification
@@ -231,14 +231,14 @@ public:
 	void ModifyStatsUniformly(const float UniformMod, const EStatValueType ValueType, const EModificationMode Mode);
 	
 	/**
-	 * Recalculates all stats based on the current level and resets current stats. Also calls FStat::Update.
+	 * Recalculates all stats based on the current level and resets current stats. Also calls FCombatStat::Update.
 	 */
 	UFUNCTION(BlueprintCallable)
 	void RecalculateStats(bool bResetCurrent = true);
 
 	/**
 	 * Before and After parameters are identical:
-	 *  - [const EStatEnum] the stat that is being recalculated (the actual function loops over all FStats)
+	 *  - [const EStatEnum] the stat that is being recalculated (the actual function loops over all FCombatStat)
 	 *	- [const bool] if true, the current stats will reset (permanent always reset)
 	 *	- [const float] the original current stats (prior to recalculation)
 	 *	- [const float] the original permanent stats (prior to recalculation)
@@ -264,7 +264,7 @@ public:
 	 *
 	 */
 	UFUNCTION(BlueprintCallable)
-	bool IsEqual(UStatsComponent* Other, const EStatValueType ValueType, const float Tolerance = 0.1f);
+	bool IsEqual(UCombatStatsComponent* Other, const EStatValueType ValueType, const float Tolerance = 0.1f);
 
 	/**
 	 * Gets the raw sum of all BaseStats. (In Pokemon, the BST seems to be important, although I've never thought so. Are personal feelings allowed in comments?)
@@ -281,7 +281,7 @@ public:
 	float BaseStatEffectiveAverage();
 
 	/**
-	 * If the given FStat would be reduced, it is instead not reduced. Note: his is a utility function that does only
+	 * If the given FCombatStat would be reduced, it is instead not reduced. Note: his is a utility function that does only
 	 * manipulates Value and does *not* call ModifyStatInternal, so no Outlets are executed.
 	 */
 	void AvertReduction(const EStatEnum Stat, float& Value, const EStatValueType ValueType,

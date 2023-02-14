@@ -15,7 +15,7 @@ public class GeneHunter : ModuleRules
 			
 			// Modules
 			, "AffinitiesComponent", "AffinitiesComponentUnitTests", "BPLibraries", "EffectableComponent", "EffectComponent", "EffectComponentUnitTests", "GHLibraries", "LevelComponent"
-			, "StatsComponent", "StatsComponentUnitTests", "Types", "TypesUnitTests", "UI"
+			, "CombatStatsComponent", "StatsComponentUnitTests", "Types", "TypesUnitTests", "UI"
 		});
 	}
 }

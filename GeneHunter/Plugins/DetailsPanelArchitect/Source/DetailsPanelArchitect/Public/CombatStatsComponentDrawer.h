@@ -2,13 +2,13 @@
 #include "DetailLayoutBuilder.h"
 #include "GHComponentDrawer__BaseClass.h"
 #include "PropertyEditor/Public/IDetailCustomization.h"
-#include "StatsComponent.h"
+#include "CombatStatsComponent.h"
 
 
-class StatsComponentDrawer : public GHComponentDrawer__BaseClass
+class CombatStatsComponentDrawer : public GHComponentDrawer__BaseClass
 {
 
-	COMPONENT_SETUP(StatsComponent)
+	COMPONENT_SETUP(CombatStatsComponent)
 
 #pragma region Variables
 
@@ -67,7 +67,7 @@ private:
 
 	/** Gets the maximum based on the StatType (e.g., 100 for percentage-based; highest permanent for
 	 *	current/permanent; etc.). */
-	static float MaxStat(UStatsComponent* StatsComponent, const EStatValueType StatType, const bool bPercentage);
+	static float MaxStat(UCombatStatsComponent* CombatStatsComponent, const EStatValueType StatType, const bool bPercentage);
 
 	/** Constructs a "stats widget" depending on the StatValueType (base stat, current/permanent, etc.). */
 	void StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget, 

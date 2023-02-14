@@ -1,3 +1,3 @@
 ﻿#include "Modules/ModuleManager.h"
 
-IMPLEMENT_MODULE(FDefaultModuleImpl, EffectableComponentUnitTests);
+IMPLEMENT_MODULE(FDefaultModuleImpl, EffectableComponent);

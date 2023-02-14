@@ -6,7 +6,7 @@
 #include "SpecialDefense.generated.h"
 
 USTRUCT(Blueprintable)
-struct STATSCOMPONENT_API FSpecialDefense : public FStandardStat
+struct COMBATSTATSCOMPONENT_API FSpecialDefense : public FStandardStat
 {
 	GENERATED_BODY()
 

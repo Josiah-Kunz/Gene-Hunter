@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 /**
-* Pass these to acquire certain FStats.
+* Pass these to acquire certain FCombatStat.
  */
 UENUM(BlueprintType)
 enum class EStatEnum : uint8

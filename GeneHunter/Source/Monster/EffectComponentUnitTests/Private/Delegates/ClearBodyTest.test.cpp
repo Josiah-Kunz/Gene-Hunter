@@ -28,7 +28,7 @@ bool UEffectComponent_Delegates_ModifyStats::RunTest(const FString& Parameters)
 	const float OriginalHP = StatsComponent->GetStat(EStatEnum::Health).GetCurrentValue();
 	
 	// Define "clear body" delegate 
-	UStatsComponent::FModifyStatDelegate ClearBodyDelegate;
+	UCombatStatsComponent::FModifyStatDelegate ClearBodyDelegate;
 	ClearBodyDelegate.BindLambda([StatsComponent](EStatEnum Stat, float& Value, EStatValueType& ValueType, EModificationMode& Mode)
 	{
 		

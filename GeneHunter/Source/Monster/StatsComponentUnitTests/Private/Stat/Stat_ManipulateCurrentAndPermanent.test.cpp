@@ -10,18 +10,18 @@ bool FUStat_Stat_ManipulateCurrentAndPermanent::RunTest(const FString& Parameter
 {
 
 	// Set up
-	FStat DummyStat = {};
+	FCombatStat DummyStat = {};
 	DummyStat.SetCurrentValue(100);
 	DummyStat.SetPermanentValue(200);
 	
 	// Tests
 	TestEqual(
-			"FStat::SetCurrent(100)",
+			"FCombatStat::SetCurrent(100)",
 			DummyStat.GetCurrentValue(),
 			100,
 			UStatUnitTestUtilities::TOLERANCE);
 	TestEqual(
-			"FStat::SetPermanent(200)",
+			"FCombatStat::SetPermanent(200)",
 			DummyStat.GetPermanentValue(),
 			200,
 			UStatUnitTestUtilities::TOLERANCE);

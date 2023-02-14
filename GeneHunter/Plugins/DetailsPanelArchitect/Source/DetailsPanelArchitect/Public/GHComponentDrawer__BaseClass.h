@@ -8,8 +8,8 @@ class GHComponentDrawer__BaseClass : public IDetailCustomization
 {
 
 /**
- * NonUName is, e.g., "StatsComponent" for a UStatsComponent. File+class name should be "NonUNameDrawer". This macro:
- *	- Defines the (private) variable NonUName (e.g., "StatsComponent")
+ * NonUName is, e.g., "CombatStatsComponent" for a UCombatStatsComponent. File+class name should be "NonUNameDrawer". This macro:
+ *	- Defines the (private) variable NonUName (e.g., "CombatStatsComponent")
  *	- Defines MakeInstance()
  *	- Defines GetNonUName(IDetailLayoutBuilder& DetailBuilder)
  *	- Defines (private) ObjectsToEdit

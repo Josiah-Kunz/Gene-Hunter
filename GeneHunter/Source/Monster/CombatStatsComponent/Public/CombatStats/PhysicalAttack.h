@@ -2,23 +2,13 @@
 
 #pragma once
 
-#include "Stat.h"
-#include "Health.generated.h"
+#include "StandardStat.h"
+#include "PhysicalAttack.generated.h"
 
-/**
- * 
- */
 USTRUCT(Blueprintable)
-struct STATSCOMPONENT_API FHealth : public FStat
+struct COMBATSTATSCOMPONENT_API FPhysicalAttack : public FStandardStat
 {
 	GENERATED_BODY()
-
-public:
-	/**
-	 * Calculates the value of this Stat based on a unique formula. See the Stats document for relevant equations.
-	 * @param Level The level (always positive).
-	 */
-	virtual float CalculateValue(const uint16 Level) override;
 
 	/**
 	 * This Stat's description and such.
@@ -39,5 +29,4 @@ public:
 	 * The color associated with this Stat.
 	 */
 	virtual FLinearColor const Color() const override;
-	
 };

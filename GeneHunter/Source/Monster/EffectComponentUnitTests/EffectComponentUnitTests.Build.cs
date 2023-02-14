@@ -12,7 +12,7 @@ public class EffectComponentUnitTests : ModuleRules{
 		  , "Engine"					// for UBlueprintFuncitonLibrary in StatUnitTestUtilities.h
 		  , "EffectComponent"			// b/c these are the thing we're testing
 		  , "GHLibraries"				// for the REQUIRE_COMPONENT macro
-		  , "StatsComponent"			// for stats unit tests
+		  , "CombatStatsComponent"			// for stats unit tests
 		  , "StatsComponentUnitTests"	// ...and their unit tests
 		});
 	}

@@ -5,8 +5,8 @@
 #include "AffinitiesComponent.h"
 #include "AffinitiesComponentDrawer.h"
 #include "LevelComponentDrawer.h"
-#include "StatsComponent.h"
-#include "StatsComponentDrawer.h"
+#include "CombatStatsComponent.h"
+#include "CombatStatsComponentDrawer.h"
 
 #define LOCTEXT_NAMESPACE "FDetailsPanelArchitectModule"
 
@@ -25,7 +25,7 @@ void FDetailsPanelArchitectModule::StartupModule()
 	FPropertyEditorModule& PropertyEdModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
 
 	REGISTER_CLASS(AffinitiesComponent)
-	REGISTER_CLASS(StatsComponent)
+	REGISTER_CLASS(CombatStatsComponent)
 	REGISTER_CLASS(LevelComponent)
 }
 
@@ -35,7 +35,7 @@ void FDetailsPanelArchitectModule::ShutdownModule() \
 	FPropertyEditorModule& PropertyEdModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor"); 
 
 	UNREGISTER_CLASS(AffinitiesComponent)
-	UNREGISTER_CLASS(StatsComponent)
+	UNREGISTER_CLASS(CombatStatsComponent)
 	UNREGISTER_CLASS(LevelComponent)
 }
 

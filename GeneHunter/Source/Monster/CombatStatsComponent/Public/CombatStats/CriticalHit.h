@@ -2,17 +2,21 @@
 
 #pragma once
 
-#include "Stat.h"
-#include "Haste.generated.h"
+#include"CombatStat.h"
+#include "CriticalHit.generated.h"
 
 USTRUCT(Blueprintable)
-struct STATSCOMPONENT_API FHaste : public FStat
+struct COMBATSTATSCOMPONENT_API FCriticalHit : public FCombatStat
 {
 	GENERATED_BODY()
 
 	
 
 public:
+	inline static constexpr float BaseStatScaling = 3.6e-9;
+	inline static constexpr float BaseStatExponent = 4.2f;
+	inline static constexpr float LevelScaling = 0.625f;
+	
 	/**
 	 * Calculates the value of this Stat based on a unique formula. See the Stats document for relevant equations.
 	 * @param Level The level (always positive).
@@ -38,5 +42,12 @@ public:
 	 * The color associated with this Stat.
 	 */
 	virtual FLinearColor const Color() const override;
+
+protected:
+
+	/**
+	 * The critical hit every ten levels. See stats documentation for equations.
+	 */
+	virtual float SubCrit(const uint16 Level);
 	
 };
