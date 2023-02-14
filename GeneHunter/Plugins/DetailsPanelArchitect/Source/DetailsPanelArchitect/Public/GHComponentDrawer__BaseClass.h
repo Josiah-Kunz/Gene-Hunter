@@ -8,7 +8,8 @@ class GHComponentDrawer__BaseClass : public IDetailCustomization
 {
 
 /**
- * NonUName is, e.g., "CombatStatsComponent" for a UCombatStatsComponent. File+class name should be "NonUNameDrawer". This macro:
+ * NonUName is, e.g., "CombatStatsComponent" for a UCombatStatsComponent. File name should be "NonUNameDrawer". Drawer
+ * class name should be preceded with "I", e.g., "INonUNameDrawer". This macro:
  *	- Defines the (private) variable NonUName (e.g., "CombatStatsComponent")
  *	- Defines MakeInstance()
  *	- Defines GetNonUName(IDetailLayoutBuilder& DetailBuilder)
@@ -20,7 +21,7 @@ class GHComponentDrawer__BaseClass : public IDetailCustomization
 	U##NonUName * NonUName = nullptr; \
 	public: \
 	static TSharedRef<IDetailCustomization> MakeInstance(){ \
-		return MakeShareable(new NonUName##Drawer); \
+		return MakeShareable(new I##NonUName##Drawer); \
 	}; \
 	U##NonUName * Get##NonUName##(IDetailLayoutBuilder& DetailBuilder) { \
 		DetailBuilder.GetObjectsBeingCustomized(ObjectsToEdit); \

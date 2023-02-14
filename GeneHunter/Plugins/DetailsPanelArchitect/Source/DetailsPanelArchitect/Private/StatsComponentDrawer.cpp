@@ -1,4 +1,4 @@
-﻿#define LOCTEXT_NAMESPACE "CombatStatsComponentDrawer"
+﻿#define LOCTEXT_NAMESPACE "ICombatStatsComponentDrawer"
 
 #include "CombatStatsComponentDrawer.h"
 
@@ -10,7 +10,7 @@
 
 #pragma region Boilerplate
 
-void CombatStatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
+void ICombatStatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 	
 	// Get object
@@ -26,7 +26,7 @@ void CombatStatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBu
 
 #pragma region Private customization functions
 
-void CombatStatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& DetailBuilder)
+void ICombatStatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 
 	// Get useful limits
@@ -63,7 +63,7 @@ void CombatStatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuild
 	
 }
 
-void CombatStatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& DetailBuilder)
+void ICombatStatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 	// Get useful limits
 	const float MaxStatValue = MaxStat(CombatStatsComponent, EStatValueType::BaseStat, false);
@@ -137,7 +137,7 @@ void CombatStatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder&
 	;
 }
 
-void CombatStatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& DetailBuilder)
+void ICombatStatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 	// Get useful limits
 	const float MaxStatValue = MaxStat(CombatStatsComponent, EStatValueType::BasePairs, false);
@@ -189,7 +189,7 @@ void CombatStatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder&
 #pragma region Public utility functions
 
 
-TFunction<void(const FText&, ETextCommit::Type&)> CombatStatsComponentDrawer::StatOnTextCommitted(
+TFunction<void(const FText&, ETextCommit::Type&)> ICombatStatsComponentDrawer::StatOnTextCommitted(
 	IDetailLayoutBuilder& DetailBuilder, const EStatEnum TargetStat,
 	const EStatValueType StatValueType, const bool bPercentage) const
 {
@@ -235,7 +235,7 @@ TFunction<void(const FText&, ETextCommit::Type&)> CombatStatsComponentDrawer::St
 	};
 }
 
-bool CombatStatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
+bool ICombatStatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
 {
 	return CommitType == ETextCommit::Type::OnEnter || CommitType == ETextCommit::Type::OnUserMovedFocus;
 }
@@ -244,7 +244,7 @@ bool CombatStatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitTyp
 
 #pragma region Private utility functions
 
-float CombatStatsComponentDrawer::MaxStat(UCombatStatsComponent* CombatStatsComponent, const EStatValueType StatType, const bool bPercentage)
+float ICombatStatsComponentDrawer::MaxStat(UCombatStatsComponent* CombatStatsComponent, const EStatValueType StatType, const bool bPercentage)
 {
 	float Max = (bPercentage ? 100 : -INFINITY);
 	for(const EStatEnum Stat : (bPercentage ? CombatStatsComponent->PercentageStats : CombatStatsComponent->NonPercentageStats))
@@ -270,7 +270,7 @@ float CombatStatsComponentDrawer::MaxStat(UCombatStatsComponent* CombatStatsComp
 	return Max;
 }
 
-void CombatStatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget,
+void ICombatStatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget,
 	const EStatEnum TargetStat, const EStatValueType StatValueType,
 	const float OverallMaxValue, const bool bPercentage) const
 {
@@ -316,7 +316,7 @@ void CombatStatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder,
 	;
 }
 
-FSimpleDelegate CombatStatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, const EStatEnum TargetStat,
+FSimpleDelegate ICombatStatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, const EStatEnum TargetStat,
 	const EStatValueType StatValueType, const float MaxStatValue) const
 {
 	

@@ -5,7 +5,7 @@
 #include "CombatStatsComponent.h"
 
 
-class CombatStatsComponentDrawer : public GHComponentDrawer__BaseClass
+class ICombatStatsComponentDrawer : public GHComponentDrawer__BaseClass
 {
 
 	COMPONENT_SETUP(CombatStatsComponent)

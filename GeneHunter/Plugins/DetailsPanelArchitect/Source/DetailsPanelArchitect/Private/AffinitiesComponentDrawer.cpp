@@ -9,16 +9,16 @@
 #include "SCombatProfile.h"
 #include "Widgets/Input/SEditableTextBox.h"
 
-#define LOCTEXT_NAMESPACE "AffinitiesComponentDrawer"
+#define LOCTEXT_NAMESPACE "IAffinitiesComponentDrawer"
 
 #pragma region Boilerplate
 
-TSharedRef<IDetailCustomization> AffinitiesComponentDrawer::MakeInstance()
+TSharedRef<IDetailCustomization> IAffinitiesComponentDrawer::MakeInstance()
 {
-	return MakeShareable(new AffinitiesComponentDrawer);
+	return MakeShareable(new IAffinitiesComponentDrawer);
 }
 
-void AffinitiesComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
+void IAffinitiesComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 	
 	// Get object
@@ -38,7 +38,7 @@ void AffinitiesComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBui
 
 #pragma region Affinities category customization functions
 
-void AffinitiesComponentDrawer::CustomizeAffinitiesCategory(IDetailLayoutBuilder& DetailBuilder,
+void IAffinitiesComponentDrawer::CustomizeAffinitiesCategory(IDetailLayoutBuilder& DetailBuilder,
 	const TSharedRef<IPropertyHandle> PropertyHandle)
 {
 	// Get category
@@ -50,7 +50,7 @@ void AffinitiesComponentDrawer::CustomizeAffinitiesCategory(IDetailLayoutBuilder
 	CustomizeAffinities(DetailBuilder, Category);
 }
 
-void AffinitiesComponentDrawer::CustomizeMaxUsableAffinities(IDetailLayoutBuilder& DetailBuilder,
+void IAffinitiesComponentDrawer::CustomizeMaxUsableAffinities(IDetailLayoutBuilder& DetailBuilder,
 															 IDetailCategoryBuilder& Category)
 {
 	Category.AddCustomRow(LOCTEXT("KeyWord", "MaxUsableAffinities"))
@@ -85,7 +85,7 @@ void AffinitiesComponentDrawer::CustomizeMaxUsableAffinities(IDetailLayoutBuilde
 	;
 }
 
-void AffinitiesComponentDrawer::CustomizeAffinities(IDetailLayoutBuilder& DetailBuilder,
+void IAffinitiesComponentDrawer::CustomizeAffinities(IDetailLayoutBuilder& DetailBuilder,
 	IDetailCategoryBuilder& Category)
 {
 
@@ -97,7 +97,7 @@ void AffinitiesComponentDrawer::CustomizeAffinities(IDetailLayoutBuilder& Detail
 	DrawArrayMutator(DetailBuilder, Category);
 }
 
-void AffinitiesComponentDrawer::DrawAffinity(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category,
+void IAffinitiesComponentDrawer::DrawAffinity(IDetailLayoutBuilder& DetailBuilder, IDetailCategoryBuilder& Category,
 	FAffinity& Affinity)
 {
 
@@ -179,7 +179,7 @@ void AffinitiesComponentDrawer::DrawAffinity(IDetailLayoutBuilder& DetailBuilder
 	;
 }
 
-void AffinitiesComponentDrawer::DrawArrayMutator(IDetailLayoutBuilder& DetailBuilder,
+void IAffinitiesComponentDrawer::DrawArrayMutator(IDetailLayoutBuilder& DetailBuilder,
 	IDetailCategoryBuilder& Category)
 {
 	Category.AddCustomRow(LOCTEXT("KeyWord", "Array Mutator"))
@@ -266,7 +266,7 @@ void AffinitiesComponentDrawer::DrawArrayMutator(IDetailLayoutBuilder& DetailBui
 
 #pragma region Combat profile category customization functions
 
-void AffinitiesComponentDrawer::CustomizeCombatProfileCategories(IDetailLayoutBuilder& DetailBuilder,
+void IAffinitiesComponentDrawer::CustomizeCombatProfileCategories(IDetailLayoutBuilder& DetailBuilder,
 	const TSharedRef<IPropertyHandle> PropertyHandle)
 {
 	// Get categories
@@ -283,7 +283,7 @@ void AffinitiesComponentDrawer::CustomizeCombatProfileCategories(IDetailLayoutBu
 	
 }
 
-void AffinitiesComponentDrawer::DrawCombatProfile(IDetailLayoutBuilder& DetailBuilder,
+void IAffinitiesComponentDrawer::DrawCombatProfile(IDetailLayoutBuilder& DetailBuilder,
 	IDetailCategoryBuilder& Category, TArray<UType*>& AffinityTypes, const bool bAtk)
 {
 
@@ -301,13 +301,13 @@ void AffinitiesComponentDrawer::DrawCombatProfile(IDetailLayoutBuilder& DetailBu
 
 #pragma region Public utility functions
 
-void AffinitiesComponentDrawer::SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const
+void IAffinitiesComponentDrawer::SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const
 {
 	UKismetSystemLibrary::TransactObject(AffinitiesComponent);
 	DetailBuilder.ForceRefreshDetails();
 }
 
-UType* AffinitiesComponentDrawer::GetTypeByName(const FString* TypeName)
+UType* IAffinitiesComponentDrawer::GetTypeByName(const FString* TypeName)
 {
 	for(UType* Type : GetAllTypes())
 		if (Type->GetName().Equals(*TypeName))
@@ -315,7 +315,7 @@ UType* AffinitiesComponentDrawer::GetTypeByName(const FString* TypeName)
 	return nullptr;
 }
 
-TFunction<void(TSharedPtr<FString> Selection, ESelectInfo::Type SelectInfo)> AffinitiesComponentDrawer::
+TFunction<void(TSharedPtr<FString> Selection, ESelectInfo::Type SelectInfo)> IAffinitiesComponentDrawer::
 OnComboBoxChanged(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity)
 {
 	return [this, &DetailBuilder, &Affinity](const TSharedPtr<FString> Selection, ESelectInfo::Type SelectInfo)
@@ -331,7 +331,7 @@ OnComboBoxChanged(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity)
 		} else
 		{
 			UE_LOG(LogTemp, Warning,
-				TEXT("Selected Type %p is nullptr in AffinitiesComponentDrawer! Surely this is an error. Reverting to default value."),
+				TEXT("Selected Type %p is nullptr in IAffinitiesComponentDrawer! Surely this is an error. Reverting to default value."),
 				Selection.Get()
 			)
 			if (GetAllTypes().Num() > 0)
@@ -344,7 +344,7 @@ OnComboBoxChanged(IDetailLayoutBuilder& DetailBuilder, FAffinity& Affinity)
 
 #pragma region Private utility functions
 
-UAffinitiesComponent* AffinitiesComponentDrawer::GetAffinitiesComponent(const IDetailLayoutBuilder& DetailBuilder)
+UAffinitiesComponent* IAffinitiesComponentDrawer::GetAffinitiesComponent(const IDetailLayoutBuilder& DetailBuilder)
 {
 	// Get object from array
 	DetailBuilder.GetObjectsBeingCustomized(ObjectsToEdit);
@@ -364,7 +364,7 @@ UAffinitiesComponent* AffinitiesComponentDrawer::GetAffinitiesComponent(const ID
 	return Ret;
 }
 
-IDetailCategoryBuilder& AffinitiesComponentDrawer::GetCategory(IDetailLayoutBuilder& DetailBuilder,
+IDetailCategoryBuilder& IAffinitiesComponentDrawer::GetCategory(IDetailLayoutBuilder& DetailBuilder,
 	const FString CategoryName) const
 {
 	return DetailBuilder.EditCategory(
@@ -373,14 +373,14 @@ IDetailCategoryBuilder& AffinitiesComponentDrawer::GetCategory(IDetailLayoutBuil
 		ECategoryPriority::Important);
 }
 
-TArray<UType*> AffinitiesComponentDrawer::GetAllTypes()
+TArray<UType*> IAffinitiesComponentDrawer::GetAllTypes()
 {
 	if (AllTypes.Num() == 0)
 		UType::GetAllTypes(AllTypes);
 	return AllTypes;
 }
 
-FSimpleDelegate AffinitiesComponentDrawer::AffinityResetDelegate(IDetailLayoutBuilder& DetailBuilder,
+FSimpleDelegate IAffinitiesComponentDrawer::AffinityResetDelegate(IDetailLayoutBuilder& DetailBuilder,
 	FAffinity& Affinity) const
 {
 	return FSimpleDelegate::CreateLambda(
@@ -394,7 +394,7 @@ FSimpleDelegate AffinitiesComponentDrawer::AffinityResetDelegate(IDetailLayoutBu
 	);
 }
 
-bool AffinitiesComponentDrawer::CanModifyAffinity(const FAffinity& Affinity) const
+bool IAffinitiesComponentDrawer::CanModifyAffinity(const FAffinity& Affinity) const
 {
 	if (AffinitiesComponent->CanChooseNewType())
 		return true;

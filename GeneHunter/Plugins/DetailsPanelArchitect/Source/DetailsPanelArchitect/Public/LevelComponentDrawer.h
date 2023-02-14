@@ -5,7 +5,7 @@
 #include "LevelComponent.h"
 
 
-class LevelComponentDrawer : public GHComponentDrawer__BaseClass
+class ILevelComponentDrawer : public GHComponentDrawer__BaseClass
 {
 
 	COMPONENT_SETUP(LevelComponent)

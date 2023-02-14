@@ -13,7 +13,7 @@
 #define REGISTER_CLASS(NonUName) \
 	PropertyEdModule.RegisterCustomClassLayout( \
 		U##NonUName##::StaticClass()->GetFName(), \
-		FOnGetDetailCustomizationInstance::CreateStatic( NonUName##Drawer::MakeInstance) \
+		FOnGetDetailCustomizationInstance::CreateStatic( I##NonUName##Drawer::MakeInstance) \
 	);
 
 #define UNREGISTER_CLASS(NonUName) \
