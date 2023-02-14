@@ -1,16 +1,16 @@
-#include "TimedEffectComponent.h"
+#include "TimedEffectComponent_BaseClass.h"
 
-UTimedEffectComponent::UTimedEffectComponent()
+UTimedEffectComponent_BaseClass::UTimedEffectComponent_BaseClass()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-float UTimedEffectComponent::StartingDuration()
+float UTimedEffectComponent_BaseClass::StartingDuration()
 {
 	return 1;
 }
 
-void UTimedEffectComponent::OnComponentCreated()
+void UTimedEffectComponent_BaseClass::OnComponentCreated()
 {
 	
 	Super::OnComponentCreated();
@@ -19,7 +19,7 @@ void UTimedEffectComponent::OnComponentCreated()
 	RemainingTime = StartingDuration();
 }
 
-void UTimedEffectComponent::TickComponent(const float DeltaTime, const ELevelTick TickType,
+void UTimedEffectComponent_BaseClass::TickComponent(const float DeltaTime, const ELevelTick TickType,
 	FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);

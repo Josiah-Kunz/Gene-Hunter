@@ -23,7 +23,7 @@ bool FGetUnspentPoints::RunTest(const FString& Parameters)
 
 	// Define delegate
 	FBeforeGetUnspentPointsDelegate DoublePointsDelegate;
-	DoublePointsDelegate.Delegate.BindDynamic()
+	//DoublePointsDelegate.Delegate.BindDynamic()
 	
 
 	// Test that the points are doubled

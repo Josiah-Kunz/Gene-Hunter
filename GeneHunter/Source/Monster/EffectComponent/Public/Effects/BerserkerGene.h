@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MutationComponent.h"
+#include "MutationComponent_BaseClass.h"
 #include"CombatStat.h"
 #include "CombatStatsComponent.h"
 #include "CombatStatsComponent/Public/ModificationMode.h"
@@ -13,7 +13,7 @@
  * A little boring, but sometimes it's best to have at least one boring, tried-and-true option.
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
-class EFFECTCOMPONENT_API UBerserkerGene : public UMutationComponent
+class EFFECTCOMPONENT_API UBerserkerGene : public UMutationComponent_BaseClass
 {
 	GENERATED_BODY()
 

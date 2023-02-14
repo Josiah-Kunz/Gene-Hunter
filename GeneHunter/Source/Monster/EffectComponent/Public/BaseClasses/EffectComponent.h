@@ -7,7 +7,8 @@
 #include "EffectComponent.generated.h"
 
 /**
- * A class to hold data (e.g., Priority) and code (how effects are actually implemented). Add to an Actor via UEffectComponent::ApplyEffect(Actor).
+ * A class to hold data (e.g., Priority) and code (how effects are actually implemented). Add to an Actor via
+ * UEffectComponent::ApplyEffect(Actor).
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class EFFECTCOMPONENT_API UEffectComponent : public UActorComponent

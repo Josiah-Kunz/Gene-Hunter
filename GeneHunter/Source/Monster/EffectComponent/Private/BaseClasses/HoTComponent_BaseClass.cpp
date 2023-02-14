@@ -1,19 +1,19 @@
-﻿#include "HoTComponent.h"
+﻿#include "HoTComponent_BaseClass.h"
 
 #include "ComponentUtilities.h"
 
 
-float UHoTComponent::GetAmount()
+float UHoTComponent_BaseClass::GetAmount()
 {
 	return StatsComponent->GetStat(EStatEnum::Health).GetPermanentValue() * 0.01f * GetStacks();
 }
 
-float UHoTComponent::GetTickRate()
+float UHoTComponent_BaseClass::GetTickRate()
 {
 	return 1;
 }
 
-void UHoTComponent::OnComponentCreated()
+void UHoTComponent_BaseClass::OnComponentCreated()
 {
 
 	// Get StatsComponent
@@ -30,7 +30,7 @@ void UHoTComponent::OnComponentCreated()
 	NextModTime = StartingDuration();
 }
 
-void UHoTComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UHoTComponent_BaseClass::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
