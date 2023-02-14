@@ -11,7 +11,7 @@
 *	- Declare a public UPROPERTY() FSignature Delegate;
  */
 USTRUCT(Blueprintable)
-struct GHLIBRARIES_API FEffectDelegate_Base
+struct EFFECTABLECOMPONENT_API FEffectDelegate_Base
 {
 	GENERATED_BODY()
 

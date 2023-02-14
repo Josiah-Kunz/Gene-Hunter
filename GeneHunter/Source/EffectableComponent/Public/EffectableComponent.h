@@ -9,7 +9,7 @@
  *	inherit from this, as you can create effects that "plug in" to UStatsComponent.
  */
 UCLASS()
-class GHLIBRARIES_API UEffectableComponent : public UActorComponent
+class EFFECTABLECOMPONENT_API UEffectableComponent : public UActorComponent
 {
 	GENERATED_BODY()
 

@@ -4,7 +4,7 @@ public class AffinitiesComponentUnitTests : ModuleRules{
 	
 	public AffinitiesComponentUnitTests(ReadOnlyTargetRules Target) : base(Target){
 		
-		PrivateIncludePaths.Add("Monster/StatsComponentUnitTests/Private");
+		PrivateIncludePaths.Add("Monster/AffinitiesComponentUnitTests/Private");
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
 			"Core"						// for FString

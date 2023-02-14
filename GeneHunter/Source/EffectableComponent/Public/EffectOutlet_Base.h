@@ -23,7 +23,7 @@ enum class EDelegateTriggerTiming : uint8
  *			FDelegateSignature Delegate;
  */
 USTRUCT(Blueprintable)
-struct GHLIBRARIES_API FEffectOutlet_Base
+struct EFFECTABLECOMPONENT_API FEffectOutlet_Base
 {
 	GENERATED_BODY()
 

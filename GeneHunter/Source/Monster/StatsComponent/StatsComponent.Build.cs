@@ -17,7 +17,7 @@ public class StatsComponent : ModuleRules{
 		PublicDependencyModuleNames.AddRange(new string[]{
 			"Engine"	// for MathUtil.h (internal) and ActorComponent.h (external)
 		  , "UI"		// for SupportingText.h
-		  , "GHLibraries"		// for effect delegate macros and UEffectableComponent
+		  , "EffectableComponent"		// for effect delegate macros and UEffectableComponent
 		  , "LevelComponent"	// Stats depend on Level
 		}); 
 		
@@ -29,6 +29,7 @@ public class StatsComponent : ModuleRules{
 			  
 			// Other modules
 			, "BPLibraries"		// for Stats using RoundToDecimal
+			, "GHLibraries"		// for REQUIRE_COMPONENT macro (since UStatsComponent depends on ULevelComponent)
 		});
 	}
 }
