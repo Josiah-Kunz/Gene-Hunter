@@ -4,6 +4,8 @@
 	\todo{}
 \end{tldr}
 
+%====================================================
+
 \sect{Structure}
 
 \newcommand{\SubItem}[1]{\begin{itemize}\item{#1}\end{itemize}}
@@ -25,23 +27,33 @@
 	\item{\textbf{\code{EffectComponent}s} are \code{ActorComponent}s that plug into \code{Outlet}s. These come in many forms, but an easy example is a \code{Buff}. \todo{Describe how this happens with pictures!}}
 \end{itemize}
 
+%====================================================
+
+\sect{\code{EffectComponent} Inheritance}
+
+\input{effects-inheritance}
+
+
+
+%====================================================
+
 \sect{List of \code{EffectableComponent}s and \code{Outlet}s}
 
-The following tables show all implemented \code{EffectableComponent}s and their delegate arrays. Note the ``base name'' indicates existence of:
+The following tables show all implemented \code{EffectableComponent}s and their delegate arrays. Note the ``base name'' indicates existence of ``Before'' and ``After'' versions of:
 
 \begin{enumerate}
-	\item{the delegate signature \code{FBaseNameSignature};}
-	\item{the private before/after arrays of \code{Outlet}s: \\\code{TArray<FBaseNameOutlet> BeforeBaseName}; and}
-	\item{a function for each before/after to execute the arrays: \code{ExecuteBeforeBaseName (...)}.}
-	\item{\code{AddBeforeBaseName}, a function to add an \code{Outlet} to the private array \code{BeforeBaseName} (which also puts it in the right order based on priority).}
+	\item{the delegate signatures, \code{FBeforeBaseNameSignature};}
+	\item{the delegate wrappers, \code{FBeforeBaseNameDelegate}, which are necessary since \code{TArray}s cannot contain delegates;}
+	\item{the private arrays of delegate wrappers, \code{TArray<FBeforeBaseNameOutlet> BeforeDelegates};}
+	\item{a function to execute the arrays, \code{ExecuteBeforeBaseName}; and}
+	\item{\code{AddBeforeBaseName}, a function to add an \code{Outlet} to the private array \code{BeforeDelegates} (which also puts it in the right order based on priority).}
 \end{enumerate}
 
 \noindent Note that the philosophy applies to what is \textit{probable} rather than what is \textit{possible}. Hence the list meant to be practical rather than exhaustive.
 
 %====================================================
 
-
-\input{effects-tables}
+\input{outlets-tables}
 
 %====================================================
 

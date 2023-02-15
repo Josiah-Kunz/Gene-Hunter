@@ -1,0 +1,62 @@
+\input{../standalone}
+
+\newcommand{\TreeNote}[1]{{\fontsize{7pt}{0pt} \selectfont{\color{gray} #1}}}
+
+% auxiliary nodes without node label
+\forestset{
+  empty nodes/.style={
+    delay={where content={}{shape=coordinate,for parent={for children={anchor=north}}}{}}}
+}
+
+The base classes inherit as:
+
+\vspace*{1em}
+
+\begin{center}
+\fbox{\small \begin{forest}
+before typesetting nodes={for tree={
+	s sep=0cm,
+	parent anchor=south, edge path={\noexpand\path [\forestoption{edge}] (!u.parent anchor) -- ++(0,-5pt) -| (.child anchor)\forestoption{edge label};},
+	empty nodes
+ 	}}
+[Effect\\\TreeNote{base class, stackable}
+		[Aura\\\TreeNote{visible, purgeable,}\\\TreeNote{not timed}
+			[Negative\\\TreeNote{``bad'' Aura}
+			]
+			[Positive\\\TreeNote{``good'' Aura}
+			]
+			[Zone\\\TreeNote{area of effect}\\\TreeNote{``good'' or ``bad''}\\\TreeNote{non-purgeable}
+			]
+		]
+		[Intrinsic\\\TreeNote{non-visible,}\\\TreeNote{non-purgeable}
+			[Mutation\\\TreeNote{random ability}\\\TreeNote{based on Species}
+			]
+			[{Type Trait}\\\TreeNote{based on Type}
+			]
+		] 
+		[Timed\\\TreeNote{visible, purgeable,}\\\TreeNote{set duration}
+			[Buff\\\TreeNote{``good'' Timed Effect}
+				[HoT\\\TreeNote{\ul{h}eal \ul{o}ver \ul{t}ime}
+				]
+			]
+			[Debuff\\\TreeNote{``bad'' Timed Effect}
+				[DoT\\\TreeNote{\ul{d}amage \ul{o}ver \ul{t}ime}
+				]
+			]
+		]
+	]
+\end{forest}}
+\end{center}
+
+\vspace*{1em}
+
+Some notes:
+
+\begin{itemize}
+	\item{Only the base names have been used. That is, the actual names may be\\ \code{UTimedEffectComponent\_BaseClass} instead of simply ``Timed''.}
+	\item{``Purgeable'' means it is possible to reduce the stacks of the \code{UEffectComponent} down to zero (detachment of \code{UEffectComponent}).}
+	\item{All \code{UEffectComponent}s are ``silenceable'', meaning their effects can be nullified (but not detached or reduced in stacks).}
+\end{itemize}
+
+
+\postamble{}
