@@ -99,6 +99,25 @@ public:
 	virtual FText GetDisplayName();
 
 	/**
+	 * If true, the delegate should do nothing (but not be removed).
+	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
+	virtual bool IsSilenced() const;
+
+	/**
+	 * If true, the UI should somehow render this. Note: the responsibility of doing so is not upon this module.
+	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
+	virtual bool IsVisibleToUI() const;
+
+	/**
+	 * If true, it is possible to reduce the number of stacks via purge. Note: the responsibility of deciding what a
+	 * "purge" is and doing so is not upon this module. Stacks may always be removed via code regardless of this value.
+	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
+	virtual bool IsPurgeable() const;
+
+	/**
 	 * Sets stacks to 1. It is here that you should bind your delegate by using macros like SEARCH_FOR_COMPONENT.
 	 */
 	virtual void OnComponentCreated() override;

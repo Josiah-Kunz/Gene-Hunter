@@ -65,6 +65,21 @@ FText UEffectComponent::GetDisplayName()
 	return FText::FromString(ShortName);
 }
 
+bool UEffectComponent::IsSilenced() const
+{
+	return Silenced;
+}
+
+bool UEffectComponent::IsVisibleToUI() const
+{
+	return false;
+}
+
+bool UEffectComponent::IsPurgeable() const
+{
+	return false;
+}
+
 auto UEffectComponent::OnComponentCreated() -> void
 {
 	

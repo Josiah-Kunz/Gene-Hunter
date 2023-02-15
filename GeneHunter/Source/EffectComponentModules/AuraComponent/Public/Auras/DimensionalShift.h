@@ -13,7 +13,7 @@
  * A little boring, but sometimes it's best to have at least one boring, tried-and-true option.
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
-class EFFECTCOMPONENT_API UDimensionalShift : public UBuffComponent_BaseClass
+class AURACOMPONENT_API UDimensionalShift : public UBuffComponent_BaseClass
 {
 	GENERATED_BODY()
 

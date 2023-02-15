@@ -5,15 +5,13 @@ public class EffectComponent : ModuleRules{
 	public EffectComponent(ReadOnlyTargetRules Target) : base(Target){
 		
 		PrivateIncludePaths.AddRange(new string[]{
-			"Monster/EffectComponent/Private",
-			"Monster/EffectComponent/Private/BaseClasses",
-			"Monster/EffectComponent/Private/Effects",
+			"EffectComponentModules/EffectComponent/Private",
+			"EffectComponentModules/EffectComponent/Private/BaseClasses",
 		});
 
 		PublicIncludePaths.AddRange(new string[]{
-			"Monster/EffectComponent/Public", 
-			"Monster/EffectComponent/Public/BaseClasses",
-			"Monster/EffectComponent/Public/Effects",
+			"EffectComponentModules/EffectComponent/Public", 
+			"EffectComponentModules/EffectComponent/Public/BaseClasses",
 		});
 		
 		PublicDependencyModuleNames.AddRange(new string[]{

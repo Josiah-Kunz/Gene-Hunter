@@ -20,12 +20,7 @@
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "EffectableComponent",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
-		},
-		{
-			"Name": "EffectComponent",
+			"Name": "CombatStatsComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
@@ -40,11 +35,6 @@
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "CombatStatsComponent",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
-		},
-		{
 			"Name": "Types",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
@@ -54,6 +44,24 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
+
+		{
+			"Name": "AuraComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "EffectableComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "EffectComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		
+		
 		{
 			"Name": "AffinitiesComponentUnitTests",
 			"Type": "Editor",
