@@ -1,16 +1,11 @@
 #include "EffectComponent.h"
 
-UEffectComponent::UEffectComponent()
-{
-	
-}
-
 bool UEffectComponent::IsComponentTickEnabled() const
 {
 	return Super::IsComponentTickEnabled();
 }
 
-int32 UEffectComponent::GetStacks()
+int32 UEffectComponent::GetStacks() const
 {
 	return Stacks;
 }
@@ -26,7 +21,13 @@ void UEffectComponent::SetStacks(const int32 NewStacks)
 		const uint16 CachedStacks = Stacks;
 		Stacks = FMath::Clamp(NewStacks, 1, MaxStacks());
 		if (Stacks >= CachedStacks)
+		{
 			OnRefreshStacks();
+		}
+		if (Stacks < CachedStacks)
+		{
+			OnReduceStacks();
+		}
 	}
 }
 
@@ -36,6 +37,10 @@ int32 UEffectComponent::MaxStacks()
 }
 
 void UEffectComponent::OnRefreshStacks()
+{
+}
+
+void UEffectComponent::OnReduceStacks()
 {
 }
 
