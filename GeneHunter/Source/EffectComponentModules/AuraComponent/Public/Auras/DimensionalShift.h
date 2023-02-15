@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BuffComponent_BaseClass.h"
+#include "BuffComponent.h"
 #include"CombatStat.h"
 #include "CombatStatsComponent.h"
 #include "CombatStatsComponent/Public/ModificationMode.h"
@@ -13,7 +13,7 @@
  * A little boring, but sometimes it's best to have at least one boring, tried-and-true option.
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
-class AURACOMPONENT_API UDimensionalShift : public UBuffComponent_BaseClass
+class AURACOMPONENT_API UDimensionalShift : public UBuffComponent
 {
 	GENERATED_BODY()
 

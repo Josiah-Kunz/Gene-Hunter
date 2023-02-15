@@ -1,6 +1,6 @@
 #pragma once
-#include "EffectDelegate_Base.h"
-#include "EffectOutlet_Base.h"
+#include "EffectDelegate.h"
+#include "EffectOutlet.h"
 
 #include "GetUnspentPointsOutlet.generated.h"
 
@@ -14,7 +14,7 @@ DECLARE_DYNAMIC_DELEGATE_TwoParams(FBeforeGetUnspentPointsSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct AFFINITIESCOMPONENT_API FBeforeGetUnspentPointsDelegate : public FEffectDelegate_Base
+struct AFFINITIESCOMPONENT_API FBeforeGetUnspentPointsDelegate : public FEffectDelegate
 {
 	GENERATED_BODY()
 
@@ -37,7 +37,7 @@ DECLARE_DYNAMIC_DELEGATE_TwoParams(FAfterGetUnspentPointsSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct AFFINITIESCOMPONENT_API FAfterGetUnspentPointsDelegate : public FEffectDelegate_Base
+struct AFFINITIESCOMPONENT_API FAfterGetUnspentPointsDelegate : public FEffectDelegate
 {
 	GENERATED_BODY()
 
@@ -56,7 +56,7 @@ public:
  * 
  */
 USTRUCT(Blueprintable)
-struct AFFINITIESCOMPONENT_API FGetUnspentPointsOutlet : public FEffectOutlet_Base
+struct AFFINITIESCOMPONENT_API FGetUnspentPointsOutlet : public FEffectOutlet
 {
 	GENERATED_BODY()
 

@@ -45,7 +45,12 @@
 
 % Inline code
 \definecolor{darkpink}{rgb}{0.5, 0.0, 0.5}
-\newcommand{\code}[1]{\texttt{\color{darkpink}#1}}
+\newcommand{\code}[1]{%
+	\begin{lstlisting}%
+		#1%
+	\end{lstlisting}%
+}
+%\newcommand{\code}[1]{\texttt{\color{darkpink}#1}}
 
 % Bibliography
 % ============

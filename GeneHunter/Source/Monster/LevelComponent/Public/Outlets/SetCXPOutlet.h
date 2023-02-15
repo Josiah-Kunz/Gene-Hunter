@@ -1,6 +1,6 @@
 #pragma once
-#include "EffectDelegate_Base.h"
-#include "EffectOutlet_Base.h"
+#include "EffectDelegate.h"
+#include "EffectOutlet.h"
 
 #include "SetCXPOutlet.generated.h"
 
@@ -16,7 +16,7 @@ DECLARE_DYNAMIC_DELEGATE_ThreeParams(FBeforeSetCXPSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FBeforeSetCXPDelegate : public FEffectDelegate_Base
+struct LEVELCOMPONENT_API FBeforeSetCXPDelegate : public FEffectDelegate
 {
 	GENERATED_BODY()
 
@@ -41,7 +41,7 @@ DECLARE_DYNAMIC_DELEGATE_ThreeParams(FAfterSetCXPSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FAfterSetCXPDelegate : public FEffectDelegate_Base
+struct LEVELCOMPONENT_API FAfterSetCXPDelegate : public FEffectDelegate
 {
 	GENERATED_BODY()
 
@@ -60,7 +60,7 @@ public:
  * 
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FSetCXPOutlet : public FEffectOutlet_Base
+struct LEVELCOMPONENT_API FSetCXPOutlet : public FEffectOutlet
 {
 	GENERATED_BODY()
 

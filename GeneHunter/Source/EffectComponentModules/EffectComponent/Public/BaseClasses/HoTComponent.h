@@ -1,16 +1,16 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "BuffComponent_BaseClass.h"
+#include "BuffComponent.h"
 #include "CombatStatsComponent.h"
-#include "HoTComponent_BaseClass.generated.h"
+#include "HoTComponent.generated.h"
 
 
 /**
  * A subclass of UBuff that [H]eals [o]ver [T]ime.
  */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class EFFECTCOMPONENT_API UHoTComponent_BaseClass : public UBuffComponent_BaseClass
+class EFFECTCOMPONENT_API UHoTComponent : public UBuffComponent
 {
 	GENERATED_BODY()
 

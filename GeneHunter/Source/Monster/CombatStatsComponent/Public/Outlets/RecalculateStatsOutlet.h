@@ -1,6 +1,6 @@
 #pragma once
-#include "EffectDelegate_Base.h"
-#include "EffectOutlet_Base.h"
+#include "EffectDelegate.h"
+#include "EffectOutlet.h"
 #include "StatRandParams.h"
 
 #include "RecalculateStatsOutlet.generated.h"
@@ -18,7 +18,7 @@ DECLARE_DYNAMIC_DELEGATE_FourParams(FBeforeRecalculateStatsSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct COMBATSTATSCOMPONENT_API FBeforeRecalculateStatsDelegate : public FEffectDelegate_Base
+struct COMBATSTATSCOMPONENT_API FBeforeRecalculateStatsDelegate : public FEffectDelegate
 {
 	GENERATED_BODY()
 
@@ -44,7 +44,7 @@ DECLARE_DYNAMIC_DELEGATE_FourParams(FAfterRecalculateStatsSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct COMBATSTATSCOMPONENT_API FAfterRecalculateStatsDelegate : public FEffectDelegate_Base
+struct COMBATSTATSCOMPONENT_API FAfterRecalculateStatsDelegate : public FEffectDelegate
 {
 	GENERATED_BODY()
 
@@ -63,7 +63,7 @@ public:
  * 
  */
 USTRUCT(Blueprintable)
-struct COMBATSTATSCOMPONENT_API FRecalculateStatsOutlet : public FEffectOutlet_Base
+struct COMBATSTATSCOMPONENT_API FRecalculateStatsOutlet : public FEffectOutlet
 {
 	GENERATED_BODY()
 

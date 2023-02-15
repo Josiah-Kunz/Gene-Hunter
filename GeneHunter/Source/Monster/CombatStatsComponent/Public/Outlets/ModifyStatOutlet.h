@@ -1,6 +1,6 @@
 #pragma once
-#include "EffectDelegate_Base.h"
-#include "EffectOutlet_Base.h"
+#include "EffectDelegate.h"
+#include "EffectOutlet.h"
 #include "StatRandParams.h"
 
 #include "ModifyStatOutlet.generated.h"
@@ -19,7 +19,7 @@ DECLARE_DYNAMIC_DELEGATE_FiveParams(FBeforeModifyStatSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct COMBATSTATSCOMPONENT_API FBeforeModifyStatDelegate : public FEffectDelegate_Base
+struct COMBATSTATSCOMPONENT_API FBeforeModifyStatDelegate : public FEffectDelegate
 {
 	GENERATED_BODY()
 
@@ -46,7 +46,7 @@ DECLARE_DYNAMIC_DELEGATE_FiveParams(FAfterModifyStatSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct COMBATSTATSCOMPONENT_API FAfterModifyStatDelegate : public FEffectDelegate_Base
+struct COMBATSTATSCOMPONENT_API FAfterModifyStatDelegate : public FEffectDelegate
 {
 	GENERATED_BODY()
 
@@ -65,7 +65,7 @@ public:
  * 
  */
 USTRUCT(Blueprintable)
-struct COMBATSTATSCOMPONENT_API FModifyStatOutlet : public FEffectOutlet_Base
+struct COMBATSTATSCOMPONENT_API FModifyStatOutlet : public FEffectOutlet
 {
 	GENERATED_BODY()
 

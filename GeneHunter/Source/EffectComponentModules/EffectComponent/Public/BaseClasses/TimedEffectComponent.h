@@ -2,15 +2,15 @@
 
 #include "CoreMinimal.h"
 #include "EffectComponent.h"
-#include "TimedEffectComponent_BaseClass.generated.h"
+#include "TimedEffectComponent.generated.h"
 
 
 /**
  * A class for EffectComponents that expire after a certain time. Stackable. This is the base class; you should use 
- *	UBuffComponent_BaseClass or UDebuffComponent_BaseClass.
+ *	UBuffComponent or UDebuffComponent.
  */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class EFFECTCOMPONENT_API UTimedEffectComponent_BaseClass : public UEffectComponent
+class EFFECTCOMPONENT_API UTimedEffectComponent : public UEffectComponent
 {
 	GENERATED_BODY()
 
@@ -21,7 +21,7 @@ public:
 	 */
 	float RemainingTime;
 
-	UTimedEffectComponent_BaseClass();
+	UTimedEffectComponent();
 	
 	/**
 	 * The duration of this effect when it is first applied.

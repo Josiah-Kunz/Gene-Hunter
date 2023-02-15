@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EffectOutlet_Base.generated.h"
+#include "EffectOutlet.generated.h"
 
 /**
  * An enum to help determine where a delegate triggers.
@@ -23,7 +23,7 @@ enum class EDelegateTriggerTiming : uint8
  *			FDelegateSignature Delegate;
  */
 USTRUCT(Blueprintable)
-struct EFFECTABLECOMPONENT_API FEffectOutlet_Base
+struct EFFECTABLECOMPONENT_API FEffectOutlet
 {
 	GENERATED_BODY()
 
@@ -47,7 +47,7 @@ public:
 
 		UE_LOG(LogTemp, Error, TEXT("Unknown  Before or After option: %s in %s::IsPriorityLowerIndex() !"),
 				*(UEnum::GetValueAsName(BeforeOrAfter).ToString()),
-				*FString(FEffectOutlet_Base::StaticStruct()->GetName())
+				*FString(FEffectOutlet::StaticStruct()->GetName())
 				);
 		return false;
 	}

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EffectDelegate_Base.generated.h"
+#include "EffectDelegate.generated.h"
 
 /**
  * Since delegates can't fit in TArrays, we need to wrap them in something. This is that something. It also gives
@@ -11,7 +11,7 @@
 *	- Declare a public UPROPERTY() FSignature Delegate;
  */
 USTRUCT(Blueprintable)
-struct EFFECTABLECOMPONENT_API FEffectDelegate_Base
+struct EFFECTABLECOMPONENT_API FEffectDelegate
 {
 	GENERATED_BODY()
 

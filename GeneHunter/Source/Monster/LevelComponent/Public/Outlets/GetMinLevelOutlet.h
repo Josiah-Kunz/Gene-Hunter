@@ -1,6 +1,6 @@
 #pragma once
-#include "EffectDelegate_Base.h"
-#include "EffectOutlet_Base.h"
+#include "EffectDelegate.h"
+#include "EffectOutlet.h"
 
 #include "GetMinLevelOutlet.generated.h"
 
@@ -14,7 +14,7 @@ DECLARE_DYNAMIC_DELEGATE_TwoParams(FBeforeGetMinLevelSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FBeforeGetMinLevelDelegate : public FEffectDelegate_Base
+struct LEVELCOMPONENT_API FBeforeGetMinLevelDelegate : public FEffectDelegate
 {
 	GENERATED_BODY()
 
@@ -37,7 +37,7 @@ DECLARE_DYNAMIC_DELEGATE_TwoParams(FAfterGetMinLevelSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FAfterGetMinLevelDelegate : public FEffectDelegate_Base
+struct LEVELCOMPONENT_API FAfterGetMinLevelDelegate : public FEffectDelegate
 {
 	GENERATED_BODY()
 
@@ -56,7 +56,7 @@ public:
  * 
  */
 USTRUCT(Blueprintable)
-struct LEVELCOMPONENT_API FGetMinLevelOutlet : public FEffectOutlet_Base
+struct LEVELCOMPONENT_API FGetMinLevelOutlet : public FEffectOutlet
 {
 	GENERATED_BODY()
 

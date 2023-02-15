@@ -1,6 +1,6 @@
 #pragma once
-#include "EffectDelegate_Base.h"
-#include "EffectOutlet_Base.h"
+#include "EffectDelegate.h"
+#include "EffectOutlet.h"
 #include "StatRandParams.h"
 
 #include "RandomizeStatsOutlet.generated.h"
@@ -17,7 +17,7 @@ DECLARE_DYNAMIC_DELEGATE_ThreeParams(FBeforeRandomizeStatsSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct COMBATSTATSCOMPONENT_API FBeforeRandomizeStatsDelegate : public FEffectDelegate_Base
+struct COMBATSTATSCOMPONENT_API FBeforeRandomizeStatsDelegate : public FEffectDelegate
 {
 	GENERATED_BODY()
 
@@ -42,7 +42,7 @@ DECLARE_DYNAMIC_DELEGATE_ThreeParams(FAfterRandomizeStatsSignature,
  * Since delegates can't fit in TArrays, we need to wrap them in something.
  */
 USTRUCT(Blueprintable)
-struct COMBATSTATSCOMPONENT_API FAfterRandomizeStatsDelegate : public FEffectDelegate_Base
+struct COMBATSTATSCOMPONENT_API FAfterRandomizeStatsDelegate : public FEffectDelegate
 {
 	GENERATED_BODY()
 
@@ -61,7 +61,7 @@ public:
  * 
  */
 USTRUCT(Blueprintable)
-struct COMBATSTATSCOMPONENT_API FRandomizeStatsOutlet : public FEffectOutlet_Base
+struct COMBATSTATSCOMPONENT_API FRandomizeStatsOutlet : public FEffectOutlet
 {
 	GENERATED_BODY()
 

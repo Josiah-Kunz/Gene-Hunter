@@ -1,1 +1,1 @@
-#include "AuraComponent_BaseClass.h"
+#include "AuraComponent.h"

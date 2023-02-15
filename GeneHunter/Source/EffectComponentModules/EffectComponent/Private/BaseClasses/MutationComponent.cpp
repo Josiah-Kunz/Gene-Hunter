@@ -1,11 +1,8 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "PositiveAuraComponent_BaseClass.h"
+﻿#include "MutationComponent.h"
 
 
 // Sets default values for this component's properties
-UPositiveAuraComponent_BaseClass::UPositiveAuraComponent_BaseClass()
+UMutationComponent::UMutationComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
