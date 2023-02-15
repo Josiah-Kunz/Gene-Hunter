@@ -14,7 +14,16 @@ public class AuraComponent : ModuleRules{
 		});
 		
 		PublicDependencyModuleNames.AddRange(new string[]{
+			// Basics
+			"Core",        // for IMPLEMENT_MODULE
+			"CoreUObject", // for UObjects
+			"Engine",      // for AActor
+			
 			"CombatStatsComponent",
+			"EffectComponent",	// for inheritance
+			"BPLibraries",		// for SplitCamelCase
+			"GHLibraries",		// for component utilities SEARCH_FOR_COMPONENT
+			"UI",				// for SupportingText
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{

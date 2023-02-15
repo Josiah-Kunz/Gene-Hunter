@@ -15,20 +15,20 @@ public class EffectComponent : ModuleRules{
 		});
 		
 		PublicDependencyModuleNames.AddRange(new string[]{
-			"CombatStatsComponent",	// for FCombatStat in ModifyStat.h
+			// Basics
+			"Core",        // for IMPLEMENT_MODULE
+			"CoreUObject", // for UObjects
+			"Engine",      // for AActor
+			
+			// Libraries and utilities
+			"GHLibraries", // for RequireComponent
+			"BPLibraries", // for SplitCamelCase
+			"UI",          // for SupportingText
+			
+			"CombatStatsComponent" // TODO: we only need this for UHoT, etc.
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
-			
-			// Basics
-			"Core",			// for IMPLEMENT_MODULE
-			"CoreUObject",	// for UObjects
-			"Engine",		// for AActor
-			
-			// Libraries and utilities
-			"GHLibraries",	// for RequireComponent
-			"BPLibraries",	// for SplitCamelCase
-			"UI",			 // for SupportingText
 		});
 	}
 }

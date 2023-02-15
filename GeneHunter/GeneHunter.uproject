@@ -60,6 +60,16 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
+		{
+			"Name": "NegativeAuraComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "PositiveAuraComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
 		
 		
 		{

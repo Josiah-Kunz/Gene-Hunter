@@ -12,5 +12,4 @@ UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class AURACOMPONENT_API UAuraComponent : public UEffectComponent
 {
 	GENERATED_BODY()
-	
 };
