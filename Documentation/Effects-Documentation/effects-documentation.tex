@@ -44,7 +44,7 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 \begin{enumerate}
 	\item{the delegate signatures, \code{FBeforeBaseNameSignature};}
 	\item{the delegate wrappers, \code{FBeforeBaseNameDelegate}, which are necessary since \code{TArray}s cannot contain delegates;}
-	\item{the private arrays of delegate wrappers, \code{TArray<FBeforeBaseNameOutlet> BeforeDelegates};}
+	\item{the private arrays of delegate wrappers,\\ \code{TArray<FBeforeBaseNameOutlet> BeforeDelegates};}
 	\item{a function to execute the arrays, \code{ExecuteBeforeBaseName}; and}
 	\item{\code{AddBeforeBaseName}, a function to add an \code{Outlet} to the private array \code{BeforeDelegates} (which also puts it in the right order based on priority).}
 \end{enumerate}

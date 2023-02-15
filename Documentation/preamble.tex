@@ -32,24 +32,31 @@
   belowskip=3mm,
   showstringspaces=false,
   columns=flexible,
-  basicstyle={\small\ttfamily},
+  basicstyle={\ttfamily \color{RawSienna}},
   numbers=none,
   numberstyle=\tiny\color{gray},
-  keywordstyle=\color{blue},
+  keywordstyle=\color{Sepia},
+  %keywordstyle=\color{blue},
+  %keywordstyle=\color{WildStrawberry},
   commentstyle=\color{dkgreen},
   stringstyle=\color{mauve},
   breaklines=true,
   breakatwhitespace=true,
-  tabsize=3
+  tabsize=3,
+  morekeywords={
+  	uint8,
+  	int8,
+  	uint16,
+  	int16,
+  	uint32,
+  	int32,
+  },
+  otherkeywords={\&}
 }
 
 % Inline code
 \definecolor{darkpink}{rgb}{0.5, 0.0, 0.5}
-\newcommand{\code}[1]{%
-	\begin{lstlisting}%
-		#1%
-	\end{lstlisting}%
-}
+\newcommand{\code}[1]{\lstinline{#1}}
 %\newcommand{\code}[1]{\texttt{\color{darkpink}#1}}
 
 % Bibliography
