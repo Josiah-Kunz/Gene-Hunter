@@ -12,4 +12,9 @@ UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class AURACOMPONENT_API UAuraComponent : public UEffectComponent
 {
 	GENERATED_BODY()
+
+
+	virtual bool IsPurgeable() const override;
+
+	virtual bool IsVisibleToUI() const override;
 };

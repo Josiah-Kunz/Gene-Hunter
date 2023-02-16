@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PurgeResult.h"
 #include "SupportingText.h"
 #include "Components/ActorComponent.h"
 
@@ -19,7 +20,7 @@ private:
 	uint16 Stacks = 0;
 
 	/**
-	 * If true, the delegate should do nothing (but not be removed). It's up to you to implement this!
+	 * If true, the delegate should do nothing (but not be removed). It's up to you to implement this in inherited classes!
 	 */
 	bool Silenced = false;
 
@@ -40,6 +41,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
 	void SetStacks(const int32 NewStacks);
+
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
+	void AddStacks(const int32 Amount = 1);
+
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
+	void RemoveStacks(const int32 Amount = 1);
 
 	/**
 	 * The maximum number of times this stacks.
@@ -111,11 +118,19 @@ public:
 	virtual bool IsVisibleToUI() const;
 
 	/**
-	 * If true, it is possible to reduce the number of stacks via purge. Note: the responsibility of deciding what a
-	 * "purge" is and doing so is not upon this module. Stacks may always be removed via code regardless of this value.
+	 * If true, it is possible to reduce the number of stacks via UEffectComponent::Purge. Stacks may always be removed
+	 * via code regardless of this value.
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
 	virtual bool IsPurgeable() const;
+
+	/**
+	 * "Purges" this UEffectComponent, reducing Stacks by the given amount. However, if the UEffectComponent is not a
+	 * Purgeable class, this does nothing (that is, if IsPurgeable returns false, this does nothing). Stacks may always
+	 * be removed via code regardless of IsPurgeable and this function.
+	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
+	virtual EPurgeResult Purge(const int32 Amount = 1);
 
 	/**
 	 * Sets stacks to 1. It is here that you should bind your delegate by using macros like SEARCH_FOR_COMPONENT.

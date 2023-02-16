@@ -44,6 +44,8 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
+		
+		
 
 		{
 			"Name": "AuraComponent",

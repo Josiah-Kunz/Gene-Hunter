@@ -31,6 +31,16 @@ void UEffectComponent::SetStacks(const int32 NewStacks)
 	}
 }
 
+void UEffectComponent::AddStacks(const int32 Amount)
+{
+	SetStacks(GetStacks() + Amount);
+}
+
+void UEffectComponent::RemoveStacks(const int32 Amount)
+{
+	SetStacks(GetStacks() - Amount);
+}
+
 int32 UEffectComponent::MaxStacks()
 {
 	return 1;
@@ -80,6 +90,22 @@ bool UEffectComponent::IsPurgeable() const
 	return false;
 }
 
+EPurgeResult UEffectComponent::Purge(const int32 Amount)
+{
+	EPurgeResult Result = EPurgeResult::None;
+	if (IsPurgeable())
+	{
+		Result = EPurgeResult::Purged;
+		const uint16 OldStacks = GetStacks();
+		RemoveStacks(Amount);
+		if (GetStacks() < OldStacks)
+		{
+			Result = Result & EPurgeResult::StacksReduced;
+		}
+	}
+	return Result;
+}
+
 auto UEffectComponent::OnComponentCreated() -> void
 {
 	
@@ -94,7 +120,7 @@ auto UEffectComponent::OnComponentCreated() -> void
 		//	up which is the old and which is the new.
 		if (EffectComponent && EffectComponent->GetDisplayName().EqualTo(GetDisplayName()) && EffectComponent->GetStacks() > 0)
 		{
-			EffectComponent->SetStacks(EffectComponent->GetStacks()+1);
+			EffectComponent->AddStacks(1);
 			GetOwner()->RemoveOwnedComponent(this);
 			return;
 		}
