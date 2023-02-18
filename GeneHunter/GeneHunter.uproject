@@ -63,6 +63,11 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "IntrinsicEffectComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "NegativeAuraComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"

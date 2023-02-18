@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PurgeResult.h"
+#include "StackChangeResult.h"
 #include "SupportingText.h"
 #include "Components/ActorComponent.h"
 
@@ -106,6 +106,14 @@ public:
 	virtual FText GetDisplayName();
 
 	/**
+	 * If true, the effect is not removed when switching out. Default is true.
+	 *
+	 * Ex: in Pokemon, Paralysis is persistent but Confusion is not.
+	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
+	virtual bool IsPersistent() const;
+	
+	/**
 	 * If true, the delegate should do nothing (but not be removed).
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
@@ -130,7 +138,7 @@ public:
 	 * be removed via code regardless of IsPurgeable and this function.
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
-	virtual EPurgeResult Purge(const int32 Amount = 1);
+	virtual EStackChangeResult Purge(const int32 Amount = 1);
 
 	/**
 	 * Sets stacks to 1. It is here that you should bind your delegate by using macros like SEARCH_FOR_COMPONENT.

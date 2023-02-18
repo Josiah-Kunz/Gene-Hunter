@@ -75,6 +75,11 @@ FText UEffectComponent::GetDisplayName()
 	return FText::FromString(ShortName);
 }
 
+bool UEffectComponent::IsPersistent() const
+{
+	return true;
+}
+
 bool UEffectComponent::IsSilenced() const
 {
 	return Silenced;
@@ -90,17 +95,21 @@ bool UEffectComponent::IsPurgeable() const
 	return false;
 }
 
-EPurgeResult UEffectComponent::Purge(const int32 Amount)
+EStackChangeResult UEffectComponent::Purge(const int32 Amount)
 {
-	EPurgeResult Result = EPurgeResult::None;
+	EStackChangeResult Result = EStackChangeResult::None;
 	if (IsPurgeable())
 	{
-		Result = EPurgeResult::Purged;
+		Result = EStackChangeResult::Purged;
 		const uint16 OldStacks = GetStacks();
 		RemoveStacks(Amount);
 		if (GetStacks() < OldStacks)
 		{
-			Result = Result & EPurgeResult::StacksReduced;
+			Result |= EStackChangeResult::StacksReduced;
+		}
+		if (GetStacks() > OldStacks)
+		{
+			Result |= EStackChangeResult::StacksIncreased;
 		}
 	}
 	return Result;
