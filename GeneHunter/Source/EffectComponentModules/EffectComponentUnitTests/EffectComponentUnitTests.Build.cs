@@ -15,7 +15,7 @@ public class EffectComponentUnitTests : ModuleRules{
 		  , "GHLibraries"				// for the REQUIRE_COMPONENT macro
 		  , "CombatStatsComponent"		// for stats unit tests
 		  , "StatsComponentUnitTests"   // ...and their unit tests
-		    ,"MutationComponent"		// for BerserkerGene
+		   ,"MutationComponent"			// for BerserkerGene
 		});
 	}
 }
