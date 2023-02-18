@@ -13,7 +13,7 @@
  * A little boring, but sometimes it's best to have at least one boring, tried-and-true option.
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
-class AURACOMPONENT_API UBerserkerGene : public UMutationComponent
+class MUTATIONCOMPONENT_API UBerserkerGene : public UMutationComponent
 {
 	GENERATED_BODY()
 

@@ -1,4 +1,7 @@
-﻿#include "MutationComponent.h"
+﻿// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "MutationComponent.h"
 
 
 // Sets default values for this component's properties
@@ -9,6 +12,16 @@ UMutationComponent::UMutationComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
+}
+
+bool UMutationComponent::IsPurgeable() const
+{
+	return false;
+}
+
+bool UMutationComponent::IsVisibleToUI() const
+{
+	return false;
 }
 
 

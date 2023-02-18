@@ -68,6 +68,11 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "MutationComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "NegativeAuraComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
