@@ -83,6 +83,11 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "TimedEffectComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "TraitComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
