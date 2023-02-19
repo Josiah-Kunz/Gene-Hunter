@@ -3,14 +3,14 @@
 #include "CoreMinimal.h"
 #include "BuffComponent.h"
 #include "CombatStatsComponent.h"
-#include "HoTComponent.generated.h"
+#include "DoTComponent.generated.h"
 
 
 /**
- * A subclass of UBuff that [H]eals [o]ver [T]ime.
+ * A subclass of UDebuff that [D]amages [o]ver [T]ime.
  */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class HOTCOMPONENT_API UHoTComponent : public UBuffComponent
+class DOTCOMPONENT_API UDoTComponent : public UBuffComponent
 {
 	GENERATED_BODY()
 
@@ -27,7 +27,7 @@ public:
 public:
 	
 	/**
-	 * Retrieves the amount of Health modification per tick rate. Can be positive or negative. Default is +1%.
+	 * Retrieves the amount of Health modification per tick rate. Can be positive or negative. Default is -1%.
 	 */
 	virtual float GetAmount();
 

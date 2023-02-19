@@ -5,7 +5,8 @@
 #include "MutationComponent.generated.h"
 
 /**
- * A UEffectComponent that is neither visible to UI nor purgeable. Similar to Pokemon Abilities.
+ * A UIntrinsicEffectComponent that is randomly assigned to a Monster from a pool. The pool depends on the species of
+ * Monster. Similar to Pokemon Natures.
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class MUTATIONCOMPONENT_API UMutationComponent : public UIntrinsicEffectComponent

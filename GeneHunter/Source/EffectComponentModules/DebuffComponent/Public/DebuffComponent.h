@@ -2,19 +2,19 @@
 
 #include "TimedEffectComponent.h"
 
-#include "BuffComponent.generated.h"
+#include "DebuffComponent.generated.h"
 
 /**
- * A UTimedEffectComponent that is "good".
+ * A UTimedEffectComponent that is "bad".
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
-class BUFFCOMPONENT_API UBuffComponent : public UTimedEffectComponent
+class DEBUFFCOMPONENT_API UDebuffComponent : public UTimedEffectComponent
 {
 	GENERATED_BODY()
 
 public:
 
-	UBuffComponent();
+	UDebuffComponent();
 
 	virtual bool IsPurgeable() const override;
 

@@ -8,8 +8,9 @@
 #include "EffectComponent.generated.h"
 
 /**
- * A class to hold data (e.g., Priority) and code (how effects are actually implemented). Look at the documentation
- * for implementation steps.
+ * The root class that is in charge of "effects" (components that attach to Monsters, objects, etc.). The class holds
+ * data (e.g., Priority) and code (how effects are actually implemented). Look at the documentation for implementation
+ * steps.
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class EFFECTCOMPONENT_API UEffectComponent : public UActorComponent

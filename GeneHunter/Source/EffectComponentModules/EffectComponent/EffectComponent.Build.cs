@@ -6,12 +6,10 @@ public class EffectComponent : ModuleRules{
 		
 		PrivateIncludePaths.AddRange(new string[]{
 			"EffectComponentModules/EffectComponent/Private",
-			"EffectComponentModules/EffectComponent/Private/BaseClasses",
 		});
 
 		PublicIncludePaths.AddRange(new string[]{
-			"EffectComponentModules/EffectComponent/Public", 
-			"EffectComponentModules/EffectComponent/Public/BaseClasses",
+			"EffectComponentModules/EffectComponent/Public",
 		});
 		
 		PublicDependencyModuleNames.AddRange(new string[]{

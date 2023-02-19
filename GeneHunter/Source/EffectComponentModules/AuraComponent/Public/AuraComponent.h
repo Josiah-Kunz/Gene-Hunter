@@ -5,8 +5,7 @@
 #include "AuraComponent.generated.h"
 
 /**
- * A class to hold data (e.g., Priority) and code (how effects are actually implemented). Look at the documentation
- * for implementation steps.
+ * A UEffectComponent that is visible and purgeable, but not timed.
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class AURACOMPONENT_API UAuraComponent : public UEffectComponent

@@ -5,7 +5,7 @@
 #include "IntrinsicEffectComponent.generated.h"
 
 /**
- * A UEffectComponent that is neither visible to UI nor purgeable. Similar to Pokemon Abilities.
+ * A UEffectComponent that is neither visible to UI nor purgeable. Think of Pokemon Abilities or Natures.
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class INTRINSICEFFECTCOMPONENT_API UIntrinsicEffectComponent : public UEffectComponent

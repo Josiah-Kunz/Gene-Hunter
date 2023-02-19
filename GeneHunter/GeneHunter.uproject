@@ -53,6 +53,21 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "BuffComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "DebuffComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "DoTComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "EffectableComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
