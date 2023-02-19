@@ -63,6 +63,11 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "HoTComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "IntrinsicEffectComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"

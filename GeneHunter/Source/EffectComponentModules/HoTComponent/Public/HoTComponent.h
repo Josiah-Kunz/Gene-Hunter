@@ -10,7 +10,7 @@
  * A subclass of UBuff that [H]eals [o]ver [T]ime.
  */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class EFFECTCOMPONENT_API UHoTComponent : public UBuffComponent
+class HOTCOMPONENT_API UHoTComponent : public UBuffComponent
 {
 	GENERATED_BODY()
 
