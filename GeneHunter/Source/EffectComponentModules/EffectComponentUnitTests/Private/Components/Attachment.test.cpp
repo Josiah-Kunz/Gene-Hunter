@@ -15,32 +15,19 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Components_Attachment,
 
 bool UEffectComponent_Components_Attachment::RunTest(const FString& Parameters)
 {
-	return false;
-
-	//todo
-
-	/*
+	
 	// Get dummy
 	DUMMY_BASE_STATS_BLOCK
 
 	// Attach an effect
-	UBerserkerGene* StatModifier = nullptr;
-	REQUIRE_COMPONENT(UBerserkerGene, StatModifier, DummyActor)
+	UBerserkerGene* BerserkerGene = nullptr;
+	REQUIRE_COMPONENT(UBerserkerGene, BerserkerGene, DummyActor)
 
 	// Test that it auto recognized StatsComponent
 	TestTrue(FString::Printf(TEXT("EffectComponent found StatsComponent automatically?")),
-	StatModifier->StatsComponent != nullptr);
-
-	// Test RecalculateStats number of delegates
-	constexpr int RecalculateExpected = 1;
-	TestTrue(FString::Printf(TEXT("Delegates in RecalculateStats: Expected [%s] vs Actual [%s]"),
-		*FString::SanitizeFloat(RecalculateExpected),
-		*FString::SanitizeFloat(StatsComponent->AfterRecalculateStatsArray.Num())),
-	FMathf::Abs(RecalculateExpected - StatsComponent->AfterRecalculateStatsArray.Num())
-		< UStatUnitTestUtilities::TOLERANCE);
+	BerserkerGene->StatsComponent != nullptr);
 	
 	// Return
 	BASESTATS_GC
 	return true;
-	*/
 }

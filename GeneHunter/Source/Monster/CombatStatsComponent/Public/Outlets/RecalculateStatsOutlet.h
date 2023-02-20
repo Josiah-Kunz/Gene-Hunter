@@ -71,14 +71,16 @@ private:
 	
 	UPROPERTY()
 	TArray<FBeforeRecalculateStatsDelegate> BeforeDelegates;
+
+	UPROPERTY()
+	TArray<FAfterRecalculateStatsDelegate> AfterDelegates;
+
+public:
 	
 	DECLARE_OUTLET_FUNCTIONS_FourParams(Before, FBeforeRecalculateStatsDelegate,
 		BeforeDelegates, Delegate,
 		const EStatEnum, const bool, const float, const float
 		);
-
-	UPROPERTY()
-	TArray<FAfterRecalculateStatsDelegate> AfterDelegates;
 	
 	DECLARE_OUTLET_FUNCTIONS_FourParams(After, FAfterRecalculateStatsDelegate,
 		AfterDelegates, Delegate,

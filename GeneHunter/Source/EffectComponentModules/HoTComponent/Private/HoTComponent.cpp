@@ -17,7 +17,7 @@ void UHoTComponent::OnComponentCreated()
 {
 
 	// Get StatsComponent
-	SEARCH_FOR_COMPONENT(UCombatStatsComponent, StatsComponent, GetOwner(), true)
+	SEARCH_FOR_COMPONENT_OR_DESTROY(UCombatStatsComponent, StatsComponent, GetOwner(), true)
 
 	// No stats component?
 	if (StatsComponent == nullptr)

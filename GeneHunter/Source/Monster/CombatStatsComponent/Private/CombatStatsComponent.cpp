@@ -179,8 +179,8 @@ void UCombatStatsComponent::RandomizeBaseStats(const int32 MinBaseStats, const i
 	RandomizeStats(Params);
 }
 
-void UCombatStatsComponent::ModifyStat(EStatEnum Stat, const float Value, const EStatValueType ValueType,
-	const EModificationMode Mode)
+void UCombatStatsComponent::ModifyStat(const EStatEnum Stat, const float Value, const EStatValueType ValueType,
+                                       const EModificationMode Mode)
 {
 	ModifyStatInternal(Stat, Value, ValueType, Mode);
 }
@@ -216,7 +216,8 @@ void UCombatStatsComponent::RecalculateStats(const bool bResetCurrent)
 	}
 }
 
-void UCombatStatsComponent::ModifyStatInternal(EStatEnum Stat, float Value, EStatValueType ValueType, EModificationMode Mode)
+auto UCombatStatsComponent::ModifyStatInternal(const EStatEnum Stat, const float Value,
+	const EStatValueType ValueType, const EModificationMode Mode) -> void
 {
 
 	// Cache for outlets

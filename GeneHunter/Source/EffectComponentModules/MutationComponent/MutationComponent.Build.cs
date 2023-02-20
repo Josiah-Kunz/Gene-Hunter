@@ -22,11 +22,12 @@ public class MutationComponent : ModuleRules{
 			"Engine",      // for AActor
 			
 			// Libraries and utilities
-			"BPLibraries",     // for SplitCamelCase
-			"EffectComponent", // for inheritance
+			"BPLibraries",			// for SplitCamelCase
+			"CombatStatsComponent", // for BerserkerGene
+			"EffectComponent",		// for inheritance
 			"IntrinsicEffectComponent", // for inheritance
-			"GHLibraries",     // for component utilities SEARCH_FOR_COMPONENT
-			"UI",              // for SupportingText
+			"GHLibraries",			// for component utilities SEARCH_FOR_COMPONENT
+			"UI",					// for SupportingText
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{

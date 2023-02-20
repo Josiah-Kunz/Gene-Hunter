@@ -6,12 +6,47 @@ UBerserkerGene::UBerserkerGene()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
+void UBerserkerGene::AfterRecalculateStats(const EStatEnum InStat, const bool bResetCurrent, const float OriginalCurrent,
+		const float OriginalPermanent)
+{
+	// If silenced, do nothing
+	if (IsSilenced())
+	{
+		return;
+	}
+
+	// Do increases + decreases
+	ModifyStat(InStat, bResetCurrent, 1);
+}
+
+void UBerserkerGene::ModifyStat(const EStatEnum InStat, const bool bResetCurrent, const int8 Scale) const
+{
+	switch(InStat)
+	{
+	case EStatEnum::PhysicalAttack:
+		StatsComponent->ModifyStat(InStat, PhAIncrease * Scale, EStatValueType::Permanent, EModificationMode::AddPercentage);
+		if (bResetCurrent)
+		{
+			StatsComponent->ModifyStat(InStat, PhAIncrease * Scale, EStatValueType::Current, EModificationMode::AddPercentage);
+		}
+		break;
+	case EStatEnum::PhysicalDefense: case EStatEnum::SpecialDefense:
+		StatsComponent->ModifyStat(InStat, DefDecrease * Scale, EStatValueType::Permanent, EModificationMode::AddPercentage);
+		if (bResetCurrent)
+		{
+			StatsComponent->ModifyStat(InStat, DefDecrease * Scale, EStatValueType::Current, EModificationMode::AddPercentage);
+		}
+		break;
+	default:
+		break;
+	}
+}
+
 void UBerserkerGene::OnComponentCreated()
 {
 
-	/* TODO
 	// Get StatsComponent
-	SEARCH_FOR_COMPONENT(UCombatStatsComponent, StatsComponent, GetOwner(), true)
+	SEARCH_FOR_COMPONENT_OR_DESTROY(UCombatStatsComponent, StatsComponent, GetOwner(), true)
 
 	// No stats component?
 	if (StatsComponent == nullptr)
@@ -21,26 +56,19 @@ void UBerserkerGene::OnComponentCreated()
 	Super::OnComponentCreated();
 	
 	// Add to delegate array
-	Delegate.BindLambda(Lambda);
-	StatsComponent->AfterRecalculateStatsArray.Add(Delegate);
-	*/
+	Delegate.Delegate.BindDynamic(this, &UBerserkerGene::AfterRecalculateStats);
+
+	// Trigger it to run when attached for the first time (e.g., on Mutation reroll)
+	for(const EStatEnum Stat : StatsComponent->StatsArray)
+	{
+		ModifyStat(Stat, true, 1);
+	}
 }
 
 void UBerserkerGene::OnComponentDestroyed(bool bDestroyingHierarchy)
 {
+	StatsComponent->RecalculateStatsOutlet.RemoveAfter(Delegate);
 	Super::OnComponentDestroyed(bDestroyingHierarchy);
-
-	/*
-	auto RecalculateStatsArray = StatsComponent->AfterRecalculateStatsArray;
-	for(int i=RecalculateStatsArray.Num() - 1; i>=0; i--)
-	{
-		if (RecalculateStatsArray[i].GetHandle() == Delegate.GetHandle())
-		{
-			StatsComponent->AfterRecalculateStatsArray.RemoveAt(i);
-			break;
-		}
-	}
-	*/
 }
 
 FSupportingText UBerserkerGene::GetSupportingText()
@@ -50,4 +78,22 @@ FSupportingText UBerserkerGene::GetSupportingText()
 		FText::FromString("+15% PhA | -10% PhD | -10% SpD"),
 		FText::FromString("Found near a... mysterious cave? I'm confused, and suddenly *very* angry!")
 	};
+}
+
+void UBerserkerGene::Silence()
+{
+	Super::Silence();
+	for(const EStatEnum Stat : StatsComponent->StatsArray)
+	{
+		ModifyStat(Stat, true, -1);
+	}
+}
+
+void UBerserkerGene::Unsilence()
+{
+	Super::Unsilence();
+	for(const EStatEnum Stat : StatsComponent->StatsArray)
+	{
+		ModifyStat(Stat, true, -1);
+	}
 }

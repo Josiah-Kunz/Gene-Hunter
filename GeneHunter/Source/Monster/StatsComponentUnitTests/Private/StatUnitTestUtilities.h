@@ -17,6 +17,7 @@ public:
 	UCombatStatsComponent* StatsComponent = NewObject<UCombatStatsComponent>(DummyActor); \
 	StatsComponent->RegisterComponent(); \
 	StatsComponent->EnsureLevelComponent(DummyActor); \
+	StatsComponent->LevelComponent->SetLevel(1); \
 	TArray<float> BaseStats = { 116, 100, 100, 60, 90, 50, 120}; \
 	StatsComponent->ModifyStats(BaseStats, EStatValueType::BaseStat, EModificationMode::SetDirectly); \
 	StatsComponent->RecalculateStats(true);

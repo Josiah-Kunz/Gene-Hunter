@@ -48,14 +48,22 @@ public:
 
 /**
  * If the input Component is null, searches Owner for the ComponentType. If one is found, it is assigned as Component.
+ */
+#define SEARCH_FOR_COMPONENT(ComponentType, Component, Owner) \
+	if ( Component == nullptr) { \
+		Component = Owner ->FindComponentByClass< ComponentType >(); \
+	}
+	
+/**
+ * If the input Component is null, searches Owner for the ComponentType. If one is found, it is assigned as Component.
  *
  * If bTerminal and Component was not found, calls this->DestroyComponent().
  */
-#define SEARCH_FOR_COMPONENT(ComponentType, Component, Owner, bTerminal) \
-	if ( Component == nullptr) { \
-		Component = Owner ->FindComponentByClass< ComponentType >(); \
-		if ( Component == nullptr && bTerminal ) \
-			DestroyComponent(); \
-	}
+#define SEARCH_FOR_COMPONENT_OR_DESTROY(ComponentType, Component, Owner, bTerminal) \
+	SEARCH_FOR_COMPONENT(ComponentType, Component, Owner); \
+	if ( Component == nullptr && bTerminal ) \
+	{ \
+		DestroyComponent(); \
+	} 
 	
 };

@@ -85,6 +85,16 @@ bool UEffectComponent::IsSilenced() const
 	return Silenced;
 }
 
+void UEffectComponent::Silence()
+{
+	Silenced = true;
+}
+
+void UEffectComponent::Unsilence()
+{
+	Silenced = false;
+}
+
 bool UEffectComponent::IsVisibleToUI() const
 {
 	return false;

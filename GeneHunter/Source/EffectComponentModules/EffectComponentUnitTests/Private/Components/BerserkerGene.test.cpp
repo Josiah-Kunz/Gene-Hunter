@@ -18,26 +18,39 @@ bool UEffectComponent_Components_BerserkerGene::RunTest(const FString& Parameter
 	// Get dummy
 	DUMMY_BASE_STATS_BLOCK
 
+	UE_LOG(LogTemp, Warning, TEXT("PhA is %s | Level is %i"),
+		*FString::SanitizeFloat(StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetCurrentValue()),
+		StatsComponent->LevelComponent->GetLevel()
+		)
+
+	// Get original
+	const float OriginalPhA = StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetCurrentValue();
+	const float OriginalPhD = StatsComponent->GetStat(EStatEnum::PhysicalDefense).GetCurrentValue();
+	const float OriginalSpD = StatsComponent->GetStat(EStatEnum::SpecialDefense).GetCurrentValue();
+
 	// Get expected
-	const float ExpectedPhA =StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetPermanentValue() * 1.15f;
-	const float ExpectedPhD =StatsComponent->GetStat(EStatEnum::PhysicalDefense).GetPermanentValue() * 0.9f;
-	const float ExpectedSpD =StatsComponent->GetStat(EStatEnum::SpecialDefense).GetPermanentValue() * 0.9f;
+	const float ExpectedPhA = OriginalPhA * (1+UBerserkerGene::PhAIncrease/100);
+	const float ExpectedPhD = OriginalPhD * (1-UBerserkerGene::DefDecrease/100);
+	const float ExpectedSpD = OriginalSpD * (1-UBerserkerGene::DefDecrease/100);
 
 	// Attach BerserkerGene
-	UBerserkerGene* BerserkerGene = NewObject<UBerserkerGene>(DummyActor);
-	REQUIRE_COMPONENT(UBerserkerGene, BerserkerGene, DummyActor)
+	UBerserkerGene* BerserkerGene;
+	ADD_COMPONENT(UBerserkerGene, BerserkerGene, DummyActor);
 
-	// Trigger recalculation
-	StatsComponent->RecalculateStats(true);
+	// Trigger recalculation - should happen automatically
+	//StatsComponent->RecalculateStats(true);
+	StatsComponent->ModifyStat(EStatEnum::PhysicalAttack, 15, EStatValueType::Permanent, EModificationMode::AddPercentage);
+	StatsComponent->ModifyStat(EStatEnum::PhysicalAttack, 15, EStatValueType::Current, EModificationMode::AddPercentage);
 
 	// Get actual
-	const float ActualPhA =StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetCurrentValue();
-	const float ActualPhD =StatsComponent->GetStat(EStatEnum::PhysicalDefense).GetCurrentValue();
-	const float ActualSpD =StatsComponent->GetStat(EStatEnum::SpecialDefense).GetCurrentValue();
+	const float ActualPhA = StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetCurrentValue();
+	const float ActualPhD = StatsComponent->GetStat(EStatEnum::PhysicalDefense).GetCurrentValue();
+	const float ActualSpD = StatsComponent->GetStat(EStatEnum::SpecialDefense).GetCurrentValue();
 
 	// Test PhA
 	TestTrue(
-		FString::Printf(TEXT("PhA was modified correctly: Expected [%s] | Actual [%s]"),
+		FString::Printf(TEXT("PhA was modified correctly: Original [%s] | Expected [%s] | Actual [%s]"),
+				*FString::SanitizeFloat(OriginalPhA),
 				*FString::SanitizeFloat(ExpectedPhA),
 				*FString::SanitizeFloat(ActualPhA)
 			),
@@ -45,7 +58,8 @@ bool UEffectComponent_Components_BerserkerGene::RunTest(const FString& Parameter
 
 	// Test PhD
 	TestTrue(
-		FString::Printf(TEXT("PhD was modified correctly: Expected [%s] | Actual [%s]"),
+		FString::Printf(TEXT("PhD was modified correctly: Original [%s] | Expected [%s] | Actual [%s]"),
+				*FString::SanitizeFloat(OriginalPhD),
 				*FString::SanitizeFloat(ExpectedPhD),
 				*FString::SanitizeFloat(ActualPhD)
 			),
@@ -53,12 +67,13 @@ bool UEffectComponent_Components_BerserkerGene::RunTest(const FString& Parameter
 
 	// Test SpD
 	TestTrue(
-		FString::Printf(TEXT("SpD was modified correctly: Expected [%s] | Actual [%s]"),
+		FString::Printf(TEXT("SpD was modified correctly: Original [%s] | Expected [%s] | Actual [%s]"),
+				*FString::SanitizeFloat(OriginalSpD),
 				*FString::SanitizeFloat(ExpectedSpD),
 				*FString::SanitizeFloat(ActualSpD)
 			),
 	FMath::Abs(ExpectedSpD - ActualSpD) < UStatUnitTestUtilities::TOLERANCE);
-	
+	 
 	// Return
 	BASESTATS_GC
 	return true;

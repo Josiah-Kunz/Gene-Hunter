@@ -70,6 +70,18 @@ public: \
 		{ \
 			DelegateArray##.Add(NewDelegate); \
 		} \
+	} \
+	void Remove##BeforeOrAfter(const DelegateType DelegateToRemove) \
+	{ \
+		for(int i= DelegateArray##.Num() - 1; i>=0 ; i--) \
+		{ \
+			if ( DelegateToRemove.Delegate.GetFunctionName() ==  DelegateArray##[i].Delegate.GetFunctionName() && \
+				DelegateToRemove.Priority == DelegateArray##[i].Priority ) \
+			{ \
+				 DelegateArray##.RemoveAt(i); \
+				 break; \
+			} \
+		} \
 	}
 
 /**

@@ -121,6 +121,18 @@ public:
 	virtual bool IsSilenced() const;
 
 	/**
+	 * Sets Silence to true. Should do other things as well in the inherited classes.
+	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
+	virtual void Silence();
+
+	/**
+	 * Sets Silence to false. Should do other things as well in the inherited classes.
+	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
+	virtual void Unsilence();
+
+	/**
 	 * If true, the UI should somehow render this. Note: the responsibility of doing so is not upon this module.
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
