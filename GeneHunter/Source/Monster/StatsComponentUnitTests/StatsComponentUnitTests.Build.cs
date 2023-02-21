@@ -12,6 +12,7 @@ public class StatsComponentUnitTests : ModuleRules{
 		  , "Engine"		// for UBlueprintFuncitonLibrary in StatUnitTestUtilities.h
 		  , "CombatStatsComponent"	// for the type that we're testing
 		  , "LevelComponent"	// goes with StatsComponent
+		  , "GHLibraries"		// to create dummy worlds
 		});
 	}
 }

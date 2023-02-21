@@ -1,7 +1,8 @@
 ﻿#pragma once
 
 #include "MathUtil.h"
-#include "StatUnitTestUtilities.h" 
+#include "StatUnitTestUtilities.h"
+#include "ComponentUtilities.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsComponent_Utilities_BaseStatEffectiveAverage,
 	"__GeneHunter.FStat.StatsComponent.Utilities.Base Stat Effective Average",

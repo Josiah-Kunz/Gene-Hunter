@@ -12,10 +12,7 @@ public:
 	constexpr static float TOLERANCE = 0.1F;
 
 #define DUMMY_BASE_STATS_BLOCK \
-	UWorld* DummyWorld = UWorld::CreateWorld(EWorldType::Game, false); \
-	AActor* DummyActor = DummyWorld->SpawnActor(AActor::StaticClass()); \
-	UCombatStatsComponent* StatsComponent = NewObject<UCombatStatsComponent>(DummyActor); \
-	StatsComponent->RegisterComponent(); \
+	DUMMY_TEST_COMPONENT(UCombatStatsComponent, StatsComponent) \
 	StatsComponent->EnsureLevelComponent(DummyActor); \
 	StatsComponent->LevelComponent->SetLevel(1); \
 	TArray<float> BaseStats = { 116, 100, 100, 60, 90, 50, 120}; \

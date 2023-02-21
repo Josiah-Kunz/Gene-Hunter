@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-#include "StatUnitTestUtilities.h" 
+#include "StatUnitTestUtilities.h"
+#include "ComponentUtilities.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FExp_Scaling,
 	"__GeneHunter.Exp.Scaling",

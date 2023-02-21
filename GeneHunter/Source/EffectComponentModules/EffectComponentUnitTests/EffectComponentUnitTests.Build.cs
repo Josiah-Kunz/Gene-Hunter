@@ -7,7 +7,8 @@ public class EffectComponentUnitTests : ModuleRules{
 		PrivateIncludePaths.Add("Monster/StatsComponentUnitTests/Private");
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
-			"Core"						// for FString
+		  "AffinitiesComponent"			// for priorites tests
+		  ,	"Core"						// for FString
 		  , "CoreUObject"				// for UObjects (and their initializations)
 		  , "CombatStatsComponent"		// for UStatsComponent::GetStat
 		  , "Engine"					// for UBlueprintFuncitonLibrary in StatUnitTestUtilities.h
@@ -16,7 +17,8 @@ public class EffectComponentUnitTests : ModuleRules{
 		  , "GHLibraries"				// for the REQUIRE_COMPONENT macro
 		  , "StatsComponentUnitTests"   // for stats' unit tests
 		  , "LevelComponent"			// goes with StatsComponent
-		   ,"MutationComponent"			// for BerserkerGene
+		  , "MutationComponent"			// for BerserkerGene
+		  
 		});
 	}
 }

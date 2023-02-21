@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "ComponentUtilities.h"
 #include "MathUtil.h"
 #include "StatUnitTestUtilities.h" 
 

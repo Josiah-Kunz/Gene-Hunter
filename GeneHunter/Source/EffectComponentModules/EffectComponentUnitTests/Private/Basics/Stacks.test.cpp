@@ -12,7 +12,7 @@
 #include "Stacks_Single_UNITTEST.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Components_Stacks,
-                                 "__GeneHunter.Effects.Component Tests.Stacks",
+                                 "__GeneHunter.Effects.Basics.Stacks",
                                  EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool UEffectComponent_Components_Stacks::RunTest(const FString& Parameters)

@@ -6,7 +6,7 @@ class ComponentUtilities
 {
 
 public:
-
+	
 	/**
 	 * Note: The following must be macros to be generic enough. Otherwise, we'd have to #include all component.h for the
 	 *	functions to work.
@@ -64,6 +64,26 @@ public:
 	if ( Component == nullptr && bTerminal ) \
 	{ \
 		DestroyComponent(); \
-	} 
+	}
+
+/**
+ * For unit testing. Creates a:
+ *	- UWorld* called DummyWorld
+ *	- AActor* called DummyActor
+ *	- ComponentType* called ComponentName
+ *
+ *	Make sure to do DUMMY_TEST_GC for garbage collection after you're done!
+ */
+#define DUMMY_TEST_COMPONENT(ComponentType, ComponentName) \
+	UWorld* DummyWorld = UWorld::CreateWorld(EWorldType::Game, false); \
+	AActor* DummyActor = DummyWorld->SpawnActor(AActor::StaticClass()); \
+	ComponentType * ComponentName = NewObject<ComponentType>(DummyActor); \
+	ComponentName ->RegisterComponent();
+
+/**
+ * Destroys the dummy world
+ */
+#define DUMMY_TEST_GC \
+	DummyWorld->DestroyWorld(false);
 	
 };

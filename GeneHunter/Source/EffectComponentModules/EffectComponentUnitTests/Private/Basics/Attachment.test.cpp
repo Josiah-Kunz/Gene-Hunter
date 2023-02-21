@@ -10,7 +10,7 @@
 #include "BerserkerGene.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Components_Attachment,
-	"__GeneHunter.Effects.Component Tests.Attachment",
+	"__GeneHunter.Effects.Basics.Attachment",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool UEffectComponent_Components_Attachment::RunTest(const FString& Parameters)

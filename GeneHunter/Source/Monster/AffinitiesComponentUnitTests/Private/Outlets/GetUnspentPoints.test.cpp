@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "AffinitiesUnitTestUtilities.h"
 #include "DoublePoints_UNITTEST.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGetUnspentPoints,
@@ -11,34 +10,29 @@ bool FGetUnspentPoints::RunTest(const FString& Parameters)
 {
 
 	// Set up and give 3 unspent points
-	DUMMY_AFFINITIESCOMPONENT
+	DUMMY_TEST_COMPONENT(UAffinitiesComponent, AffinitiesComponent)
 	AffinitiesComponent->SetUnspentPoints(3);
 
 	// Cache original to compare
 	const uint8 OriginalPoints = AffinitiesComponent->GetUnspentPoints();
-
-	// Attach effects TODO:
-	// One should be a double effect
-	// Another should be a zero effect
-	// Test order!
-
-	// Attach effects
+	
+	// Attach double
 	UDoublePoints_UNITTEST* DoublePoints;
 	ADD_COMPONENT(UDoublePoints_UNITTEST, DoublePoints, DummyActor);
 
 	// Test that the points are doubled
-	const uint8 DoubledPoints = AffinitiesComponent->GetUnspentPoints();
+	uint8 CurrentPoints = AffinitiesComponent->GetUnspentPoints();
 	TestEqual(
 			FString::Printf(
-			TEXT("UnspentPoints should be doubled: Original [%i] | Doubled [%i] (if zero, Priorities are messed up!)"),
-				OriginalPoints, DoubledPoints
+			TEXT("UnspentPoints should be doubled: Original [%i] | Doubled [%i]"),
+				OriginalPoints, CurrentPoints
 			),
+			CurrentPoints,
 			2*OriginalPoints,
-			DoubledPoints,
-			UAffinitiesUnitTestUtilities::TOLERANCE);
+			0.5f);
 
 	// GC
-	DUMMY_GC
+	DUMMY_TEST_GC
 	
 	return true;
 }
