@@ -18,11 +18,6 @@ bool UEffectComponent_Components_BerserkerGene::RunTest(const FString& Parameter
 	// Get dummy
 	DUMMY_BASE_STATS_BLOCK
 
-	UE_LOG(LogTemp, Warning, TEXT("PhA is %s | Level is %i"),
-		*FString::SanitizeFloat(StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetCurrentValue()),
-		StatsComponent->LevelComponent->GetLevel()
-		)
-
 	// Get original
 	const float OriginalPhA = StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetCurrentValue();
 	const float OriginalPhD = StatsComponent->GetStat(EStatEnum::PhysicalDefense).GetCurrentValue();
@@ -36,11 +31,6 @@ bool UEffectComponent_Components_BerserkerGene::RunTest(const FString& Parameter
 	// Attach BerserkerGene
 	UBerserkerGene* BerserkerGene;
 	ADD_COMPONENT(UBerserkerGene, BerserkerGene, DummyActor);
-
-	// Trigger recalculation - should happen automatically
-	//StatsComponent->RecalculateStats(true);
-	StatsComponent->ModifyStat(EStatEnum::PhysicalAttack, 15, EStatValueType::Permanent, EModificationMode::AddPercentage);
-	StatsComponent->ModifyStat(EStatEnum::PhysicalAttack, 15, EStatValueType::Current, EModificationMode::AddPercentage);
 
 	// Get actual
 	const float ActualPhA = StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetCurrentValue();

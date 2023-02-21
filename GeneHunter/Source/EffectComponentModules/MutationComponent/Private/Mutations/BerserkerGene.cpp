@@ -31,10 +31,10 @@ void UBerserkerGene::ModifyStat(const EStatEnum InStat, const bool bResetCurrent
 		}
 		break;
 	case EStatEnum::PhysicalDefense: case EStatEnum::SpecialDefense:
-		StatsComponent->ModifyStat(InStat, DefDecrease * Scale, EStatValueType::Permanent, EModificationMode::AddPercentage);
+		StatsComponent->ModifyStat(InStat, -DefDecrease * Scale, EStatValueType::Permanent, EModificationMode::AddPercentage);
 		if (bResetCurrent)
 		{
-			StatsComponent->ModifyStat(InStat, DefDecrease * Scale, EStatValueType::Current, EModificationMode::AddPercentage);
+			StatsComponent->ModifyStat(InStat, -DefDecrease * Scale, EStatValueType::Current, EModificationMode::AddPercentage);
 		}
 		break;
 	default:

@@ -85,12 +85,12 @@ int32 ULevelComponent::GetCXP()
 
 	// Cache for delegates
 	const int32 OriginalCXP = CumulativeExp;
-	int32 ReturnedCXP;
-
+	int32 ReturnedCXP = OriginalCXP;
+	
 	// Delegates
 	GetCXPOutlet.ExecuteBefore(OriginalCXP, ReturnedCXP);
 	GetCXPOutlet.ExecuteAfter(OriginalCXP, ReturnedCXP);
-
+	
 	// Return
 	return ReturnedCXP;
 }

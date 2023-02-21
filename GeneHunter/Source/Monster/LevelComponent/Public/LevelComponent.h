@@ -115,7 +115,7 @@ private:
 	 * The total experience accumulated points across all levels. Sometimes also called CXP.
 	*/
 	UPROPERTY()
-	uint32 CumulativeExp;
+	uint32 CumulativeExp = 1;
 
 public:
 
