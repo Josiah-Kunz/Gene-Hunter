@@ -1,10 +1,11 @@
 ﻿#pragma once
 
 #include "AffinitiesUnitTestUtilities.h"
+#include "DoublePoints_UNITTEST.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGetUnspentPoints,
-	"__GeneHunter.Affinities Component.Outlets.GetUnspentPoints",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+                                 "__GeneHunter.Affinities Component.Outlets.GetUnspentPoints",
+                                 EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FGetUnspentPoints::RunTest(const FString& Parameters)
 {
@@ -21,10 +22,9 @@ bool FGetUnspentPoints::RunTest(const FString& Parameters)
 	// Another should be a zero effect
 	// Test order!
 
-	// Define delegate
-	FBeforeGetUnspentPointsDelegate DoublePointsDelegate;
-	//DoublePointsDelegate.Delegate.BindDynamic()
-	
+	// Attach effects
+	UDoublePoints_UNITTEST* DoublePoints;
+	ADD_COMPONENT(UDoublePoints_UNITTEST, DoublePoints, DummyActor);
 
 	// Test that the points are doubled
 	const uint8 DoubledPoints = AffinitiesComponent->GetUnspentPoints();

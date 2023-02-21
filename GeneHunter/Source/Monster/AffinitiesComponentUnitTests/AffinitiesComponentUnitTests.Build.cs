@@ -10,6 +10,7 @@ public class AffinitiesComponentUnitTests : ModuleRules{
 			"Core"						// for FString
 		  , "CoreUObject"				// for UObjects (and their initializations)
 		  , "Engine"					// for UBlueprintFuncitonLibrary in StatUnitTestUtilities.h
+		  , "EffectComponent"			// for, e.g., DoublePoints unit test
 		  , "AffinitiesComponent"		// b/c these are the thing we're testing
 		});
 	}

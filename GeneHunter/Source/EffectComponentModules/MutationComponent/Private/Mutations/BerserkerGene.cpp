@@ -50,13 +50,16 @@ void UBerserkerGene::OnComponentCreated()
 
 	// No stats component?
 	if (StatsComponent == nullptr)
+	{
 		return;
+	}
 
 	// Must still be alive
 	Super::OnComponentCreated();
 	
 	// Add to delegate array
 	Delegate.Delegate.BindDynamic(this, &UBerserkerGene::AfterRecalculateStats);
+	StatsComponent->RecalculateStatsOutlet.AddAfter(Delegate);
 
 	// Trigger it to run when attached for the first time (e.g., on Mutation reroll)
 	for(const EStatEnum Stat : StatsComponent->StatsArray)
