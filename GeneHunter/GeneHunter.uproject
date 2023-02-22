@@ -125,6 +125,11 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "LevelComponentUnitTests",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "TypesUnitTests",
 			"Type": "Editor",
 			"LoadingPhase": "Default"

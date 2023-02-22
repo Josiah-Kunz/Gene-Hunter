@@ -21,6 +21,7 @@ public class GeneHunter : ModuleRules
 			
 			// Monster modules
 			"AffinitiesComponent", "AffinitiesComponentUnitTests", "CombatStatsComponent", "LevelComponent",
+			"LevelComponentUnitTests",
 			"StatsComponentUnitTests", "Types", "TypesUnitTests", 
 			  
 			// Utility modules

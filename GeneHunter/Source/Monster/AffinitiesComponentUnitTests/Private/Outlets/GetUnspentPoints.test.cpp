@@ -3,7 +3,7 @@
 #include "DoublePoints_UNITTEST.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGetUnspentPoints,
-                                 "__GeneHunter.Affinities Component.Outlets.GetUnspentPoints",
+                                 "__GeneHunter.Effects.Outlets.UAffinitiesComponent.GetUnspentPoints",
                                  EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FGetUnspentPoints::RunTest(const FString& Parameters)

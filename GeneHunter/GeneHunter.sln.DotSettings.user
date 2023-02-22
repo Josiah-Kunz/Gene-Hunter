@@ -1,6 +1,12 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AGetBaseExpYield_002Eh_002Fl_003ASource_003FMonster_003FLevelComponent_003FPublic_003FDelegateClasses_003FGetBaseExpYield_002Eh/@EntryIndexedValue">ForceIncluded</s:String>
 	
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d84af5c3_002D9958_002D4b9f_002D8265_002D2e68a770de9b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="SetUnspentPoints" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;UnrealTest::0E1634B9-E7A8-3E25-B95B-0093049A23CC::Windows,Version=v10.0.18362::__GeneHunter.Effects.Outlets.SetUnspentPoints&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	
 	
 	
 	
