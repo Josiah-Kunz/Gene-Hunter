@@ -6,6 +6,14 @@
     &lt;TestId&gt;UnrealTest::0E1634B9-E7A8-3E25-B95B-0093049A23CC::Windows,Version=v10.0.18362::__GeneHunter.Effects.Outlets.SetUnspentPoints&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fe466213_002D94e6_002D4086_002D9787_002D153457778f8a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GetCXP" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;UnrealTest::0E1634B9-E7A8-3E25-B95B-0093049A23CC::Windows,Version=v10.0.18362::__GeneHunter.Effects.Outlets.ULevelComponent.GetCXP&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;UnrealTest::0E1634B9-E7A8-3E25-B95B-0093049A23CC::Windows,Version=v10.0.18362::__GeneHunter.Effects.Outlets.ULevelComponent.GetExpYield&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;UnrealTest::0E1634B9-E7A8-3E25-B95B-0093049A23CC::Windows,Version=v10.0.18362::__GeneHunter.Effects.Outlets.ULevelComponent.GetMaxLevel&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;UnrealTest::0E1634B9-E7A8-3E25-B95B-0093049A23CC::Windows,Version=v10.0.18362::__GeneHunter.Effects.Outlets.ULevelComponent.GetMinLevel&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	
 	
 	

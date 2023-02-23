@@ -106,6 +106,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Affinities")
 	void GetTypes(TArray<UType*>& Types);
+
+	/**
+	 * Returns true if the given Type has points allocated.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Affinities")
+	bool HasPointsAllocatedIn(const UType* TargetType);
 	
 	/**
 	 * Retrieves the number of Types based on the current point allocation.

@@ -13,6 +13,9 @@ public class LevelComponentUnitTests : ModuleRules{
 		  , "EffectComponent"			// for, e.g., DoublePoints unit test
 		  , "LevelComponent"			// b/c these are the thing we're testing
 		  , "GHLibraries"				// to create dummy worlds
+		  , "AffinitiesComponent"		// for GetCXP (based on Type)
+		  , "Types",					// for GetCXP (based on Type)
+		    "TypesUnitTests",			// to get dummy Types
 		});
 	}
 }

@@ -6,12 +6,12 @@
 #include "LevelComponent.h"
 #include "ComponentUtilities.h"
 #include "EffectComponent.h"
-#include "Outlets/GetExpYieldOutlet.h"
-#include "MoreYield_UNITTEST.generated.h"
+#include "Outlets/GetBaseExpYieldOutlet.h"
+#include "MoreBaseYield_UNITTEST.generated.h"
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class LEVELCOMPONENTUNITTESTS_API UMoreYield_UNITTEST : public UEffectComponent
+class LEVELCOMPONENTUNITTESTS_API UMoreBaseYield_UNITTEST : public UEffectComponent
 {
 	GENERATED_BODY()
 
@@ -32,23 +32,22 @@ public:
 		Super::OnComponentCreated();
 
 		// Bind the delegate
-		Delegate.Delegate.BindDynamic(this, &UMoreYield_UNITTEST::IncreaseExpYield);
+		Delegate.Delegate.BindDynamic(this, &UMoreBaseYield_UNITTEST::IncreaseExpYield);
 
 		// Add it
-		LevelComponent->GetExpYieldOutlet.AddBefore(Delegate);
+		LevelComponent->GetBaseExpYieldOutlet.AddBefore(Delegate);
 	}
 
 	UPROPERTY()
 	ULevelComponent* LevelComponent;
 
 	UPROPERTY()
-	FBeforeGetExpYieldDelegate Delegate;
+	FBeforeGetBaseExpYieldDelegate Delegate;
 
 	static constexpr float YieldMultiplier = 1.1f;
 
 	UFUNCTION()
-	void IncreaseExpYield(const float OriginalYield, float& ReturnedYield, const uint16 DefeatedLevel,
-		const uint16 VictoriousLevel)
+	void IncreaseExpYield(const float OriginalYield, float& ReturnedYield)
 	{
 		ReturnedYield *= YieldMultiplier;
 	}

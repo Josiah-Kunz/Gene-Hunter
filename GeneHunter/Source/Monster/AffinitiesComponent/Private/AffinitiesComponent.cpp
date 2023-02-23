@@ -61,8 +61,26 @@ void UAffinitiesComponent::GetTypes(TArray<UType*>& Types)
 {
 	Types = {};
 	for(FAffinity Affinity : Affinities)
+	{
 		if (Affinity.GetCurrentPoints() > 0)
+		{
 			Types.Add(Affinity.Type);
+		}
+	}
+}
+
+bool UAffinitiesComponent::HasPointsAllocatedIn(const UType* TargetType)
+{
+	TArray<UType*> CurrentTypes;
+	GetTypes(CurrentTypes);
+	for(const UType* Type : CurrentTypes)
+	{
+		if (Type == TargetType)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 uint8 UAffinitiesComponent::GetNumTypes()

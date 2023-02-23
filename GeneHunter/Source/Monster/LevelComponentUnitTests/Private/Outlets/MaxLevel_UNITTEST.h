@@ -6,16 +6,24 @@
 #include "LevelComponent.h"
 #include "ComponentUtilities.h"
 #include "EffectComponent.h"
-#include "Outlets/GetExpYieldOutlet.h"
-#include "MoreYield_UNITTEST.generated.h"
+#include "Outlets/GetMaxLevelOutlet.h"
+#include "MaxLevel_UNITTEST.generated.h"
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class LEVELCOMPONENTUNITTESTS_API UMoreYield_UNITTEST : public UEffectComponent
+class LEVELCOMPONENTUNITTESTS_API UMaxLevel_UNITTEST : public UEffectComponent
 {
 	GENERATED_BODY()
 
 public:
+
+	UPROPERTY()
+	ULevelComponent* LevelComponent;
+
+	UPROPERTY()
+	FBeforeGetMaxLevelDelegate Delegate;
+
+	static constexpr int32 NewMaxLevel = 150;
 
 	virtual void OnComponentCreated() override
 	{
@@ -32,25 +40,16 @@ public:
 		Super::OnComponentCreated();
 
 		// Bind the delegate
-		Delegate.Delegate.BindDynamic(this, &UMoreYield_UNITTEST::IncreaseExpYield);
+		Delegate.Delegate.BindDynamic(this, &UMaxLevel_UNITTEST::SetMaxLevel);
 
 		// Add it
-		LevelComponent->GetExpYieldOutlet.AddBefore(Delegate);
+		LevelComponent->GetMaxLevelOutlet.AddBefore(Delegate);
 	}
 
-	UPROPERTY()
-	ULevelComponent* LevelComponent;
-
-	UPROPERTY()
-	FBeforeGetExpYieldDelegate Delegate;
-
-	static constexpr float YieldMultiplier = 1.1f;
-
 	UFUNCTION()
-	void IncreaseExpYield(const float OriginalYield, float& ReturnedYield, const uint16 DefeatedLevel,
-		const uint16 VictoriousLevel)
+	void SetMaxLevel(const uint16 DefaultMax, int32& AttemptedMax)
 	{
-		ReturnedYield *= YieldMultiplier;
+		AttemptedMax = NewMaxLevel;
 	}
 
 	

@@ -6,16 +6,24 @@
 #include "LevelComponent.h"
 #include "ComponentUtilities.h"
 #include "EffectComponent.h"
-#include "Outlets/GetExpYieldOutlet.h"
-#include "MoreYield_UNITTEST.generated.h"
+#include "Outlets/GetMinLevelOutlet.h"
+#include "MinLevel_UNITTEST.generated.h"
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class LEVELCOMPONENTUNITTESTS_API UMoreYield_UNITTEST : public UEffectComponent
+class LEVELCOMPONENTUNITTESTS_API UMinLevel_UNITTEST : public UEffectComponent
 {
 	GENERATED_BODY()
 
 public:
+
+	UPROPERTY()
+	ULevelComponent* LevelComponent;
+
+	UPROPERTY()
+	FBeforeGetMinLevelDelegate Delegate;
+
+	static constexpr int32 NewMinLevel = 10;
 
 	virtual void OnComponentCreated() override
 	{
@@ -32,25 +40,16 @@ public:
 		Super::OnComponentCreated();
 
 		// Bind the delegate
-		Delegate.Delegate.BindDynamic(this, &UMoreYield_UNITTEST::IncreaseExpYield);
+		Delegate.Delegate.BindDynamic(this, &UMinLevel_UNITTEST::SetMinLevel);
 
 		// Add it
-		LevelComponent->GetExpYieldOutlet.AddBefore(Delegate);
+		LevelComponent->GetMinLevelOutlet.AddBefore(Delegate);
 	}
 
-	UPROPERTY()
-	ULevelComponent* LevelComponent;
-
-	UPROPERTY()
-	FBeforeGetExpYieldDelegate Delegate;
-
-	static constexpr float YieldMultiplier = 1.1f;
-
 	UFUNCTION()
-	void IncreaseExpYield(const float OriginalYield, float& ReturnedYield, const uint16 DefeatedLevel,
-		const uint16 VictoriousLevel)
+	void SetMinLevel(const uint16 DefaultMin, int32& AttemptedMin)
 	{
-		ReturnedYield *= YieldMultiplier;
+		AttemptedMin = NewMinLevel;
 	}
 
 	
