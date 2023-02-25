@@ -52,7 +52,7 @@ public:
 		Super::OnComponentCreated();
 
 		// Bind the delegate
-		Delegate.Delegate.BindDynamic(this, &UCXPBasedOnType_UNITTEST::ModifyCXPOnType);
+		BIND_DELEGATE(Delegate, UCXPBasedOnType_UNITTEST::ModifyCXPOnType);
 
 		// Add it
 		LevelComponent->GetCXPOutlet.AddBefore(Delegate);

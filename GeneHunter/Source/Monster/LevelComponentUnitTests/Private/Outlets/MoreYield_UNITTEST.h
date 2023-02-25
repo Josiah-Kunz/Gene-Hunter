@@ -32,7 +32,7 @@ public:
 		Super::OnComponentCreated();
 
 		// Bind the delegate
-		Delegate.Delegate.BindDynamic(this, &UMoreYield_UNITTEST::IncreaseExpYield);
+		BIND_DELEGATE(Delegate, UMoreYield_UNITTEST::IncreaseExpYield);
 
 		// Add it
 		LevelComponent->GetExpYieldOutlet.AddBefore(Delegate);

@@ -31,7 +31,7 @@ public:
 		Super::OnComponentCreated();
 
 		// Bind the delegate
-		Delegate.Delegate.BindDynamic(this, &UEvenPointsOnly_UNITTEST::RestrictPointsToEven);
+		BIND_DELEGATE(Delegate, UEvenPointsOnly_UNITTEST::RestrictPointsToEven);
 
 		// Add it
 		AffinitiesComponent->SetUnspentPointsOutlet.AddBefore(Delegate);

@@ -22,8 +22,6 @@ public class EffectComponent : ModuleRules{
 			"GHLibraries", // for RequireComponent
 			"BPLibraries", // for SplitCamelCase
 			"UI",          // for SupportingText
-			
-			"CombatStatsComponent" // TODO: we only need this for UHoT, etc.
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{

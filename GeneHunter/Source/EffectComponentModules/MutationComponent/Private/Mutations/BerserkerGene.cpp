@@ -58,7 +58,7 @@ void UBerserkerGene::OnComponentCreated()
 	Super::OnComponentCreated();
 	
 	// Add to delegate array
-	Delegate.Delegate.BindDynamic(this, &UBerserkerGene::AfterRecalculateStats);
+	BIND_DELEGATE(Delegate, UBerserkerGene::AfterRecalculateStats);
 	StatsComponent->RecalculateStatsOutlet.AddAfter(Delegate);
 
 	// Trigger it to run when attached for the first time (e.g., on Mutation reroll)

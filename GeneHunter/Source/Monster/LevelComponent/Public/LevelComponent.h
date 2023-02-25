@@ -74,10 +74,12 @@ public:
 	/**
 	 * Before parameters:
 	 *	- [const float] original yield prior to setting
-	 *	- [float&] attempted set yield
+	 *	- [const float] input yield that's trying to be set
+	 *	- [float&] amount that will actually be set
 	 *
 	 *	After parameters:
 	 *	- [const float] original yield prior to setting
+	 *	- [const float] input yield that would have been set if no Outlets existed
 	 *	- [const float] newly set yield
 	 */
 	UPROPERTY(VisibleAnywhere, Category="Level Outlets")

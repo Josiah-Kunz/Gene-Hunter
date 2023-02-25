@@ -6,16 +6,25 @@
 #include "LevelComponent.h"
 #include "ComponentUtilities.h"
 #include "EffectComponent.h"
-#include "Outlets/GetBaseExpYieldOutlet.h"
-#include "MoreBaseYield_UNITTEST.generated.h"
+#include "Outlets/SetCXPOutlet.h"
+
+#include "CXPLuckyEgg_UNITTEST.generated.h"
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class LEVELCOMPONENTUNITTESTS_API UMoreBaseYield_UNITTEST : public UEffectComponent
+class LEVELCOMPONENTUNITTESTS_API UCXPLuckyEgg_UNITTEST : public UEffectComponent
 {
 	GENERATED_BODY()
 
 public:
+
+	float BoostFactor = 2.0f;
+
+	UPROPERTY()
+	ULevelComponent* LevelComponent;
+
+	UPROPERTY()
+	FBeforeSetCXPDelegate Delegate;
 
 	virtual void OnComponentCreated() override
 	{
@@ -30,26 +39,24 @@ public:
 
 		// Soopah doopah
 		Super::OnComponentCreated();
-
+		
 		// Bind the delegate
-		BIND_DELEGATE(Delegate, UMoreBaseYield_UNITTEST::IncreaseExpYield);
+		BIND_DELEGATE(Delegate, UCXPLuckyEgg_UNITTEST::ModifyCXPOnSet);
 
 		// Add it
-		LevelComponent->GetBaseExpYieldOutlet.AddBefore(Delegate);
+		LevelComponent->SetCXPOutlet.AddBefore(Delegate);
 	}
 
-	UPROPERTY()
-	ULevelComponent* LevelComponent;
-
-	UPROPERTY()
-	FBeforeGetBaseExpYieldDelegate Delegate;
-
-	static constexpr float YieldMultiplier = 1.1f;
-
 	UFUNCTION()
-	void IncreaseExpYield(const float OriginalYield, float& ReturnedYield)
+	void ModifyCXPOnSet(const uint32 OldCXP, const int32 InputCXP, int32& AttemptedCXP)
 	{
-		ReturnedYield *= YieldMultiplier;
+		AttemptedCXP = OldCXP + (InputCXP - OldCXP) * GetStacks() * BoostFactor;
+
+	}
+
+	virtual int32 MaxStacks() override
+	{
+		return 2;
 	}
 
 	

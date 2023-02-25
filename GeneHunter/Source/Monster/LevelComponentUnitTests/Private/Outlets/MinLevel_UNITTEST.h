@@ -40,7 +40,7 @@ public:
 		Super::OnComponentCreated();
 
 		// Bind the delegate
-		Delegate.Delegate.BindDynamic(this, &UMinLevel_UNITTEST::SetMinLevel);
+		BIND_DELEGATE(Delegate, UMinLevel_UNITTEST::SetMinLevel);
 
 		// Add it
 		LevelComponent->GetMinLevelOutlet.AddBefore(Delegate);

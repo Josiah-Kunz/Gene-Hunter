@@ -40,7 +40,7 @@ public:
 		Super::OnComponentCreated();
 
 		// Bind the delegate
-		Delegate.Delegate.BindDynamic(this, &UMaxLevel_UNITTEST::SetMaxLevel);
+		BIND_DELEGATE(Delegate, UMaxLevel_UNITTEST::SetMaxLevel);
 
 		// Add it
 		LevelComponent->GetMaxLevelOutlet.AddBefore(Delegate);

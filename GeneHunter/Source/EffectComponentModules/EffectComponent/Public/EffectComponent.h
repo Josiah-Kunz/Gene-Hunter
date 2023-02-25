@@ -157,5 +157,17 @@ public:
 	 * Sets stacks to 1. It is here that you should bind your delegate by using macros like SEARCH_FOR_COMPONENT.
 	 */
 	virtual void OnComponentCreated() override;
+
+/**
+ * Properly binds the OutletDelegate (such as FBeforeSetCXPDelegate) to the function (e.g., ULuckyEgg::ModifyCXP).
+ * However, first it checks that stacks > 0.
+ *
+ * This is to be used inside OnComponentCreated right after the Super::OnComponentCreated call.
+ */
+#define BIND_DELEGATE(OutletDelegate, FuncName) \
+	if (GetStacks() > 0) \
+	{ \
+		OutletDelegate##.Delegate.BindDynamic(this, &##FuncName); \
+	}
 	
 };

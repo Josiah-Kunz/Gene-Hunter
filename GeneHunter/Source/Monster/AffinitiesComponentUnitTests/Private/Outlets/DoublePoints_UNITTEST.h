@@ -31,7 +31,7 @@ public:
 		Super::OnComponentCreated();
 
 		// Bind the delegate
-		Delegate.Delegate.BindDynamic(this, &UDoublePoints_UNITTEST::DoublePoints);
+		BIND_DELEGATE(Delegate, UDoublePoints_UNITTEST::DoublePoints);
 
 		// Add it
 		AffinitiesComponent->GetUnspentPointsOutlet.AddBefore(Delegate);
