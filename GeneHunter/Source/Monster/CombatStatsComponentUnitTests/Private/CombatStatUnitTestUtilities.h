@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "CombatStatsComponent.h"
-#include "StatUnitTestUtilities.generated.h"
+#include "CombatStatUnitTestUtilities.generated.h"
 
 UCLASS()
 class UStatUnitTestUtilities : public UBlueprintFunctionLibrary

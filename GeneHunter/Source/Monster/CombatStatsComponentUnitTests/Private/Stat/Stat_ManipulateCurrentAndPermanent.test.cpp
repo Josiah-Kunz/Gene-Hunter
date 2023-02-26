@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "StatUnitTestUtilities.h" 
+#include "CombatStatUnitTestUtilities.h" 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_Stat_ManipulateCurrentAndPermanent,
 	"__GeneHunter.FStat.Stat.Manipulate Current & Permanent",

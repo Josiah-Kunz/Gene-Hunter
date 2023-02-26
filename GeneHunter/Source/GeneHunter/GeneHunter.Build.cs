@@ -22,7 +22,7 @@ public class GeneHunter : ModuleRules
 			// Monster modules
 			"AffinitiesComponent", "AffinitiesComponentUnitTests", "CombatStatsComponent", "LevelComponent",
 			"LevelComponentUnitTests",
-			"StatsComponentUnitTests", "Types", "TypesUnitTests", 
+			"CombatStatsComponentUnitTests", "Types", "TypesUnitTests", 
 			  
 			// Utility modules
 			"BPLibraries", "GHLibraries", "UI",

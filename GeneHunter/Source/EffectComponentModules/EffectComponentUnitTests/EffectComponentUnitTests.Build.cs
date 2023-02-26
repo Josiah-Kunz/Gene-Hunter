@@ -4,7 +4,7 @@ public class EffectComponentUnitTests : ModuleRules{
 	
 	public EffectComponentUnitTests(ReadOnlyTargetRules Target) : base(Target){
 		
-		PrivateIncludePaths.Add("Monster/StatsComponentUnitTests/Private");
+		PrivateIncludePaths.Add("Monster/CombatStatsComponentUnitTests/Private");
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
 		  "AffinitiesComponent"			// for priorites tests
@@ -15,7 +15,7 @@ public class EffectComponentUnitTests : ModuleRules{
 		  , "EffectComponent"			// b/c these are the thing we're testing
 		  , "AuraComponent"				// and these (for now: TODO)
 		  , "GHLibraries"				// for the REQUIRE_COMPONENT macro
-		  , "StatsComponentUnitTests"   // for stats' unit tests
+		  , "CombatStatsComponentUnitTests"   // for stats' unit tests
 		  , "LevelComponent"			// goes with StatsComponent
 		  , "MutationComponent"			// for BerserkerGene
 		  

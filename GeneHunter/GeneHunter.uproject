@@ -135,7 +135,7 @@
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "StatsComponentUnitTests",
+			"Name": "CombatStatsComponentUnitTests",
 			"Type": "Editor",
 			"LoadingPhase": "Default"
 		}

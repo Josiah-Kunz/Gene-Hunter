@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "StatUnitTestUtilities.h" 
+#include "CombatStatUnitTestUtilities.h" 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsComponent_Scaling_BasePairsScaling,
 	"__GeneHunter.FStat.StatsComponent.Scaling.Base Pairs Scaling",

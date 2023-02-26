@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "StatUnitTestUtilities.h"
+#include "CombatStatUnitTestUtilities.h"
 #include "ComponentUtilities.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FExp_Scaling,

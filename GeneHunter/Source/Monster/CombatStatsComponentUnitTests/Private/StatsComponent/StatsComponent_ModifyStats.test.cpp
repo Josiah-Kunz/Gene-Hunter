@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "StatUnitTestUtilities.h" 
+#include "CombatStatUnitTestUtilities.h" 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsComponent_ModifyStats,
 	"__GeneHunter.FStat.StatsComponent.ModifyStats",

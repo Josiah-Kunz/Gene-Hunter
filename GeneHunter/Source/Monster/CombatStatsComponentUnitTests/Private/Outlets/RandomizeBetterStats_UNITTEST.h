@@ -12,7 +12,7 @@
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class STATSCOMPONENTUNITTESTS_API URandomizeBetterStats_UNITTEST : public UEffectComponent
+class COMBATSTATSCOMPONENTUNITTESTS_API URandomizeBetterStats_UNITTEST : public UEffectComponent
 {
 	GENERATED_BODY()
 

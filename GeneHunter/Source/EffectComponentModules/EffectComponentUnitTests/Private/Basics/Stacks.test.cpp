@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "StatUnitTestUtilities.h"
+#include "CombatStatUnitTestUtilities.h"
 #include "BerserkerGene.h"
 #include "ComponentUtilities.h"
 #include "Stacks_Multiple_UNITTEST.h"

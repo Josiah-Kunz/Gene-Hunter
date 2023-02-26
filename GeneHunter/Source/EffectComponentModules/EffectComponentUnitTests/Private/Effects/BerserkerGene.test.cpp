@@ -5,7 +5,7 @@
 #pragma once
 
 #include "ComponentUtilities.h"
-#include "StatUnitTestUtilities.h"
+#include "CombatStatUnitTestUtilities.h"
 #include "BerserkerGene.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Components_BerserkerGene,

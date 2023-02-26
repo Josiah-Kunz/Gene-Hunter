@@ -1,10 +1,10 @@
 ﻿using UnrealBuildTool;
 
-public class StatsComponentUnitTests : ModuleRules{
+public class CombatStatsComponentUnitTests : ModuleRules{
 	
-	public StatsComponentUnitTests(ReadOnlyTargetRules Target) : base(Target){
+	public CombatStatsComponentUnitTests(ReadOnlyTargetRules Target) : base(Target){
 		
-		PrivateIncludePaths.Add("Monster/StatsComponentUnitTests/Private");
+		PrivateIncludePaths.Add("Monster/CombatStatsComponentUnitTests/Private");
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
 			"Core"					// for FString

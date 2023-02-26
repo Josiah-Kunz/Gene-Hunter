@@ -1,50 +1,50 @@
 ﻿#pragma once
 
-#include "StatUnitTestUtilities.h" 
+#include "CombatStatUnitTestUtilities.h" 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsComponent_Scaling_StandardStat,
-	"__GeneHunter.FStat.StatsComponent.Scaling.Standard Stat",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsComponent_Scaling_Health,
+	"__GeneHunter.FStat.StatsComponent.Scaling.Health",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FUStat_StatsComponent_Scaling_StandardStat::RunTest(const FString& Parameters)
+bool FUStat_StatsComponent_Scaling_Health::RunTest(const FString& Parameters)
 {
 	
 	// Set up
-	FStandardStat StandardStat = {};
+	FHealth Health = {};
 
 	// Loop over base pairs [1, 50, 100], base stat [0, 50, 100, 120, 150, 200], and levels [20, 50, 100]
 	TArray<float> Expected = {
 		// 1 BasePair
 		// ----------
 		// 0 BaseStat, levels [20, 50, 100]
-		45, 1.2e3, 295.2e3,
+		90, 2.4e3, 590.5e3,
 		// 50 BaseStat
-		99, 4.9e3, 2.1e6,
+		144, 6.1e3, 2.4e6,
 		// 100
-		153, 8.7e3, 4e6,
+		198, 10e3, 4.3e6,
 		// 120
-		180, 10.2e3, 4.7e6,
+		225, 11.4e3, 5e6,
 		// 150
-		207, 12.6e3, 5.8e6,
+		252, 13.9e3, 6.1e6,
 		// 200
-		270, 16.5e3, 7.7e6,
+		315, 17.7e3, 8e6,
 
 		// 50 BasePairs
 		// ------------
-		45, 1.2e3, 295.2e3,
-		189, 11.4e3, 5.3e6,
-		342, 21.6e3, 10.2e6,
-		405, 25.5e3, 12.2e6,
-		495, 31.8e3, 15.2e6,
-		648, 42e3, 20.1e6,
+		90, 2.4e3, 590.5e3,
+		234, 12.6e3, 5.6e6,
+		387, 22.8e3, 10.5e6,
+		450, 26.7e3, 12.5e6,
+		540, 33e3, 15.5e6,
+		693, 43.3e3, 20.4e6,
 
 		// 100 BasePairs (maximum)
-		45, 1.2e3, 295.2e3,
-		225, 13.4e3, 6.2e6,
-		405, 25.5e3, 12.1e6,
-		477, 30.4e3, 14.5e6,
-		585, 37.7e3, 18e6,
-		765, 49.8e3, 23.9e6
+		90, 2.4e3, 590.5e3,
+		270, 14.6e3, 6.5e6,
+		450, 26.7e3, 12.4e6,
+		522, 31.6e3, 14.8e6,
+		630, 38.9e3, 18.3e6,
+		810, 51e3, 24.2e6
 	};
 
 	// Test bounds
@@ -55,18 +55,18 @@ bool FUStat_StatsComponent_Scaling_StandardStat::RunTest(const FString& Paramete
 	// Do the test
 	for(int bp=0; bp<BasePairs.Num(); bp++)
 	{
-		StandardStat.BasePairs = BasePairs[bp];
+		Health.BasePairs = BasePairs[bp];
 		for(int bs=0; bs<BaseStats.Num(); bs++)
 		{
-			StandardStat.BaseStat = BaseStats[bs];
+			Health.BaseStat = BaseStats[bs];
 			for(int l=0; l<Levels.Num(); l++)
 			{
-				const float Actual = StandardStat.CalculateValue(Levels[l]);
+				const float Actual = Health.CalculateValue(Levels[l]);
 				const float Tolerance = (Actual > 1e6 ? 0.1e6 : (Actual > 1e3 ? 0.1e3 : 1));
 				TestEqual(
 					FString::Printf(TEXT("BasePairs %s | BaseStat %s | Level %s"),
-							*FString::FromInt(StandardStat.BasePairs),
-							*FString::FromInt(StandardStat.BaseStat),
+							*FString::FromInt(Health.BasePairs),
+							*FString::FromInt(Health.BaseStat),
 							*FString::FromInt(Levels[l])),
 						Actual,
 						Expected[bp * (Levels.Num() * BaseStats.Num()) + bs * Levels.Num() + l],

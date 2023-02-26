@@ -18,9 +18,6 @@ bool FRandomizeStats::RunTest(const FString& Parameters)
 	// Attach effect
 	ADD_NEW_COMPONENT(URandomizeBetterStats_UNITTEST, Effect, DummyActor);
 
-	// Randomize the stats
-	StatsComponent->RandomizeStats();
-
 	// Define value types we're interested in
 	const TArray<EStatValueType> TestedValueTypes = {EStatValueType::BasePairs, EStatValueType::BaseStat};
 	const TMap<const EStatValueType, const int32> MinValues =
@@ -32,6 +29,10 @@ bool FRandomizeStats::RunTest(const FString& Parameters)
 	// Test ALL stats 10 times (surely this is enough!)
 	for(int i=0; i<10; i++)
 	{
+		// Randomize the stats
+		StatsComponent->RandomizeStats();
+
+		// Check each stat + type combination
 		for(const EStatEnum StatEnum : StatsComponent->StatsArray)
 		{
 			for(const EStatValueType ValueType :TestedValueTypes)

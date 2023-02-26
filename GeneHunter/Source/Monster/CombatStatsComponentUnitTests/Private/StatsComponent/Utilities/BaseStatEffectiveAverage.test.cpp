@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "MathUtil.h"
-#include "StatUnitTestUtilities.h"
+#include "CombatStatUnitTestUtilities.h"
 #include "ComponentUtilities.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsComponent_Utilities_BaseStatEffectiveAverage,
