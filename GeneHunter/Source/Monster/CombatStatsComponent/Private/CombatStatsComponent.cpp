@@ -38,7 +38,7 @@ void UCombatStatsComponent::EnsureLevelComponent(AActor* Owner)
 			LevelComponent->SetCXPOutlet.AddAfter(UpdateStatsAfterLevel);
 			
 			// Start with random stats
-			RandomizeStats(FStatRandParams{});
+			RandomizeStatsCustom(FStatRandParams{});
 		}
 	}
 }
@@ -147,7 +147,17 @@ void UCombatStatsComponent::RandomizeBaseStat(const EStatEnum Stat, const int32 
 	RandomizeStat(Stat, Params);
 }
 
-void UCombatStatsComponent::RandomizeStats(const FStatRandParams Params)
+void UCombatStatsComponent::RandomizeStats()
+{
+	FStatRandParams Params;
+	Params.MinBasePairs = 1;
+	Params.MaxBasePairs = 100;
+	Params.MinBaseStat = 50;
+	Params.MaxBaseStat = 150;
+	RandomizeStatsCustom(Params);
+}
+
+void UCombatStatsComponent::RandomizeStatsCustom(const FStatRandParams Params)
 {
 
 	// Cache original for delegates
@@ -166,7 +176,7 @@ void UCombatStatsComponent::RandomizeBasePairs(const int32 MinBasePairs, const i
 	Params.MaxBaseStat = -1;
 	Params.MinBasePairs = MinBasePairs;
 	Params.MaxBasePairs = MaxBasePairs;
-	RandomizeStats(Params);
+	RandomizeStatsCustom(Params);
 }
 
 void UCombatStatsComponent::RandomizeBaseStats(const int32 MinBaseStats, const int32 MaxBaseStats)
@@ -176,7 +186,7 @@ void UCombatStatsComponent::RandomizeBaseStats(const int32 MinBaseStats, const i
 	Params.MaxBaseStat = MaxBaseStats;
 	Params.MinBasePairs = 0;
 	Params.MaxBasePairs = -1;
-	RandomizeStats(Params);
+	RandomizeStatsCustom(Params);
 }
 
 void UCombatStatsComponent::ModifyStat(const EStatEnum Stat, const float Value, const EStatValueType ValueType,

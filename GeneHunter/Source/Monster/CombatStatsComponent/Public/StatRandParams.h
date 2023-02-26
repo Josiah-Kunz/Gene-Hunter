@@ -5,7 +5,7 @@
 #include "StatRandParams.generated.h"
 
 /**
- * A struct to hold information about randomizing stats.
+ * A struct to hold information about randomizing stats, such as BaseStat range and BasePairs range.
  */
 USTRUCT(Blueprintable)
 struct COMBATSTATSCOMPONENT_API FStatRandParams

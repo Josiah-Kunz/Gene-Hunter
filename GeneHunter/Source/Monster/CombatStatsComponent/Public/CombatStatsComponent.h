@@ -168,13 +168,21 @@ public:
 	
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	void RandomizeBaseStat(const EStatEnum Stat, const int32 MinBaseStats = 80, const int32 MaxBaseStats = 120);
+
+	/**
+	 * Randomizes the Stats uniformly by randomizing the BaseStats and BasePairs between:
+	 *	BaseStats: 50--150
+	 *	BasePairs: 1--100
+	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
+	void RandomizeStats();
 	
 	/**
 	 * Randomizes the Stats uniformly by randomizing the BaseStats and BasePairs between Min and Max (inclusive).
 	 * If any max is greater than its corresponding min, it will be ignored.
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
-	void RandomizeStats(FStatRandParams Params);
+	void RandomizeStatsCustom(const FStatRandParams Params);
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	void RandomizeBasePairs(const int32 MinBasePairs = 1, const int32 MaxBasePairs = 100);
