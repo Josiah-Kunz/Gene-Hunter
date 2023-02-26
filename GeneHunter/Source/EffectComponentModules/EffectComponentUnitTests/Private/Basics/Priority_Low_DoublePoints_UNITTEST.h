@@ -46,7 +46,10 @@ public:
 	UFUNCTION()
 	void DoublePoints(const uint8 OriginalPoints, uint8& ReturnedPoints)
 	{
-		ReturnedPoints = 2*OriginalPoints;
+		if (ShouldApplyEffect())
+		{
+			ReturnedPoints = 2*OriginalPoints;
+		}
 	}
 
 	// Custom priority things. Normally, you wouldn't do this.

@@ -47,7 +47,10 @@ public:
 	UFUNCTION()
 	void IncreaseExpYield(const float OldYield, const float InputYield, float& AttemptedYield)
 	{
-		AttemptedYield = OldYield;
+		if (ShouldApplyEffect())
+		{
+			AttemptedYield = OldYield;
+		}
 	}
 
 	

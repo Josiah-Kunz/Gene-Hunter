@@ -158,6 +158,25 @@ public:
 	 */
 	virtual void OnComponentCreated() override;
 
+	/**
+	 * If the following two conditions are true, you should apply the effect:
+	 *	- Stacks > 0
+	 *	- Not silenced
+	 *
+	 *	You should put this inside the function where your delegate is bound. For example, suppose you have a
+	 *	UEffectComponent called "Confusion" that calls the function "CheckConfusionBeforeAttack". You should do:
+	 *
+	 *		void CheckConfusionBeforeAttack(){
+	 *			if (!ShouldApplyEffect()){
+	 *				return;
+	 *			}
+	 *			...
+	 *			[Do the rest of the code]
+	 *			...
+	 *		}
+	 */
+	virtual bool ShouldApplyEffect();
+
 /**
  * Properly binds the OutletDelegate (such as FBeforeSetCXPDelegate) to the function (e.g., ULuckyEgg::ModifyCXP).
  * However, first it checks that stacks > 0.

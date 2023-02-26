@@ -61,9 +61,12 @@ public:
 	UFUNCTION()
 	void ModifyCXPOnType(const uint32 OriginalCXP, int32& ReturnedCXP)
 	{
-		if (AffinitiesComponent->HasPointsAllocatedIn(TypeToBoost))
+		if (ShouldApplyEffect())
 		{
-			ReturnedCXP *= BoostFactor;
+			if (AffinitiesComponent->HasPointsAllocatedIn(TypeToBoost))
+			{
+				ReturnedCXP *= BoostFactor;
+			}
 		}
 	}
 

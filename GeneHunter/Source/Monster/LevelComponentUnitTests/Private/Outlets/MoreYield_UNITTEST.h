@@ -50,7 +50,10 @@ public:
 	void IncreaseExpYield(const float OriginalYield, float& ReturnedYield, const uint16 DefeatedLevel,
 		const uint16 VictoriousLevel)
 	{
-		ReturnedYield *= YieldMultiplier;
+		if (ShouldApplyEffect())
+		{
+			ReturnedYield *= YieldMultiplier;
+		}
 	}
 
 	

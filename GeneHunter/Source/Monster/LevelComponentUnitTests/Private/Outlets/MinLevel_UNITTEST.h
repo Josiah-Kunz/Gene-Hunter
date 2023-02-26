@@ -49,7 +49,10 @@ public:
 	UFUNCTION()
 	void SetMinLevel(const uint16 DefaultMin, int32& AttemptedMin)
 	{
-		AttemptedMin = NewMinLevel;
+		if (ShouldApplyEffect())
+		{
+			AttemptedMin = NewMinLevel;
+		}
 	}
 
 	

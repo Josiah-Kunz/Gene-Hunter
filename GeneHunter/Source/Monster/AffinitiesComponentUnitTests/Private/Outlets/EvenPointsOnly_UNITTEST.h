@@ -46,13 +46,16 @@ public:
 	UFUNCTION()
 	void RestrictPointsToEven(const uint8 OriginalPoints, const uint8 InputPoints, uint8& SetPoints)
 	{
-		if (InputPoints % 2 != 0)
+		if (ShouldApplyEffect())
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Tried to set points to [%i], but only even values are allowed! Resetting to original points [%i]."),
-				SetPoints,
-				OriginalPoints
-				)
-			SetPoints = OriginalPoints;
+			if (InputPoints % 2 != 0)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Tried to set points to [%i], but only even values are allowed! Resetting to original points [%i]."),
+					SetPoints,
+					OriginalPoints
+					)
+				SetPoints = OriginalPoints;
+			}
 		}
 	}
 

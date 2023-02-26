@@ -46,7 +46,10 @@ public:
 	UFUNCTION()
 	void ZeroPoints(const uint8 OriginalPoints, uint8& ReturnedPoints)
 	{
-		ReturnedPoints = 0;
+		if (ShouldApplyEffect())
+		{
+			ReturnedPoints = 0;
+		}
 	}
 	
 	virtual float GetPriority() override

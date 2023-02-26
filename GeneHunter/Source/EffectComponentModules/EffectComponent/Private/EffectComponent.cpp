@@ -149,3 +149,19 @@ auto UEffectComponent::OnComponentCreated() -> void
 	SetStacks(1);
 	Super::OnComponentCreated();
 }
+
+bool UEffectComponent::ShouldApplyEffect()
+{
+
+	// Check stacks
+	if (GetStacks() <= 0)
+	{
+		// Could be a miscommunication, so let's do this. This should destroy this component, too
+		SetStacks(0);
+		return false;
+	}
+
+	// Check silence state
+	return !IsSilenced();
+	
+}

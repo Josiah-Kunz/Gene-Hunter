@@ -50,7 +50,10 @@ public:
 	UFUNCTION()
 	void ModifyCXPOnSet(const uint32 OldCXP, const int32 InputCXP, int32& AttemptedCXP)
 	{
-		AttemptedCXP = OldCXP + (InputCXP - OldCXP) * GetStacks() * BoostFactor;
+		if (ShouldApplyEffect())
+		{
+			AttemptedCXP = OldCXP + (InputCXP - OldCXP) * GetStacks() * BoostFactor;
+		}
 
 	}
 

@@ -49,7 +49,10 @@ public:
 	UFUNCTION()
 	void SetMaxLevel(const uint16 DefaultMax, int32& AttemptedMax)
 	{
-		AttemptedMax = NewMaxLevel;
+		if (ShouldApplyEffect())
+		{
+			AttemptedMax = NewMaxLevel;
+		}
 	}
 
 	

@@ -52,8 +52,11 @@ public:
 	void BetterRandomStats(const EStatEnum TargetStat, const FStatRandParams OriginalParams,
 		FStatRandParams& ParamsToBeUsed)
 	{
-		ParamsToBeUsed.MinBaseStat = MinBaseStat;
-		ParamsToBeUsed.MinBasePairs = MinBasePairs;
+		if (ShouldApplyEffect())
+		{
+			ParamsToBeUsed.MinBaseStat = MinBaseStat;
+			ParamsToBeUsed.MinBasePairs = MinBasePairs;
+		}
 	}
 
 	

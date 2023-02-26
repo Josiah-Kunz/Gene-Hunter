@@ -49,7 +49,10 @@ public:
 	UFUNCTION()
 	void IncreaseExpYield(const float OriginalYield, float& ReturnedYield)
 	{
-		ReturnedYield *= YieldMultiplier;
+		if (ShouldApplyEffect())
+		{
+			ReturnedYield *= YieldMultiplier;
+		}
 	}
 
 	
