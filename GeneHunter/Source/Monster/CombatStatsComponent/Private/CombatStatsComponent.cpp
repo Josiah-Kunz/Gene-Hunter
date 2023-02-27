@@ -315,8 +315,16 @@ float UCombatStatsComponent::BaseStatEffectiveAverage()
 	return BST/Denominator;
 }
 
+float UCombatStatsComponent::GetModifiedValue(const EStatEnum Stat, const float ModValue, const EStatValueType ValueType,
+	const EModificationMode Mode)
+{
+
+	const float CurrentValue = GetStat(Stat).GetValue(ValueType);
+	return GetStat(Stat).GetModification(CurrentValue, Mode, ModValue);
+}
+
 void UCombatStatsComponent::AvertReduction(const EStatEnum Stat, float& Value, const EStatValueType ValueType,
-                                     const EModificationMode Mode)
+                                           const EModificationMode Mode)
 {
 	switch(Mode)
 	{

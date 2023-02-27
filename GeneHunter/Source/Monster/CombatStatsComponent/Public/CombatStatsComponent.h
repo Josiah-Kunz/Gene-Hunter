@@ -289,6 +289,13 @@ public:
 	float BaseStatEffectiveAverage();
 
 	/**
+	 * Returns the value that *would be* modified without actually modifying the Stat.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetModifiedValue(const EStatEnum Stat, const float ModValue, const EStatValueType ValueType,
+		const EModificationMode Mode);
+
+	/**
 	 * If the given FCombatStat would be reduced, it is instead not reduced. Note: his is a utility function that does only
 	 * manipulates Value and does *not* call ModifyStatInternal, so no Outlets are executed.
 	 */

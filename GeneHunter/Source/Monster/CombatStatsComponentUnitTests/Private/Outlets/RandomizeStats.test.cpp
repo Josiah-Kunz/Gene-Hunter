@@ -12,7 +12,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FRandomizeStats,
 bool FRandomizeStats::RunTest(const FString& Parameters)
 {
 
-	// Set up a dummy with a Level
+	// Set up a dummy
 	DUMMY_TEST_COMPONENT(UCombatStatsComponent, StatsComponent);
 	
 	// Attach effect

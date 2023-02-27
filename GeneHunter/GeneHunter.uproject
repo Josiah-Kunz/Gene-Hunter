@@ -120,6 +120,11 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "CombatStatsComponentUnitTests",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "EffectComponentUnitTests",
 			"Type": "Editor",
 			"LoadingPhase": "Default"
@@ -131,11 +136,6 @@
 		},
 		{
 			"Name": "TypesUnitTests",
-			"Type": "Editor",
-			"LoadingPhase": "Default"
-		},
-		{
-			"Name": "CombatStatsComponentUnitTests",
 			"Type": "Editor",
 			"LoadingPhase": "Default"
 		}

@@ -1,20 +1,18 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AGetBaseExpYield_002Eh_002Fl_003ASource_003FMonster_003FLevelComponent_003FPublic_003FDelegateClasses_003FGetBaseExpYield_002Eh/@EntryIndexedValue">ForceIncluded</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=41252341_002D6877_002D4c32_002D9378_002D19f9f5c74f29/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;And&gt;&#xD;
-    &lt;Namespace&gt;__GeneHunter&lt;/Namespace&gt;&#xD;
-    &lt;Project Location="E:\GitHub\Gene-Hunter\GeneHunter\Intermediate\ProjectFiles" Presentation="&amp;lt;Games&amp;gt;\&amp;lt;GeneHunter&amp;gt;" /&gt;&#xD;
-  &lt;/And&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	
-	
-	
-	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d84af5c3_002D9958_002D4b9f_002D8265_002D2e68a770de9b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="SetUnspentPoints" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a85ea50d_002D8b11_002D4c41_002Da86f_002D74d806d20b1b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="RandomizeStats" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;UnrealTest::0E1634B9-E7A8-3E25-B95B-0093049A23CC::Windows,Version=v10.0.18362::__GeneHunter.Effects.Outlets.SetUnspentPoints&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;UnrealTest::0E1634B9-E7A8-3E25-B95B-0093049A23CC::Windows,Version=v10.0.18362::__GeneHunter.Effects.Outlets.UCombatStatsComponent.RandomizeStats&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;UnrealTest::0E1634B9-E7A8-3E25-B95B-0093049A23CC::Windows,Version=v10.0.18362::__GeneHunter.Effects.Outlets.UCombatStatsComponent.ModifyStat&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;UnrealTest::0E1634B9-E7A8-3E25-B95B-0093049A23CC::Windows,Version=v10.0.18362::__GeneHunter.Effects.Outlets.UCombatStatsComponent.RecalculateStats&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	
+	
+	
+	
+	
+	
 	
 	
 	

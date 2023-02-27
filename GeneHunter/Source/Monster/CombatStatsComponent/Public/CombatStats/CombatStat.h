@@ -118,6 +118,8 @@ public:
 	
 	void RandomizeBasePairs(const int32 Min = 1, const int32 Max = 100);
 
+	static float GetModification(const float Original, const EModificationMode Mode, const float Modification);
+
 #pragma endregion
 
 #pragma region Things that should be overridden!
@@ -149,13 +151,6 @@ public:
 	 * The color associated with this Stat.
 	 */
 	virtual FLinearColor const Color() const;
-
-#pragma endregion
-
-#pragma region Private functions
-
-private:
-	static float GetModification(const float Original, const EModificationMode Mode, const float Modification);
 
 #pragma endregion
 	
