@@ -19,4 +19,6 @@ public:
 	virtual bool IsPurgeable() const override;
 
 	virtual bool IsVisibleToUI() const override;
+
+	virtual bool IsPersistent() const override;
 };

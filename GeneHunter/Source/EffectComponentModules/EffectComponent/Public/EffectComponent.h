@@ -97,6 +97,9 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
 	virtual float GetPriority();
 
+	/**
+	 * Text to be used by the devs (internally) and UI (externally).
+	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
 	virtual FSupportingText GetSupportingText();
 
@@ -127,7 +130,7 @@ public:
 	virtual void Silence();
 
 	/**
-	 * Sets Silence to false. Should do other things as well in the inherited classes.
+	 * Sets Silence to false. Might do other things as well in the inherited classes.
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
 	virtual void Unsilence();
@@ -173,7 +176,7 @@ public:
 	 *			...
 	 *			[Do the rest of the code]
 	 *			...
-	 *		}
+	 *		}f
 	 */
 	virtual bool ShouldApplyEffect();
 

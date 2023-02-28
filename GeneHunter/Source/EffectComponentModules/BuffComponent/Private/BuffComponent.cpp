@@ -24,4 +24,9 @@ bool UBuffComponent::IsVisibleToUI() const
 	return true;
 }
 
+bool UBuffComponent::IsPersistent() const
+{
+	return false;
+}
+
 
