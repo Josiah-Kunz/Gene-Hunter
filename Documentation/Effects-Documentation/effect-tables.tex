@@ -1,35 +1,17 @@
 \input{../standalone}
+\input{effect-table-defs}
 
 %--------------------------
 
-\begin{longtblr}[
-		caption = {All \code{Mutation}s currently implemented and tested.},
-		label = {mutations}
-	]{
-		colspec={Q[l, wd=0.2\textwidth] Q[l, wd=0.25\textwidth] Q[l, wd=0.3\textwidth] Q[l, wd=0.1\textwidth] Q[l, wd=0.15\textwidth]},
-		hlines,
-		row{1} = {font=\bfseries, fg=ICBlue},
-		colsep = 0pt,
-	}
-	Mutation  		& Short Description	& Implemented via & Priority	& Note\\
-	Berserker Gene	& {$+$15\% PhA\\$-$10\% PhD\\$-$10\% SpD}	& \code{AfterRecalculateStats}	& 50	& It's a little unimaginitive, but that's okay.\\
-\end{longtblr}
+\begin{EffectTable}{Buff}
+	Invulnerable	& {No damage for 1 second}	& \code{BeforeModifyStat}	& 100	& A  lot of things can inherit from this, such as \code{UDimensionalShift}.\\
+\end{EffectTable}
 
 %--------------------------
 
-\begin{longtblr}[
-		caption = {All \code{Mutation}s currently implemented and tested.},
-		label = {mutations}
-	]{
-		colspec={Q[l, wd=0.2\textwidth] Q[l, wd=0.25\textwidth] Q[l, wd=0.3\textwidth] Q[l, wd=0.1\textwidth] Q[l, wd=0.15\textwidth]},
-		hlines,
-		row{1} = {font=\bfseries, fg=ICBlue},
-		colsep = 0pt,
-	}
-	Mutation  		& Short Description	& Implemented via & Priority	& Note\\
+\begin{EffectTable}{Mutation}
 	Berserker Gene	& {$+$15\% PhA\\$-$10\% PhD\\$-$10\% SpD}	& \code{AfterRecalculateStats}	& 50	& It's a little unimaginitive, but that's okay.\\
-\end{longtblr}
-
+\end{EffectTable}
 %--------------------------
 
 \postamble{}

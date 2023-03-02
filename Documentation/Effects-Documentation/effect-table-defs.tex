@@ -1,0 +1,23 @@
+% ================================
+% Effect table environment. Usage:
+%	\begin{OutletTable}{Base Effect Class}
+%		...
+%	\end{OutletTable}
+%
+%	- Effect -> UEffectComponent automatically
+% ================================
+\newenvironment{EffectTable}[1]{%
+\begin{longtblr}[
+	caption = {All \code{U#1Component}s currently implemented and tested.},
+	label = {#1-table},
+]{
+		colspec={Q[l, wd=0.2\textwidth] Q[l, wd=0.25\textwidth] Q[l, wd=0.3\textwidth] Q[l, wd=0.1\textwidth] Q[l, wd=0.15\textwidth]},
+		hlines,
+		row{1} = {font=\bfseries, fg=ICBlue},
+		colsep = 0pt,
+}
+	#1  		& Short Description	& Implemented via & Priority	& Note\\
+}{%
+\end{longtblr}
+}
+
