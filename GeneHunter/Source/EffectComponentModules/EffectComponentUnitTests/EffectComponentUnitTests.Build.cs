@@ -16,8 +16,12 @@ public class EffectComponentUnitTests : ModuleRules{
 		  , "AuraComponent"				// and these (for now: TODO)
 		  , "GHLibraries"				// for the REQUIRE_COMPONENT macro
 		  , "CombatStatsComponentUnitTests"   // for stats' unit tests
-		  , "LevelComponent"			// goes with StatsComponent
-		  , "MutationComponent"			// for BerserkerGene
+		  , "LevelComponent",			// goes with StatsComponent
+		    
+		// Actual UEffects need tested, too!
+		"BuffComponent",
+		"MutationComponent",
+		    
 		  
 		});
 	}

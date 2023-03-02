@@ -331,20 +331,23 @@ void UCombatStatsComponent::AvertReduction(const EStatEnum Stat, float& Value, c
 	case EModificationMode::AddAbsolute: case EModificationMode::AddFraction: case EModificationMode::AddPercentage:
 		if (Value < 0)
 			Value = 0;
-		break;
+		return;
 	case EModificationMode::MultiplyAbsolute:
 		if (Value < 1)
 			Value = 1;
-		break;
+		return;
 	case EModificationMode::MultiplyPercentage:
 		if (Value < 100)
 			Value = 100;
-		break;
+		return;
 	case EModificationMode::SetDirectly:
 		const FCombatStat& TargetStat = GetStat(Stat);
 		if (Value < TargetStat.GetValue(ValueType))
 			Value = TargetStat.GetValue(ValueType);
+		return;
 	}
 
-	UE_LOG(LogTemp, Error, TEXT("AvertReduction cannot handle specified Mode [%s]!"), *UEnum::GetValueAsString(Mode))
+	UE_LOG(LogTemp, Error, TEXT("AvertReduction cannot handle specified Mode [%s]!"), *UEnum::GetValueAsString(Mode));
+
+	
 }

@@ -1,6 +1,4 @@
-﻿/**
- * Tests a positive stat aura (a la Pokemon natures).
- */
+﻿
 
 #pragma once
 

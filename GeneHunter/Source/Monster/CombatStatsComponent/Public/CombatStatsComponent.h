@@ -298,6 +298,9 @@ public:
 	/**
 	 * If the given FCombatStat would be reduced, it is instead not reduced. Note: his is a utility function that does only
 	 * manipulates Value and does *not* call ModifyStatInternal, so no Outlets are executed.
+	 *
+	 * @param Value Value to set using this Mode in order to avert reducation. For example, if Value was originally
+	 * negative and ValueType was AddAbsolute, the new Value would be zero.
 	 */
 	void AvertReduction(const EStatEnum Stat, float& Value, const EStatValueType ValueType,
 		const EModificationMode Mode);

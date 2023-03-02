@@ -55,7 +55,7 @@ void UInvulnerable::DontTakeDamage(const EStatEnum TargetStat, const EStatValueT
 			const bool bIsHarmful = Stats->GetModifiedValue(TargetStat, AttemptedValue, ValueType, Mode) < OriginalValue;
 			if (bIsHarmful)
 			{
-				AttemptedValue = OriginalValue;
+				Stats->AvertReduction(TargetStat, AttemptedValue, ValueType, Mode);
 			}
 		}
 	}
