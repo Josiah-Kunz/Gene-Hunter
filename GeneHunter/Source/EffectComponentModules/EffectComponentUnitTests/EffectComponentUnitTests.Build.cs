@@ -20,6 +20,7 @@ public class EffectComponentUnitTests : ModuleRules{
 		    
 		// Actual UEffects need tested, too!
 		"BuffComponent",
+		"HoTComponent",
 		"MutationComponent",
 		    
 		  

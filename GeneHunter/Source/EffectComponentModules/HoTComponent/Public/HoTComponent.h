@@ -27,7 +27,8 @@ public:
 public:
 	
 	/**
-	 * Retrieves the amount of Health modification per tick rate. Can be positive or negative. Default is +1%.
+	 * Retrieves the amount of Health modification per tick rate. Can be positive or negative. Default is +1% and it is
+	 * retrieved via StatsComponent's PermanentValue * 0.01 * number of stacks.
 	 */
 	virtual float GetAmount();
 

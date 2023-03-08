@@ -32,13 +32,18 @@ void UHoTComponent::OnComponentCreated()
 
 void UHoTComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// Do we need to modify again?
-	if (RemainingTime <= NextModTime)
+UE_LOG(LogTemp, Warning, TEXT("Ticking!"))
+	// Check silenced
+	if (ShouldApplyEffect())
 	{
-		NextModTime -= GetTickRate();
-		StatsComponent->ModifyStat(EStatEnum::Health, GetAmount(), EStatValueType::Current,
-			EModificationMode::AddAbsolute);
+		Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+		// Do we need to modify again?
+		if (RemainingTime <= NextModTime)
+		{
+			NextModTime -= GetTickRate();
+			StatsComponent->ModifyStat(EStatEnum::Health, GetAmount(), EStatValueType::Current,
+				EModificationMode::AddAbsolute);
+		}
 	}
 }

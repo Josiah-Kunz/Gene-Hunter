@@ -6,6 +6,7 @@
     &lt;TestId&gt;UnrealTest::0E1634B9-E7A8-3E25-B95B-0093049A23CC::Windows,Version=v10.0.18362::__GeneHunter.Effects.Outlets.UCombatStatsComponent.ModifyStat&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;UnrealTest::0E1634B9-E7A8-3E25-B95B-0093049A23CC::Windows,Version=v10.0.18362::__GeneHunter.Effects.Outlets.UCombatStatsComponent.RecalculateStats&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;UnrealTest::0E1634B9-E7A8-3E25-B95B-0093049A23CC::Windows,Version=v10.0.18362::__GeneHunter.Effects.Component Tests.Invulnerable&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;UnrealTest::0E1634B9-E7A8-3E25-B95B-0093049A23CC::Windows,Version=v10.0.18362::__GeneHunter.Effects.Component Tests.Regrowth&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

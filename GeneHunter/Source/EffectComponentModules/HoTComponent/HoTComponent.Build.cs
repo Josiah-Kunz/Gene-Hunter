@@ -32,6 +32,7 @@ public class HoTComponent : ModuleRules{
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
+			"CombatStatsComponent", // because we're healing the FHealth over time
 		});
 	}
 }
