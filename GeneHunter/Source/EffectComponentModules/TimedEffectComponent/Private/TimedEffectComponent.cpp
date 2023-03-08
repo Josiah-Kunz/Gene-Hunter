@@ -43,8 +43,10 @@ void UTimedEffectComponent::TickComponent(const float DeltaTime, const ELevelTic
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	// Keep track of remaining time
 	RemainingTime -= DeltaTime;
-
 	if (RemainingTime < 0)
+	{
 		DestroyComponent();
+	}
 }

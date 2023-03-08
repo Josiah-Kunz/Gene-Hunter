@@ -25,14 +25,14 @@ void UHoTComponent::OnComponentCreated()
 
 	// Must still be alive
 	Super::OnComponentCreated();
-	
-	Super::OnComponentCreated();
+
+	// Set mod time
 	NextModTime = StartingDuration();
 }
 
 void UHoTComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-UE_LOG(LogTemp, Warning, TEXT("Ticking!"))
+	UE_LOG(LogTemp, Warning, TEXT("Ticking!"))
 	// Check silenced
 	if (ShouldApplyEffect())
 	{

@@ -70,13 +70,23 @@ public:
  * For unit testing. Creates a:
  *	- UWorld* called DummyWorld
  *	- AActor* called DummyActor
+ *
+ *	Make sure to do DUMMY_TEST_GC for garbage collection after you're done!
+ */
+#define DUMMY_TEST_WORLD_AND_ACTOR() \
+	UWorld* DummyWorld = UWorld::CreateWorld(EWorldType::Game, false); \
+	AActor* DummyActor = DummyWorld->SpawnActor(AActor::StaticClass()); 
+
+/**
+ * For unit testing. Creates a:
+ *	- UWorld* called DummyWorld
+ *	- AActor* called DummyActor
  *	- ComponentType* called ComponentName
  *
  *	Make sure to do DUMMY_TEST_GC for garbage collection after you're done!
  */
 #define DUMMY_TEST_COMPONENT(ComponentType, ComponentName) \
-	UWorld* DummyWorld = UWorld::CreateWorld(EWorldType::Game, false); \
-	AActor* DummyActor = DummyWorld->SpawnActor(AActor::StaticClass()); \
+	DUMMY_TEST_WORLD_AND_ACTOR(); \
 	ComponentType * ComponentName = NewObject<ComponentType>(DummyActor); \
 	ComponentName ->RegisterComponent();
 
