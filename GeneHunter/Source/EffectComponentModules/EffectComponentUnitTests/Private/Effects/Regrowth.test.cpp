@@ -2,10 +2,7 @@
 #pragma once
 
 #include "ComponentUtilities.h"
-#include "CombatStatUnitTestUtilities.h"
-#include "MathUtil.h"
 #include "Regrowth.h"
-#include "Tests/AutomationCommon.h"
 
 /// Need to declare first!
 
@@ -25,12 +22,14 @@ bool FEffectComponent_Components_Regrowth_Latent::Update()
 
 	if (!bInitialized)
 	{
+		
 		// Set init
 		bInitialized = true;
 		
 		// Add a stats component + effect
 		ADD_NEW_COMPONENT(UCombatStatsComponent, Stats, DummyActor);
 		ADD_NEW_COMPONENT(URegrowth, Regrowth, DummyActor);
+		ADD_NEW_COMPONENT(UHoTComponent, HoTComponent, DummyActor);
 
 		// Record original
 		const float OriginalHP = Stats->GetStat(EStatEnum::Health).GetCurrentValue();
@@ -40,13 +39,13 @@ bool FEffectComponent_Components_Regrowth_Latent::Update()
 		Stats->ModifyStat(EStatEnum::Health, -Damage, EStatValueType::Current, EModificationMode::AddAbsolute);
 		
 	}
+	DummyActor->GetWorld()->Tick() // TODO HEREEEE
 
 	// Wait for effect to be done
 	URegrowth* Regrowth = nullptr;
 	SEARCH_FOR_COMPONENT(URegrowth, Regrowth, DummyActor);
 	if ( Regrowth == nullptr )
 	{
-
 		UE_LOG(LogTemp, Warning, TEXT("Regrowth is nullptr"));
 		/*
 		// Get values
@@ -73,7 +72,15 @@ bool FEffectComponent_Components_Regrowth_Latent::Update()
 		return true;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Regrowth is *NOT* nullptr"));
+	UCombatStatsComponent* Stats = nullptr;
+	SEARCH_FOR_COMPONENT(UCombatStatsComponent, Stats, DummyActor);
+	const float CurrentHP = Stats->GetStat(EStatEnum::Health).GetCurrentValue();
+	/*
+	UE_LOG(LogTemp, Warning, TEXT("Regrowth is *NOT* nullptr: [%s] | [%s]"),
+		*FString::SanitizeFloat(CurrentHP),
+		*(Stats->GetName())
+		);
+	*/
 
 	// Not done yet
 	return false;

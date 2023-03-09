@@ -97,6 +97,8 @@ void UCombatStatsComponent::RandomizeStat_Internal(const EStatEnum Stat, const F
 	RandomizeStatsOutlet.ExecuteBefore(Stat, OriginalParams, Params);
 
 	// Special, intentional cases: if max <= min, don't randomize it
+
+	// Base stats
 	if (Params.MaxBaseStat > Params.MinBaseStat)
 	{
 		ModifyStat(Stat,
@@ -105,6 +107,8 @@ void UCombatStatsComponent::RandomizeStat_Internal(const EStatEnum Stat, const F
 			EModificationMode::SetDirectly
 		);
 	}
+
+	// Base pairs
 	if (Params.MaxBasePairs > Params.MinBasePairs)
 	{
 		ModifyStat(Stat,
@@ -113,6 +117,9 @@ void UCombatStatsComponent::RandomizeStat_Internal(const EStatEnum Stat, const F
 			EModificationMode::SetDirectly
 		);
 	}
+
+	// Update with level
+	RecalculateStats();
 
 	// After delegate
 	RandomizeStatsOutlet.ExecuteAfter(Stat, OriginalParams, Params);

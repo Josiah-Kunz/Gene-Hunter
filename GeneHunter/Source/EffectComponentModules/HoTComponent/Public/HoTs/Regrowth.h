@@ -19,6 +19,8 @@ public:
 	virtual float GetTickRate() override;
 
 	virtual float StartingDuration() override;
+
+	virtual int32 MaxStacks() override;
 	
 };
 
