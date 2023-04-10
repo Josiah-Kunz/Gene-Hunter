@@ -2,6 +2,7 @@
 
 #include "UnchangeableBaseYield_UNITTEST.h"
 #include "ComponentUtilities.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FSetBaseExpYield,
                                  "__GeneHunter.Effects.Outlets.ULevelComponent.SetBaseExpYield",
@@ -37,7 +38,7 @@ bool FSetBaseExpYield::RunTest(const FString& Parameters)
 			0.5f);
 
 	// GC
-	DUMMY_TEST_GC
+	ComponentUtilities::DestroyDummyWorld(DummyWorld);
 	
 	return true;
 }

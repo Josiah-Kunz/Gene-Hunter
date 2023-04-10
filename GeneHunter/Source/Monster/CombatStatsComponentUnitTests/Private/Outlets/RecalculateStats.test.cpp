@@ -4,6 +4,7 @@
 #include "ComponentUtilities.h"
 #include "CombatStat.h"
 #include "CombatStatsComponent.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FRecalculateStats,
                                  "__GeneHunter.Effects.Outlets.UCombatStatsComponent.RecalculateStats",
@@ -65,7 +66,7 @@ bool FRecalculateStats::RunTest(const FString& Parameters)
 			0.5f);
 	
 	// GC
-	DUMMY_TEST_GC
+	ComponentUtilities::DestroyDummyWorld(DummyWorld);
 	
 	return true;
 }

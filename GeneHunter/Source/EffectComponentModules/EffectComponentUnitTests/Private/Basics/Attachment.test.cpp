@@ -5,7 +5,7 @@
 #pragma once
 
 #include "ComponentUtilities.h"
-#include "MathUtil.h"
+#include "Misc/AutomationTest.h"
 #include "CombatStatUnitTestUtilities.h"
 #include "BerserkerGene.h"
 

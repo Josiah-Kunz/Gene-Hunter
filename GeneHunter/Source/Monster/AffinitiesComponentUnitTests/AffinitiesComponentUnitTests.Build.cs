@@ -13,6 +13,7 @@ public class AffinitiesComponentUnitTests : ModuleRules{
 		  , "EffectComponent"			// for, e.g., DoublePoints unit test
 		  , "AffinitiesComponent"		// b/c these are the thing we're testing
 		  , "GHLibraries"				// to create dummy worlds
+		  , "UnrealEd", "NetcodeUnitTest"		    // to get dummy unit test UWorlds
 		});
 	}
 }

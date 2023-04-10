@@ -4,6 +4,7 @@
 #include "ComponentUtilities.h"
 #include "CombatStat.h"
 #include "CombatStatsComponent.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FRandomizeStats,
                                  "__GeneHunter.Effects.Outlets.UCombatStatsComponent.RandomizeStats",
@@ -52,7 +53,7 @@ bool FRandomizeStats::RunTest(const FString& Parameters)
 	}
 	
 	// GC
-	DUMMY_TEST_GC
+	ComponentUtilities::DestroyDummyWorld(DummyWorld);
 	
 	return true;
 }

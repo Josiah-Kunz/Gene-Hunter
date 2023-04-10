@@ -2,6 +2,7 @@
 
 #include "CombatStatUnitTestUtilities.h"
 #include "ComponentUtilities.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FExp_Scaling,
 	"__GeneHunter.Exp.Scaling",

@@ -2,7 +2,8 @@
 
 #include "ComponentUtilities.h"
 #include "MathUtil.h"
-#include "CombatStatUnitTestUtilities.h" 
+#include "CombatStatUnitTestUtilities.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsComponent_Utilities_BaseStatTotal,
 	"__GeneHunter.FStat.StatsComponent.Utilities.Base Stat Total",

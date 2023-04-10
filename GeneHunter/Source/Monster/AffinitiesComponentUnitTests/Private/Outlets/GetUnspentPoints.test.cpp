@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "DoublePoints_UNITTEST.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGetUnspentPoints,
                                  "__GeneHunter.Effects.Outlets.UAffinitiesComponent.GetUnspentPoints",
@@ -32,7 +33,7 @@ bool FGetUnspentPoints::RunTest(const FString& Parameters)
 			0.5f);
 
 	// GC
-	DUMMY_TEST_GC
+	ComponentUtilities::DestroyDummyWorld(DummyWorld);
 	
 	return true;
 }

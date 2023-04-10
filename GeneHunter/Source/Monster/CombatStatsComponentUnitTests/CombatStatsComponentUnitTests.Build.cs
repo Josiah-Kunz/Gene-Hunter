@@ -13,7 +13,8 @@ public class CombatStatsComponentUnitTests : ModuleRules{
 		  , "CombatStatsComponent"	// for the type that we're testing
 		  , "LevelComponent"		// goes with StatsComponent
 		  , "GHLibraries",			// to create dummy worlds
-		    "EffectComponent"		// we'll be testing Outlets too 
+		    "EffectComponent",		// we'll be testing Outlets too 
+		    "UnrealEd", "NetcodeUnitTest",		// to get dummy unit test UWorlds
 		});
 	}
 }

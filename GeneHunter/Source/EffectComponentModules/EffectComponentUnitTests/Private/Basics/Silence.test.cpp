@@ -2,6 +2,7 @@
 
 #include "ComponentUtilities.h"
 #include "Priority_Mid_ZeroPoints_UNITTEST.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FSilence,
                                  "__GeneHunter.Effects.Basics.Silence",
@@ -46,7 +47,7 @@ bool FSilence::RunTest(const FString& Parameters)
 			0.5f);
 
 	// GC
-	DUMMY_TEST_GC
+	ComponentUtilities::DestroyDummyWorld(DummyWorld);
 	
 	return true;
 }

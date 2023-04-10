@@ -2,6 +2,7 @@
 
 #include "ComponentUtilities.h"
 #include "MinLevel_UNITTEST.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGetMinLevel,
                                  "__GeneHunter.Effects.Outlets.ULevelComponent.GetMinLevel",
@@ -47,7 +48,7 @@ bool FGetMinLevel::RunTest(const FString& Parameters)
 			0.5f);
 
 	// GC
-	DUMMY_TEST_GC
+	ComponentUtilities::DestroyDummyWorld(DummyWorld);
 	
 	return true;
 }

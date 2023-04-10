@@ -2,7 +2,11 @@
 #pragma once
 
 #include "ComponentUtilities.h"
+#include "Editor.h"
+#include "Editor/EditorEngine.h"
+#include "GameFramework/Actor.h"
 #include "Regrowth.h"
+#include "Misc/AutomationTest.h"
 
 /// Need to declare first!
 
@@ -12,14 +16,16 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Components_Regrowth,
 
 #pragma region Latent test
 
-DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FEffectComponent_Components_Regrowth_Latent,
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FEffectComponent_Components_Regrowth_Latent,
 	AActor*, DummyActor,
-	bool, bInitialized
+	bool, bInitialized,
+	UWorld*, DummyWorld
 	);
 
 bool FEffectComponent_Components_Regrowth_Latent::Update()
 {
 
+	// Initialize
 	if (!bInitialized)
 	{
 		
@@ -39,12 +45,15 @@ bool FEffectComponent_Components_Regrowth_Latent::Update()
 		Stats->ModifyStat(EStatEnum::Health, -Damage, EStatValueType::Current, EModificationMode::AddAbsolute);
 		
 	}
-	DummyActor->GetWorld()->Tick() // TODO HEREEEE
+
+	// Tick the world
+	//DummyActor->GetWorld()->Tick(LEVELTICK_TimeOnly, FApp::GetDeltaTime());
+	DummyWorld->Tick(LEVELTICK_TimeOnly, 0.1f);
 
 	// Wait for effect to be done
 	URegrowth* Regrowth = nullptr;
 	SEARCH_FOR_COMPONENT(URegrowth, Regrowth, DummyActor);
-	if ( Regrowth == nullptr )
+	if ( Regrowth == nullptr || true)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Regrowth is nullptr"));
 		/*
@@ -106,11 +115,14 @@ bool UEffectComponent_Components_Regrowth::RunTest(const FString& Parameters)
 {
 
 	// Initialize world
-	DUMMY_TEST_WORLD_AND_ACTOR();
+	UWorld* DummyWorld;
+	AActor* DummyActor; 
+	ComponentUtilities::DummyTestWorldAndActor(DummyWorld, DummyActor); 
+	//GEditor->GetEditorWorldContext().SetCurrentWorld(DummyWorld);
 	
 	// Run latent test
 	bool bInitialized = false;
-	ADD_LATENT_AUTOMATION_COMMAND(FEffectComponent_Components_Regrowth_Latent(DummyActor, bInitialized));
+	ADD_LATENT_AUTOMATION_COMMAND(FEffectComponent_Components_Regrowth_Latent(DummyActor, bInitialized, DummyWorld)); 
 	
 	// Just wait for latent tests
 	return true;

@@ -5,6 +5,7 @@
 #include "ComponentUtilities.h"
 #include "TypesUnitTests/Private/TypeUnitTestUtilities.h"
 #include "CXPBasedOnType_UNITTEST.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGetCXP,
                                  "__GeneHunter.Effects.Outlets.ULevelComponent.GetCXP",
@@ -68,7 +69,7 @@ bool FGetCXP::RunTest(const FString& Parameters)
 			0.5f);
 
 	// GC
-	DUMMY_TEST_GC
+	ComponentUtilities::DestroyDummyWorld(DummyWorld);
 	
 	return true;
 }

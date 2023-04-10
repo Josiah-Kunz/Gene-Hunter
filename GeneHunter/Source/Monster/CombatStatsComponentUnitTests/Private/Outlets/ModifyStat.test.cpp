@@ -4,6 +4,7 @@
 #include "ComponentUtilities.h"
 #include "CombatStat.h"
 #include "CombatStatsComponent.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FModifyStat,
                                  "__GeneHunter.Effects.Outlets.UCombatStatsComponent.ModifyStat",
@@ -49,7 +50,7 @@ bool FModifyStat::RunTest(const FString& Parameters)
 			0.5f);
 	
 	// GC
-	DUMMY_TEST_GC
+	ComponentUtilities::DestroyDummyWorld(DummyWorld);
 	
 	return true;
 }

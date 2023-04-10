@@ -4,6 +4,7 @@
 #include "ComponentUtilities.h"
 #include "CombatStatUnitTestUtilities.h"
 #include "Invulnerable.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Components_Invulnerable,
 	"__GeneHunter.Effects.Component Tests.Invulnerable",

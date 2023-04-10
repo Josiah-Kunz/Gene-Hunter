@@ -39,7 +39,10 @@ void UHoTComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 		Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 		// Do we need to modify again?
-		if (RemainingTime <= NextModTime)
+		// Note: while loop prevents losing ticks from system performance. E.g., what if
+		// components ticked once every 5 seconds? we'd only tick once with an "if", but still get all of them with a
+		// "while".
+		while (RemainingTime <= NextModTime)
 		{
 			NextModTime -= GetTickRate();
 			StatsComponent->ModifyStat(EStatEnum::Health, GetAmount(), EStatValueType::Current,

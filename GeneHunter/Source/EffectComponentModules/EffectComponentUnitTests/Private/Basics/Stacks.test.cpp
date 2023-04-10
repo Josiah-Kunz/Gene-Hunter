@@ -10,6 +10,7 @@
 #include "ComponentUtilities.h"
 #include "Stacks_Multiple_UNITTEST.h"
 #include "Stacks_Single_UNITTEST.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Components_Stacks,
                                  "__GeneHunter.Effects.Basics.Stacks",

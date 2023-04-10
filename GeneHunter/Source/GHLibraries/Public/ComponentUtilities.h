@@ -1,13 +1,36 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Net/NUTUtilNet.h"
 
 class ComponentUtilities
 {
 
 public:
-	
+
 	/**
+	 * For unit testing. Creates a:
+	 *	- UWorld* called DummyWorld
+	 *	- AActor* called DummyActor
+	 *
+	 *	Make sure to do ComponentUtilities::DestroyDummyWorld(DummyWorld); for garbage collection after you're done!
+	 */
+	static void DummyTestWorldAndActor(UWorld*& DummyWorld, AActor*& DummyActor)
+	{
+		DummyWorld = NUTNet::CreateUnitTestWorld(true); 
+		DummyActor = DummyWorld->SpawnActor(AActor::StaticClass());
+	};
+
+	/**
+	 * Destroys the dummy world
+	 */
+	static void DestroyDummyWorld(UWorld* World)
+	{
+		NUTNet::MarkUnitTestWorldForCleanup(World, true); \
+		NUTNet::CleanupUnitTestWorlds();
+	}
+	
+	/*
 	 * Note: The following must be macros to be generic enough. Otherwise, we'd have to #include all component.h for the
 	 *	functions to work.
 	 */
@@ -70,30 +93,14 @@ public:
  * For unit testing. Creates a:
  *	- UWorld* called DummyWorld
  *	- AActor* called DummyActor
- *
- *	Make sure to do DUMMY_TEST_GC for garbage collection after you're done!
- */
-#define DUMMY_TEST_WORLD_AND_ACTOR() \
-	UWorld* DummyWorld = UWorld::CreateWorld(EWorldType::Game, false); \
-	AActor* DummyActor = DummyWorld->SpawnActor(AActor::StaticClass()); 
-
-/**
- * For unit testing. Creates a:
- *	- UWorld* called DummyWorld
- *	- AActor* called DummyActor
  *	- ComponentType* called ComponentName
  *
- *	Make sure to do DUMMY_TEST_GC for garbage collection after you're done!
+ *	Make sure to do ComponentUtilities::DestroyDummyWorld(DummyWorld); for garbage collection after you're done!
  */
 #define DUMMY_TEST_COMPONENT(ComponentType, ComponentName) \
-	DUMMY_TEST_WORLD_AND_ACTOR(); \
+	UWorld* DummyWorld; AActor* DummyActor; \
+	ComponentUtilities::DummyTestWorldAndActor(DummyWorld, DummyActor); \
 	ComponentType * ComponentName = NewObject<ComponentType>(DummyActor); \
 	ComponentName ->RegisterComponent();
-
-/**
- * Destroys the dummy world
- */
-#define DUMMY_TEST_GC \
-	DummyWorld->DestroyWorld(false);
 	
 };

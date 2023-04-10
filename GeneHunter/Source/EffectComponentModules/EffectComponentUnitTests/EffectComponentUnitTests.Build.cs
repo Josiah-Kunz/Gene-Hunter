@@ -17,6 +17,8 @@ public class EffectComponentUnitTests : ModuleRules{
 		  , "GHLibraries"				// for the REQUIRE_COMPONENT macro
 		  , "CombatStatsComponentUnitTests"   // for stats' unit tests
 		  , "LevelComponent",			// goes with StatsComponent
+		    "UnrealEd",					// for UWorld stuff
+			"NetcodeUnitTest",			// to get dummy unit test UWorlds
 		    
 		// Actual UEffects need tested, too!
 		"BuffComponent",

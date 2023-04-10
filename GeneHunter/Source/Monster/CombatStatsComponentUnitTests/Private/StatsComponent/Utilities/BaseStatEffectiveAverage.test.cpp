@@ -3,6 +3,7 @@
 #include "MathUtil.h"
 #include "CombatStatUnitTestUtilities.h"
 #include "ComponentUtilities.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsComponent_Utilities_BaseStatEffectiveAverage,
 	"__GeneHunter.FStat.StatsComponent.Utilities.Base Stat Effective Average",

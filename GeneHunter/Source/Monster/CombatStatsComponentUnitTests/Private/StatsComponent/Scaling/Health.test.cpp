@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-#include "CombatStatUnitTestUtilities.h" 
+#include "CombatStatUnitTestUtilities.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_StatsComponent_Scaling_Health,
 	"__GeneHunter.FStat.StatsComponent.Scaling.Health",

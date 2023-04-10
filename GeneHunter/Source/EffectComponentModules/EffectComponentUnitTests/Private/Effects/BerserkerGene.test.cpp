@@ -5,6 +5,7 @@
 #include "ComponentUtilities.h"
 #include "CombatStatUnitTestUtilities.h"
 #include "BerserkerGene.h"
+#include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Components_BerserkerGene,
 	"__GeneHunter.Effects.Component Tests.Berserker Gene",
