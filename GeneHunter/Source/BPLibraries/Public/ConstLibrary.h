@@ -14,7 +14,7 @@ class BPLIBRARIES_API UConstLibrary : public UBlueprintFunctionLibrary
 
 public:
 
-	static constexpr int MaxIterations = 10000;
+	static constexpr uint16 MaxIterations = 10000;
 	inline static const FString LineSeparator = "=================================";
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)

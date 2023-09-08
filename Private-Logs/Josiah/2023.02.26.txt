@@ -1,0 +1,7 @@
+Unit testing sucks, but I've caught a few bugs that I wouldn't have otherwise, 
+so it's worth it.
+
+I'll be stopping soon to help my wife with her PhD work (also using video games).
+
+Next is probably "the ability to deal (elemental) damage", so I gotta plan that 
+out in detail before I dive in.

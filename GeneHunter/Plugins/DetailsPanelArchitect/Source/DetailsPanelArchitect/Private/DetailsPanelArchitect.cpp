@@ -4,43 +4,39 @@
 
 #include "AffinitiesComponent.h"
 #include "AffinitiesComponentDrawer.h"
-#include "StatsComponent.h"
-#include "StatsComponentDrawer.h"
+#include "LevelComponentDrawer.h"
+#include "CombatStatsComponent.h"
+#include "CombatStatsComponentDrawer.h"
 
 #define LOCTEXT_NAMESPACE "FDetailsPanelArchitectModule"
 
+#define REGISTER_CLASS(NonUName) \
+	PropertyEdModule.RegisterCustomClassLayout( \
+		U##NonUName##::StaticClass()->GetFName(), \
+		FOnGetDetailCustomizationInstance::CreateStatic( I##NonUName##Drawer::MakeInstance) \
+	);
+
+#define UNREGISTER_CLASS(NonUName) \
+	PropertyEdModule.UnregisterCustomClassLayout( U##NonUName##::StaticClass()->GetFName());
+
+
 void FDetailsPanelArchitectModule::StartupModule()
 {
-	
-	// Say hello
-	UE_LOG(LogTemp, Display, TEXT("DetailsPanelArchitect loaded. Hello! =)"))
-
-	// Get module
 	FPropertyEditorModule& PropertyEdModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
-	
-	// Register the specific custom class layouts (based on their names, e.g., StatsComponent and StatsComponentDrawer)
-	PropertyEdModule.RegisterCustomClassLayout(
-		UStatsComponent::StaticClass()->GetFName(),
-		FOnGetDetailCustomizationInstance::CreateStatic(StatsComponentDrawer::MakeInstance)
-	);
-	PropertyEdModule.RegisterCustomClassLayout(
-		UAffinitiesComponent::StaticClass()->GetFName(),
-		FOnGetDetailCustomizationInstance::CreateStatic(AffinitiesComponentDrawer::MakeInstance)
-	);
+
+	REGISTER_CLASS(AffinitiesComponent)
+	REGISTER_CLASS(CombatStatsComponent)
+	REGISTER_CLASS(LevelComponent)
 }
 
-void FDetailsPanelArchitectModule::ShutdownModule()
-{
+void FDetailsPanelArchitectModule::ShutdownModule() \
+{ 
+	UE_LOG(LogTemp, Display, TEXT("DetailsPanelArchitect unloaded. Goodbye =(")) 
+	FPropertyEditorModule& PropertyEdModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor"); 
 
-	// Say bye
-	UE_LOG(LogTemp, Display, TEXT("DetailsPanelArchitect unloaded. Goodbye =("))
-
-	// Get module
-	FPropertyEditorModule& PropertyEdModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
-	
-	// Unregister
-	PropertyEdModule.UnregisterCustomClassLayout(UStatsComponent::StaticClass()->GetFName());
-	PropertyEdModule.UnregisterCustomClassLayout(UAffinitiesComponent::StaticClass()->GetFName());
+	UNREGISTER_CLASS(AffinitiesComponent)
+	UNREGISTER_CLASS(CombatStatsComponent)
+	UNREGISTER_CLASS(LevelComponent)
 }
 
 #undef LOCTEXT_NAMESPACE

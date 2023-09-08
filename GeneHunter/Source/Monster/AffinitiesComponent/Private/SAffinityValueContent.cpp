@@ -2,8 +2,6 @@
 
 
 #include "SAffinityValueContent.h"
-
-#include "EditorStyleSet.h"
 #include "SlateOptMacros.h"
 #include "Widgets/Images/SImage.h"
 
@@ -41,12 +39,12 @@ TSharedPtr<SHorizontalBox> SAffinityValueContent::AffinityValueSlate(const FArgu
 		.Padding(InArgs._CirclePadding)
 		[
 			SNew(SButton)
-			.ButtonStyle( FEditorStyle::Get(), "NoBorder" )
+			.ButtonStyle( FAppStyle::Get(), "NoBorder" )
 			.OnClicked_Lambda(InArgs._OnMinusClicked.Get())
 			.ToolTipText(InArgs._MinusToolTipText)
 			[
 				SNew(SImage)
-				.Image( FEditorStyle::GetBrush(TEXT("Icons.Minus")))
+				.Image( FAppStyle::GetBrush(TEXT("Icons.Minus")))
 				.DesiredSizeOverride(FVector2D{InArgs._PlusMinusSize, InArgs._PlusMinusSize})
 			]
 			.HAlign(HAlign_Fill)
@@ -57,14 +55,13 @@ TSharedPtr<SHorizontalBox> SAffinityValueContent::AffinityValueSlate(const FArgu
 	// Circles
 	for(int i=0; i<InArgs._Affinity.GetMaxPoints(); i++)
 	{
-		const int CurrentPoints = InArgs._Affinity.GetCurrentPoints();
+		const uint8 CurrentPoints = InArgs._Affinity.GetCurrentPoints();
 		const bool bFilled = i < CurrentPoints;
 		Ret->AddSlot()[
 
 			SNew(SButton)
-			.ButtonStyle( FEditorStyle::Get(), "NoBorder" )
+			.ButtonStyle( FAppStyle::Get(), "NoBorder" )
 			.ToolTipText(InArgs._CircleToolTipText)
-			//.OnClicked_Lambda(InArgs._OnCircleClicked.Get())
 			.OnClicked_Lambda([InArgs, i, CurrentPoints]()
 			{
 				return InArgs._OnCircleClicked.Get().operator()(i, CurrentPoints);
@@ -74,9 +71,10 @@ TSharedPtr<SHorizontalBox> SAffinityValueContent::AffinityValueSlate(const FArgu
 
 				+SOverlay::Slot()[
 					SNew(SImage)
-					.Image(FAppStyle::Get().GetBrush("TutorialLaunch.Circle"))
+					//.Image(FAppStyle::Get().GetBrush("TutorialLaunch.Circle"))
+					.Image(FAppStyle::Get().GetBrush("Sequencer.KeyCircle"))
 					.DesiredSizeOverride(FVector2D{InArgs._CircleSizeEmpty, InArgs._CircleSizeEmpty})
-					.ColorAndOpacity(FLinearColor{0.2f, 0.2f, 0.2f})
+					.ColorAndOpacity(FLinearColor{0.05f, 0.05f, 0.05f})
 					]
 
 				+SOverlay::Slot()[
@@ -100,12 +98,12 @@ TSharedPtr<SHorizontalBox> SAffinityValueContent::AffinityValueSlate(const FArgu
 	// Plus
 	Ret->AddSlot()[
 		SNew(SButton)
-		.ButtonStyle( FEditorStyle::Get(), "NoBorder" )
+		.ButtonStyle( FAppStyle::Get(), "NoBorder" )
 		.OnClicked_Lambda(InArgs._OnPlusClicked.Get())
 		.ToolTipText(InArgs._PlusToolTipText)
 		[
 			SNew(SImage)
-			.Image( FEditorStyle::GetBrush(TEXT("Icons.Plus")))
+			.Image( FAppStyle::GetBrush(TEXT("Icons.Plus")))
 			.DesiredSizeOverride(FVector2D{InArgs._PlusMinusSize, InArgs._PlusMinusSize})
 		]
 		.HAlign(HAlign_Fill)

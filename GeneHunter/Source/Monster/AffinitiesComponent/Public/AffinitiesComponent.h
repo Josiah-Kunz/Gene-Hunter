@@ -2,16 +2,21 @@
 
 // Engine
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
 
-// Affinities
+// Monster utilities
 #include "Affinity.h"
+#include "EffectableComponent.h"
+#include "Outlets/GetUnspentPointsOutlet.h"
+#include "Outlets/SetUnspentPointsOutlet.h"
 
 // .gen
 #include "AffinitiesComponent.generated.h"
 
+/**
+ * A class for storing Types and points, but *not* for calculating Type advantages or doing something with those points.
+ */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
-class AFFINITIESCOMPONENT_API UAffinitiesComponent : public UActorComponent
+class AFFINITIESCOMPONENT_API UAffinitiesComponent : public UEffectableComponent
 {
 #pragma region Standard stuff
 	
@@ -33,13 +38,58 @@ public:
 
 #pragma endregion
 
+private:
+	
 	/**
 	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any
 	 * new Monster so that affinities can be customized from the get-go (so the player has agency which makes for more
 	 * exciting gameplay).
 	 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Affinities")
-	int UnspentPoints = 1;
+	UPROPERTY(VisibleDefaultsOnly, Category = "Level")
+	uint8 UnspentPoints = 1;
+
+public:
+
+	/**
+	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any
+	 * new Monster so that affinities can be customized from the get-go (so the player has agency which makes for more
+	 * exciting gameplay).
+	 */
+	uint8 GetUnspentPoints();
+
+	/**
+	 * Before parameters:
+	 *  - [const uint8] the original points that would have been returned
+	 *  - [uint8&] the newly modified returned points
+	 *
+	 *  After parameters:
+	 *  - same but returned points is const uint8
+	 */
+	FGetUnspentPointsOutlet GetUnspentPointsOutlet;
+
+	/**
+	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any
+	 * new Monster so that affinities can be customized from the get-go (so the player has agency which makes for more
+	 * exciting gameplay).
+	 */
+	void SetUnspentPoints(uint8 NewPoints);
+
+	/**
+	 * Before parameters:
+	 *  - [const uint8] the original points that would have been returned
+	 *  - [uint8&] the newly modified returned points
+	 *
+	 *  After parameters:
+	 *  - same but returned points is const uint8
+	 */
+	FSetUnspentPointsOutlet SetUnspentPointsOutlet;
+
+	/**
+	 * These points can be allocated in-game by the player into affinities. By default, the player has 1 point for any
+	 * new Monster so that affinities can be customized from the get-go (so the player has agency which makes for more
+	 * exciting gameplay).
+	 */
+	void AddUnspentPoints(const uint8 AddedPoints = 1);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Affinities")
 	TArray<FAffinity> Affinities;
@@ -56,26 +106,32 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Affinities")
 	void GetTypes(TArray<UType*>& Types);
+
+	/**
+	 * Returns true if the given Type has points allocated.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Affinities")
+	bool HasPointsAllocatedIn(const UType* TargetType);
 	
 	/**
 	 * Retrieves the number of Types based on the current point allocation.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Affinities")
-	int GetNumTypes();
+	uint8 GetNumTypes();
 
 	/**
 	 * Gets the number of Types this Monster may have. For example, if MaxUsableAffinities is 2, this Monster may be
 	 * dual-typed.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Affinities")
-	int GetMaxUsableAffinities() const;
+	uint8 GetMaxUsableAffinities() const;
 
 	/**
 	 * Sets the number of Types this Monster may have. For example, if MaxUsableAffinities is 2, this Monster may be
 	 * dual-typed.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Affinities")
-	void SetMaxUsableAffinities(const int NewMax);
+	void SetMaxUsableAffinities(const uint8 NewMax);
 
 private:
 
@@ -84,7 +140,7 @@ private:
 	 * dual-typed.
 	 */
 	UPROPERTY(VisibleDefaultsOnly, Category = "Affinities")
-	int MaxUsableAffinities = 2;
+	uint8 MaxUsableAffinities = 2;
 	
 	/**
 	 * If the actual number of affinities with points exceeds MaxUsableAffinities, these excessive affinities will

@@ -1,0 +1,199 @@
+\input{../standalone}
+\input{outlet-table-defs}
+
+%--------------------------
+
+\begin{OutletTable}{UAffinitiesComponent}
+
+	\OutletCell{title=GetUnspentPoints, 
+				beforeParams={\code{const uint8 OriginalPoints},\\
+							\code{uint8\& ReturnedPoints}},
+				afterParams={\code{const uint8 OriginalPoints},\\
+							\code{const uint8 ReturnedPoints}}
+				}
+				\\
+				
+	\OutletCell{title=SetUnspentPoints, 
+				beforeParams={\code{const uint8 OriginalPoints},\\
+							\code{const uint8 InputPoints},\\
+							\code{uint8\& SetPoints}},
+				afterParams={\code{const uint8 OriginalPoints},\\
+							\code{const uint8 InputPoints},\\
+							\code{const uint8 SetPoints}}
+				}
+				\\
+	
+\end{OutletTable}
+
+%--------------------------
+
+\gap{}
+
+\begin{OutletTable}{ULevelComponent}
+
+	\OutletCell{title=GetBaseExpYield, 
+				beforeParams={\code{const float OriginalYield},\\
+							\code{float\& ReturnedYield}},
+				afterParams={\code{const float OriginalYield},\\
+							\code{const float ReturnedYield}}
+				}
+				\\
+				
+	% ----------------------------------------
+				
+	\OutletCell{title=GetCXP, 
+				beforeParams={\code{const uint32 OriginalCXP},\\ 
+							\code{int32\& ReturnedCXP}},
+				beforeNote={\code{ReturnedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.},
+				afterParams={\code{const uint32 OriginalCXP}\\ 
+							\code{const int32 ReturnedCXP}},
+				afterNote={\code{ReturnedCXP} is \code{const int32} instead of \code{const uint32} for Blueprint compatability.}
+				}	
+				\\			
+
+	% ----------------------------------------				
+				
+	\OutletCell{title=GetExpYield, 
+				beforeParams={\code{const float OriginalYield},\\ 
+							\code{float\& ReturnedYield},\\
+							\code{const uint16 DefeatedLevel},\\
+							\code{const uint16 VictoriousLevel}},
+				beforeNote={``Defeated'' and ``Victorious'' levels are provided for flexibility (e.g., in case you want to yield exp differently based on level difference, although technically you could always back-calculate the level difference based on the equation and \code{OriginalYield}).},
+				afterParams={\code{const float OriginalYied},\\ 
+							\code{const float ReturnedYield},\\
+							\code{const uint16 DefeatedLevel},\\
+							\code{const uint16 VictoriousLevel}},
+				afterNote={``Defeated'' and ``Victorious'' levels are provided for symmetry with respect to the \code{Before} delegate (since \code{ReturnedValue} is already calculated, I can't think of why you would need them, but you never know!).}
+				}
+				\\
+			
+	% ----------------------------------------			
+				
+	\OutletCell{title=GetMaxLevel, 
+				beforeParams={\code{const uint16 DefaultMax},\\ 
+							\code{int32\& AttemptedMax}},
+				beforeNote={\code{DefaultMax} is defined in the code. It should normally be 100, but may change for certain subclasses (e.g., a \code{UBossLevelComponent} may have a max of 200 instead). \\ 
+				\code{AttemptedMax} is \code{int32\&} instead of \code{uint16\&} for Blueprint compatability.
+				},
+				afterParams={\code{const uint16 DefaultMax}\\ 
+							\code{const int32 ReturnedMax}},
+				}
+				\\
+
+	% ----------------------------------------
+
+	\OutletCell{title=GetMinLevel, 
+				beforeParams={\code{const uint16 DefaultMin},\\ 
+							\code{int32\& AttemptedMin}},
+				beforeNote={\code{DefaultMin} is defined in the code. It should normally be 1, but may change for certain subclasses (e.g., a \code{UEggLevelComponent} may have a min of 0 instead for whatever reason).\\
+				\code{AttemptedMin} is \code{int32\&} instead of \code{uint16\&} for Blueprint compatability.},
+				afterParams={\code{const uint16 DefaultMin}\\ 
+							\code{const int32 ReturnedMin}},
+				afterNote={\code{ReturnedCXP} is \code{const int32} instead of \code{const uint32} for Blueprint compatability.}
+				}
+				\\
+		
+	% ----------------------------------------		
+				
+	\OutletCell{title=GetBaseExpYield, 
+				beforeParams={\code{const float OriginalYield},\\
+							\code{float\& ReturnedYield}},
+				afterParams={\code{const float OriginalYield},\\
+							\code{const float ReturnedYield}}
+				}
+				\\
+		
+	% ----------------------------------------		
+				
+	\OutletCell{title=SetBaseExpYield, 
+				beforeParams={\code{const float OldYield},\\
+							\code{const float InputYield},\\ 
+							\code{float\& AttemptedYield}},
+				afterParams={\code{const float OldYield}\\
+							\code{const float InputYield},\\ 
+							\code{const float NewYield}},
+				afterNote={$\triangleright$ \code{OldYield} is the yield prior to calling \code{SetBaseExpYield},\\
+							$\triangleright$ \code{InputYield} is the original, unmodified input to \code{SetBaseExpYield},\\
+							$\triangleright$ \code{AttemptedYield} is the modified value that will be used to set the base exp yield.
+							}
+				}
+				\\
+		
+	% ----------------------------------------		
+						
+	\OutletCell{title=SetCXP, 
+				beforeParams={\code{const uint32 OldCXP},\\ 
+							\code{const int32 InputCXP},\\
+							\code{int32\& AttemptedCXP}},
+				beforeNote={\code{AttemptedCXP} is \code{int32\&} instead of \code{uint32\&} for Blueprint compatability.},
+				afterParams={\code{const uint32 OldCXP}\\ 
+							\code{const int32 InputCXP},\\
+							\code{const uint32 NewCXP}},
+				afterNote={\code{UStatsComponent} subscribes to this in order to change stats on level change.\\
+							$\triangleright$ \code{OldCXP} is the cumulatie experience points prior to calling \code{SetCXP},\\
+							$\triangleright$ \code{InputCXP} is the original, unmodified input to \code{SetCXP},\\
+							$\triangleright$ \code{AttemptedCXP} is the modified value that will be used to set the cumulative experience points.		
+					}
+				}
+				\\
+		
+\end{OutletTable}
+
+%--------------------------
+
+\gap{}
+
+\begin{OutletTable}{UStatsComponent}
+
+	% ----------------------------------------		
+						
+	\OutletCell{title=ModifyStat, 
+				beforeParams={\code{const EStatEnum TargetStat},\\
+							\code{const EStatValueType ValueType},\\
+							\code{const EModificationMode Mode},\\
+							\code{const float OriginalValue},\\
+							\code{float\& AttemptedValue}
+							},
+				afterParams={\code{const EStatEnum TargetStat},\\
+							\code{const EStatValueType ValueType},\\
+							\code{const EModificationMode Mode},\\
+							\code{const float OriginalValue},\\
+							\code{const float NewValue}
+							},
+				afterNote={All ``ModifyStat'' functions from \code{UStatsComponent} (such as \code{ModifyStatsUniformly} or \code{RandomizeStats}) go through \code{ModifyStatInternal}, which calls this \code{Outlet}.}
+				}
+				\\
+
+	% ----------------------------------------		
+						
+	\OutletCell{title=RandomizeStats, 
+				beforeParams={\code{const EStatEnum TargetStat},\\
+							\code{const FStatRandParams OriginalParams},\\
+							\code{FStatRandParams\&  ParamsToBeUsed}},
+				afterParams={\code{const EStatEnum TargetStat},\\
+							\code{const FStatRandParams OriginalParams},\\
+							\code{const FStatRandParams UsedParams}},
+				afterNote={The \code{EStatEnum} is not the acutal \code{FStat}. To get the \code{FStat} (such as \code{FHealth}), use \code{UStatsComponent::GetStat(EStatEnum)}}
+				}
+				\\
+		
+	% ----------------------------------------		
+						
+	\OutletCell{title=RecalculateStats, 
+				beforeParams={\code{const EStatEnum TargetStat},\\
+							\code{const bool bResetCurrent},\\
+							\code{const float OriginalCurrent},\\
+							\code{const float OriginalPermanent}},
+				afterParams={\code{const EStatEnum TargetStat},\\
+							\code{const bool bResetCurrent},\\
+							\code{const float OriginalCurrent},\\
+							\code{const float OriginalPermanent}},
+				}
+				\\
+			
+		
+	
+\end{OutletTable}
+
+
+\postamble{}

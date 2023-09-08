@@ -1,0 +1,107 @@
+\input{../standalone}
+
+\newcommand{\TreeTitle}[1]{\textbf{\ul{#1}}}
+
+\newcommand{\TreeNote}[1]{\hspace*{-0.5em}{\fontsize{7pt}{0pt} \selectfont{\color{green!45!black} \drarrow{}#1}}\hspace*{-0.25em}}
+
+\newcommand{\TreeEx}[1]{\hspace*{-0.5em}{\fontsize{7pt}{0pt} \selectfont{\color{blue!50!black} \drarrow{}ex: #1\hspace*{-0.25em}}}}
+
+% auxiliary nodes without node label
+\forestset{
+  empty nodes/.style={
+    delay={where content={}{shape=coordinate,for parent={for children={anchor=north}}}{}}}
+}
+
+The base classes inherit as:
+
+\vspace*{1em}
+
+\begin{center}
+\fbox{\small \begin{forest}
+before typesetting nodes={for tree={
+	draw,
+	rounded corners,
+	thick,
+	align=left,
+	s sep=0.25em,
+	parent anchor=south, edge path={\noexpand\path [\forestoption{edge}] (!u.parent anchor) -- ++(0,-5pt) -| (.child anchor)\forestoption{edge label};},
+	empty nodes
+ 	}}
+[\TreeTitle{Effect}
+	\\\TreeNote{base class}
+	\\\TreeNote{stackable}
+	\\\TreeNote{silenceable}
+		[\TreeTitle{Aura}
+			\\\TreeNote{visible}
+			\\\TreeNote{not timed}
+			[\TreeTitle{Negative}
+				\\\TreeNote{bad Aura}
+				\\\TreeNote{purgeable}
+				\\\TreeEx{0.5x Healing}
+			]
+			[\TreeTitle{Positive}
+				\\\TreeNote{good Aura}
+				\\\TreeNote{purgeable}
+				\\\TreeEx{2x PhA}
+			]
+			[\TreeTitle{Zone}
+				\\\TreeNote{area}
+				\\\TreeNote{good or bad}
+				\\\TreeNote{non-purgeable}
+				\\\TreeEx{Miasma}
+			]
+		]
+		[\TreeTitle{Intrinsic}
+			\\\TreeNote{non-visible}
+			\\\TreeNote{non-purgeable}
+			[\TreeTitle{Mutation}
+				\\\TreeNote{random ability}
+				\\\TreeNote{based on Species}
+				\\\TreeEx{Berserker}
+			]
+			[\TreeTitle{Talent}
+				\\\TreeEx{Nat. Sel.}
+			]
+			[\TreeTitle{Trait}
+				\\\TreeNote{based on Type}
+				\\\TreeEx{Burrow}
+			]
+		] 
+		[\TreeTitle{Timed}
+			\\\TreeNote{visible}
+			\\\TreeNote{purgeable}
+			\\\TreeNote{set duration}
+			[\TreeTitle{Buff}
+				\\\TreeNote{good Timed}
+				\\\TreeEx{Adrenaline}
+				[\TreeTitle{HoT}
+					\\\TreeNote{\ul{h}eal \ul{o}ver \ul{t}ime}
+					\\\TreeEx{Regrowth}
+				]
+			]
+			[\TreeTitle{Debuff}
+				\\\TreeNote{bad Timed}
+				\\\TreeEx{Exhausted}
+				[\TreeTitle{DoT}
+					\\\TreeNote{\ul{d}amage \ul{o}ver \ul{t}ime}
+					\\\TreeEx{Cytotoxin}
+				]
+			]
+		]
+	]
+\end{forest}}
+\end{center}
+
+\vspace*{1em}
+
+Some notes:
+
+\begin{itemize}
+	\item{Only the base names have been used. That is, the actual names may be\\ \code{UTimedEffectComponent} instead of simply ``Timed''.}
+	\item{``Purgeable'' means it is possible to reduce the stacks of the \code{UEffectComponent} down to zero (detachment of \code{UEffectComponent}).}
+	\item{All \code{UEffectComponent}s are ``silenceable'', meaning their effects can be nullified (but not detached or reduced in stacks).}
+	\item{``Persistent'' (meaning that the \code{UEffectComponent} is not removed upon switching out) should be set on an effect-by-effect basis and not set by the inherited class. For example, some \code{UNegativeAuraComponent}s (such as Pok\'{e}mon's Paralysis) may persist upon switching out and others (such as Pok\'{e}mon's Confusion) may not.}
+\end{itemize}
+
+
+\postamble{}

@@ -15,13 +15,13 @@ public:
 	/**
 	 * If we're building a .tex file and a multicol goes over this, we'll truncate the column with "...".
 	 */
-	constexpr static int MaxLaTeXLines = 38;
+	constexpr static uint16 MaxLaTeXLines = 38;
 
 	/**
 	 * Gets the net interaction between an attack (multi-Type or coverage; based on Mode) and a (multi-Type) defense.
 	 */
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
-	static void PrintStatistics(const int NumAttackers, const int NumDefenders, const FFloatRange Range,
+	static void PrintStatistics(const int32 NumAttackers, const int32 NumDefenders, const FFloatRange Range,
 		const EAttackModifierMode Mode, const bool bAtk, const bool bPrintToConsole, const bool bPrintToFile,
 		UPARAM(DisplayName="Format LaTeX") const bool bPrintToFileLaTeX, UPARAM(ref) TArray<UType*>& Exclude,
 		const FString PrintDirectory = "Content/Editor/Type-Advantage/Statistics-Output/");
@@ -30,7 +30,7 @@ public:
 	 * Lazily gets all Type combinations. If you care about performance, take a look at how AnalyzeAll handles the problem.
 	 * For example, for NumTypes = 2, this returns {{A, B}, {A, C}, {A, D}, ... }.
 	 */
-	static void GetAllTypeCombinations(const TArray<UType*>& Types, const int NumTypes,
+	static void GetAllTypeCombinations(const TArray<UType*>& Types, const uint8 NumTypes,
 		TArray<FTypeArray1D>& TypeCombinations);
 	
 	/**
@@ -75,7 +75,7 @@ public:
 	 *			...}
 	 *			(It's up to you to parse this array. In this example, do %2.)
 	 */
-	static void AnalyzeAll(TArray<UType*>& Types, const int NumTestedTypes, const int NumUntestedTypes,
+	static void AnalyzeAll(TArray<UType*>& Types, const uint8 NumTestedTypes, const uint8 NumUntestedTypes,
 		const FFloatRange Range, const bool bAnalyzeAtk, const EAttackModifierMode Mode, TArray<FTypeArray2D>& Result);
 
 	/**
@@ -110,7 +110,7 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static void ArrayOfTypesToArrayOfTypeArray1D(UPARAM(ref) const TArray<UType*>& Original,
-		TArray<FTypeArray1D>& Result, const int Wrap = 1);
+		TArray<FTypeArray1D>& Result, const int32 Wrap = 1);
 
 	/**
 	 * Gets ranges and labels for various effectivenesses. For example, when attacking (1, inf) => "Effective".

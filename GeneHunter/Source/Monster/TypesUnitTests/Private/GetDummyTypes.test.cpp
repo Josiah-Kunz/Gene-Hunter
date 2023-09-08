@@ -15,7 +15,7 @@ bool FUType_GetDummyTypes::RunTest(const FString& Parameters)
 
 	// Import types
 	GET_DUMMY_TYPES()
-	constexpr int ExpectedNumTypes = 12;
+	constexpr uint8 ExpectedNumTypes = 12;
 
 	// Number of types
 	TestEqual(

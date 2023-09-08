@@ -11,11 +11,21 @@ public class GeneHunter : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[]{
 			
 			// Basic
-			"Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay"
+			"Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay",
 			
-			// Modules
-			, "AffinitiesComponent", "BPLibraries"
-			, "StatsComponent", "StatsComponentUnitTests", "Types", "TypesUnitTests", "UI"
+			// Effects modules
+			"AuraComponent", "BuffComponent", "DebuffComponent", "DoTComponent", "EffectableComponent", "EffectComponent", 
+			"EffectComponentUnitTests", 
+			"HoTComponent", "IntrinsicEffectComponent", "MutationComponent",
+			"NegativeAuraComponent", "PositiveAuraComponent", "TimedEffectComponent", "TraitComponent",
+			
+			// Monster modules
+			"AffinitiesComponent", "AffinitiesComponentUnitTests", "CombatStatsComponent", "LevelComponent",
+			"LevelComponentUnitTests",
+			"CombatStatsComponentUnitTests", "Types", "TypesUnitTests", 
+			  
+			// Utility modules
+			"BPLibraries", "GHLibraries", "UI",
 		});
 	}
 }

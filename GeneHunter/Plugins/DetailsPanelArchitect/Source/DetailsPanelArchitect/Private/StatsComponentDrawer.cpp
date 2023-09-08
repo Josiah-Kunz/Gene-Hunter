@@ -1,33 +1,22 @@
-﻿#define LOCTEXT_NAMESPACE "StatsComponentDrawer"
+﻿#define LOCTEXT_NAMESPACE "ICombatStatsComponentDrawer"
 
-#include "StatsComponentDrawer.h"
+#include "CombatStatsComponentDrawer.h"
 
 #include "DetailCategoryBuilder.h"
 #include "DetailWidgetRow.h"
 #include "MathUtil.h"
 #include "BPLibraries/Public/UtilityFunctionLibrary.h"
-#include "Widgets/Colors/SColorBlock.h"
-#include "Widgets/Input/SEditableTextBox.h"
 #include "SStatsBar.h"
-#include "Kismet/KismetSystemLibrary.h"
 
 #pragma region Boilerplate
 
-TSharedRef<IDetailCustomization> StatsComponentDrawer::MakeInstance()
-{
-	return MakeShareable(new StatsComponentDrawer);
-}
-
-void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
+void ICombatStatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 	
 	// Get object
-	StatsComponent = GetStatsComponent(DetailBuilder);
+	CombatStatsComponent = GetCombatStatsComponent(DetailBuilder);
 
 	// Details
-	CustomizeLevelDetails(DetailBuilder);
-	CustomizeExpDetails(DetailBuilder);
-	CustomizeCXPDetails(DetailBuilder);
 	CustomizeCurrentStatsDetails(DetailBuilder);
 	CustomizeBaseStatsDetails(DetailBuilder);
 	CustomizeBasePairsDetails(DetailBuilder);
@@ -37,181 +26,25 @@ void StatsComponentDrawer::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 
 #pragma region Private customization functions
 
-void StatsComponentDrawer::CustomizeLevelDetails(IDetailLayoutBuilder& DetailBuilder)
-{
-
-	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
-		FName(LevelCategoryName),
-		FText::FromString(LevelCategoryName),
-		ECategoryPriority::Important);
-
-	Category.AddCustomRow(LOCTEXT("Keyword", "Level")).WholeRowContent()[
-			SNew(SStatsBar)
-				.LabelText(FText::FromString("Lv."))
-				.LabelTooltip(FText::FromString("Level"))
-				.TextBoxText(FText::FromString(FString::FromInt(StatsComponent->GetLevel())))
-				.TextBoxTooltip(FText::FromString(FString::Printf(TEXT("%i"), StatsComponent->GetLevel())))
-				.OnTextCommitted([this, &DetailBuilder](const FText& InText, const ETextCommit::Type InTextCommit)
-					{
-						const int NewLevel = UUtilityFunctionLibrary::FromSI(InText);
-						if (NewLevel == StatsComponent->GetLevel())
-							return;
-						if (UserCommitted(InTextCommit))
-							StatsComponent->SetLevel(NewLevel);
-						SaveAndRefresh(DetailBuilder);
-					})
-				.MaxText(FText::FromString(FString::FromInt(StatsComponent->MaxLevel())))
-				.MaxTooltip(FText::FromString(FString::FromInt(StatsComponent->MaxLevel())))
-				.BarColor(FLinearColor::Green)
-				.BarFraction((1.0f * StatsComponent->GetLevel())/StatsComponent->MaxLevel())
-				.BarTooltip(FText::FromString(
-					FString::Printf(TEXT(
-					"The higher the level, the stronger the stats! The max level is %s."),
-					*FString::FromInt(StatsComponent->MaxLevel())
-					)))
-			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
-				TAttribute<bool>::CreateLambda([this]() 
-				{ 
-					return StatsComponent->GetLevel() != 1;
-				}), 
-				FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
-				{ 
-					StatsComponent->SetLevel(1);
-					DetailBuilder.ForceRefreshDetails();
-				})
-			))
-	;
-}
-
-void StatsComponentDrawer::CustomizeExpDetails(IDetailLayoutBuilder& DetailBuilder)
-{
-
-	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
-	FName(LevelCategoryName),
-	FText::FromString(LevelCategoryName),
-	ECategoryPriority::Important);
-
-	Category.AddCustomRow(LOCTEXT("Keyword", "Exp")).WholeRowContent()[
-		SNew(SStatsBar)
-			.LabelText(FText::FromString("Exp"))
-			.LabelTooltip(FText::FromString("Experience points within the level (non-cumulative experience points)"))
-			.TextBoxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetLevelExp(), SigFigs, true))
-			.OnTextCommitted([this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
-				{
-
-					// Check if anything happened
-					const int DiffXP = UUtilityFunctionLibrary::FromSI(InText) - StatsComponent->GetLevelExp();
-					if (DiffXP == 0)
-						return;
-
-					// Check to see if anything changed (avoids rounding errors)
-					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetLevelExp(), SigFigs, true)))
-						return;
-
-					// Use did something
-					if (UserCommitted(CommitType))
-						StatsComponent->AddExp(DiffXP);
-
-					// Refresh either way
-					DetailBuilder.ForceRefreshDetails();
-				})
-			.TextBoxTooltip(FText::FromString(FString::Printf(
-			TEXT("%s"),
-				*FloatToFText(StatsComponent->GetLevelExp(), true).ToString()
-				)))
-			.MaxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetTotalLevelExp(), SigFigs, true))
-			.MaxTooltip(FText::FromString(FString::Printf(
-				TEXT("%s"),
-				*FloatToFText(StatsComponent->GetTotalLevelExp(), true).ToString()
-				)))
-			.BarColor(FLinearColor{0.878f, 0.690f, 1.0f, 1.0f})
-			.BarFraction(StatsComponent->GetLevelExp()/StatsComponent->GetTotalLevelExp())
-			.BarTooltip(FText::FromString("Change in exp = change in level"))
-			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
-					TAttribute<bool>::CreateLambda([this]() 
-					{ 
-						return StatsComponent->GetCumulativeExp() != StatsComponent->GetCumulativeExpFromLevel(StatsComponent->GetLevel());
-					}), 
-					FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
-					{ 
-						StatsComponent->SetCumulativeExp(StatsComponent->GetCumulativeExpFromLevel(StatsComponent->GetLevel()));
-						DetailBuilder.ForceRefreshDetails();
-					})
-				))
-	;
-}
-
-void StatsComponentDrawer::CustomizeCXPDetails(IDetailLayoutBuilder& DetailBuilder)
-{
-
-	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
-	FName(LevelCategoryName),
-	FText::FromString(LevelCategoryName),
-	ECategoryPriority::Important);
-
-	Category.AddCustomRow(LOCTEXT("Keyword", "CXP")).WholeRowContent()[
-		SNew(SStatsBar)
-			.LabelText(FText::FromString("CXP"))
-			.LabelTooltip(FText::FromString("Cumulative experience points"))
-			.TextBoxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetCumulativeExp(), SigFigs, true))
-			.OnTextCommitted(
-				[this, &DetailBuilder](const FText& InText, const ETextCommit::Type CommitType)
-				{
-
-					// Check to see if anything changed (avoids rounding errors)
-					if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(StatsComponent->GetCumulativeExp(), SigFigs, true)))
-						return;
-
-					// Change depending on commit type (might have hit "esc", so no changes)
-					if (UserCommitted(CommitType))
-						StatsComponent->SetCumulativeExp(UUtilityFunctionLibrary::FromSI(InText));
-
-					// Refresh either way
-					DetailBuilder.ForceRefreshDetails();
-				})
-			.TextBoxTooltip(FText::FromString(FString::Printf(
-					TEXT("%s"),
-					*FloatToFText(StatsComponent->GetCumulativeExp(), true).ToString()
-					)))
-			.MaxText(UUtilityFunctionLibrary::ToSI(StatsComponent->GetMaxExp(), SigFigs, true))
-			.MaxTooltip(FText::FromString(FString::Printf(
-				TEXT("Max cumulative exp at level %i is %s."),
-				StatsComponent->MaxLevel(),
-				*FloatToFText(StatsComponent->GetMaxExp(), true).ToString()
-				)))
-			.BarColor(FLinearColor{0.5f, 0, 0.5f})
-			.BarFraction(StatsComponent->GetCumulativeExp()/StatsComponent->GetMaxExp())
-			.BarTooltip(FText::FromString("Change in exp = change in level"))
-			].OverrideResetToDefault(FResetToDefaultOverride::Create( 
-					TAttribute<bool>::CreateLambda([this]() 
-					{ 
-						return StatsComponent->GetCumulativeExp() != StatsComponent->GetCumulativeExpFromLevel(StatsComponent->MinLevel());
-						
-					}), 
-					FSimpleDelegate::CreateLambda([this, &DetailBuilder]() 
-					{ 
-						StatsComponent->SetCumulativeExp(0);
-						DetailBuilder.ForceRefreshDetails();
-					})
-				))
-	;
-}
-
-void StatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& DetailBuilder)
+void ICombatStatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 
 	// Get useful limits
-	const float MaxStatValue = MaxStat(StatsComponent, EStatValueType::Current, false);
-	const float MaxPercentValue = MaxStat(StatsComponent, EStatValueType::Current, true);
+	const float MaxStatValue = MaxStat(CombatStatsComponent, EStatValueType::Current, false);
+	const float MaxPercentValue = MaxStat(CombatStatsComponent, EStatValueType::Current, true);
 
+	// Get category
+	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
+		FName("Current Stats"),
+		FText::FromString("Current Stats"),
+		ECategoryPriority::Default);
+	
 	// Macro for stats (if not for GET_MEMBER_NAME_CHECKED, you could do this as a function
 #define CURRENT_STAT_PROPERTY(TargetStat, ValueMember, ValueMax, bPercentage) \
-	TSharedRef<IPropertyHandle> Handle##TargetStat = \
-		DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UStatsComponent, TargetStat)); \
 	StatWidget( \
 		DetailBuilder, \
-		DetailBuilder.EditDefaultProperty( Handle##TargetStat )->CustomWidget(), \
-		StatsComponent->TargetStat, \
+		Category.AddCustomRow(LOCTEXT("Keyword", "CurrentStats")), \
+		EStatEnum::##TargetStat , \
 		EStatValueType::Current, \
 		ValueMax, \
 		bPercentage);
@@ -224,20 +57,23 @@ void StatsComponentDrawer::CustomizeCurrentStatsDetails(IDetailLayoutBuilder& De
 	CURRENT_STAT_PROPERTY(SpecialDefense, GetCurrentValue(), MaxStatValue, false)
 	CURRENT_STAT_PROPERTY(Haste, GetCurrentValue(), MaxPercentValue, true)
 	CURRENT_STAT_PROPERTY(CriticalHit, GetCurrentValue(), MaxPercentValue, true)
+
+	// Set as first category
+	DetailBuilder.EditCategory(TEXT("Current Stats")).SetSortOrder(0);
 	
 }
 
-void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& DetailBuilder)
+void ICombatStatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 	// Get useful limits
-	const float MaxStatValue = MaxStat(StatsComponent, EStatValueType::BaseStat, false);
-	const float MaxPercentValue = MaxStat(StatsComponent, EStatValueType::BaseStat, true);
+	const float MaxStatValue = MaxStat(CombatStatsComponent, EStatValueType::BaseStat, false);
+	const float MaxPercentValue = MaxStat(CombatStatsComponent, EStatValueType::BaseStat, true);
 
 	// Get category
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
 		FName("Base Stats"),
 		FText::FromString("Base Stats"),
-		ECategoryPriority::Important);
+		ECategoryPriority::Default);
 
 #define HIDE_RESET() \
 	FResetToDefaultOverride::Create( \
@@ -255,10 +91,10 @@ void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& Detai
 				.ToolTipText(FText::FromString("Randomizes all Base Stats between 80 and 120."))
 				.HAlign(HAlign_Center)
 				.VAlign(VAlign_Center)
-				.TextStyle(FEditorStyle::Get(), "GraphBreadcrumbButtonText")
+				.TextStyle(FAppStyle::Get(), "GraphBreadcrumbButtonText")
 				.OnClicked_Lambda([this, &DetailBuilder]()
 				{
-					StatsComponent->RandomizeBaseStats();
+					CombatStatsComponent->RandomizeBaseStats();
 					DetailBuilder.ForceRefreshDetails();
 					return FReply::Handled();
 				})
@@ -270,7 +106,7 @@ void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& Detai
 	StatWidget( \
 		DetailBuilder, \
 		Category.AddCustomRow(LOCTEXT("Keyword", "BaseStat")), \
-		StatsComponent->##TargetBaseStat , \
+		EStatEnum::##TargetBaseStat , \
 		EStatValueType::BaseStat, \
 		TargetMax \
 	);
@@ -291,8 +127,8 @@ void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& Detai
 		SNew(STextBlock)
 			.Text(FText::FromString(FString::Printf(
 					TEXT("BST: %i       EBSA: %i"),
-					FMath::RoundToInt(StatsComponent->BaseStatTotal()),
-					FMath::RoundToInt(StatsComponent->BaseStatEffectiveAverage())
+					FMath::RoundToInt(CombatStatsComponent->BaseStatTotal()),
+					FMath::RoundToInt(CombatStatsComponent->BaseStatEffectiveAverage())
 				)))
 			.TextStyle(&FCoreStyle::Get().GetWidgetStyle<FTextBlockStyle>( "SmallText"))
 			.ToolTipText(FText::FromString("Base Stat Total and Effective Base Stat Average"))
@@ -301,16 +137,16 @@ void StatsComponentDrawer::CustomizeBaseStatsDetails(IDetailLayoutBuilder& Detai
 	;
 }
 
-void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& DetailBuilder)
+void ICombatStatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& DetailBuilder)
 {
 	// Get useful limits
-	const float MaxStatValue = MaxStat(StatsComponent, EStatValueType::BasePairs, false);
+	const float MaxStatValue = MaxStat(CombatStatsComponent, EStatValueType::BasePairs, false);
 
 	// Get category
 	IDetailCategoryBuilder& Category = DetailBuilder.EditCategory(
 		FName("Base Pairs"),
 		FText::FromString("Base Pairs"),
-		ECategoryPriority::Important);
+		ECategoryPriority::Default);
 	
 	// Button
 	Category.AddCustomRow(LOCTEXT("Keyword", "Base Pair Randomizer Button")).WholeRowContent()[
@@ -319,10 +155,10 @@ void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& Detai
 				.ToolTipText(FText::FromString("Randomizes all Base Pairs between 1 and 100."))
 				.HAlign(HAlign_Center)
 				.VAlign(VAlign_Center)
-				.TextStyle(FEditorStyle::Get(), "GraphBreadcrumbButtonText")
+				.TextStyle(FAppStyle::Get(), "GraphBreadcrumbButtonText")
 				.OnClicked_Lambda([this, &DetailBuilder]()
 				{
-					StatsComponent->RandomizeBasePairs();
+					CombatStatsComponent->RandomizeBasePairs();
 					DetailBuilder.ForceRefreshDetails();
 					return FReply::Handled();
 				})
@@ -334,7 +170,7 @@ void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& Detai
 	StatWidget( \
 		DetailBuilder, \
 		Category.AddCustomRow(LOCTEXT("Keyword", "BasePairs")), \
-		StatsComponent->##TargetBasePairs, \
+		EStatEnum::##TargetBasePairs , \
 		EStatValueType::BasePairs, \
 		MaxStatValue\
 	);
@@ -352,29 +188,31 @@ void StatsComponentDrawer::CustomizeBasePairsDetails(IDetailLayoutBuilder& Detai
 
 #pragma region Public utility functions
 
-void StatsComponentDrawer::SaveAndRefresh(IDetailLayoutBuilder& DetailBuilder) const
-{
-	UKismetSystemLibrary::TransactObject(StatsComponent);
-	DetailBuilder.ForceRefreshDetails();
-}
 
-
-TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTextCommitted(
-	IDetailLayoutBuilder& DetailBuilder, FStat& TargetStat,
+TFunction<void(const FText&, ETextCommit::Type&)> ICombatStatsComponentDrawer::StatOnTextCommitted(
+	IDetailLayoutBuilder& DetailBuilder, const EStatEnum TargetStat,
 	const EStatValueType StatValueType, const bool bPercentage) const
 {
-	return [this, &DetailBuilder, &TargetStat, StatValueType, bPercentage]
+	return [this, &DetailBuilder, TargetStat, StatValueType, bPercentage]
 				(const FText& InText, const ETextCommit::Type InTextCommit)
 	{
+
+		// Blank text? Just refresh
+		if (InText.IsEmptyOrWhitespace())
+		{
+			SaveAndRefresh(DetailBuilder);
+			return;
+		}
+
 		// Check to see if anything changed (avoids rounding errors)
-		if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage)))
+		if (InText.EqualTo(UUtilityFunctionLibrary::ToSI(CombatStatsComponent->GetStat(TargetStat).GetValue(StatValueType), SigFigs, !bPercentage)))
 			return;
 
 		// Check commit method
 		if (this->UserCommitted(InTextCommit))
 		{
 			// Modify the stat, but see if it is intentional
-			TargetStat.ModifyValue( UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
+			CombatStatsComponent->ModifyStat( TargetStat, UUtilityFunctionLibrary::FromSI(InText), StatValueType, EModificationMode::SetDirectly);
 			switch(StatValueType)
 			{
 			case EStatValueType::Current:
@@ -384,10 +222,7 @@ TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTe
 				break;
 			case EStatValueType::BaseStat:
 			case EStatValueType::BasePairs:
-				StatsComponent->RecalculateStats(true);
-				break;
-			case EStatValueType::CurrentAndPermanent:
-				UE_LOG(LogTemp, Error, TEXT("\"CurrentAndPermanent\" not coded for; you should not be able to alter this value directly!"))
+				CombatStatsComponent->RecalculateStats(true);
 				break;
 			default:
 				UE_LOG(LogTemp, Error, TEXT("Unknown case not coded for; you should probably code this!"))
@@ -400,7 +235,7 @@ TFunction<void(const FText&, ETextCommit::Type&)> StatsComponentDrawer::StatOnTe
 	};
 }
 
-bool StatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
+bool ICombatStatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
 {
 	return CommitType == ETextCommit::Type::OnEnter || CommitType == ETextCommit::Type::OnUserMovedFocus;
 }
@@ -409,99 +244,68 @@ bool StatsComponentDrawer::UserCommitted(const ETextCommit::Type CommitType)
 
 #pragma region Private utility functions
 
-UStatsComponent* StatsComponentDrawer::GetStatsComponent(const IDetailLayoutBuilder& DetailBuilder)
-{
-	// Get object from array
-	DetailBuilder.GetObjectsBeingCustomized(ObjectsToEdit);
-	if (ObjectsToEdit.Num() == 0) return nullptr;
-	
-	// Object guard
-	const TWeakObjectPtr<UObject> Object = ObjectsToEdit[0];
-	if (!Object.IsValid()) return nullptr;
-
-	// Get
-	UStatsComponent* Ret = Cast<UStatsComponent>(Object.Get());
-
-	// Guard again
-	if (!Ret) return nullptr;
-
-	// Return
-	return Ret;
-}
-
-float StatsComponentDrawer::MaxStat(const UStatsComponent* StatsComponent, const EStatValueType StatType, const bool bPercentage)
+float ICombatStatsComponentDrawer::MaxStat(UCombatStatsComponent* CombatStatsComponent, const EStatValueType StatType, const bool bPercentage)
 {
 	float Max = (bPercentage ? 100 : -INFINITY);
-	for(const FStat* Stat : (bPercentage ? StatsComponent->PercentageStats : StatsComponent->NonPercentageStats))
+	for(const EStatEnum Stat : (bPercentage ? CombatStatsComponent->PercentageStats : CombatStatsComponent->NonPercentageStats))
 	{
 
 		// Get max depending on what you're after
 		switch(StatType)
 		{
 		case EStatValueType::Current:
-			Max = FMathf::Max(Max, Stat->GetCurrentValue());
+			Max = FMathf::Max(Max, CombatStatsComponent->GetStat(Stat).GetCurrentValue());
 			break;
 		case EStatValueType::Permanent:
-			Max = FMathf::Max(Max, Stat->GetPermanentValue());
-			break;
-		case EStatValueType::CurrentAndPermanent:
-			Max = FMathf::Max3(Max, Stat->GetCurrentValue(), Stat->GetPermanentValue());
+			Max = FMathf::Max(Max, CombatStatsComponent->GetStat(Stat).GetPermanentValue());
 			break;
 		case EStatValueType::BasePairs:
-			Max = FMathf::Max3(Max, Stat->BasePairs, 100);
+			Max = FMathf::Max3(Max, CombatStatsComponent->GetStat(Stat).BasePairs, 100);
 			break;
 		case EStatValueType::BaseStat:
-			Max = FMathf::Max3(Max, Stat->BaseStat, 120);
+			Max = FMathf::Max3(Max, CombatStatsComponent->GetStat(Stat).BaseStat, 120);
 			break;
 		}
 	}
 	return Max;
 }
 
-FText StatsComponentDrawer::FloatToFText(const float Value, const bool bIntegerOnly)
-{
-	return FText::FromString(
-		bIntegerOnly ?
-		FString::FromInt(FMath::RoundToInt(Value)) :
-		FString::SanitizeFloat(Value));
-}
-
-void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget,
-	FStat& TargetStat, const EStatValueType StatValueType,
+void ICombatStatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDetailWidgetRow& Widget,
+	const EStatEnum TargetStat, const EStatValueType StatValueType,
 	const float OverallMaxValue, const bool bPercentage) const
 {
-
+	
 	// Get the (local) max value
 	const float MaxStatValue = StatValueType == EStatValueType::Current ?
-					TargetStat.GetValue(EStatValueType::Permanent) :
-					TargetStat.GetValue(StatValueType);
+					CombatStatsComponent->GetStat(TargetStat).GetValue(EStatValueType::Permanent) :
+					CombatStatsComponent->GetStat(TargetStat).GetValue(StatValueType);
 
 	// Reset button on the far right
 	const FSimpleDelegate ResetClicked = CreateResetDelegate(
 		DetailBuilder, TargetStat, StatValueType, MaxStatValue);
-
+	
 	// Build widget
 	Widget.operator[](
 		SNew(SStatsBar)
-			.LabelText(FText::FromString(TargetStat.Abbreviation()))
-			.LabelTooltip(FText::FromString(TargetStat.Name()))
-			.TextBoxText(UUtilityFunctionLibrary::ToSI(TargetStat.GetValue(StatValueType), SigFigs, !bPercentage))
-			.TextBoxTooltip(FloatToFText(TargetStat.GetValue(StatValueType), !bPercentage))
+			.LabelText(FText::FromString(CombatStatsComponent->GetStat(TargetStat).Abbreviation()))
+			.LabelTooltip(FText::FromString(CombatStatsComponent->GetStat(TargetStat).Name()))
+			.TextBoxText(UUtilityFunctionLibrary::ToSI(CombatStatsComponent->GetStat(TargetStat).GetValue(StatValueType), SigFigs, !bPercentage))
+			.TextBoxTooltip(FloatToFText(CombatStatsComponent->GetStat(TargetStat).GetValue(StatValueType), !bPercentage))
 			.OnTextCommitted(StatOnTextCommitted(DetailBuilder, TargetStat, StatValueType, bPercentage))
 			.IsPercentage(bPercentage)
 			.MaxText(UUtilityFunctionLibrary::ToSI(MaxStatValue, SigFigs, !bPercentage))
 			.MaxTooltip(FloatToFText(MaxStatValue, !bPercentage))
-			.BarColor(TargetStat.Color())
-			.BarFraction(TargetStat.GetValue(StatValueType) / OverallMaxValue)
-			.BarTooltip(TargetStat.SupportingText().Description)
+			.BarColor(CombatStatsComponent->GetStat(TargetStat).Color())
+			.BarFraction(GetFraction(CombatStatsComponent->GetStat(TargetStat).GetValue(StatValueType), OverallMaxValue))
+			.BarTooltip(CombatStatsComponent->GetStat(TargetStat).SupportingText().Description)
 		).OverrideResetToDefault(
 			FResetToDefaultOverride::Create( 
-				TAttribute<bool>::CreateLambda([&TargetStat, StatValueType, MaxStatValue]() 
+				TAttribute<bool>::CreateLambda([this, TargetStat, StatValueType, MaxStatValue]() 
 				{
 					switch(StatValueType)
 					{
 					case EStatValueType::Current:
-						return FMathf::Abs(TargetStat.GetValue(StatValueType) - MaxStatValue) > FMathf::Epsilon;
+						return FMathf::Abs(CombatStatsComponent->GetStat(TargetStat).GetValue(StatValueType) - MaxStatValue) > FMathf::Epsilon;
 					default:
 						return true;
 					}
@@ -512,10 +316,10 @@ void StatsComponentDrawer::StatWidget(IDetailLayoutBuilder& DetailBuilder, FDeta
 	;
 }
 
-FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, FStat& TargetStat,
+FSimpleDelegate ICombatStatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& DetailBuilder, const EStatEnum TargetStat,
 	const EStatValueType StatValueType, const float MaxStatValue) const
 {
-
+	
 	// Set up "on reset" button delegate
 	FSimpleDelegate ResetClicked;
 	switch(StatValueType)
@@ -524,8 +328,8 @@ FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& 
 		ResetClicked = FSimpleDelegate::CreateLambda(
 			[this, &DetailBuilder, &TargetStat]() 
 			{
-				TargetStat.RandomizeBaseStat();
-				StatsComponent->RecalculateStats();
+				CombatStatsComponent->RandomizeBaseStat(TargetStat);
+				CombatStatsComponent->RecalculateStats();
 				SaveAndRefresh(DetailBuilder);
 			}
 		);
@@ -534,17 +338,17 @@ FSimpleDelegate StatsComponentDrawer::CreateResetDelegate(IDetailLayoutBuilder& 
 		ResetClicked = FSimpleDelegate::CreateLambda(
 			[this, &DetailBuilder, &TargetStat]() 
 			{
-				TargetStat.RandomizeBasePairs();
-				StatsComponent->RecalculateStats();
+				CombatStatsComponent->RandomizeBasePair(TargetStat);
+				CombatStatsComponent->RecalculateStats();
 				SaveAndRefresh(DetailBuilder);
 			}
 		);
 		break;
 	default:
 		ResetClicked = FSimpleDelegate::CreateLambda(
-			[this, &DetailBuilder, &TargetStat, MaxStatValue, StatValueType]() 
+			[this, &DetailBuilder, TargetStat, MaxStatValue, StatValueType]() 
 			{
-				TargetStat.ModifyValue(MaxStatValue, StatValueType, EModificationMode::SetDirectly);
+				CombatStatsComponent->ModifyStat(TargetStat, MaxStatValue, StatValueType, EModificationMode::SetDirectly);
 				SaveAndRefresh(DetailBuilder);
 			}
 		) ;

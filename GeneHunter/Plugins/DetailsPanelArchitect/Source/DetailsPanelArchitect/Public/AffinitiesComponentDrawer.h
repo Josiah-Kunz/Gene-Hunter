@@ -5,7 +5,7 @@
 #include "TypeArray1D.h"
 
 
-class AffinitiesComponentDrawer : public IDetailCustomization
+class IAffinitiesComponentDrawer : public IDetailCustomization
 {
 
 #pragma region Variables

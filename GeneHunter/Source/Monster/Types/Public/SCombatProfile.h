@@ -49,7 +49,7 @@ private:
 	 * Draws a single row.
 	 */
 	virtual TSharedRef<SWidget> MakeTypeRowWidget(const FArguments& InArgs, TArray<FTypeArray1D>& Analysis, 
-    		const int ArrayIndex);
+    		const uint16 ArrayIndex);
 
 	TSharedRef<SWidget> DrawNoCombatProfile() const;
 };

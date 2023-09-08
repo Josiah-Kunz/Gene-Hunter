@@ -57,7 +57,7 @@ TSharedRef<SOverlay> STypePlate::MakeSlate(const FArguments& InArgs, FLinearColo
 			SNew(STextBlock)
 			.Text(Name)
 			.ToolTipText(Description)
-			.Font(FEditorStyle::GetFontStyle(TEXT("BoldFont")))
+			.Font(FAppStyle::GetFontStyle(TEXT("BoldFont")))
 			.ColorAndOpacity(UWidgetFunctionLibrary::CorrespondingTextColor(Color))
 			.ShadowColorAndOpacity(UWidgetFunctionLibrary::CorrespondingOutlineColor(Color))
 			.ShadowOffset(FVector2D{1, 1})

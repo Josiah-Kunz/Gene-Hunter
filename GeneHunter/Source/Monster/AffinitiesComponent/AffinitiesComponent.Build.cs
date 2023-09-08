@@ -17,6 +17,7 @@ public class AffinitiesComponent : ModuleRules{
 		PublicDependencyModuleNames.AddRange(new string[]{
 			"Engine"	// for MathUtil.h (internal) and ActorComponent.h (external)
 			, "Types"	// because that's what affinities are
+			, "EffectableComponent" // For UEffectableComponent
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
@@ -26,8 +27,8 @@ public class AffinitiesComponent : ModuleRules{
 			"CoreUObject",	// for UObjects
 			"EditorStyle",	// for, e.g., FEditorStyle::Get()
 			"Slate",		// for SButton
-			"SlateCore",	// for SCompoundWidget
-			  
+			"SlateCore", 	// for SCompoundWidget
+
 			// Other modules
 		});
 	}

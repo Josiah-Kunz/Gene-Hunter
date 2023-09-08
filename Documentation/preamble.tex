@@ -2,7 +2,7 @@
 
 % Packages
 % ========
-\usepackage[letterpaper, portrait, margin=1in]{geometry}
+\usepackage[letterpaper, portrait, margin=0.5in]{geometry}
 \usepackage{graphicx}			% So we can load figures with "." in their filename
 \usepackage{float}				% So we can use "[H]"
 \usepackage[dvipsnames]{xcolor}	% For custom colors
@@ -18,7 +18,50 @@
 \usepackage{tabularray}			% For \begin{longtblr} tables that span multiple columns and pages
 \usepackage{amssymb}			% For $\checkmark$
 \usepackage{etoc}				% For \localtableofcontents
+\usepackage[linguistics]{forest}				% For trees in, e.g., the effects documentation
 
+% Inserting code into LaTeX: \begin{lstlisting} ...
+\usepackage{listings}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=C++,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\ttfamily \color{RawSienna}},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{Sepia},
+  %keywordstyle=\color{blue},
+  %keywordstyle=\color{WildStrawberry},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3,
+  morekeywords={
+  	uint8,
+  	int8,
+  	uint16,
+  	int16,
+  	uint32,
+  	int32,
+  },
+  otherkeywords={\&}
+}
+
+% Inline code
+\definecolor{darkpink}{rgb}{0.5, 0.0, 0.5}
+\newcommand{\code}[1]{\lstinline{#1}}
+%\newcommand{\code}[1]{\texttt{\color{darkpink}#1}}
+
+% Down right arrow
+\usepackage{mathabx}			% For $\drsh$ (down right arrow)
+\newcommand{\drarrow}{$\mathrel{\raisebox{0.25em}{$\drsh$}}$}
 
 % Bibliography
 % ============
@@ -38,6 +81,37 @@
 \etocsetstyle{paragraph}{}{}{\etocsavedsubsubsectiontocline{\numberline{}\etocname}{\etocpage}}{}
 \etocsetstyle{subparagraph}{}{}{\etocsavedparagraphtocline{\numberline{}\etocname}{\etocpage}}{}
 
+% ==================================
+% Main file declaration (standalone)
+% ==================================
+
+\usepackage{currfile,filecontents}	% Allows use of the inputted filename when using \input{file.tex}
+\usepackage{xstring} % Allows \StrSubstitute
+
+% Put this as the second command (after \input{standalone})
+\def\defaultvariable{XxdefaultxX}
+\makeatletter
+\newcommand{\mainfile}{\defaultvariable}
+\makeatother
+\DeclareDocumentCommand{\trysetmain}{}{
+	\ifthenelse{\equal{\defaultvariable}{\mainfile}}{
+		\StrSubstitute{\currfilename}{}{}[\strA]
+		\renewcommand{\mainfile}{\strA}
+	}{}
+}
+
+% Put this as the last command
+\DeclareDocumentCommand{\postamble}{}{
+	\ifthenelse{\equal{\mainfile}{\currfilename}}{
+
+		\newpage	
+		\printbibliography
+		\end{document}
+	}{
+		% Other called file
+	}
+%	\clearpage % Clears fancyhdr when we compile everything
+}
 
 % Simple custom commands
 % ======================
@@ -49,6 +123,8 @@
 
 % Sections 'n' such
 % =================
+
+\definecolor{ICBlue}{RGB}{0, 83, 161}
 
 \definecolor{chaptColor}{RGB}{0, 83, 161}
 
@@ -71,6 +147,17 @@
 
 \definecolor{subsubsectColor}{rgb}{0.747, 0.458, 0}
 \def\subsubsect#1{\textcolor{subsubsectColor}{\subsubsection{#1}}}
+
+% Vertical spacing
+% ================
+
+\def\gap{
+	\begin{center}
+		\rule[0.25em]{.25\textwidth}{.5pt}
+		$\bullet\ \bullet\ \bullet$
+		\rule[0.25em]{.25\textwidth}{.5pt}
+	\end{center}
+}
 
 % TL; DR section
 % ==============
@@ -219,4 +306,4 @@
 
 
 
-\begin{document}
+%\begin{document}

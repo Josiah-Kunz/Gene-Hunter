@@ -30,8 +30,8 @@ public:
 	// =====
 
 	// Geometry
-	, _CirclePadding(2)
-	, _CircleSizeEmpty(20)
+	, _CirclePadding(0.5f)
+	, _CircleSizeEmpty(18)
 	, _CircleSizeFilled(16)
 	, _PlusMinusSize(12)
 
@@ -43,7 +43,7 @@ public:
 	// Events
 	, _OnMinusClicked([](){return FReply::Unhandled();})
 	, _OnPlusClicked([](){return FReply::Unhandled();})
-	, _OnCircleClicked([](const int AffinityIndex, const int CurrentPoints){return FReply::Unhandled();})
+	, _OnCircleClicked([](const uint8 AffinityIndex, const uint8 CurrentPoints){return FReply::Unhandled();})
 	, _Enabled([](){return true;})
 
 		{}

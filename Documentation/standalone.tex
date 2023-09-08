@@ -1,0 +1,22 @@
+% ==================
+% Standalone support
+% ==================
+
+
+\makeatletter
+\ifdefined\preloaded
+\else
+	\newcommand{\preloaded}{not set!}
+	\ifx\documentclass\@twoclasseserror % after \documentclass
+		\renewcommand{\preloaded}{true}
+	\else
+		\input{../preamble}
+  		\begin{document}
+		\renewcommand{\preloaded}{false}
+	\fi
+\fi
+\makeatother
+\trysetmain{}
+
+% Additional usage: \ifthenelse{\equal{\preloaded}{true}}{ ... }{ ... }
+% Note: Cannot do \trysetmain{} here because the \currfilename will always be "standalone.tex"

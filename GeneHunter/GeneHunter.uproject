@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.0",
+	"EngineAssociation": "5.1",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -9,7 +9,6 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
-
 		{
 			"Name": "AffinitiesComponent",
 			"Type": "Runtime",
@@ -21,12 +20,22 @@
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "Types",
+			"Name": "CombatStatsComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "StatsComponent",
+			"Name": "GHLibraries",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "LevelComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "Types",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
@@ -37,13 +46,96 @@
 		},
 		
 		
+
 		{
-			"Name": "TypesUnitTests",
+			"Name": "AuraComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "BuffComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "DebuffComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "DoTComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "EffectableComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "EffectComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "HoTComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "IntrinsicEffectComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "MutationComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "NegativeAuraComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "PositiveAuraComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "TimedEffectComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "TraitComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		
+		
+		{
+			"Name": "AffinitiesComponentUnitTests",
 			"Type": "Editor",
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "StatsComponentUnitTests",
+			"Name": "CombatStatsComponentUnitTests",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "EffectComponentUnitTests",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "LevelComponentUnitTests",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "TypesUnitTests",
 			"Type": "Editor",
 			"LoadingPhase": "Default"
 		}
