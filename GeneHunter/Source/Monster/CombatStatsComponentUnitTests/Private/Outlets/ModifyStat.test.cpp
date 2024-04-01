@@ -29,8 +29,11 @@ bool FModifyStat::RunTest(const FString& Parameters)
 	const float OriginalStat = StatsComponent->GetStat(Effect->SoftenStat).GetValue(TargetValueType);
 
 	// We expect the target stat to not get reduced as much (e.g., not by half, but by 90% of half [40% reduction total])
-	const float ExpectedStatValue = StatsComponent->GetModifiedValue(Effect->SoftenStat,
-		ModValue * Effect->SoftenAmount, TargetValueType, Mode);
+	const float ExpectedStatValue = StatsComponent->GetModifiedValue(
+		Effect->SoftenStat,					// PhA
+		ModValue * Effect->SoftenAmount,	// 50% * 90%
+		TargetValueType,					// Current
+		Mode);								// Multiply percentage
 
 	// Modify all stats negatively
 	StatsComponent->ModifyStatsUniformly(ModValue, TargetValueType, Mode);

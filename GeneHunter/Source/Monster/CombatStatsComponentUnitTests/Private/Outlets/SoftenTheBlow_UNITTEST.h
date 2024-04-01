@@ -58,7 +58,7 @@ public:
 			const float ModifiedStat = StatsComponent->GetModifiedValue(TargetStat, AttemptedValue, ValueType, Mode);
 			if (ModifiedStat < OriginalStat)
 			{
-				AttemptedValue = SoftenAmount * ModifiedStat;
+				AttemptedValue *= SoftenAmount;
 			}
 		}
 	}
