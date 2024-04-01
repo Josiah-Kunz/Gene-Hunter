@@ -39,6 +39,10 @@ public:
 
 		// Soopah doopah
 		Super::OnComponentCreated();
+
+		// Was this actually added or just stacked?
+		if (!Added)
+			return;
 		
 		// Bind the delegate
 		BIND_DELEGATE(Delegate, UCXPLuckyEgg_UNITTEST::ModifyCXPOnSet);

@@ -24,9 +24,9 @@ bool FSetCXP::RunTest(const FString& Parameters)
 	ADD_NEW_COMPONENT(UCXPLuckyEgg_UNITTEST, Effect, DummyActor);
 
 	// Set CXP again
-	const uint32 AddedCXP = 50;
+	constexpr uint32 AddedCXP = 50;
 	LevelComponent->AddExp(AddedCXP);
-
+	
 	// Test that the points are increased
 	float CurrentCXP = LevelComponent->GetCXP();
 	float ExpectedCXP = OriginalCXP + AddedCXP * Effect->BoostFactor;

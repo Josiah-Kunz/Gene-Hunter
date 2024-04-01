@@ -25,6 +25,18 @@ private:
 	 */
 	bool Silenced = false;
 
+protected:
+
+	/**
+	 * This gets set to true if it's added without event. It could be false if it's either
+	 *	- Not added because it has been stacked instead
+	 *	- Not added for another, mysterious reason
+	 *
+	 * This should be implemented in inherited classes during OnComponentCreated. See CXPLuckyEgg_UNITTEST.h for such
+	 * an implementation.
+	 */
+	bool Added = false;
+	
 public:
 	
 	virtual bool IsComponentTickEnabled() const override;

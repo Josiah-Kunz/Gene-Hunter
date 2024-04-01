@@ -26,6 +26,9 @@ public:
 	 */
 	static void DestroyDummyWorld(UWorld* World)
 	{
+
+		World->DestroyWorld(true);
+		
 		/*
 		 * Note: I'm sincerely not sure why we get the error "unresolved external symbol" about
 		 *	NUTNet::CleanupUnitTestWorlds. Maybe it's marked as internal-only? I'll just hope garbage collection

@@ -147,6 +147,7 @@ auto UEffectComponent::OnComponentCreated() -> void
 
 	// Didn't find any w/this name; must be new
 	SetStacks(1);
+	Added = true;
 	Super::OnComponentCreated();
 }
 
