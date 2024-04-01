@@ -4,6 +4,11 @@ public class LevelComponentUnitTests : ModuleRules{
 	
 	public LevelComponentUnitTests(ReadOnlyTargetRules Target) : base(Target){
 		
+		PublicDependencyModuleNames.AddRange(new string[]{
+			"UnrealEd"				// to get dummy unit test UWorlds
+			, "NetcodeUnitTest"		// UnchangeableBaseYield_UNITTEST.h needs this to be public since it has no .cpp
+		});
+		
 		PrivateIncludePaths.Add("Monster/LevelComponentUnitTests/Private");
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
@@ -17,7 +22,7 @@ public class LevelComponentUnitTests : ModuleRules{
 		  , "NetcodeUnitTest"			// to get dummy unit test UWorlds
 		  , "Types",					// for GetCXP (based on Type)
 		    "TypesUnitTests",			// to get dummy Types
-		    "UnrealEd", "NetcodeUnitTest", // to get dummy unit test UWorlds
+		    "UnrealEd"					// to get dummy unit test UWorlds
 		});
 	}
 }

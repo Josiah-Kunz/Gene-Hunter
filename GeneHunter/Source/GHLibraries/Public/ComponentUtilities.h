@@ -26,8 +26,14 @@ public:
 	 */
 	static void DestroyDummyWorld(UWorld* World)
 	{
-		NUTNet::MarkUnitTestWorldForCleanup(World, true); \
-		NUTNet::CleanupUnitTestWorlds();
+		/*
+		 * Note: I'm sincerely not sure why we get the error "unresolved external symbol" about
+		 *	NUTNet::CleanupUnitTestWorlds. Maybe it's marked as internal-only? I'll just hope garbage collection
+		 *	happens on its own during a unit test I guess =(
+		 */
+
+		//NUTNet::MarkUnitTestWorldForCleanup(World, true);
+		//NUTNet::CleanupUnitTestWorlds();
 	}
 	
 	/*

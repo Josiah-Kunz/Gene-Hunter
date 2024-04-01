@@ -6,6 +6,7 @@
 #include "LevelComponent.h"
 #include "ComponentUtilities.h"
 #include "EffectComponent.h"
+#include "Net/NUTUtilNet.h"
 #include "Outlets/SetBaseExpYieldOutlet.h"
 #include "UnchangeableBaseYield_UNITTEST.generated.h"
 

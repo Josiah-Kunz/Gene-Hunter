@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-#include "ComponentUtilities.h"
+#include "ComponentUtilities.h"		// For ADD_COMPONENT macro
+#include "CoreMinimal.h"			// Since we're using ADD_COMPONENT
 #include "Priority_Low_DoublePoints_UNITTEST.h"
 #include "Priority_Mid_ZeroPoints_UNITTEST.h"
 #include "Priority_High_DoublePoints_UNITTEST.h"
@@ -12,7 +13,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FPriority,
 
 bool FPriority::RunTest(const FString& Parameters)
 {
-
+	
 	// Set up and give 3 unspent points
 	DUMMY_TEST_COMPONENT(UAffinitiesComponent, AffinitiesComponent)
 	AffinitiesComponent->SetUnspentPoints(3);

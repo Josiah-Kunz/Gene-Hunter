@@ -1,0 +1,8 @@
+	- Beginning play (<10 levels) almost lost me. The mechanics just aren't 
+		fun. The movement is grid-based. The houses are too big, so you only 
+		see one on the screen at a time. It makes the world seem sectioned,
+		disrupts flow, and discourages exploration.
+	- Having only 8 elemental types is probably a good call. It's tough enough
+		to learn them with dual typing.
+	- Having a guy with lvl 50 Creo when you only have level 25 is a neat thing.
+		Something to look forward to.

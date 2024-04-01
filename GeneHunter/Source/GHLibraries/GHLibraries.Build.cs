@@ -3,8 +3,10 @@
 public class GHLibraries : ModuleRules{
 
 	public GHLibraries(ReadOnlyTargetRules Target) : base(Target){
-		PublicDependencyModuleNames.AddRange(new string[]{ "NetcodeUnitTest" });
-
+		
+		PublicDependencyModuleNames.AddRange(new string[]{
+			"NetcodeUnitTest"
+		});
 
 		PrivateIncludePaths.Add("GHLibraries/Private");
 		

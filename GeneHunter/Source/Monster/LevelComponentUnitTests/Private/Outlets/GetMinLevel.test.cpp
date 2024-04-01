@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-#include "ComponentUtilities.h"
+#include "ComponentUtilities.h"		// For ADD_COMPONENT macro
+#include "CoreMinimal.h"			// Since we're using ADD_COMPONENT
 #include "MinLevel_UNITTEST.h"
 #include "Misc/AutomationTest.h"
 

@@ -1,9 +1,10 @@
 ﻿#pragma once
 
 #include "AddHasteOnRecalculate_UNITTEST.h"
-#include "ComponentUtilities.h"
 #include "CombatStat.h"
 #include "CombatStatsComponent.h"
+#include "ComponentUtilities.h"		// For ADD_COMPONENT macro
+#include "CoreMinimal.h"			// Since we're using ADD_COMPONENT
 #include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FRecalculateStats,

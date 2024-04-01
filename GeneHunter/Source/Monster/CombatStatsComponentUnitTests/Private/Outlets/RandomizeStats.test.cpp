@@ -4,6 +4,7 @@
 #include "ComponentUtilities.h"
 #include "CombatStat.h"
 #include "CombatStatsComponent.h"
+#include "CoreMinimal.h"			// Since we're using ADD_COMPONENT
 #include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FRandomizeStats,

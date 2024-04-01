@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "ComponentUtilities.h"		// For ADD_COMPONENT macro
+#include "CoreMinimal.h"			// Since we're using ADD_COMPONENT
 #include "LevelComponent.h"
-#include "ComponentUtilities.h"
 #include "EffectComponent.h"
 #include "Outlets/GetMinLevelOutlet.h"
 #include "MinLevel_UNITTEST.generated.h"

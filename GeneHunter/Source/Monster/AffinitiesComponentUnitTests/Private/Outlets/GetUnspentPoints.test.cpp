@@ -1,7 +1,10 @@
 ﻿#pragma once
 
+#include "CoreMinimal.h"			// Since we're using ADD_COMPONENT
+#include "ComponentUtilities.h"		// For ADD_COMPONENT macro
 #include "DoublePoints_UNITTEST.h"
 #include "Misc/AutomationTest.h"
+#include "Net/NUTUtilNet.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGetUnspentPoints,
                                  "__GeneHunter.Effects.Outlets.UAffinitiesComponent.GetUnspentPoints",

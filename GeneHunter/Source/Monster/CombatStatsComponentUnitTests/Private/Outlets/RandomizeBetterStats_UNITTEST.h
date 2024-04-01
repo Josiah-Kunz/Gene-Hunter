@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "CombatStatsComponent.h"
 #include "ComponentUtilities.h"
+#include "CoreMinimal.h"			// Since we're using ADD_COMPONENT
 #include "EffectComponent.h"
 #include "Outlets/RandomizeStatsOutlet.h"
 

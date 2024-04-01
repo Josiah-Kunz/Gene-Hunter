@@ -4,6 +4,12 @@ public class EffectComponentUnitTests : ModuleRules{
 	
 	public EffectComponentUnitTests(ReadOnlyTargetRules Target) : base(Target){
 		
+		PublicDependencyModuleNames.AddRange(new string[]{
+			"UnrealEd"			// to get dummy unit test UWorlds
+			, "NetcodeUnitTest" // some unit tests need this to be public since they have no .cpp
+			  , "Core", "CoreUObject", "Engine", "GHLibraries"
+		});
+		
 		PrivateIncludePaths.Add("Monster/CombatStatsComponentUnitTests/Private");
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{

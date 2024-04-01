@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "ComponentUtilities.h"
+#include "CoreMinimal.h"			// Since we're using ADD_COMPONENT
 #include "Priority_Mid_ZeroPoints_UNITTEST.h"
 #include "Misc/AutomationTest.h"
 

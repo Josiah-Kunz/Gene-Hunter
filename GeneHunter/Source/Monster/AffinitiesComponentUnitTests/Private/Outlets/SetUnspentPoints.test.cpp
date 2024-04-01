@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "CoreMinimal.h"			// Since we're using ADD_COMPONENT
 #include "EvenPointsOnly_UNITTEST.h"
 #include "Misc/AutomationTest.h"
 
