@@ -5,12 +5,8 @@
 
 float UHoTComponent::GetAmount()
 {
-	return StatsComponent->GetStat(EStatEnum::Health).GetPermanentValue() * 0.01f * GetStacks();
-}
-
-float UHoTComponent::GetTickRate()
-{
-	return 1;
+	return StatsComponent->GetModifiedValue(
+		EStatEnum::Health, Amount * GetStacks(), EStatValueType::Current, Mode);
 }
 
 void UHoTComponent::OnComponentCreated()
@@ -32,7 +28,7 @@ void UHoTComponent::OnComponentCreated()
 
 void UHoTComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Ticking!"))
+
 	// Check silenced
 	if (ShouldApplyEffect())
 	{
@@ -44,9 +40,8 @@ void UHoTComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 		// "while".
 		while (RemainingTime <= NextModTime)
 		{
-			NextModTime -= GetTickRate();
-			StatsComponent->ModifyStat(EStatEnum::Health, GetAmount(), EStatValueType::Current,
-				EModificationMode::AddAbsolute);
+			NextModTime -= TickRate;
+			StatsComponent->ModifyStat(EStatEnum::Health, Amount * GetStacks(), EStatValueType::Current, Mode);
 		}
 	}
 }

@@ -14,10 +14,6 @@ class HOTCOMPONENT_API URegrowth : public UHoTComponent
 
 public:
 
-	virtual float GetAmount() override;
-
-	virtual float GetTickRate() override;
-
 	virtual float StartingDuration() override;
 
 	virtual int32 MaxStacks() override;

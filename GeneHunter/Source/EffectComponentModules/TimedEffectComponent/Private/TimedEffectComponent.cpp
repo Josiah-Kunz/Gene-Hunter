@@ -34,19 +34,21 @@ void UTimedEffectComponent::OnComponentCreated()
 	
 	Super::OnComponentCreated();
 
-	// Didn't fine one---simply attach
+	// Didn't find one---simply attach
 	RemainingTime = StartingDuration();
 }
 
 void UTimedEffectComponent::TickComponent(const float DeltaTime, const ELevelTick TickType,
 	FActorComponentTickFunction* ThisTickFunction)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// Keep track of remaining time
+	// Keep track of remaining time, but if we're destroying it, don't tick.
 	RemainingTime -= DeltaTime;
 	if (RemainingTime < 0)
 	{
 		DestroyComponent();
+	} else
+	{
+		Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	}
 }

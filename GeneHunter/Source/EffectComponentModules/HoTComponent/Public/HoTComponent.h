@@ -24,6 +24,21 @@ public:
 	 */
 	float NextModTime = -1;
 
+	/**
+	 * How health is added.
+	 */
+	EModificationMode Mode = EModificationMode::AddPercentage;
+
+	/**
+	 * How much health is added (based on Mode).
+	 */
+	float Amount = 1;
+
+	/**
+	 * How often the heal occurs (in seconds).
+	 */
+	float TickRate = 1;
+
 public:
 	
 	/**
@@ -31,11 +46,6 @@ public:
 	 * retrieved via StatsComponent's PermanentValue * 0.01 * number of stacks.
 	 */
 	virtual float GetAmount();
-
-	/**
-	 * Gets "tick rate" (how often Health modification happens in seconds).
-	 */
-	virtual float GetTickRate();
 
 	virtual void OnComponentCreated() override;
 
