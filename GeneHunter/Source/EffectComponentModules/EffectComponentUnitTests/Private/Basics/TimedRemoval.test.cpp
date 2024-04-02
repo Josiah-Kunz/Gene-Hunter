@@ -36,15 +36,15 @@ bool UEffectComponent_Components_TimedRemoval::RunTest(const FString& Parameters
 	// Loop for longer than the maximum lifetime so we know it's really gone
 	float Age = 0;
 	float Time = 0;
-	const float Dt = 0.1f;
-	bool bUpdateAge = true;
+	constexpr float Dt = 0.1f;
+	bool bShouldTick = true;
 	constexpr float MaxTime = 2*Lifetime;
 	while (Time < MaxTime && Failsafe < FailAt)
 	{
 
 		// Tick?
-		bUpdateAge = TimedEffect->IsRegistered();
-		if (bUpdateAge)
+		bShouldTick = TimedEffect->IsRegistered();
+		if (bShouldTick)
 		{
 			Age += Dt;
 			TimedEffect->TickComponent(Dt, LEVELTICK_All, nullptr);
@@ -67,7 +67,7 @@ bool UEffectComponent_Components_TimedRemoval::RunTest(const FString& Parameters
 	// Test
 	//	- Note: Age should be one tick more than Lifetime since on that last tick, the effect removes itself
 	//		(and does nothing else).
-	const bool bAgeReached = FMathf::Abs(Age - (Lifetime + Dt)) < 0.05f;
+	const bool bAgeReached = FMathf::Abs(Age - (Lifetime + Dt)) < Dt/2;
 	if (!bAgeReached)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Age never reached! Age [%s] | Expected lifetime [%s]"),

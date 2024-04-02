@@ -24,6 +24,16 @@ bool UTimedEffectComponent::IsVisibleToUI() const
 	return true;
 }
 
+void UTimedEffectComponent::OnRefreshStacks()
+{
+	Super::OnRefreshStacks();
+	if (bStacksRefreshDuration && RemainingTime < StartingDuration())
+	{
+		RemainingTime = StartingDuration();
+		DoEffect();
+	}
+}
+
 float UTimedEffectComponent::StartingDuration()
 {
 	return 1;
@@ -34,21 +44,43 @@ void UTimedEffectComponent::OnComponentCreated()
 	
 	Super::OnComponentCreated();
 
-	// Didn't find one---simply attach
+	// Set mod time. This will also set the first tick.
 	RemainingTime = StartingDuration();
+	NextModTime = StartingDuration();
 }
 
 void UTimedEffectComponent::TickComponent(const float DeltaTime, const ELevelTick TickType,
 	FActorComponentTickFunction* ThisTickFunction)
 {
 
-	// Keep track of remaining time, but if we're destroying it, don't tick.
+	// Keep track of remaining time, 
 	RemainingTime -= DeltaTime;
+
+	// If we're destroying this component, don't tick
 	if (RemainingTime < 0)
 	{
 		DestroyComponent();
 	} else
 	{
 		Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+		// Check silenced
+		if (ShouldApplyEffect())
+		{
+			
+			// Do we need to modify again?
+			// Note: while loop prevents losing ticks from system performance. E.g., what if
+			// components ticked once every 5 seconds? we'd only tick once with an "if", but still get all of them with a
+			// "while".
+			while (RemainingTime <= NextModTime)
+			{
+				NextModTime -= TickDuration;
+				DoEffect();
+			}
+		}
 	}
+}
+
+void UTimedEffectComponent::DoEffect()
+{
 }

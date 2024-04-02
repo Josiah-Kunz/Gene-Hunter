@@ -20,11 +20,6 @@ public:
 	UCombatStatsComponent* StatsComponent;
 
 	/**
-	 * When RemainingTime <= NextModTime, the stat will be modified.
-	 */
-	float NextModTime = -1;
-
-	/**
 	 * How health is added.
 	 */
 	EModificationMode Mode = EModificationMode::AddPercentage;
@@ -34,15 +29,10 @@ public:
 	 */
 	float HPS = 1;
 
-	/**
-	 * How often the heal occurs (in seconds).
-	 */
-	float TickDuration = 1;
-
 public:
 
 	virtual void OnComponentCreated() override;
 
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void DoEffect() override;
 
 };
