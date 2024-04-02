@@ -2,13 +2,6 @@
 
 #include "ComponentUtilities.h"
 
-
-float UHoTComponent::GetAmount()
-{
-	return StatsComponent->GetModifiedValue(
-		EStatEnum::Health, Amount * GetStacks(), EStatValueType::Current, Mode);
-}
-
 void UHoTComponent::OnComponentCreated()
 {
 
@@ -40,8 +33,9 @@ void UHoTComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 		// "while".
 		while (RemainingTime <= NextModTime)
 		{
-			NextModTime -= TickRate;
-			StatsComponent->ModifyStat(EStatEnum::Health, Amount * GetStacks(), EStatValueType::Current, Mode);
+			NextModTime -= TickDuration;
+			StatsComponent->ModifyStat(EStatEnum::Health, HPS * TickDuration * GetStacks(), EStatValueType::Current,
+				Mode);
 		}
 	}
 }

@@ -27,6 +27,7 @@ public class EffectComponentUnitTests : ModuleRules{
 			"NetcodeUnitTest",			// to get dummy unit test UWorlds
 		    
 		// Actual UEffects need tested, too!
+		"TimedEffectComponent",
 		"BuffComponent",
 		"HoTComponent",
 		"MutationComponent",

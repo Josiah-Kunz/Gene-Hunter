@@ -30,22 +30,16 @@ public:
 	EModificationMode Mode = EModificationMode::AddPercentage;
 
 	/**
-	 * How much health is added (based on Mode).
+	 * Health per second (based on Mode).
 	 */
-	float Amount = 1;
+	float HPS = 1;
 
 	/**
 	 * How often the heal occurs (in seconds).
 	 */
-	float TickRate = 1;
+	float TickDuration = 1;
 
 public:
-	
-	/**
-	 * Retrieves the amount of Health modification per tick rate. Can be positive or negative. Default is +1% and it is
-	 * retrieved via StatsComponent's PermanentValue * 0.01 * number of stacks.
-	 */
-	virtual float GetAmount();
 
 	virtual void OnComponentCreated() override;
 
