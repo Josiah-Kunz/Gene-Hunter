@@ -28,16 +28,16 @@ public:
 	float NextModTime = -1;
 
 	/**
-	 * How often the effect occurs (in seconds). If there's no dynamic effect, this parameter doesn't matter.
-	 */
-	float TickDuration = 1;
-
-	/**
 	 * Determines whether additional stacks set RemainingTime back to StartingDuration or not. Default is true.
 	 */
 	bool bStacksRefreshDuration = true;
 
 	UTimedEffectComponent();
+
+	/**
+	 * How often the effect occurs (in seconds). If there's no dynamic effect, this parameter doesn't matter.
+	 */
+	virtual float TickDuration();;
 
 	virtual bool IsPurgeable() const override;
 

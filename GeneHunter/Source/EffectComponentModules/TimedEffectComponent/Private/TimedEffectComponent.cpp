@@ -14,6 +14,11 @@ UTimedEffectComponent::UTimedEffectComponent()
 	// ...
 }
 
+float UTimedEffectComponent::TickDuration()
+{
+	return 1;
+}
+
 bool UTimedEffectComponent::IsPurgeable() const
 {
 	return true;
@@ -30,7 +35,6 @@ void UTimedEffectComponent::OnRefreshStacks()
 	if (bStacksRefreshDuration && RemainingTime < StartingDuration())
 	{
 		RemainingTime = StartingDuration();
-		DoEffect();
 	}
 }
 
@@ -74,7 +78,7 @@ void UTimedEffectComponent::TickComponent(const float DeltaTime, const ELevelTic
 			// "while".
 			while (RemainingTime <= NextModTime)
 			{
-				NextModTime -= TickDuration;
+				NextModTime -= TickDuration();
 				DoEffect();
 			}
 		}

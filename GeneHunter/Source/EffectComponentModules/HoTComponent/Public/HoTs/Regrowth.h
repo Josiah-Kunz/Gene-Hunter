@@ -17,6 +17,12 @@ public:
 	virtual float StartingDuration() override;
 
 	virtual int32 MaxStacks() override;
+
+	virtual EModificationMode Mode() override;
+
+	virtual float HPS() override;
+
+	virtual float TickDuration() override;
 	
 };
 

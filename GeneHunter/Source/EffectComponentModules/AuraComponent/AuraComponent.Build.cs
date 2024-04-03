@@ -19,7 +19,7 @@ public class AuraComponent : ModuleRules{
 			"CoreUObject", // for UObjects
 			"Engine",      // for AActor
 			
-			"CombatStatsComponent",
+			"CombatStatsComponent",	// For Outlets
 			"EffectComponent",	// for inheritance
 			"BPLibraries",		// for SplitCamelCase
 			"GHLibraries",		// for component utilities SEARCH_FOR_COMPONENT
@@ -34,6 +34,7 @@ public class AuraComponent : ModuleRules{
 			"Engine",		// for AActor
 			
 			// Libraries and utilities
+			"CombatStatsComponent", // For Outlets
 			"EffectComponent",	// for inheritance
 			"BPLibraries",		// for SplitCamelCase
 			"GHLibraries",		// for component utilities SEARCH_FOR_COMPONENT

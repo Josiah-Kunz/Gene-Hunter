@@ -30,7 +30,8 @@ public class EffectComponentUnitTests : ModuleRules{
 		"TimedEffectComponent",
 		"BuffComponent",
 		"HoTComponent",
-		"MutationComponent",
+		"DoTComponent",
+		"MutationComponent", 
 		    
 		  
 		});

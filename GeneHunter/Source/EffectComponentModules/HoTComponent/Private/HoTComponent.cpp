@@ -2,6 +2,16 @@
 
 #include "ComponentUtilities.h"
 
+EModificationMode UHoTComponent::Mode()
+{
+	return EModificationMode::AddPercentage;
+}
+
+float UHoTComponent::HPS()
+{
+	return 1;
+}
+
 void UHoTComponent::OnComponentCreated()
 {
 
@@ -18,6 +28,7 @@ void UHoTComponent::OnComponentCreated()
 
 void UHoTComponent::DoEffect()
 {
-	StatsComponent->ModifyStat(EStatEnum::Health, HPS * TickDuration * GetStacks(), EStatValueType::Current,
-				Mode);
+	Super::DoEffect();
+	StatsComponent->ModifyStat(EStatEnum::Health, HPS() * TickDuration() * GetStacks(), EStatValueType::Current,
+				Mode());
 }

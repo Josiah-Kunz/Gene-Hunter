@@ -2,13 +2,12 @@
 
 #include "ComponentUtilities.h"
 
-
-float UDoTComponent::GetAmount()
+EModificationMode UDoTComponent::Mode()
 {
-	return -StatsComponent->GetStat(EStatEnum::Health).GetPermanentValue() * 0.01f * GetStacks();
+	return EModificationMode::AddAbsolute;
 }
 
-float UDoTComponent::GetTickRate()
+float UDoTComponent::DPS()
 {
 	return 1;
 }
@@ -30,15 +29,9 @@ void UDoTComponent::OnComponentCreated()
 	NextModTime = StartingDuration();
 }
 
-void UDoTComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UDoTComponent::DoEffect()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// Do we need to modify again?
-	if (RemainingTime <= NextModTime)
-	{
-		NextModTime -= GetTickRate();
-		StatsComponent->ModifyStat(EStatEnum::Health, GetAmount(), EStatValueType::Current,
-			EModificationMode::AddAbsolute);
-	}
+	Super::DoEffect();
+	StatsComponent->ModifyStat(EStatEnum::Health, -DPS() * TickDuration() * GetStacks(), EStatValueType::Current,
+				Mode());
 }

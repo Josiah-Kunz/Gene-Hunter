@@ -6,19 +6,18 @@
 #include "MathUtil.h"
 #include "Editor/EditorEngine.h"
 #include "GameFramework/Actor.h"
-#include "Regrowth.h"
-#include "TimedEffectComponent.h"
+#include "Cytotoxin.h"
 #include "Misc/AutomationTest.h"
 
 /// Need to declare first!
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Components_Regrowth,
-	"__GeneHunter.Effects.Component Tests.Regrowth",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Components_Cytotoxin,
+	"__GeneHunter.Effects.Component Tests.Cytotoxin",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 #pragma region Main test
 
-bool UEffectComponent_Components_Regrowth::RunTest(const FString& Parameters)
+bool UEffectComponent_Components_Cytotoxin::RunTest(const FString& Parameters)
 {
 
 	// Initialize world
@@ -29,19 +28,20 @@ bool UEffectComponent_Components_Regrowth::RunTest(const FString& Parameters)
 
 	// Add a stats component + effect
 	ADD_NEW_COMPONENT(UCombatStatsComponent, Stats, DummyActor);
-	ADD_NEW_COMPONENT(URegrowth, Regrowth, DummyActor);
+	ADD_NEW_COMPONENT(UCytotoxin, Cytotoxin, DummyActor);
 
 	// Parameters - 1% per second for 5 seconds updating every 0.1 seconds
-	constexpr float HotTime = 5;
+	const float DotTime = Cytotoxin->StartingDuration();
+	constexpr float TickDuration = 0.1f;
 
 	// Set the parameters in Regrowth
-	Regrowth->RemainingTime = HotTime;
+	Cytotoxin->RemainingTime = DotTime;
 
 	// Record original
 	const float OriginalHP = Stats->GetStat(EStatEnum::Health).GetCurrentValue();
 
 	// Take damage
-	const float Damage = OriginalHP * 0.5f;
+	const float Damage = OriginalHP * 0;
 	Stats->ModifyStat(EStatEnum::Health, -Damage, EStatValueType::Current, EModificationMode::AddAbsolute);
 
 	// Avoid infinite loops
@@ -49,20 +49,20 @@ bool UEffectComponent_Components_Regrowth::RunTest(const FString& Parameters)
 	constexpr uint16 FailAt = 50000;
 	
 	// Tick the world until regrowth has removed itself
-	bool bRegrowthFinished = false;
-	const float Dt = Regrowth->TickDuration()/2;
-	Regrowth->SetTickGroup(TG_DuringPhysics);
-	while (!bRegrowthFinished && Failsafe<FailAt)
+	bool bCytotoxinFinished = false;
+	constexpr float Dt = TickDuration/2;
+	Cytotoxin->SetTickGroup(TG_DuringPhysics);
+	while (!bCytotoxinFinished && Failsafe<FailAt)
 	{
 
 		// We done?
-		SEARCH_FOR_COMPONENT(URegrowth, Regrowth, DummyActor);
-		bRegrowthFinished = Regrowth == nullptr || !Regrowth->IsRegistered();
+		SEARCH_FOR_COMPONENT(UCytotoxin, Cytotoxin, DummyActor);
+		bCytotoxinFinished = !Cytotoxin->IsRegistered();
 		
 		// Tick
-		if (!bRegrowthFinished)
+		if (!bCytotoxinFinished)
 		{
-			Regrowth->TickComponent(Dt, LEVELTICK_All, nullptr);
+			Cytotoxin->TickComponent(Dt, LEVELTICK_All, nullptr);
 		}
 		
 		// Safety first!
@@ -79,20 +79,20 @@ bool UEffectComponent_Components_Regrowth::RunTest(const FString& Parameters)
 
 	// Expected value
 	const float CurrentHP = Stats->GetStat(EStatEnum::Health).GetCurrentValue();
-	const float CurrentHPPlusOne = Stats->GetModifiedValue(
+	const float CurrentHPMinusOne = Stats->GetModifiedValue(
 		EStatEnum::Health,
-		Regrowth->HPS() * Regrowth->TickDuration(),
+		-Cytotoxin->DPS() * TickDuration,
 		EStatValueType::Current,
-		Regrowth->Mode());
-	const float SingleTick = CurrentHPPlusOne - CurrentHP;
-	const float HealthPerTime = SingleTick/Regrowth->TickDuration();
-	const float ExpectedHP = OriginalHP - Damage + HealthPerTime * HotTime;
+		Cytotoxin->Mode());
+	const float SingleTick = CurrentHP - CurrentHPMinusOne;
+	const float HealthPerTime = SingleTick/TickDuration;
+	const float ExpectedHP = OriginalHP - Damage - HealthPerTime * DotTime;
 	
 	// Test
 	const bool Success = FMathf::Abs(CurrentHP - ExpectedHP) < 0.5f;
 	if (!Success)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Regrowth healing didn't match expected! Current [%s] | Expected [%s]"),
+		UE_LOG(LogTemp, Warning, TEXT("Cytotoxin healing didn't match expected! Current [%s] | Expected [%s]"),
 			*FString::SanitizeFloat(CurrentHP),
 			*FString::SanitizeFloat(ExpectedHP)
 			);

@@ -22,14 +22,12 @@ public:
 	/**
 	 * How health is added.
 	 */
-	EModificationMode Mode = EModificationMode::AddPercentage;
+	virtual EModificationMode Mode();
 
 	/**
-	 * Health per second (based on Mode).
+	 * Health per second (actual value is based on Mode).
 	 */
-	float HPS = 1;
-
-public:
+	virtual float HPS();
 
 	virtual void OnComponentCreated() override;
 

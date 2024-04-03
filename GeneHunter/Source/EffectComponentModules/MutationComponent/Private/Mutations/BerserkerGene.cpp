@@ -78,7 +78,11 @@ FSupportingText UBerserkerGene::GetSupportingText()
 {
 	return FSupportingText{
 		FText::FromString("I'm not entirely sure if berserkers should lose defense, gain speed, or have +PhA & +SpA. I was just so mad that the final item in Pokemon Silver was this item that was unique and consumable. I never used it!"),
-		FText::FromString("+15% PhA | -10% PhD | -10% SpD"),
+		FText::FromString(FString::Printf(TEXT("+%s%% PhA | -%s%% PhD | -%s%% SpD"),
+			*FString::SanitizeFloat(PhAIncrease),
+			*FString::SanitizeFloat(DefDecrease),
+			*FString::SanitizeFloat(DefDecrease)
+			)),
 		FText::FromString("Found near a... mysterious cave? I'm confused, and suddenly *very* angry!")
 	};
 }

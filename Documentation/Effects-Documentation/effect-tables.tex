@@ -4,7 +4,7 @@
 %--------------------------
 
 \begin{EffectTable}{Buff}
-	Dimensional Shift	& $--$	& $--$	& $--$	& Inherits directly from \code{UInvulnerable}. It's only around as a Sprit-flavored invulnerability.\\
+	Dimensional Shift	& See Invulnerable.	& See Invulnerable.	& See Invulnerable.	& Inherits directly from \code{UInvulnerable}. It's only around as a Sprit-flavored invulnerability.\\
 	Invulnerable	& {No damage for 1 second}	& \code{BeforeModifyStat}	& 100	& A  lot of things can inherit from this, such as \code{UDimensionalShift}.\\
 \end{EffectTable}
 
@@ -13,6 +13,19 @@
 \begin{EffectTable}{Mutation}
 	Berserker Gene	& {$+$15\% PhA\\$-$10\% PhD\\$-$10\% SpD}	& \code{AfterRecalculateStats}	& 50	& It's a little unimaginitive, but that's okay.\\
 \end{EffectTable}
+
+%--------------------------
+
+\begin{EffectTable}{HoT}
+	Regrowth	& {$+$1\% HP every 1 sec for 5 seconds.\\3 stacks max.}	& \code{TickComponent}	& 50	& It's a medium amount, but scales well.\\
+\end{EffectTable}
+
+%--------------------------
+
+\begin{EffectTable}{DoT}
+	Cytotoxin	& {$-$1\% HP every 1 sec for 3 seconds.\\3 stacks max.}	& \code{TickComponent}	& 50	& It's a medium amount, but scales well.\\
+\end{EffectTable}
+
 %--------------------------
 
 \postamble{}

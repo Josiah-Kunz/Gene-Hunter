@@ -20,24 +20,16 @@ public:
 	UCombatStatsComponent* StatsComponent;
 
 	/**
-	 * When RemainingTime <= NextModTime, the stat will be modified.
+	 * How health is added.
 	 */
-	float NextModTime = -1;
-
-public:
-	
-	/**
-	 * Retrieves the amount of Health modification per tick rate. Can be positive or negative. Default is -1%.
-	 */
-	virtual float GetAmount();
+	virtual EModificationMode Mode();
 
 	/**
-	 * Gets "tick rate" (how often Health modification happens in seconds).
+	 * Damage per second (actual value is based on Mode).
 	 */
-	virtual float GetTickRate();
+	virtual float DPS();
 
 	virtual void OnComponentCreated() override;
 
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+	virtual void DoEffect() override;
 };
