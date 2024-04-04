@@ -10,8 +10,8 @@
 
 %--------------------------
 
-\begin{EffectTable}{Mutation}
-	Berserker Gene	& {$+$15\% PhA\\$-$10\% PhD\\$-$10\% SpD}	& \code{AfterRecalculateStats}	& 50	& It's a little unimaginitive, but that's okay.\\
+\begin{EffectTable}{DoT}
+	Cytotoxin	& {$-$1\% HP every 1 sec for 3 seconds.\\3 stacks max.}	& \code{TickComponent}	& 50	& It's a medium amount, but scales well.\\
 \end{EffectTable}
 
 %--------------------------
@@ -22,8 +22,14 @@
 
 %--------------------------
 
-\begin{EffectTable}{DoT}
-	Cytotoxin	& {$-$1\% HP every 1 sec for 3 seconds.\\3 stacks max.}	& \code{TickComponent}	& 50	& It's a medium amount, but scales well.\\
+\begin{EffectTable}{Mutation}
+	Berserker Gene	& {$+$15\% PhA\\$-$10\% PhD\\$-$10\% SpD}	& \code{AfterRecalculateStats}	& 50	& It's a little unimaginitive, but that's okay.\\
+\end{EffectTable}
+
+%--------------------------
+
+\begin{EffectTable}{NegativeAura}
+	Wounded Soul	& {$-$25\% healing.}	& \code{BeforeModifyStat}	& 100	& $--$\\
 \end{EffectTable}
 
 %--------------------------

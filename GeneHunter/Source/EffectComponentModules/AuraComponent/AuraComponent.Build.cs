@@ -6,6 +6,7 @@ public class AuraComponent : ModuleRules{
 		
 		PrivateIncludePaths.AddRange(new string[]{
 			"EffectComponentModules/AuraComponent/Private",
+			"EffectComponentModules/AuraComponent/Private/Auras",
 		});
 
 		PublicIncludePaths.AddRange(new string[]{
@@ -14,14 +15,15 @@ public class AuraComponent : ModuleRules{
 		});
 		
 		PublicDependencyModuleNames.AddRange(new string[]{
+			
 			// Basics
 			"Core",        // for IMPLEMENT_MODULE
 			"CoreUObject", // for UObjects
 			"Engine",      // for AActor
 			
+			"BPLibraries", // for SplitCamelCase
 			"CombatStatsComponent",	// For Outlets
 			"EffectComponent",	// for inheritance
-			"BPLibraries",		// for SplitCamelCase
 			"GHLibraries",		// for component utilities SEARCH_FOR_COMPONENT
 			"UI",				// for SupportingText
 		}); 

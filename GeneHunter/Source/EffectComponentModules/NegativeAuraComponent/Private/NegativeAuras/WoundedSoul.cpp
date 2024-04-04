@@ -1,6 +1,10 @@
 #include "WoundedSoul.h"
 #include "ComponentUtilities.h"
 
+#include "StatValueType.h"
+#include "StatEnum.h"
+#include "ModificationMode.h"
+
 UWoundedSoul::UWoundedSoul()
 {
 	PrimaryComponentTick.bCanEverTick = false;
@@ -56,7 +60,7 @@ void UWoundedSoul::OnComponentCreated()
 
 void UWoundedSoul::OnComponentDestroyed(bool bDestroyingHierarchy)
 {
-	StatsComponent->ModifyStatOutlet.RemoveBefore(Delegate);
+	//StatsComponent->ModifyStatOutlet.RemoveBefore(Delegate);
 	Super::OnComponentDestroyed(bDestroyingHierarchy);
 }
 
@@ -65,7 +69,7 @@ FSupportingText UWoundedSoul::GetSupportingText()
 	return FSupportingText{
 		FText::FromString("Effects like this is the only way healing isn't OP. You know, there's some counterplay."),
 		 FText::FromString(FString::Printf(TEXT("%s%% healing"), *FString::SanitizeFloat(HealingReduction))),
-		FText::FromString("Found near a... mysterious cave? I'm confused, and suddenly *very* angry!")
+		FText::FromString("Time won't heal this wound.")
 	};
 	
 }

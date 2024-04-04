@@ -21,14 +21,16 @@ public class NegativeAuraComponent : ModuleRules{
 			"Engine",      // for AActor
 			
 			// Libraries and utilities
-			"AuraComponent",   // for inheritance
-			"BPLibraries",     // for SplitCamelCase
-			"EffectComponent", // for inheritance
-			"GHLibraries",     // for component utilities SEARCH_FOR_COMPONENT
-			"UI",              // for SupportingText
+			"AuraComponent",		// for inheritance
+			"BPLibraries",			// for SplitCamelCase
+			"CombatStatsComponent", // we use UCombatStats on WoundedSoul
+			"EffectComponent",		// for inheritance
+			"GHLibraries",			// for component utilities SEARCH_FOR_COMPONENT
+			"UI",					// for SupportingText
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
+			"CombatStatsComponent",	// we use UCombatStats on WoundedSoul
 		});
 	}
 }
