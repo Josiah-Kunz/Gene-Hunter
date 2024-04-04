@@ -25,15 +25,15 @@ void UWoundedSoul::BeforeModifyStats(const EStatEnum TargetStat, const EStatValu
 		return;
 	}
 
-	// Find the healing. If it's negative, (in the inflection of "that's no moon!") that's no healing!
-	const float Healing = AttemptedValue - OriginalValue;
-	if (Healing <= 0)
+	// Is it harmful? If so, that's no healing!
+	const bool bIsHarmful = StatsComponent->GetModifiedValue(TargetStat, AttemptedValue, ValueType, Mode) < OriginalValue;
+	if (bIsHarmful)
 	{
 		return;
 	}
 
 	// Reduce accordingly
-	AttemptedValue = OriginalValue + (100-HealingReduction)/100 * Healing;
+	AttemptedValue *= (100-HealingReduction)/100;
 	
 }
 

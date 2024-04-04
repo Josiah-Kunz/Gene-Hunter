@@ -32,8 +32,7 @@ public class EffectComponentUnitTests : ModuleRules{
 		"HoTComponent",
 		"DoTComponent",
 		"MutationComponent", 
-		    
-		  
+		"NegativeAuraComponent",
 		});
 	}
 }

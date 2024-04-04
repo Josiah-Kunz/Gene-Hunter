@@ -165,7 +165,7 @@ FLinearColor const FCombatStat::Color() const
 
 #pragma endregion
 
-#pragma region Private functions
+#pragma region Static functions
 
 float FCombatStat::GetModification(const float Original, const EModificationMode Mode, const float Modification)
 {
