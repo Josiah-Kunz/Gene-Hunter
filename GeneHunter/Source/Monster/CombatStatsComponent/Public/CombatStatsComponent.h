@@ -305,6 +305,17 @@ public:
 	void AvertReduction(const EStatEnum Stat, float& Value, const EStatValueType ValueType,
 		const EModificationMode Mode);
 
+	/**
+		 * If the given FCombatStat would be reduced, it is instead not reduced. Note: his is a utility function that does only
+		 * manipulates Value and does *not* call ModifyStatInternal, so no Outlets are executed.
+		 *
+		 * @param Value Value to consider using this Mode in order to determine harm.
+		 * For example, if Value was originally negative and ValueType was AddAbsolute, this would return true.
+		 * If Value was 0.5, it would return true for a ValueType of MultiplyAbsolute, but false for AddAbsolute.
+		 */
+	bool IsHarmful(const EStatEnum Stat, const float Value, const EStatValueType ValueType,
+		const EModificationMode Mode);
+
 #pragma endregion
 	
 };

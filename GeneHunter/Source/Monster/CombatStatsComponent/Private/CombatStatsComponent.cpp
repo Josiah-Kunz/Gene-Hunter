@@ -333,28 +333,52 @@ float UCombatStatsComponent::GetModifiedValue(const EStatEnum Stat, const float 
 void UCombatStatsComponent::AvertReduction(const EStatEnum Stat, float& Value, const EStatValueType ValueType,
                                            const EModificationMode Mode)
 {
+
+	const bool bIsHarmful = IsHarmful(Stat, Value, ValueType, Mode);
 	switch(Mode)
 	{
 	case EModificationMode::AddAbsolute: case EModificationMode::AddFraction: case EModificationMode::AddPercentage:
-		if (Value < 0)
+		if (bIsHarmful)
 			Value = 0;
 		return;
 	case EModificationMode::MultiplyAbsolute:
-		if (Value < 1)
+		if (bIsHarmful)
 			Value = 1;
 		return;
 	case EModificationMode::MultiplyPercentage:
-		if (Value < 100)
+		if (bIsHarmful)
 			Value = 100;
 		return;
 	case EModificationMode::SetDirectly:
-		const FCombatStat& TargetStat = GetStat(Stat);
-		if (Value < TargetStat.GetValue(ValueType))
+		if (bIsHarmful)
+		{
+			const FCombatStat& TargetStat = GetStat(Stat);
 			Value = TargetStat.GetValue(ValueType);
+		}
 		return;
 	}
 
 	UE_LOG(LogTemp, Error, TEXT("AvertReduction cannot handle specified Mode [%s]!"), *UEnum::GetValueAsString(Mode));
 
+}
+
+bool UCombatStatsComponent::IsHarmful(const EStatEnum Stat, const float Value, const EStatValueType ValueType,
+	const EModificationMode Mode)
+{
+	switch(Mode)
+	{
+	case EModificationMode::AddAbsolute: case EModificationMode::AddFraction: case EModificationMode::AddPercentage:
+		return Value < 0;
+	case EModificationMode::MultiplyAbsolute:
+		return Value < 1;
+	case EModificationMode::MultiplyPercentage:
+		return Value < 100;
+	case EModificationMode::SetDirectly:
+		const FCombatStat& TargetStat = GetStat(Stat);
+		return Value < TargetStat.GetValue(ValueType);
+	}
 	
+	UE_LOG(LogTemp, Error, TEXT("UCombatStatsComponent::IsHarmful cannot handle specified Mode [%s]!"),
+		*UEnum::GetValueAsString(Mode));
+	return false;
 }

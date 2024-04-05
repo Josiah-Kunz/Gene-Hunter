@@ -26,7 +26,7 @@ void UWoundedSoul::BeforeModifyStats(const EStatEnum TargetStat, const EStatValu
 	}
 
 	// Is it harmful? If so, that's no healing!
-	const bool bIsHarmful = StatsComponent->GetModifiedValue(TargetStat, AttemptedValue, ValueType, Mode) < OriginalValue;
+	const bool bIsHarmful = StatsComponent->IsHarmful(TargetStat, AttemptedValue, ValueType, Mode);
 	if (bIsHarmful)
 	{
 		return;
