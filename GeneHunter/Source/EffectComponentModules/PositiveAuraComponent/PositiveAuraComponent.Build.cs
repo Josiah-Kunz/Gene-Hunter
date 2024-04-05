@@ -23,6 +23,7 @@ public class PositiveAuraComponent : ModuleRules{
 			// Libraries and utilities
 			"AuraComponent",   // for inheritance
 			"BPLibraries",     // for SplitCamelCase
+			"CombatStatsComponent", // we use UCombatStats on FullBloom
 			"EffectComponent", // for inheritance
 			"GHLibraries",     // for component utilities SEARCH_FOR_COMPONENT
 			"UI",              // for SupportingText
