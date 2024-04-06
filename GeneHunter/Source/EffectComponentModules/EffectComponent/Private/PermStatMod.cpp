@@ -1,12 +1,12 @@
-#include "BerserkerGene.h"
+#include "PermStatMod.h"
 #include "ComponentUtilities.h"
 
-UBerserkerGene::UBerserkerGene()
+UPermStatMod::UPermStatMod()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UBerserkerGene::AfterRecalculateStats(const EStatEnum InStat, const bool bResetCurrent, const float OriginalCurrent,
+void UPermStatMod::AfterRecalculateStats(const EStatEnum InStat, const bool bResetCurrent, const float OriginalCurrent,
 		const float OriginalPermanent)
 {
 	// If silenced, do nothing
@@ -19,34 +19,72 @@ void UBerserkerGene::AfterRecalculateStats(const EStatEnum InStat, const bool bR
 	ModifyStat(InStat, bResetCurrent, 1);
 }
 
-void UBerserkerGene::ModifyStat(const EStatEnum InStat, const bool bResetCurrent, const int8 Scale) const
+void UPermStatMod::ModifyStat(const EStatEnum InStat, const int8 Scale, const bool bResetCurrent) const
 {
-	switch(InStat)
+	for(const FStatMod StatMod : StatMods)
 	{
-	case EStatEnum::PhysicalAttack:
-		StatsComponent->ModifyStat(InStat, PhAIncrease * Scale, EStatValueType::Permanent,
-			EModificationMode::AddPercentage);
-		if (bResetCurrent)
+		if (StatMod.Stat == InStat)
 		{
-			StatsComponent->ModifyStat(InStat, PhAIncrease * Scale, EStatValueType::Current,
-				EModificationMode::AddPercentage);
+			StatMod.Modify(StatsComponent, 1, bResetCurrent);
 		}
-		break;
-	case EStatEnum::PhysicalDefense: case EStatEnum::SpecialDefense:
-		StatsComponent->ModifyStat(InStat, -DefDecrease * Scale, EStatValueType::Permanent,
-			EModificationMode::AddPercentage);
-		if (bResetCurrent)
-		{
-			StatsComponent->ModifyStat(InStat, -DefDecrease * Scale, EStatValueType::Current,
-				EModificationMode::AddPercentage);
-		}
-		break;
-	default:
-		break;
 	}
 }
 
-void UBerserkerGene::OnComponentCreated()
+FText UPermStatMod::GetDescriptionText()
+{
+
+	FString Description = "";
+
+	//for(const auto [Stat, Modification, Mode, ValueType] : StatMods)
+	for(int i=0; i<StatMods.Num(); i++){
+		{
+
+			// Variables
+			const EModificationMode Mode = StatMods[i].Mode;
+			const float Value = StatMods[i].Modification;
+
+			// Separator
+			if (i>0)
+			{
+				Description += " | ";
+			}
+		
+			// Get value
+			switch(Mode)
+			{
+			case EModificationMode::AddAbsolute: 
+				Description += FString::Printf(TEXT("+%s"), *FString::SanitizeFloat(Value));
+				break;
+			case EModificationMode::AddFraction:
+				Description += FString::Printf(TEXT("+%s%%"), *FString::SanitizeFloat(Value*100));
+				break;
+			case EModificationMode::AddPercentage:
+				Description += FString::Printf(TEXT("+%s%%"), *FString::SanitizeFloat(Value));
+				break;
+			case EModificationMode::MultiplyAbsolute:
+				Description += FString::Printf(TEXT("×%s"), *FString::SanitizeFloat(Value));
+				break;
+			case EModificationMode::MultiplyPercentage:
+				Description += FString::Printf(TEXT("×%s%%"), *FString::SanitizeFloat(Value));
+				break;
+			case EModificationMode::SetDirectly:
+				Description += FString::Printf(TEXT("=%s"), *FString::SanitizeFloat(Value));
+				break;
+			default:
+				UE_LOG(LogTemp, Warning, TEXT("Not sure how to handle Mode in PermStatMod.cpp."))
+				break;
+			}
+
+			// Get stat
+			Description += " " + StatsComponent->GetStat(StatMods[i].Stat).Abbreviation();
+		}
+		
+	}
+
+	return FText::FromString(Description);
+}
+
+void UPermStatMod::OnComponentCreated()
 {
 
 	// Get StatsComponent
@@ -62,49 +100,52 @@ void UBerserkerGene::OnComponentCreated()
 	Super::OnComponentCreated();
 	
 	// Add to delegate array
-	BIND_DELEGATE(Delegate, UBerserkerGene::AfterRecalculateStats);
+	BIND_DELEGATE(Delegate, UPermStatMod::AfterRecalculateStats);
 	StatsComponent->RecalculateStatsOutlet.AddAfter(Delegate);
 
 	// Trigger it to run when attached for the first time (e.g., on Mutation reroll)
 	for(const EStatEnum Stat : StatsComponent->StatsArray)
 	{
-		ModifyStat(Stat, true, 1);
+		ModifyStat(Stat, 1, true);
 	}
 }
 
-void UBerserkerGene::OnComponentDestroyed(bool bDestroyingHierarchy)
+void UPermStatMod::OnComponentDestroyed(const bool bDestroyingHierarchy)
 {
+	// Un-modify the stats
+	for(const EStatEnum Stat : StatsComponent->StatsArray)
+	{
+		ModifyStat(Stat, -1, true);
+	}
+	
 	StatsComponent->RecalculateStatsOutlet.RemoveAfter(Delegate);
 	Super::OnComponentDestroyed(bDestroyingHierarchy);
 }
 
-FSupportingText UBerserkerGene::GetSupportingText()
+FSupportingText UPermStatMod::GetSupportingText()
 {
+	
 	return FSupportingText{
 		FText::FromString("I'm not entirely sure if berserkers should lose defense, gain speed, or have +PhA & +SpA. I was just so mad that the final item in Pokemon Silver was this item that was unique and consumable. I never used it!"),
-		FText::FromString(FString::Printf(TEXT("+%s%% PhA | -%s%% PhD | -%s%% SpD"),
-			*FString::SanitizeFloat(PhAIncrease),
-			*FString::SanitizeFloat(DefDecrease),
-			*FString::SanitizeFloat(DefDecrease)
-			)),
+		GetDescriptionText(),
 		FText::FromString("Found near a... mysterious cave? I'm confused, and suddenly *very* angry!")
 	};
 }
 
-void UBerserkerGene::Silence()
+void UPermStatMod::Silence()
 {
 	Super::Silence();
 	for(const EStatEnum Stat : StatsComponent->StatsArray)
 	{
-		ModifyStat(Stat, true, -1);
+		ModifyStat(Stat, -1, true);
 	}
 }
 
-void UBerserkerGene::Unsilence()
+void UPermStatMod::Unsilence()
 {
 	Super::Unsilence();
 	for(const EStatEnum Stat : StatsComponent->StatsArray)
 	{
-		ModifyStat(Stat, true, -1);
+		ModifyStat(Stat, -1, true);
 	}
 }

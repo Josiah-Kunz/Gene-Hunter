@@ -19,8 +19,9 @@ public class EffectComponent : ModuleRules{
 			"Engine",      // for AActor
 			
 			// Libraries and utilities
-			"GHLibraries", // for RequireComponent
 			"BPLibraries", // for SplitCamelCase
+			"CombatStatsComponent",	// For PermStatMod
+			"GHLibraries", // for RequireComponent
 			"UI",          // for SupportingText
 		}); 
 		
