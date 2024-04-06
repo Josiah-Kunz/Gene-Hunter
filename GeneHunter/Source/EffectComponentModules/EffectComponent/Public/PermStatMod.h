@@ -53,7 +53,7 @@ private:
 	 *
 	 * @param Scale If adding the component, this should be 1. If removing the component, this should be -1.
 	 */
-	void UPermStatMod::ModifyStat(const EStatEnum InStat, const int8 Scale, const bool bResetCurrent) const;
+	void ModifyStat(const EStatEnum InStat, const int8 Scale, const bool bResetCurrent) const;
 
 	/**
 	 * Gets all StatMods like:

@@ -1,9 +1,14 @@
 #pragma once
 
 #include "CombatStatsComponent.h"
+#include "StatMod.generated.h"
 
-struct FStatMod
+USTRUCT(Blueprintable)
+struct EFFECTCOMPONENT_API FStatMod
 {
+
+	GENERATED_BODY()
+	
 public:
 
 	EStatEnum Stat;
