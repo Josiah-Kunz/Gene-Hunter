@@ -5,9 +5,13 @@ bool UEffectComponent::IsComponentTickEnabled() const
 	return Super::IsComponentTickEnabled();
 }
 
-int32 UEffectComponent::GetStacks() const
+int32 UEffectComponent::GetStacks()
 {
-	return Stacks;
+	const uint16 OGStacks = Stacks;
+	int32 ReturnedStacks = Stacks;
+	GetStacksOutlet.ExecuteBefore(OGStacks, ReturnedStacks);
+	GetStacksOutlet.ExecuteAfter(OGStacks, ReturnedStacks);
+	return ReturnedStacks;
 }
 
 void UEffectComponent::SetStacks(const int32 NewStacks)

@@ -7,7 +7,7 @@
 #include "PermStatMod.generated.h"
 
 /**
- * To be inherited by anything that modifies a permanent stat. Examples are PermStatMod (a Mutation) and FullBloom (a
+ * To be used by anything that modifies a permanent stat. Examples are BerserkerGene (a Mutation) and FullBloom (a
  * PositiveAura).
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
@@ -46,15 +46,12 @@ public:
 	void AfterRecalculateStats(const EStatEnum InStat, const bool bResetCurrent, const float OriginalCurrent,
 		const float OriginalPermanent);
 
-private:
+#pragma endregion
 
-	/**
-	 * Modifies the stat according to how this effect should work. This is based on how the FStatMod is set up.
-	 *
-	 * @param Scale If adding the component, this should be 1. If removing the component, this should be -1.
-	 */
-	void ModifyStat(const EStatEnum InStat, const int8 Scale, const bool bResetCurrent) const;
+#pragma region Public functions
 
+public:
+	
 	/**
 	 * Gets all StatMods like:
 	 *	PhA +15% | Def -10%
@@ -77,7 +74,26 @@ public:
 
 	virtual void Unsilence() override;
 
+	virtual bool IsVisibleToUI() const override;
+
 #pragma endregion
+
+#pragma region Private functions
+	
+private:
+
+	/**
+	 * Modifies the stat according to how this effect should work. This is based on how the FStatMod is set up.
+	 *
+	 * @param InStat The stat to modify.
+	 * @param bIncrease If adding the component, this should be true. If removing the component, this should be false.
+	 * @param bResetCurrent if true, reset both permanent and current stats (in that order).
+	 */
+	void ModifyStat(const EStatEnum InStat, const bool bIncrease, const bool bResetCurrent) const;
+
+#pragma endregion
+
+
 	
 };
 

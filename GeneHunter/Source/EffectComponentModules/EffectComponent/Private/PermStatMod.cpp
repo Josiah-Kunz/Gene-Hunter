@@ -9,6 +9,7 @@ UPermStatMod::UPermStatMod()
 void UPermStatMod::AfterRecalculateStats(const EStatEnum InStat, const bool bResetCurrent, const float OriginalCurrent,
 		const float OriginalPermanent)
 {
+	
 	// If silenced, do nothing
 	if (IsSilenced())
 	{
@@ -16,16 +17,16 @@ void UPermStatMod::AfterRecalculateStats(const EStatEnum InStat, const bool bRes
 	}
 
 	// Do increases + decreases
-	ModifyStat(InStat, bResetCurrent, 1);
+	ModifyStat(InStat, true, bResetCurrent);
 }
 
-void UPermStatMod::ModifyStat(const EStatEnum InStat, const int8 Scale, const bool bResetCurrent) const
+void UPermStatMod::ModifyStat(const EStatEnum InStat, const bool bIncrease, const bool bResetCurrent) const
 {
 	for(const FStatMod StatMod : StatMods)
 	{
 		if (StatMod.Stat == InStat)
 		{
-			StatMod.Modify(StatsComponent, 1, bResetCurrent);
+			StatMod.Modify(StatsComponent, bIncrease, bResetCurrent);
 		}
 	}
 }
@@ -86,7 +87,7 @@ FText UPermStatMod::GetDescriptionText()
 
 void UPermStatMod::OnComponentCreated()
 {
-
+	
 	// Get StatsComponent
 	SEARCH_FOR_COMPONENT_OR_DESTROY(UCombatStatsComponent, StatsComponent, GetOwner(), true)
 
@@ -104,21 +105,14 @@ void UPermStatMod::OnComponentCreated()
 	StatsComponent->RecalculateStatsOutlet.AddAfter(Delegate);
 
 	// Trigger it to run when attached for the first time (e.g., on Mutation reroll)
-	for(const EStatEnum Stat : StatsComponent->StatsArray)
-	{
-		ModifyStat(Stat, 1, true);
-	}
+	StatsComponent->RecalculateStats();
 }
 
 void UPermStatMod::OnComponentDestroyed(const bool bDestroyingHierarchy)
 {
 	// Un-modify the stats
-	for(const EStatEnum Stat : StatsComponent->StatsArray)
-	{
-		ModifyStat(Stat, -1, true);
-	}
-	
 	StatsComponent->RecalculateStatsOutlet.RemoveAfter(Delegate);
+	StatsComponent->RecalculateStats();
 	Super::OnComponentDestroyed(bDestroyingHierarchy);
 }
 
@@ -137,7 +131,7 @@ void UPermStatMod::Silence()
 	Super::Silence();
 	for(const EStatEnum Stat : StatsComponent->StatsArray)
 	{
-		ModifyStat(Stat, -1, true);
+		ModifyStat(Stat, false, true);
 	}
 }
 
@@ -146,6 +140,11 @@ void UPermStatMod::Unsilence()
 	Super::Unsilence();
 	for(const EStatEnum Stat : StatsComponent->StatsArray)
 	{
-		ModifyStat(Stat, -1, true);
+		ModifyStat(Stat, false, true);
 	}
+}
+
+bool UPermStatMod::IsVisibleToUI() const
+{
+	return false;
 }

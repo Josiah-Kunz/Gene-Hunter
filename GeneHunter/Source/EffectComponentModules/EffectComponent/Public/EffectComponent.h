@@ -1,9 +1,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EffectableComponent.h"
 #include "StackChangeResult.h"
 #include "SupportingText.h"
 #include "Components/ActorComponent.h"
+#include "Outlets/GetStacksOutlet.h"
 
 #include "EffectComponent.generated.h"
 
@@ -13,7 +15,7 @@
  * steps.
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
-class EFFECTCOMPONENT_API UEffectComponent : public UActorComponent
+class EFFECTCOMPONENT_API UEffectComponent : public UEffectableComponent
 {
 	GENERATED_BODY()
 
@@ -46,8 +48,11 @@ public:
 	 * exists, it increases the number of Stacks (up to MaxStacks) rather than attaching a new EffectComponent.
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
-	int32 GetStacks() const;
+	virtual int32 GetStacks();
 
+	UPROPERTY(VisibleAnywhere, Category="Outlets")
+	FGetStacksOutlet GetStacksOutlet;
+	
 	/**
 	 * When an EffectComponent is attached to an Actor, it looks for duplicate EffectComponents. If such a duplicate
 	 * exists, it increases the number of Stacks (up to MaxStacks) rather than attaching a new EffectComponent.

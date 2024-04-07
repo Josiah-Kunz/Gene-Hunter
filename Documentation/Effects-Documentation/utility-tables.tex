@@ -1,0 +1,29 @@
+\input{../standalone}
+\input{effect-table-defs}
+
+%--------------------------
+
+\code{UDependentEffectComponent}s add common, cross-class functionality to other effects. For example, both \code{UBerserkerGene} (a \code{UMutation}) and \code{UFullBloom} (a \code{UPositiveAura}) modify stats. Despite being different inheritance hierarchically, they do pretty similar things. \code{UDependentEffectComponent}:
+\begin{itemize}
+	\item{has an \code{Owner} that it's dependent upon.}
+	\item{should be added just after its \code{Owner} is added. See how to attach below.}
+	\item{is removed just after its \code{Owner} is removed.}
+	\item{follows its \code{Owner}'s \code{Silence} and \code{Unsilence}.}
+	\item{returns its \code{Owner}'s \code{Stacks}, \code{MaxStats}, \code{Priority}, and \code{ShouldApplyEffect}.}
+	\item{is not visible to UI.}
+\end{itemize}
+To attach a \code{UDependentEffectComponent} to another \code{UEffectComponent}, add the following to\\\code{UEffectComponent::OnComponentCreated}:
+\begin{lstlisting}[language=c++]
+	Super::OnComponentCreated();
+	ADD_COMPONENT(UDependentEffectComponent, Dependent, GetOwner())
+	Dependent->SetOwner(this);
+	# Do some customization here, such as setting Dependent variables
+\end{lstlisting}
+
+\begin{EffectTable}{DependentEffect}
+	PermStatMod	& {Modifies according to its \code{TArray} of \code{FStatMod}s.}	& \code{AfterRecalculateStats} & \textit{Dependent} & See, e.g., \code{UBerserkerGene}.\\
+\end{EffectTable}
+
+%--------------------------
+
+\postamble{}

@@ -22,11 +22,6 @@ bool UEffectComponent_Components_BerserkerGene::RunTest(const FString& Parameter
 	const float OriginalPhD = StatsComponent->GetStat(EStatEnum::PhysicalDefense).GetCurrentValue();
 	const float OriginalSpD = StatsComponent->GetStat(EStatEnum::SpecialDefense).GetCurrentValue();
 
-	// Get expected
-	const float ExpectedPhA = OriginalPhA * (1+UBerserkerGene::PhAIncrease/100);
-	const float ExpectedPhD = OriginalPhD * (1-UBerserkerGene::DefDecrease/100);
-	const float ExpectedSpD = OriginalSpD * (1-UBerserkerGene::DefDecrease/100);
-
 	// Attach BerserkerGene
 	UBerserkerGene* BerserkerGene;
 	ADD_COMPONENT(UBerserkerGene, BerserkerGene, DummyActor);
@@ -36,34 +31,46 @@ bool UEffectComponent_Components_BerserkerGene::RunTest(const FString& Parameter
 	const float ActualPhD = StatsComponent->GetStat(EStatEnum::PhysicalDefense).GetCurrentValue();
 	const float ActualSpD = StatsComponent->GetStat(EStatEnum::SpecialDefense).GetCurrentValue();
 
+	// Get expected
+	const float ExpectedPhA = OriginalPhA * (1+BerserkerGene->PermStatMod->StatMods[0].Modification /100);
+	const float ExpectedPhD = OriginalPhD * (1+BerserkerGene->PermStatMod->StatMods[1].Modification/100);
+	const float ExpectedSpD = OriginalSpD * (1+BerserkerGene->PermStatMod->StatMods[2].Modification/100);
+
 	// Test PhA
-	TestTrue(
-		FString::Printf(TEXT("PhA was modified correctly: Original [%s] | Expected [%s] | Actual [%s]"),
-				*FString::SanitizeFloat(OriginalPhA),
-				*FString::SanitizeFloat(ExpectedPhA),
-				*FString::SanitizeFloat(ActualPhA)
-			),
-	FMath::Abs(ExpectedPhA - ActualPhA) < UStatUnitTestUtilities::TOLERANCE);
+	const bool bPhA = FMath::Abs(ExpectedPhA - ActualPhA) < UStatUnitTestUtilities::TOLERANCE;
+	if (!bPhA)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PhA was modified incorrectly: Original [%s] | Expected [%s] | Actual [%s]"),
+					*FString::SanitizeFloat(OriginalPhA),
+					*FString::SanitizeFloat(ExpectedPhA),
+					*FString::SanitizeFloat(ActualPhA)
+					)
+			
+	}
 
 	// Test PhD
-	TestTrue(
-		FString::Printf(TEXT("PhD was modified correctly: Original [%s] | Expected [%s] | Actual [%s]"),
-				*FString::SanitizeFloat(OriginalPhD),
-				*FString::SanitizeFloat(ExpectedPhD),
-				*FString::SanitizeFloat(ActualPhD)
-			),
-	FMath::Abs(ExpectedPhD - ActualPhD) < UStatUnitTestUtilities::TOLERANCE);
+	const bool bPhD = FMath::Abs(ExpectedPhD - ActualPhD) < UStatUnitTestUtilities::TOLERANCE;
+	if (!bPhD)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PhD was modified incorrectly: Original [%s] | Expected [%s] | Actual [%s]"),
+					*FString::SanitizeFloat(OriginalPhD),
+					*FString::SanitizeFloat(ExpectedPhD),
+					*FString::SanitizeFloat(ActualPhD)
+					)
+	}
 
 	// Test SpD
-	TestTrue(
-		FString::Printf(TEXT("SpD was modified correctly: Original [%s] | Expected [%s] | Actual [%s]"),
+	const bool bSpD = FMath::Abs(ExpectedSpD - ActualSpD) < UStatUnitTestUtilities::TOLERANCE;
+	if (!bSpD)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SpD was modified incorrectly: Original [%s] | Expected [%s] | Actual [%s]"),
 				*FString::SanitizeFloat(OriginalSpD),
 				*FString::SanitizeFloat(ExpectedSpD),
 				*FString::SanitizeFloat(ActualSpD)
-			),
-	FMath::Abs(ExpectedSpD - ActualSpD) < UStatUnitTestUtilities::TOLERANCE);
+			)
+	}
 	 
 	// Return
 	BASESTATS_GC
-	return true;
+	return bPhA && bPhD && bSpD;
 }

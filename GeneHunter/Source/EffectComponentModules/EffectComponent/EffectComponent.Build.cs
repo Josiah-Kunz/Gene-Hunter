@@ -21,6 +21,7 @@ public class EffectComponent : ModuleRules{
 			// Libraries and utilities
 			"BPLibraries", // for SplitCamelCase
 			"CombatStatsComponent",	// For PermStatMod
+			"EffectableComponent",	// EffectComponents themselves are effectable
 			"GHLibraries", // for RequireComponent
 			"UI",          // for SupportingText
 		}); 

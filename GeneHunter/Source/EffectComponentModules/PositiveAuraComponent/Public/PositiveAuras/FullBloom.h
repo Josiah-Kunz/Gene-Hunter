@@ -1,9 +1,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CombatStatsComponent.h"
+#include "PermStatMod.h"
 #include "PositiveAuraComponent.h"
-#include "Outlets/ModifyStatOutlet.h"
 #include "FullBloom.generated.h"
 
 /**
@@ -16,6 +15,16 @@ class POSITIVEAURACOMPONENT_API UFullBloom : public UPositiveAuraComponent
 
 	UFullBloom();
 	
+private:
+
+	UPROPERTY()
+	UPermStatMod* PermStatMod;
+
+public:
+	
+	virtual FSupportingText GetSupportingText() override;
+
+	virtual void OnComponentCreated() override;
 	
 };
 

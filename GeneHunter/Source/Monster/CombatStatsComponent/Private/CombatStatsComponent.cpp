@@ -229,7 +229,7 @@ void UCombatStatsComponent::RecalculateStats(const bool bResetCurrent)
 		// Call + execute + call
 		RecalculateStatsOutlet.ExecuteBefore(Stat, bResetCurrent, OriginalCurrent, OriginalPermanent);
 		TargetStat.Update(LevelComponent->GetLevel(), bResetCurrent);
-		RecalculateStatsOutlet.ExecuteBefore(Stat, bResetCurrent, OriginalCurrent, OriginalPermanent);
+		RecalculateStatsOutlet.ExecuteAfter(Stat, bResetCurrent, OriginalCurrent, OriginalPermanent);
 	}
 }
 

@@ -21,6 +21,6 @@ public:
 	 *
 	 * @param Scale If modifying the stat, this should be 1. If un-modifying, this should be -1.
 	 */
-	void Modify(UCombatStatsComponent* Stats, const int8 Scale, const bool bPermAndCurrent = false) const;
+	void Modify(UCombatStatsComponent* Stats, const bool bIncrease, const bool bPermAndCurrent = false) const;
 	
 };
