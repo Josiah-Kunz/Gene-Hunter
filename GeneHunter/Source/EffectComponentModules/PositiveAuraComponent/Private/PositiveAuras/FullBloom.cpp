@@ -23,4 +23,5 @@ void UFullBloom::OnComponentCreated()
 	PermStatMod->StatMods = {
 		{EStatEnum::Health, 20, EModificationMode::AddPercentage, EStatValueType::Permanent}
 	};
+	PermStatMod->SetOwner(this);
 }

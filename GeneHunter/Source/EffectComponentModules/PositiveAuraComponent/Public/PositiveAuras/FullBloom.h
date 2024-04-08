@@ -15,12 +15,10 @@ class POSITIVEAURACOMPONENT_API UFullBloom : public UPositiveAuraComponent
 
 	UFullBloom();
 	
-private:
-
-	UPROPERTY()
-	UPermStatMod* PermStatMod;
-
 public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPermStatMod* PermStatMod;
 	
 	virtual FSupportingText GetSupportingText() override;
 
