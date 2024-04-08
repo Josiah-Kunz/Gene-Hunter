@@ -17,7 +17,7 @@ void UBerserkerGene::OnComponentCreated()
 		{EStatEnum::PhysicalDefense, -10, EModificationMode::AddPercentage, EStatValueType::Permanent},
 		{EStatEnum::SpecialDefense, -10, EModificationMode::AddPercentage, EStatValueType::Permanent},
 	};
-	PermStatMod->StatsComponent->RecalculateStats();
+	PermStatMod->SetOwner(this); // Also applies it
 }
 
 FSupportingText UBerserkerGene::GetSupportingText()

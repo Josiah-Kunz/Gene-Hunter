@@ -201,7 +201,8 @@ public:
  * Properly binds the OutletDelegate (such as FBeforeSetCXPDelegate) to the function (e.g., ULuckyEgg::ModifyCXP).
  * However, first it checks that stacks > 0.
  *
- * This is to be used inside OnComponentCreated right after the Super::OnComponentCreated call.
+ * This is to be used inside OnComponentCreated right after the Super::OnComponentCreated call. The Super call needs to
+ * be first so that stacks > 0.
  */
 #define BIND_DELEGATE(OutletDelegate, FuncName) \
 	if (GetStacks() > 0) \

@@ -20,12 +20,13 @@ void UPermStatMod::AfterRecalculateStats(const EStatEnum InStat, const bool bRes
 	ModifyStat(InStat, true, bResetCurrent);
 }
 
-void UPermStatMod::ModifyStat(const EStatEnum InStat, const bool bIncrease, const bool bResetCurrent) const
+void UPermStatMod::ModifyStat(const EStatEnum InStat, const bool bIncrease, const bool bResetCurrent) 
 {
-	for(const FStatMod StatMod : StatMods)
+	for(FStatMod StatMod : StatMods)
 	{
 		if (StatMod.Stat == InStat)
 		{
+			StatMod.Stacks = GetStacks();
 			StatMod.Modify(StatsComponent, bIncrease, bResetCurrent);
 		}
 	}
@@ -85,35 +86,26 @@ FText UPermStatMod::GetDescriptionText()
 	return FText::FromString(Description);
 }
 
-void UPermStatMod::OnComponentCreated()
+void UPermStatMod::SetOwner(UEffectComponent* NewOwner)
 {
-	
-	// Get StatsComponent
-	SEARCH_FOR_COMPONENT_OR_DESTROY(UCombatStatsComponent, StatsComponent, GetOwner(), true)
 
-	// No stats component?
-	if (StatsComponent == nullptr)
+	// Careful! Squirrels everywhere...
+	if (NewOwner != nullptr)
 	{
-		return;
+
+		// Get StatsComponent
+		SEARCH_FOR_COMPONENT_OR_DESTROY(UCombatStatsComponent, StatsComponent, NewOwner->GetOwner(), true)
+
+		// No stats component?
+		if (StatsComponent == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No UCombatStatsComponent found for PermStatMod! This is required *before* the Owner is set."))
+			return;
+		}
 	}
 
-	// Must still be alive
-	Super::OnComponentCreated();
-	
-	// Add to delegate array
-	BIND_DELEGATE(Delegate, UPermStatMod::AfterRecalculateStats);
-	StatsComponent->RecalculateStatsOutlet.AddAfter(Delegate);
-
-	// Trigger it to run when attached for the first time (e.g., on Mutation reroll)
-	StatsComponent->RecalculateStats();
-}
-
-void UPermStatMod::OnComponentDestroyed(const bool bDestroyingHierarchy)
-{
-	// Un-modify the stats
-	StatsComponent->RecalculateStatsOutlet.RemoveAfter(Delegate);
-	StatsComponent->RecalculateStats();
-	Super::OnComponentDestroyed(bDestroyingHierarchy);
+	// This also calls ApplyEffect
+	Super::SetOwner(NewOwner);
 }
 
 FSupportingText UPermStatMod::GetSupportingText()
@@ -126,25 +118,25 @@ FSupportingText UPermStatMod::GetSupportingText()
 	};
 }
 
-void UPermStatMod::Silence()
+void UPermStatMod::ApplyEffect()
 {
-	Super::Silence();
-	for(const EStatEnum Stat : StatsComponent->StatsArray)
+	if (bHasOwner && !bApplied)
 	{
-		ModifyStat(Stat, false, true);
+		Super::ApplyEffect();
+		BIND_DELEGATE(Delegate, UPermStatMod::AfterRecalculateStats);
+		StatsComponent->RecalculateStatsOutlet.AddAfter(Delegate);
+		StatsComponent->RecalculateStats();
+		bApplied = true;
 	}
 }
 
-void UPermStatMod::Unsilence()
+void UPermStatMod::RemoveEffect()
 {
-	Super::Unsilence();
-	for(const EStatEnum Stat : StatsComponent->StatsArray)
+	if (bHasOwner && bApplied)
 	{
-		ModifyStat(Stat, false, true);
+		Super::RemoveEffect();
+		StatsComponent->RecalculateStatsOutlet.RemoveAfter(Delegate);
+		StatsComponent->RecalculateStats();
+		bApplied = false;
 	}
-}
-
-bool UPermStatMod::IsVisibleToUI() const
-{
-	return false;
 }

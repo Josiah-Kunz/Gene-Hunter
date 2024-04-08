@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EffectComponent.h"
+#include "DependentEffectComponent.h"
 #include "StatMod.h"
 #include "Outlets/RecalculateStatsOutlet.h"
 #include "PermStatMod.generated.h"
@@ -11,7 +11,7 @@
  * PositiveAura).
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
-class DEPENDENTEFFECTCOMPONENT_API UPermStatMod : public UEffectComponent
+class DEPENDENTEFFECTCOMPONENT_API UPermStatMod : public UDependentEffectComponent
 {
 	GENERATED_BODY()
 
@@ -64,17 +64,13 @@ public:
 
 public:
 
-	virtual void OnComponentCreated() override;
-
-	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
+	virtual void SetOwner(UEffectComponent* NewOwner) override;
 
 	virtual FSupportingText GetSupportingText() override;
 
-	virtual void Silence() override;
+	virtual void ApplyEffect() override;
 
-	virtual void Unsilence() override;
-
-	virtual bool IsVisibleToUI() const override;
+	virtual void RemoveEffect() override;
 
 #pragma endregion
 
@@ -89,7 +85,7 @@ private:
 	 * @param bIncrease If adding the component, this should be true. If removing the component, this should be false.
 	 * @param bResetCurrent if true, reset both permanent and current stats (in that order).
 	 */
-	void ModifyStat(const EStatEnum InStat, const bool bIncrease, const bool bResetCurrent) const;
+	void ModifyStat(const EStatEnum InStat, const bool bIncrease, const bool bResetCurrent);
 
 #pragma endregion
 

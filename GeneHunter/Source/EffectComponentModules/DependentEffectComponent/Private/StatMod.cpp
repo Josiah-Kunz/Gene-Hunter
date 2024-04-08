@@ -6,7 +6,7 @@ void FStatMod::Modify(UCombatStatsComponent* Stats, const bool bIncrease, const 
 {
 
 	// Check decrease instead
-	float Value = Modification;
+	float Value = Modification * Stacks;
 	if (!bIncrease)
 	{
 		// If multiplication, we need to divide instead
@@ -14,18 +14,17 @@ void FStatMod::Modify(UCombatStatsComponent* Stats, const bool bIncrease, const 
 		if (bIsMultipy)
 		{
 			// Don't divide by zero
-			if (FMathf::Abs(Modification) > FMathf::Epsilon)
+			if (FMathf::Abs(Value) > FMathf::Epsilon)
 			{
-				Value = 1/Modification;
+				Value = 1/Value;
 			}
 		} else	
 		{
-			Value = -Modification;
+			Value = -Value;
 		}
 	}
 
 	// The one we're responsible for
-	UE_LOG(LogTemp, Warning, TEXT("Modifying [%s]"), *UEnum::GetValueAsString(Stat))
 	Stats->ModifyStat(Stat, Value, ValueType, Mode);
 
 	// Also the other one?

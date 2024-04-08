@@ -15,6 +15,7 @@ public:
 	float Modification;
 	EModificationMode Mode;
 	EStatValueType ValueType;
+	uint16 Stacks = 1;
 
 	/**
 	 * Modifies the stat according to how this effect should work.

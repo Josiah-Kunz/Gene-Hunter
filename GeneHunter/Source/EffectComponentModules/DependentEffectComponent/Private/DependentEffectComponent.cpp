@@ -11,7 +11,11 @@ void UDependentEffectComponent::SetOwner(UEffectComponent* NewOwner)
 
 	// Add new
 	Owner = NewOwner;
-	ApplyEffect();
+	bHasOwner = Owner != nullptr;
+	if (bHasOwner)
+	{
+		ApplyEffect();
+	}
 }
 
 void UDependentEffectComponent::ApplyEffect()
@@ -60,22 +64,38 @@ void UDependentEffectComponent::Unsilence()
 
 float UDependentEffectComponent::GetPriority()
 {
-	return Owner->GetPriority();
+	if (bHasOwner)
+	{
+		return Owner->GetPriority();
+	}
+	return 0;
 }
 
 int32 UDependentEffectComponent::GetStacks()
 {
-	return Owner->GetStacks();
+	if (bHasOwner)
+	{
+		return Owner->GetStacks();
+	}
+	return 0;
 }
 
 int32 UDependentEffectComponent::MaxStacks()
 {
-	return Owner->MaxStacks();
+	if (bHasOwner)
+	{
+		return Owner->MaxStacks();
+	}
+	return 0;
 }
 
 bool UDependentEffectComponent::ShouldApplyEffect()
 {
-	return Owner->ShouldApplyEffect();
+	if (bHasOwner)
+	{
+		return Owner->ShouldApplyEffect();
+	}
+	return false;
 }
 
 bool UDependentEffectComponent::IsVisibleToUI() const
