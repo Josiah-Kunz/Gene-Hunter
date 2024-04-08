@@ -24,10 +24,11 @@ public class MutationComponent : ModuleRules{
 			// Libraries and utilities
 			"BPLibraries",			// for SplitCamelCase
 			"CombatStatsComponent", // for BerserkerGene
+			"DependentEffectComponent",	// to use PermStatMod
 			"EffectComponent",		// for inheritance
 			"IntrinsicEffectComponent", // for inheritance
 			"GHLibraries",			// for component utilities SEARCH_FOR_COMPONENT
-			"UI",					// for SupportingText
+			"UI", 					// for SupportingText
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{

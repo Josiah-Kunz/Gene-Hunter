@@ -63,6 +63,11 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "DependentEffectComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "DoTComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"

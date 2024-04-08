@@ -14,6 +14,7 @@ public class EffectComponentUnitTests : ModuleRules{
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
 		  "AffinitiesComponent"			// for priorites tests
+		  , "DependentEffectComponent"	// Attachment.test uses PermStatMod
 		  ,	"Core"						// for FString
 		  , "CoreUObject"				// for UObjects (and their initializations)
 		  , "CombatStatsComponent"		// for UStatsComponent::GetStat

@@ -9,7 +9,7 @@
 	\item{should be added just after its \code{Owner} is added. See how to attach below.}
 	\item{is removed just after its \code{Owner} is removed.}
 	\item{follows its \code{Owner}'s \code{Silence} and \code{Unsilence}.}
-	\item{returns its \code{Owner}'s \code{Stacks}, \code{MaxStats}, \code{Priority}, and \code{ShouldApplyEffect}.}
+	\item{returns its \code{Owner}'s \code{Priority}, \code{Stacks}, \code{MaxStats}, \code{Priority}, and \code{ShouldApplyEffect}.}
 	\item{is not visible to UI.}
 \end{itemize}
 To attach a \code{UDependentEffectComponent} to another \code{UEffectComponent}, add the following to\\\code{UEffectComponent::OnComponentCreated}:

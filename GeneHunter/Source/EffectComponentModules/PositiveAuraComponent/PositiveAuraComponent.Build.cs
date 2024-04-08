@@ -24,6 +24,7 @@ public class PositiveAuraComponent : ModuleRules{
 			"AuraComponent",   // for inheritance
 			"BPLibraries",     // for SplitCamelCase
 			"CombatStatsComponent", // we use UCombatStats on FullBloom
+			"DependentEffectComponent",	// FullBloom uses PermStatMod
 			"EffectComponent", // for inheritance
 			"GHLibraries",     // for component utilities SEARCH_FOR_COMPONENT
 			"UI",              // for SupportingText

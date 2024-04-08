@@ -4,7 +4,7 @@
 #include "StatMod.generated.h"
 
 USTRUCT(Blueprintable)
-struct EFFECTCOMPONENT_API FStatMod
+struct DEPENDENTEFFECTCOMPONENT_API FStatMod
 {
 
 	GENERATED_BODY()

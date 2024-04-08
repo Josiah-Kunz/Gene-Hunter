@@ -11,7 +11,7 @@
  * PositiveAura).
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
-class EFFECTCOMPONENT_API UPermStatMod : public UEffectComponent
+class DEPENDENTEFFECTCOMPONENT_API UPermStatMod : public UEffectComponent
 {
 	GENERATED_BODY()
 
