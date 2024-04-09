@@ -32,6 +32,49 @@ void UPermStatMod::ModifyStat(const EStatEnum InStat, const bool bIncrease, cons
 	}
 }
 
+void UPermStatMod::AddOrRemoveEffectInternal(const bool bAdding)
+{
+
+	if (bHasOwner && !bAdding)
+	{
+	
+		// If it's HP, we should make sure current <= permanent (the others should raise and lower according to their
+		// effects on RecalculateStats)
+		const FCombatStat& HP = StatsComponent->GetStat(EStatEnum::Health);
+		const float OldCurHP = HP.GetCurrentValue();
+		const float OldPermHP = HP.GetPermanentValue();
+
+		// Bind + Apply (or not!)
+		if (bAdding)
+		{
+			BIND_DELEGATE(Delegate, UPermStatMod::AfterRecalculateStats);
+			Super::ApplyEffect();
+			StatsComponent->RecalculateStatsOutlet.AddAfter(Delegate);
+		} else
+		{
+			Super::RemoveEffect();
+			StatsComponent->RecalculateStatsOutlet.RemoveAfter(Delegate);
+		}
+
+		// Either way recalculate and set the applied state
+		StatsComponent->RecalculateStats(true, false);
+		bApplied = bAdding;
+
+		// Scale old hp -> new hp so the percent HP doesn't change:
+		//		Old Current   New Current
+		//		----------- = -----------
+		//		Old Perm      New Perm
+		// This will trigger other effects, like UInvulnerable, so they could actually get a heal
+		// out of this.
+		const float NewPermHP = HP.GetPermanentValue();
+		const float NewCurHP = NewPermHP / OldPermHP * OldCurHP;
+		StatsComponent->ModifyStat(EStatEnum::Health, NewCurHP,
+			EStatValueType::Current,
+			EModificationMode::SetDirectly);
+		
+	}
+}
+
 FText UPermStatMod::GetDescriptionText()
 {
 
@@ -122,11 +165,26 @@ void UPermStatMod::ApplyEffect()
 {
 	if (bHasOwner && !bApplied)
 	{
+	
+		// If it's HP, we should make sure current <= permanent (the others should raise and lower according to their
+		// effects on RecalculateStats)
+		const FCombatStat& HP = StatsComponent->GetStat(EStatEnum::Health);
+		const float OldCurHP = HP.GetCurrentValue();
+		const float OldPermHP = HP.GetPermanentValue();
+
+		// Dewet
 		Super::ApplyEffect();
 		BIND_DELEGATE(Delegate, UPermStatMod::AfterRecalculateStats);
 		StatsComponent->RecalculateStatsOutlet.AddAfter(Delegate);
-		StatsComponent->RecalculateStats();
+		StatsComponent->RecalculateStats(true, false);
 		bApplied = true;
+
+		// Scale old hp -> new hp via:
+		//	Old Current   New Current
+		//	----------- = -----------
+		//  Old Perm      New Perm
+		
+		
 	}
 }
 
@@ -136,7 +194,7 @@ void UPermStatMod::RemoveEffect()
 	{
 		Super::RemoveEffect();
 		StatsComponent->RecalculateStatsOutlet.RemoveAfter(Delegate);
-		StatsComponent->RecalculateStats();
+		StatsComponent->RecalculateStats(true, false);
 		bApplied = false;
 	}
 }

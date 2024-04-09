@@ -216,8 +216,9 @@ void UCombatStatsComponent::ModifyStatsUniformly(const float UniformMod, const E
 		ModifyStat(Stat, UniformMod, ValueType, Mode);
 }
 
-void UCombatStatsComponent::RecalculateStats(const bool bResetCurrent)
+void UCombatStatsComponent::RecalculateStats(const bool bResetCurrent, const bool bResetHP)
 {
+	bool bReset;
 	for(const EStatEnum Stat : StatsArray)
 	{
 
@@ -226,10 +227,17 @@ void UCombatStatsComponent::RecalculateStats(const bool bResetCurrent)
 		const float OriginalCurrent = TargetStat.GetCurrentValue();
 		const float OriginalPermanent = TargetStat.GetPermanentValue();
 
+		// Resetting this stat?
+		bReset = bResetCurrent;
+		if (Stat == EStatEnum::Health)
+		{
+			bReset &= bResetHP;
+		}
+		
 		// Call + execute + call
-		RecalculateStatsOutlet.ExecuteBefore(Stat, bResetCurrent, OriginalCurrent, OriginalPermanent);
-		TargetStat.Update(LevelComponent->GetLevel(), bResetCurrent);
-		RecalculateStatsOutlet.ExecuteAfter(Stat, bResetCurrent, OriginalCurrent, OriginalPermanent);
+		RecalculateStatsOutlet.ExecuteBefore(Stat, bReset, OriginalCurrent, OriginalPermanent);
+		TargetStat.Update(LevelComponent->GetLevel(), bReset);
+		RecalculateStatsOutlet.ExecuteAfter(Stat, bReset, OriginalCurrent, OriginalPermanent);
 	}
 }
 

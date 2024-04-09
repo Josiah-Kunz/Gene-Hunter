@@ -242,7 +242,7 @@ public:
 	 * Recalculates all stats based on the current level and resets current stats. Also calls FCombatStat::Update.
 	 */
 	UFUNCTION(BlueprintCallable)
-	void RecalculateStats(bool bResetCurrent = true);
+	void RecalculateStats(const bool bResetCurrent = true, const bool bResetHP = false);
 
 	/**
 	 * Before and After parameters are identical:

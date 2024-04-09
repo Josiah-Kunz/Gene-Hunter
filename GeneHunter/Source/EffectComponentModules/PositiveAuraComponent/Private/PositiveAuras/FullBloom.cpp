@@ -21,7 +21,12 @@ void UFullBloom::OnComponentCreated()
 	Super::OnComponentCreated();
 	ADD_COMPONENT(UPermStatMod, PermStatMod, GetOwner())
 	PermStatMod->StatMods = {
-		{EStatEnum::Health, 20, EModificationMode::AddPercentage, EStatValueType::Permanent}
+		{EStatEnum::Health, HealthIncrease, EModificationMode::AddPercentage, EStatValueType::Permanent}
 	};
 	PermStatMod->SetOwner(this);
+}
+
+float UFullBloom::GetHPIncrease() const
+{
+	return HealthIncrease;
 }

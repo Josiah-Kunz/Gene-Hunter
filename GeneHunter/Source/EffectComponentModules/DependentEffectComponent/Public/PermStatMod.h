@@ -87,6 +87,8 @@ private:
 	 */
 	void ModifyStat(const EStatEnum InStat, const bool bIncrease, const bool bResetCurrent);
 
+	void AddOrRemoveEffectInternal(const bool bAdding);
+
 #pragma endregion
 
 
