@@ -35,9 +35,9 @@ void UPermStatMod::ModifyStat(const EStatEnum InStat, const bool bIncrease, cons
 void UPermStatMod::AddOrRemoveEffectInternal(const bool bAdding)
 {
 
-	if (bHasOwner && !bAdding)
+	if (bHasOwner)
 	{
-	
+
 		// If it's HP, we should make sure current <= permanent (the others should raise and lower according to their
 		// effects on RecalculateStats)
 		const FCombatStat& HP = StatsComponent->GetStat(EStatEnum::Health);
@@ -163,38 +163,10 @@ FSupportingText UPermStatMod::GetSupportingText()
 
 void UPermStatMod::ApplyEffect()
 {
-	if (bHasOwner && !bApplied)
-	{
-	
-		// If it's HP, we should make sure current <= permanent (the others should raise and lower according to their
-		// effects on RecalculateStats)
-		const FCombatStat& HP = StatsComponent->GetStat(EStatEnum::Health);
-		const float OldCurHP = HP.GetCurrentValue();
-		const float OldPermHP = HP.GetPermanentValue();
-
-		// Dewet
-		Super::ApplyEffect();
-		BIND_DELEGATE(Delegate, UPermStatMod::AfterRecalculateStats);
-		StatsComponent->RecalculateStatsOutlet.AddAfter(Delegate);
-		StatsComponent->RecalculateStats(true, false);
-		bApplied = true;
-
-		// Scale old hp -> new hp via:
-		//	Old Current   New Current
-		//	----------- = -----------
-		//  Old Perm      New Perm
-		
-		
-	}
+	AddOrRemoveEffectInternal(true);
 }
 
 void UPermStatMod::RemoveEffect()
 {
-	if (bHasOwner && bApplied)
-	{
-		Super::RemoveEffect();
-		StatsComponent->RecalculateStatsOutlet.RemoveAfter(Delegate);
-		StatsComponent->RecalculateStats(true, false);
-		bApplied = false;
-	}
+	AddOrRemoveEffectInternal(false);
 }

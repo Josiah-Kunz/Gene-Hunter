@@ -17,7 +17,7 @@ class POSITIVEAURACOMPONENT_API UFullBloom : public UPositiveAuraComponent
 
 private:
 
-	constexpr float HealthIncrease = 20;
+	const float HealthIncrease = 20;
 	
 public:
 	
@@ -28,6 +28,10 @@ public:
 	virtual FSupportingText GetSupportingText() override;
 
 	virtual void OnComponentCreated() override;
+
+	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
+
+	virtual void OnUnregister() override;
 
 	UFUNCTION()
 	float GetHPIncrease() const;

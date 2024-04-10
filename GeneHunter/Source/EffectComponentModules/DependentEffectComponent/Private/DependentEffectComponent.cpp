@@ -26,6 +26,7 @@ void UDependentEffectComponent::RemoveEffect()
 {
 }
 
+
 void UDependentEffectComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
 {
 	RemoveEffect();

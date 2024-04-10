@@ -33,8 +33,8 @@ bool UEffectComponent_Components_FullBloom::RunTest(const FString& Parameters)
 	ADD_NEW_COMPONENT(UFullBloom, FullBloom, DummyActor);
 
 	// Expected value
-	const float CurrentHP = Stats->GetStat(EStatEnum::Health).GetCurrentValue();
-	const float ExpectedHP = OriginalHP * (1+FullBloom->GetHPIncrease());
+	float CurrentHP = Stats->GetStat(EStatEnum::Health).GetCurrentValue();
+	float ExpectedHP = OriginalHP * (1+FullBloom->GetHPIncrease()/100);
 	
 	// Test
 	const bool bFullHPSuccess = FMathf::Abs(CurrentHP - ExpectedHP) < 0.1f;
@@ -47,18 +47,27 @@ bool UEffectComponent_Components_FullBloom::RunTest(const FString& Parameters)
 	}
 
 	// Go to 10% health
+	const float DamagedHP = 0.5f*FullBloom->GetHPIncrease()/100 * Stats->GetStat(EStatEnum::Health).GetPermanentValue(); 
 	Stats->ModifyStat(EStatEnum::Health,
-		0.5f*FullBloom->GetHPIncrease() * Stats->GetStat(EStatEnum::Health).GetPermanentValue(),
+		DamagedHP,
 		EStatValueType::Current,
 		EModificationMode::SetDirectly);
 
 	// Remove effect and make sure we don't die
-	// TODO
+	//DummyActor->RemoveOwnedComponent(FullBloom);
+	//FullBloom->DestroyComponent();
+	FullBloom->UnregisterComponent();
+
+	// Get new expected HP
+	const float NewPermHP = OriginalHP * (1+FullBloom->GetHPIncrease()/100);
+	ExpectedHP = OriginalHP/NewPermHP * DamagedHP;
 	
-	const bool bDmgHPSuccess = FMathf::Abs(CurrentHP - ExpectedHP) < 0.1f;
-	if (!bFullHPSuccess)
+	// Test
+	CurrentHP = Stats->GetStat(EStatEnum::Health).GetCurrentValue();
+	const bool bRmvSuccess = FMathf::Abs(CurrentHP - ExpectedHP) < 0.1f;
+	if (!bRmvSuccess)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("FullBloom HP at full health didn't match expected! Current [%s] | Expected [%s]"),
+		UE_LOG(LogTemp, Warning, TEXT("Removed FullBloom and the HP didn't scale correctly! Current [%s] | Expected [%s]"),
 			*FString::SanitizeFloat(CurrentHP),
 			*FString::SanitizeFloat(ExpectedHP)
 			);
@@ -68,7 +77,7 @@ bool UEffectComponent_Components_FullBloom::RunTest(const FString& Parameters)
 	ComponentUtilities::DestroyDummyWorld(DummyWorld);
 
 	// Return
-	return bFullHPSuccess;
+	return bFullHPSuccess && bRmvSuccess;
 }
 
 #pragma endregion

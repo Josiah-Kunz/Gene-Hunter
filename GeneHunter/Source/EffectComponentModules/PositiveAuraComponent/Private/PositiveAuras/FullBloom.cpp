@@ -26,6 +26,18 @@ void UFullBloom::OnComponentCreated()
 	PermStatMod->SetOwner(this);
 }
 
+void UFullBloom::OnComponentDestroyed(bool bDestroyingHierarchy)
+{
+	PermStatMod->DestroyComponent();
+	Super::OnComponentDestroyed(bDestroyingHierarchy);
+}
+
+void UFullBloom::OnUnregister()
+{
+	PermStatMod->DestroyComponent();
+	Super::OnUnregister();
+}
+
 float UFullBloom::GetHPIncrease() const
 {
 	return HealthIncrease;

@@ -13,7 +13,7 @@
 
 \begin{itemize}
 	\item{\textbf{\code{EffectableComponent}s} are \code{ActorComponent}s that allow for delegation (effects). They have predefined places called ``\code{Outlet}s'' that allow for code modification. Think of \code{Outlet}s like electrical outlets waiting to be plugged into.
-		\SubItem{Let's use \code{StatsComponent} as an example. Say we want a Pok\'{e}mon-style ``Adamant'' nature ($+$10\% PhA/$-$10\%SpA). One such place for modification is in the function \code{RecalculateStats}. \todo{Update picture!}}
+		\SubItem{Let's use \code{StatsComponent} as an example. Say we want a Pok\'{e}mon-style ``Adamant'' nature ($+$10\% PhA/$-$10\% SpA). One such place for modification is in the function \code{RecalculateStats}.}
 		\begin{center}
 			\includegraphics[scale=\ScreenshotScale]{recalculate-stats-code}
 		\end{center}
@@ -22,7 +22,7 @@
 		\SubItem{\todo{Update this!} Let's use \code{StatsComponent}'s \code{AfterRecalculateStatsArray} in our example. In this case, after stats are recalculated (say, on level-up), the base PhA would increase by 10\% and the base SpA would decrease by 10\% (additively): }
 		\begin{center}
 			\includegraphics[scale=\ScreenshotScale]{adamant-code}
-		\end{center}		 
+		\end{center}
 		}
 	\item{\textbf{\code{EffectComponent}s} are \code{ActorComponent}s that plug into \code{Outlet}s. These come in many forms, but an easy example is a \code{Buff}. \todo{Describe how this happens with pictures!}}
 \end{itemize}
@@ -32,8 +32,6 @@
 \sect{\code{EffectComponent} Inheritance}
 
 \input{effects-inheritance}
-
-
 
 %====================================================
 

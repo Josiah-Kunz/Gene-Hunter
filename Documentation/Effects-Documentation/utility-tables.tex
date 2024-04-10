@@ -7,8 +7,8 @@
 
 \begin{itemize}
 	\item{has an \code{Owner} that it's dependent upon.}
-	\item{should be added just after its \code{Owner} is added. See how to attach below.}
-	\item{is removed just after its \code{Owner} is removed.}
+	\item{\ul{should} be added just after its \code{Owner} is added. See how to attach below.}
+	\item{\ul{should} be destroyed just before its \code{Owner} is destroyed. This should happen via destroy and unregister. See below.}
 	\item{follows its \code{Owner}'s \code{Silence} and \code{Unsilence}.}
 	\item{returns its \code{Owner}'s \code{Priority}, \code{Stacks}, \code{MaxStats}, \code{Priority}, and \code{ShouldApplyEffect}.}
 	\item{is not visible to UI.}
@@ -49,6 +49,14 @@ You can also initialize things on the \code{UPermStatMod} side of things. For ex
 
 	// This also calls ApplyEffect
 	Super::SetOwner(NewOwner);
+\end{lstlisting}
+Finally, when you destroy \code{UBerserkerGene}, make sure you also destroy \code{UPermStatMod}:
+\begin{lstlisting}[language=C++]
+void UBerserkerGene::OnComponentDestroyed(bool bDestroyingHierarchy)
+{
+	PermStatMod->DestroyComponent();
+	Super::OnComponentDestroyed(bDestroyingHierarchy);
+}
 \end{lstlisting}
 
 \begin{EffectTable}{Dependent}

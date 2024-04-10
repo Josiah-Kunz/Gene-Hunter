@@ -218,7 +218,6 @@ void UCombatStatsComponent::ModifyStatsUniformly(const float UniformMod, const E
 
 void UCombatStatsComponent::RecalculateStats(const bool bResetCurrent, const bool bResetHP)
 {
-	bool bReset;
 	for(const EStatEnum Stat : StatsArray)
 	{
 
@@ -228,7 +227,7 @@ void UCombatStatsComponent::RecalculateStats(const bool bResetCurrent, const boo
 		const float OriginalPermanent = TargetStat.GetPermanentValue();
 
 		// Resetting this stat?
-		bReset = bResetCurrent;
+		bool bReset = bResetCurrent;
 		if (Stat == EStatEnum::Health)
 		{
 			bReset &= bResetHP;

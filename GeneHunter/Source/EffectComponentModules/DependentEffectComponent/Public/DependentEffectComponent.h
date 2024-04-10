@@ -68,7 +68,7 @@ public:
 #pragma region Adding and removing
 
 public:
-
+	
 	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
 	
 	virtual void OnRefreshStacks() override;
