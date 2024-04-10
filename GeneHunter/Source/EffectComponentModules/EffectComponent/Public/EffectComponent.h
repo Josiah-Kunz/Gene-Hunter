@@ -6,6 +6,8 @@
 #include "SupportingText.h"
 #include "Components/ActorComponent.h"
 #include "Outlets/GetStacksOutlet.h"
+#include "Outlets/OnAddEffectOutlet.h"
+#include "Outlets/OnRemoveEffectOutlet.h"
 
 #include "EffectComponent.generated.h"
 
@@ -19,6 +21,8 @@ class EFFECTCOMPONENT_API UEffectComponent : public UEffectableComponent
 {
 	GENERATED_BODY()
 
+#pragma region Private and protected vars and functions
+	
 private:
 	uint16 Stacks = 0;
 
@@ -38,6 +42,25 @@ protected:
 	 * an implementation.
 	 */
 	bool Added = false;
+
+#pragma endregion
+
+#pragma region Outlets
+	
+public:
+
+	UPROPERTY(VisibleAnywhere, Category="Outlets")
+	FGetStacksOutlet GetStacksOutlet;
+
+	UPROPERTY(VisibleAnywhere, Category="Outlets")
+	FOnAddEffectOutlet OnAddEffectOutlet;
+
+	UPROPERTY(VisibleAnywhere, Category="Outlets")
+	FOnRemoveEffectOutlet OnRemoveEffectOutlet;
+
+#pragma endregion
+
+#pragma region Public functions
 	
 public:
 	
@@ -49,9 +72,6 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent", BlueprintPure)
 	virtual int32 GetStacks();
-
-	UPROPERTY(VisibleAnywhere, Category="Outlets")
-	FGetStacksOutlet GetStacksOutlet;
 	
 	/**
 	 * When an EffectComponent is attached to an Actor, it looks for duplicate EffectComponents. If such a duplicate
@@ -179,6 +199,16 @@ public:
 	virtual void OnComponentCreated() override;
 
 	/**
+	 * Called for Outlet OnComponentRemoved.
+	 */
+	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
+
+	/**
+	 * Called for Outlet OnComponentRemoved.
+	 */
+	virtual void OnUnregister() override;
+
+	/**
 	 * If the following two conditions are true, you should apply the effect:
 	 *	- Stacks > 0
 	 *	- Not silenced
@@ -209,5 +239,10 @@ public:
 	{ \
 		OutletDelegate##.Delegate.BindDynamic(this, &##FuncName); \
 	}
+
+#define UNBIND_DELEGATE(OutletDelegate, FuncName) \
+	OutletDelegate##.Delegate.RemoveDynamic(this, &##FuncName);
+
+#pragma endregion
 	
 };

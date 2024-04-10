@@ -40,9 +40,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	bool bApplied;
 
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FBeforeOnRemoveEffectDelegate Delegate;
+
 #pragma endregion
 
 #pragma region Novel functions
+
+private:
+
+	void BeforeRemoveEffect(const UEffectComponent* EffectToRemove);
 	
 public:
 
@@ -97,5 +106,7 @@ public:
 	 * Always false.
 	 */
 	virtual bool IsVisibleToUI() const override;
+
+#pragma endregion
 	
 };

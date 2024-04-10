@@ -29,6 +29,30 @@
 
 \gap{}
 
+\begin{OutletTable}{UEffectComponent}
+
+	\OutletCell{title=GetStacks, 
+				beforeParams={\code{const uint16 OGStacks},\\
+							\code{int32\& ReturnedStacks}},
+				afterParams={\code{const uint16 OGStacks},\\
+							\code{const int32 ReturnedStacks}},
+				}
+				\\
+				
+	\OutletCell{title=OnAddEffect, 
+				beforeParams={\code{const EffectComponent* EffectToAdd}
+							},
+				afterParams={\code{const EffectComponent* AddedEffect}
+							},
+				}
+				\\
+	
+\end{OutletTable}
+
+%--------------------------
+
+\gap{}
+
 \begin{OutletTable}{ULevelComponent}
 
 	\OutletCell{title=GetBaseExpYield, 

@@ -1,5 +1,10 @@
 #include "DependentEffectComponent.h"
 
+void UDependentEffectComponent::BeforeRemoveEffect(const UEffectComponent* EffectToRemove)
+{
+	RemoveEffect();
+}
+
 void UDependentEffectComponent::SetOwner(UEffectComponent* NewOwner)
 {
 
@@ -20,12 +25,15 @@ void UDependentEffectComponent::SetOwner(UEffectComponent* NewOwner)
 
 void UDependentEffectComponent::ApplyEffect()
 {
+	BIND_DELEGATE(Delegate, UDependentEffectComponent::BeforeRemoveEffect);
+	Owner->OnRemoveEffectOutlet.AddBefore(Delegate);
 }
 
 void UDependentEffectComponent::RemoveEffect()
 {
+	// Do we need to unbind here? No---we own the delegate and the function!
+	// The Delegate will only get added to/removed from Owners' arrays.
 }
-
 
 void UDependentEffectComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
 {

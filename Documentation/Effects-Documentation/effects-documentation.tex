@@ -130,7 +130,7 @@ As an example, let's use \code{GetBaseExpYield}. (You can imagine that this is a
 			\item{Don't forget the \code{After} variant's delegates, which should probably be \code{const}.}
 		\end{itemize}
 	}
-	\item{\textbf{Check number of parameters.} I make a point of this because I find it's my most common error. Make sure your declared signature \textit{and} declared \code{Outlet} function macros have the correct number of params (two in our case). Explicitly, you might need to use \code{DECLARE\_DYNAMIC\_DELEGATE\_FourParams(...)}.}
+	\item{\textbf{Check number of parameters.} I make a point of this because I find it's my most common error. Make sure your declared signature \textit{and} declared \code{Outlet} function macros have the correct number of params (two in our case). Explicitly, you might need to use\\\code{DECLARE\_DYNAMIC\_DELEGATE\_FourParams(...)}.}
 	\item{\textbf{Declare \code{UPROPERTY}.} Inside the \code{UEffectableComponent} (in this example, \code{ULevelComponent}), declare the \code{Outlet} as a variable. Note that it's custom to have this \code{UPROPERTY} as public and in the ``Outlets'' category. It's also a good idea to comment the \code{UPROPERTY} with the parameters.
 	\begin{center}
 		\includegraphics[scale=\ScreenshotScale]{create-outlet-uproperty}

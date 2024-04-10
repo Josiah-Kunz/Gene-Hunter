@@ -131,6 +131,9 @@ EStackChangeResult UEffectComponent::Purge(const int32 Amount)
 
 auto UEffectComponent::OnComponentCreated() -> void
 {
+
+	// Delegate
+	OnAddEffectOutlet.ExecuteBefore(this);
 	
 	// Search owner for another component of the same name. If we find one, we don't attach---instead, we just up the
 	// stacks.	
@@ -152,7 +155,26 @@ auto UEffectComponent::OnComponentCreated() -> void
 	// Didn't find any w/this name; must be new
 	SetStacks(1);
 	Added = true;
+	
+	// Supah
 	Super::OnComponentCreated();
+
+	// Delegate
+	OnAddEffectOutlet.ExecuteAfter(this);
+}
+
+void UEffectComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
+{
+	OnRemoveEffectOutlet.ExecuteBefore(this);
+	Super::OnComponentDestroyed(bDestroyingHierarchy);
+	OnRemoveEffectOutlet.ExecuteAfter(this);
+}
+
+void UEffectComponent::OnUnregister()
+{
+	OnRemoveEffectOutlet.ExecuteBefore(this);
+	Super::OnUnregister();
+	OnRemoveEffectOutlet.ExecuteAfter(this);
 }
 
 bool UEffectComponent::ShouldApplyEffect()
