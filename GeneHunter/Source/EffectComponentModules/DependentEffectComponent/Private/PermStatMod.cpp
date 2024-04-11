@@ -47,13 +47,12 @@ void UPermStatMod::AddOrRemoveEffectInternal(const bool bAdding)
 		// Bind + Apply (or not!)
 		if (bAdding)
 		{
-			BIND_DELEGATE(Delegate, UPermStatMod::AfterRecalculateStats);
+			BIND_DELEGATE(AfterRecalcStatsDelegate, UPermStatMod::AfterRecalculateStats);
 			Super::ApplyEffect();
-			StatsComponent->RecalculateStatsOutlet.AddAfter(Delegate);
+			StatsComponent->RecalculateStatsOutlet.AddAfter(AfterRecalcStatsDelegate);
 		} else
 		{
-			Super::RemoveEffect();
-			StatsComponent->RecalculateStatsOutlet.RemoveAfter(Delegate);
+			StatsComponent->RecalculateStatsOutlet.RemoveAfter(AfterRecalcStatsDelegate);
 		}
 
 		// Either way recalculate and set the applied state
@@ -71,6 +70,12 @@ void UPermStatMod::AddOrRemoveEffectInternal(const bool bAdding)
 		StatsComponent->ModifyStat(EStatEnum::Health, NewCurHP,
 			EStatValueType::Current,
 			EModificationMode::SetDirectly);
+
+		// If removing, we need to super (to kill)
+		if (!bAdding)
+		{
+			Super::RemoveEffect();
+		}
 		
 	}
 }

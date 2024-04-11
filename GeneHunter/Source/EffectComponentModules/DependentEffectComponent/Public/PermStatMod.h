@@ -37,7 +37,7 @@ public:
 	 * This is the delegate that attaches to UCombatStatComponent's AfterRecalculateStats Outlet.
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	FAfterRecalculateStatsDelegate Delegate;
+	FAfterRecalculateStatsDelegate AfterRecalcStatsDelegate;
 
 	/**
 	 * This is the function that binds to the aforementioned Delegate.

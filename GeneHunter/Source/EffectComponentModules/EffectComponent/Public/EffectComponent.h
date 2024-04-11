@@ -29,7 +29,9 @@ private:
 	/**
 	 * If true, the delegate should do nothing (but not be removed). It's up to you to implement this in inherited classes!
 	 */
-	bool Silenced = false;
+	bool bSilenced = false;
+
+	bool bRemoveOutletExecuted;
 
 protected:
 

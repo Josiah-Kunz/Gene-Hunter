@@ -29,10 +29,6 @@ public:
 
 	virtual void OnComponentCreated() override;
 
-	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
-
-	virtual void OnUnregister() override;
-
 	UFUNCTION()
 	float GetHPIncrease() const;
 	

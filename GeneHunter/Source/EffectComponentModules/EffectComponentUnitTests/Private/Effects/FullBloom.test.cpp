@@ -54,7 +54,6 @@ bool UEffectComponent_Components_FullBloom::RunTest(const FString& Parameters)
 		EModificationMode::SetDirectly);
 
 	// Remove effect and make sure we don't die
-	//DummyActor->RemoveOwnedComponent(FullBloom);
 	//FullBloom->DestroyComponent();
 	FullBloom->UnregisterComponent();
 

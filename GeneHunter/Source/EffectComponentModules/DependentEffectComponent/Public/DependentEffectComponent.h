@@ -43,7 +43,7 @@ protected:
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	FBeforeOnRemoveEffectDelegate Delegate;
+	FBeforeOnRemoveEffectDelegate OnRemoveDelegate;
 
 #pragma endregion
 
@@ -51,7 +51,8 @@ public:
 
 private:
 
-	void BeforeRemoveEffect(const UEffectComponent* EffectToRemove);
+	UFUNCTION()
+	void CallRemoveEffect(const UEffectComponent* EffectToRemove);
 	
 public:
 

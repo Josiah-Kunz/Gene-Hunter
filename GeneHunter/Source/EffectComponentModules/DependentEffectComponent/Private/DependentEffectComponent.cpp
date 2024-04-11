@@ -1,6 +1,6 @@
 #include "DependentEffectComponent.h"
 
-void UDependentEffectComponent::BeforeRemoveEffect(const UEffectComponent* EffectToRemove)
+void UDependentEffectComponent::CallRemoveEffect(const UEffectComponent* EffectToRemove)
 {
 	RemoveEffect();
 }
@@ -25,19 +25,27 @@ void UDependentEffectComponent::SetOwner(UEffectComponent* NewOwner)
 
 void UDependentEffectComponent::ApplyEffect()
 {
-	BIND_DELEGATE(Delegate, UDependentEffectComponent::BeforeRemoveEffect);
-	Owner->OnRemoveEffectOutlet.AddBefore(Delegate);
+	BIND_DELEGATE(OnRemoveDelegate, UDependentEffectComponent::CallRemoveEffect);
+	Owner->OnRemoveEffectOutlet.AddBefore(OnRemoveDelegate);
 }
 
 void UDependentEffectComponent::RemoveEffect()
 {
 	// Do we need to unbind here? No---we own the delegate and the function!
 	// The Delegate will only get added to/removed from Owners' arrays.
+
+	// We also don't need this:
+	//	Owner->OnRemoveEffectOutlet.RemoveBefore(OnRemoveDelegate);
+	// It is invoked while OnRemoveEffectOutlet is looping over its delegates. If we remove it, the TArray collection
+	// will complain that it has been changed. And we're only ever invoking it whenever the main effect (Owner) is
+	// being destroyed.
+	
+	DestroyComponent();
 }
 
 void UDependentEffectComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
 {
-	RemoveEffect();
+	//RemoveEffect();
 	Super::OnComponentDestroyed(bDestroyingHierarchy);
 }
 

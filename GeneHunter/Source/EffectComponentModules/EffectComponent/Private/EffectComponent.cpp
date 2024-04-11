@@ -86,17 +86,17 @@ bool UEffectComponent::IsPersistent() const
 
 bool UEffectComponent::IsSilenced() const
 {
-	return Silenced;
+	return bSilenced;
 }
 
 void UEffectComponent::Silence()
 {
-	Silenced = true;
+	bSilenced = true;
 }
 
 void UEffectComponent::Unsilence()
 {
-	Silenced = false;
+	bSilenced = false;
 }
 
 bool UEffectComponent::IsVisibleToUI() const
@@ -165,16 +165,30 @@ auto UEffectComponent::OnComponentCreated() -> void
 
 void UEffectComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
 {
-	OnRemoveEffectOutlet.ExecuteBefore(this);
+	if (!bRemoveOutletExecuted)
+	{
+		OnRemoveEffectOutlet.ExecuteBefore(this);
+	}
 	Super::OnComponentDestroyed(bDestroyingHierarchy);
-	OnRemoveEffectOutlet.ExecuteAfter(this);
+	if (!bRemoveOutletExecuted)
+	{
+		OnRemoveEffectOutlet.ExecuteAfter(this);
+	}
+	bRemoveOutletExecuted = true;
 }
 
 void UEffectComponent::OnUnregister()
 {
-	OnRemoveEffectOutlet.ExecuteBefore(this);
+	if (!bRemoveOutletExecuted)
+	{
+		OnRemoveEffectOutlet.ExecuteBefore(this);
+	}
 	Super::OnUnregister();
-	OnRemoveEffectOutlet.ExecuteAfter(this);
+	if (!bRemoveOutletExecuted)
+	{
+		OnRemoveEffectOutlet.ExecuteAfter(this);
+	}
+	bRemoveOutletExecuted = true;
 }
 
 bool UEffectComponent::ShouldApplyEffect()
