@@ -14,7 +14,7 @@ void UWoundedSoul::BeforeModifyStats(const EStatEnum TargetStat, const EStatValu
 	const EModificationMode Mode, const float OriginalValue, float& AttemptedValue)
 {
 	// If silenced, do nothing
-	if (IsSilenced())
+	if (!ShouldApplyEffect())
 	{
 		return;
 	}
@@ -46,6 +46,8 @@ void UWoundedSoul::OnComponentCreated()
 	// No stats component?
 	if (StatsComponent == nullptr)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("No UStatsComponent found!"
+			" This is required for UWoundedSoul."))
 		return;
 	}
 
@@ -60,7 +62,7 @@ void UWoundedSoul::OnComponentCreated()
 
 void UWoundedSoul::OnComponentDestroyed(bool bDestroyingHierarchy)
 {
-	//StatsComponent->ModifyStatOutlet.RemoveBefore(Delegate);
+	StatsComponent->ModifyStatOutlet.RemoveBefore(Delegate);
 	Super::OnComponentDestroyed(bDestroyingHierarchy);
 }
 
@@ -68,7 +70,7 @@ FSupportingText UWoundedSoul::GetSupportingText()
 {
 	return FSupportingText{
 		FText::FromString("Effects like this is the only way healing isn't OP. You know, there's some counterplay."),
-		 FText::FromString(FString::Printf(TEXT("%s%% healing"), *FString::SanitizeFloat(HealingReduction))),
+		 FText::FromString(FString::Printf(TEXT("-%s%% healing"), *FString::SanitizeFloat(HealingReduction))),
 		FText::FromString("Time won't heal this wound.")
 	};
 	

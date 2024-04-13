@@ -59,7 +59,7 @@ void UCombatStatsComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-const FCombatStat& UCombatStatsComponent::GetStat(const EStatEnum Stat)
+FCombatStat& UCombatStatsComponent::GetStat(const EStatEnum Stat)
 {
 	return GetStatMutable(Stat);
 }
@@ -197,9 +197,10 @@ void UCombatStatsComponent::RandomizeBaseStats(const int32 MinBaseStats, const i
 }
 
 void UCombatStatsComponent::ModifyStat(const EStatEnum Stat, const float Value, const EStatValueType ValueType,
-                                       const EModificationMode Mode)
+                                       const EModificationMode Mode, const EStatReferenceType ReferenceType,
+                                       const float ReferenceValue)
 {
-	ModifyStatInternal(Stat, Value, ValueType, Mode);
+	ModifyStatInternal(Stat, Value, ValueType, Mode, ReferenceType, ReferenceValue);
 }
 
 
@@ -241,7 +242,8 @@ void UCombatStatsComponent::RecalculateStats(const bool bResetCurrent, const boo
 }
 
 auto UCombatStatsComponent::ModifyStatInternal(const EStatEnum Stat, const float Value,
-	const EStatValueType ValueType, const EModificationMode Mode) -> void
+	const EStatValueType ValueType, const EModificationMode Mode, const EStatReferenceType ReferenceType,
+	const float ReferenceValue) -> void
 {
 
 	// Cache for outlets
@@ -259,7 +261,7 @@ auto UCombatStatsComponent::ModifyStatInternal(const EStatEnum Stat, const float
 	
 	// Get stat and modify it
 	FCombatStat& TargetStat = GetStatMutable(Stat);
-	TargetStat.ModifyValue(AttemptedValue, ValueType, Mode);
+	TargetStat.ModifyValue(AttemptedValue, ValueType, Mode, ReferenceType, ReferenceValue);
 	
 	// After outlet
 	ModifyStatOutlet.ExecuteAfter(

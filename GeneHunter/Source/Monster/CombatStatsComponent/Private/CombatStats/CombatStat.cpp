@@ -57,24 +57,29 @@ void FCombatStat::UpdateCurrent(const uint16 Level)
 	SetCurrentValue(CalculateValue(Level));
 }
 
-void FCombatStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode)
+void FCombatStat::ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode,
+	const EStatReferenceType ReferenceType, const float ReferenceValue)
 {
 	switch(ModifyType)
 	{
 	case EStatValueType::Current:
-		SetCurrentValue(GetModification(GetCurrentValue(), ModifyMode, Modifier));
+		SetCurrentValue(GetModification(GetCurrentValue(), ModifyMode, Modifier,
+			ReferenceType, ReferenceValue));
 		break;
 	case EStatValueType::Permanent:
-		SetPermanentValue(GetModification(GetPermanentValue(), ModifyMode, Modifier));
+		SetPermanentValue(GetModification(GetPermanentValue(), ModifyMode, Modifier,
+			ReferenceType, ReferenceValue));
 		break;
 	case EStatValueType::BaseStat:
-		BaseStat = GetModification(BaseStat, ModifyMode, Modifier);
+		BaseStat = GetModification(BaseStat, ModifyMode, Modifier, ReferenceType, ReferenceValue);
 		break;
 	case EStatValueType::BasePairs:
-		BasePairs = GetModification(BasePairs, ModifyMode, Modifier);
+		BasePairs = GetModification(BasePairs, ModifyMode, Modifier, ReferenceType, ReferenceValue);
 		break;
 	default:
-		UE_LOG(LogTemp, Error, TEXT("ModifyMode not coded for in Stat::GetModification! Fix ASAP!"));
+		UE_LOG(LogTemp, Error, TEXT("ModifyMode [%s] not coded for in Stat::GetModification! Fix ASAP!"),
+				*UEnum::GetValueAsString(ModifyType)
+			);
 		break;
 	}
 }
@@ -163,12 +168,35 @@ FLinearColor const FCombatStat::Color() const
 	return Color;
 }
 
+float FCombatStat::GetReferenceValue(const float SelfValue, const EStatReferenceType ReferenceType,
+	const float OtherValue)
+{
+	switch(ReferenceType)
+	{
+	case EStatReferenceType::Self:
+		return SelfValue;
+	case EStatReferenceType::Current:
+		return CurrentValue;
+	case EStatReferenceType::Permanent:
+		return PermanentValue;
+	case EStatReferenceType::SpecifiedValue:
+		return OtherValue;
+	default:
+		UE_LOG(LogTemp, Warning, TEXT("Unsure how to handle StatReferenceType [%s]! Please code it in CombatStat.cpp."),
+			*UEnum::GetValueAsString(ReferenceType)
+		)
+		return SelfValue;
+	}
+}
+
 #pragma endregion
 
 #pragma region Static functions
 
-float FCombatStat::GetModification(const float Original, const EModificationMode Mode, const float Modification)
+float FCombatStat::GetModification(const float Original, const EModificationMode Mode, const float Modification,
+	const EStatReferenceType ReferenceType, const float ReferenceValue)
 {
+	
 	switch(Mode)
 	{
 
@@ -176,15 +204,16 @@ float FCombatStat::GetModification(const float Original, const EModificationMode
 	case EModificationMode::AddAbsolute:
 		return Original + Modification;
 	case EModificationMode::AddFraction:
-		return Original + Original * Modification;
+		return Original + GetReferenceValue(Original, ReferenceType, ReferenceValue) * Modification;
 	case EModificationMode::AddPercentage:
-		return GetModification(Original, EModificationMode::AddFraction, Modification/100);
+		return GetModification(Original, EModificationMode::AddFraction, Modification/100, ReferenceType, ReferenceValue);
 
 	// Multiplication
 	case EModificationMode::MultiplyAbsolute:
 		return Original * Modification;
 	case EModificationMode::MultiplyPercentage:
-		return Original * Modification/100;
+		return Original * GetReferenceValue(Original, ReferenceType, ReferenceValue)
+			* Modification/100;
 		
 	// Set directly
 	case EModificationMode::SetDirectly:

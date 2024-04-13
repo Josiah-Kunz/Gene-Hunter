@@ -48,7 +48,7 @@ void UPermStatMod::AddOrRemoveEffectInternal(const bool bAdding)
 		if (bAdding)
 		{
 			BIND_DELEGATE(AfterRecalcStatsDelegate, UPermStatMod::AfterRecalculateStats);
-			Super::ApplyEffect();
+			Super::AddEffect();
 			StatsComponent->RecalculateStatsOutlet.AddAfter(AfterRecalcStatsDelegate);
 		} else
 		{
@@ -147,7 +147,8 @@ void UPermStatMod::SetOwner(UEffectComponent* NewOwner)
 		// No stats component?
 		if (StatsComponent == nullptr)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("No UCombatStatsComponent found for PermStatMod! This is required *before* the Owner is set."))
+			UE_LOG(LogTemp, Warning, TEXT("No UCombatStatsComponent found for PermStatMod!"
+								 "This is required *before* the Owner is set."))
 			return;
 		}
 	}
@@ -166,7 +167,7 @@ FSupportingText UPermStatMod::GetSupportingText()
 	};
 }
 
-void UPermStatMod::ApplyEffect()
+void UPermStatMod::AddEffect()
 {
 	AddOrRemoveEffectInternal(true);
 }

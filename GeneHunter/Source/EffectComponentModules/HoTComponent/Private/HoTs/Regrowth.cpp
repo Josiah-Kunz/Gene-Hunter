@@ -15,6 +15,11 @@ EModificationMode URegrowth::Mode()
 	return EModificationMode::AddPercentage;
 }
 
+EStatReferenceType URegrowth::StatReferenceType()
+{
+	return EStatReferenceType::Permanent;
+}
+
 float URegrowth::HPS()
 {
 	return 1;

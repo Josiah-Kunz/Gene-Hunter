@@ -31,7 +31,7 @@ bool UEffectComponent_Components_Regrowth::RunTest(const FString& Parameters)
 	ADD_NEW_COMPONENT(UCombatStatsComponent, Stats, DummyActor);
 	ADD_NEW_COMPONENT(URegrowth, Regrowth, DummyActor);
 
-	// Parameters - 1% per second for 5 seconds updating every 0.1 seconds
+	// Parameters - 1% per second for 5 seconds updating every 1 second
 	constexpr float HotTime = 5;
 
 	// Set the parameters in Regrowth

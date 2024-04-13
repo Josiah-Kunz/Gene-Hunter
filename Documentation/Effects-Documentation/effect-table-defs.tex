@@ -6,6 +6,7 @@
 %
 %	- Effect -> UEffectComponent automatically
 % ================================
+\ifcsmacro{EffectTable}{}{%
 \newenvironment{EffectTable}[1]{%
 \begin{longtblr}[
 	caption = {All \code{U#1Component}s currently implemented and tested.},
@@ -18,6 +19,6 @@
 }
 	#1  		& Short Description	& Implemented via & Priority	& Note\\
 }{%
-\end{longtblr}
+\end{longtblr}%
+}%
 }
-

@@ -23,6 +23,7 @@ public class DebuffComponent : ModuleRules{
 			
 			// Libraries and utilities
 			"BPLibraries",			// for SplitCamelCase
+			"CombatStatsComponent", // we use UCombatStats on BrokenSoul
 			"EffectComponent",		// for inheritance
 			"TimedEffectComponent",	// for inheritance
 			"GHLibraries",			// for component utilities SEARCH_FOR_COMPONENT

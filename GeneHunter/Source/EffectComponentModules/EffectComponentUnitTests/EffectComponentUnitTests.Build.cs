@@ -30,11 +30,12 @@ public class EffectComponentUnitTests : ModuleRules{
 		// Actual UEffects need tested, too!
 		"TimedEffectComponent",
 		"BuffComponent",
+		"DebuffComponent",
 		"HoTComponent",
 		"DoTComponent",
 		"MutationComponent", 
 		"NegativeAuraComponent", 
-		"PositiveAuraComponent",
+		"PositiveAuraComponent", 
 		});
 	}
 }

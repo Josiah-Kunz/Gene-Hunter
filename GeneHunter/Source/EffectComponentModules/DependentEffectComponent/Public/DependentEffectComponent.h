@@ -29,8 +29,11 @@ class DEPENDENTEFFECTCOMPONENT_API UDependentEffectComponent : public UEffectCom
 	
 private:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	UEffectComponent* Owner;
+
+	UPROPERTY()
+	bool bDeactivated;
 
 protected:
 	
@@ -56,6 +59,7 @@ private:
 	
 public:
 
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
 	virtual void SetOwner(UEffectComponent* NewOwner);
 
 	/**
@@ -64,14 +68,28 @@ public:
 	 *	- Call RecalculateStats
 	 * This is automatically called during, e.g., Silence and SetOwner.
 	 */
-	virtual void ApplyEffect();
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
+	virtual void AddEffect();
 
 	/**
 	 * To be inherited. For example, for permanent stat buffs, this should:
 	 *	- Remove its delegate from AfterRecalculateStats
 	 *	- Call RecalculateStats
 	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
 	virtual void RemoveEffect();
+
+	/**
+	 * Triggered during, e.g., Unsilence.
+	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
+	virtual void ApplyEffect();
+
+	/**
+	 * Triggered during, e.g., Silence.
+	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
+	virtual void SuppressEffect();
 
 #pragma endregion
 

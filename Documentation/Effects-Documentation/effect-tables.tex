@@ -10,6 +10,12 @@
 
 %--------------------------
 
+\begin{EffectTable}{Debuff}
+	Broken Soul	& -50\% healing for 5 seconds.	& \code{BeforeModifyStat}	& 80	& Stacks multiplicatively (e.g., with \code{UWoundedSoul}).\\
+\end{EffectTable}
+
+%--------------------------
+
 \begin{EffectTable}{DoT}
 	Cytotoxin	& {$-$1\% HP every 1 sec for 3 seconds.\\3 stacks max.}	& \code{TickComponent}	& 50	& It's a medium amount, but scales well.\\
 \end{EffectTable}
@@ -29,13 +35,13 @@
 %--------------------------
 
 \begin{EffectTable}{NegativeAura}
-	Wounded Soul	& {$-$25\% healing.}	& \code{BeforeModifyStat}	& 100	& $--$\\
+	Wounded Soul	& {$-$25\% healing.}	& \code{BeforeModifyStat}	& 50	& $--$\\
 \end{EffectTable}
 
 %--------------------------
 
 \begin{EffectTable}{PositiveAura}
-	Full Bloom	& {$+$20\% max HP.}	& \code{PermStatMod}	& 100	& $--$\\
+	Full Bloom	& {$+$20\% max HP.}	& \code{PermStatMod}	& 50	& $--$\\
 \end{EffectTable}
 
 %--------------------------

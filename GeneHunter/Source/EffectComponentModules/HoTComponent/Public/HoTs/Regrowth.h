@@ -20,6 +20,8 @@ public:
 
 	virtual EModificationMode Mode() override;
 
+	virtual EStatReferenceType StatReferenceType() override;
+
 	virtual float HPS() override;
 
 	virtual float TickDuration() override;

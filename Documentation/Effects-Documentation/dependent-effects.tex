@@ -7,8 +7,8 @@
 
 \begin{itemize}
 	\item{has an \code{Owner} that it's dependent upon.}
-	\item{\ul{should} be added just after its \code{Owner} is added. See how to attach below.}
-	\item{\ul{should} be destroyed just before its \code{Owner} is destroyed. This should happen via destroy and unregister. See below.}
+	\item{is automatically added just after its \code{Owner} is added.}
+	\item{is automatically destroyed just before its \code{Owner} is destroyed. This also happens if the dependent is unregistered.}
 	\item{follows its \code{Owner}'s \code{Silence} and \code{Unsilence}.}
 	\item{returns its \code{Owner}'s \code{Priority}, \code{Stacks}, \code{MaxStats}, \code{Priority}, and \code{ShouldApplyEffect}.}
 	\item{is not visible to UI.}
@@ -16,51 +16,30 @@
 
 \subsection{Concrete Example}
 
-For example, both \code{UBerserkerGene} (a \code{UMutation}) and \code{UFullBloom} (a \code{UPositiveAura}) modify stats. Despite being different inheritance hierarchically, they do pretty similar things. They utilize \code{UPermStatMod}. For this example, let's use
-\begin{align*}
-	\text{\code{UEffectComponent}} &\rightarrow \textrm{\code{UBerserkerGene}}\\
-		&\drsh{}\textrm{+15\%PhA $|$ -10\% PhD $|$ -10\%SpD}\\
-	\text{\code{UDependentEffectComponent}} &\rightarrow \text{\code{UPermStatMod}}
-\end{align*}
+For example, both \code{UBerserkerGene} (a \code{UMutation}) and \code{UFullBloom} (a \code{UPositiveAura}) modify stats. Despite being different inheritance hierarchically, they do pretty similar things. They utilize \code{UPermStatMod}. For this example, 
+\begin{itemize}
+	\item{The \code{UEffectComponent} is \code{UBerserkerGene}\\
+		\hspace*{2em}$\drsh{}$+15\%PhA $|$ -10\% PhD $|$ -10\%SpD}
+	\item{The \code{UDependentEffectComponent} is \code{UPermStatMod}}
+\end{itemize}
+To attach \code{UPermStatMod} to \code{UBerserkerGene}, add the following to \code{UBerserkerGene::OnComponentCreated}:
 
-To attach \code{UPermStatMod} to \code{UBerserkerGene}, add the following to\\\code{UBerserkerGene::OnComponentCreated}:
-\begin{lstlisting}[language=c++]
-	Super::OnComponentCreated();
-	ADD_COMPONENT(UPermStatMod, PermStatMod, GetOwner())
-	PermStatMod->SetOwner(this);
-	# Do some customization here, such as setting Dependent variables
-\end{lstlisting}
+\begin{center}
+	\includegraphics[scale=\ScreenshotScale]{dependent-add}
+\end{center}
+
+\newpage
+
 You can also initialize things on the \code{UPermStatMod} side of things. For example, if you wanted to make sure there were stats attached to the new owner:
-\begin{lstlisting}[language=c++]
-	// Careful! Squirrels everywhere...
-	if (NewOwner != nullptr)
-	{
 
-		// Get StatsComponent
-		SEARCH_FOR_COMPONENT_OR_DESTROY(UCombatStatsComponent, StatsComponent, NewOwner->GetOwner(), true)
+\begin{center}
+	\includegraphics[scale=\ScreenshotScale]{dependent-customization}
+\end{center}
 
-		// No stats component?
-		if (StatsComponent == nullptr)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("No UCombatStatsComponent found for PermStatMod! This is required *before* the Owner is set."))
-			return;
-		}
-	}
-
-	// This also calls ApplyEffect
-	Super::SetOwner(NewOwner);
-\end{lstlisting}
-Finally, when you destroy \code{UBerserkerGene}, make sure you also destroy \code{UPermStatMod}:
-\begin{lstlisting}[language=C++]
-void UBerserkerGene::OnComponentDestroyed(bool bDestroyingHierarchy)
-{
-	PermStatMod->DestroyComponent();
-	Super::OnComponentDestroyed(bDestroyingHierarchy);
-}
-\end{lstlisting}
+\subsection{List of \code{UDependentEffectComponent}s}
 
 \begin{EffectTable}{Dependent}
-	PermStatMod	& {Modifies according to its \code{TArray} of \code{FStatMod}s.}	& \code{AfterRecalculateStats} & \textit{Dependent} & See, e.g., \code{UBerserkerGene}.\\
+	PermStatMod	& {Modifies \code{EStatEnum}s according to its \code{TArray} of \code{FStatMod}s.}	& \code{AfterRecalculateStats} & \textit{Dependent} & See, e.g., \code{UBerserkerGene}.\\
 \end{EffectTable}
 
 %--------------------------

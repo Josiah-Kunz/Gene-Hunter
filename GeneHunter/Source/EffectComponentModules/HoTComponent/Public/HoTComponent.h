@@ -25,6 +25,11 @@ public:
 	virtual EModificationMode Mode();
 
 	/**
+	 * When we say "x%", what do we mean? Percentage of what?
+	 */
+	virtual EStatReferenceType StatReferenceType();
+
+	/**
 	 * Health per second (actual value is based on Mode).
 	 */
 	virtual float HPS();

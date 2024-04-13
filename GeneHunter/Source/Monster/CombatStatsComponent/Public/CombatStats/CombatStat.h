@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "ModificationMode.h"
+#include "StatReferenceType.h"
 #include "StatValueType.h"
 #include "SupportingText.h"
 
@@ -105,7 +106,8 @@ public:
 	 */
 	virtual void UpdateCurrent(const uint16 Level);
 
-	virtual void ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode);
+	virtual void ModifyValue(const float Modifier, const EStatValueType ModifyType, const EModificationMode ModifyMode,
+		const EStatReferenceType ReferenceType = EStatReferenceType::Self, const float ReferenceValue = 0);
 
 	/**
 	 * Gets a "value" associated with this Stat (e.g., BaseStat, PermanentValue, etc.). Useful for, e.g., modular drawers.
@@ -118,7 +120,14 @@ public:
 	
 	void RandomizeBasePairs(const int32 Min = 1, const int32 Max = 100);
 
-	static float GetModification(const float Original, const EModificationMode Mode, const float Modification);
+	/**
+	 * Gets the modification based on the Mode.
+	 *
+	 * @param ReferenceType only useful when using percentage or fractional values.
+	 * @param ReferenceValue should only be used when ReferenceType is SpecifiedValue.
+	 */
+	float GetModification(const float Original, const EModificationMode Mode, const float Modification,
+		const EStatReferenceType ReferenceType = EStatReferenceType::Self, const float ReferenceValue = 0);
 
 #pragma endregion
 
@@ -151,6 +160,14 @@ public:
 	 * The color associated with this Stat.
 	 */
 	virtual FLinearColor const Color() const;
+
+#pragma endregion
+
+#pragma region Private functions
+
+private:
+
+float GetReferenceValue(const float SelfValue, const EStatReferenceType ReferenceType, const float OtherValue);
 
 #pragma endregion
 	

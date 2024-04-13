@@ -7,6 +7,11 @@ EModificationMode UHoTComponent::Mode()
 	return EModificationMode::AddPercentage;
 }
 
+EStatReferenceType UHoTComponent::StatReferenceType()
+{
+	return EStatReferenceType::Permanent;
+}
+
 float UHoTComponent::HPS()
 {
 	return 1;
@@ -29,6 +34,6 @@ void UHoTComponent::OnComponentCreated()
 void UHoTComponent::DoEffect()
 {
 	Super::DoEffect();
-	StatsComponent->ModifyStat(EStatEnum::Health, HPS() * TickDuration() * GetStacks(), EStatValueType::Current,
-				Mode());
+	StatsComponent->ModifyStat(EStatEnum::Health, HPS() * TickDuration() * GetStacks(),
+		EStatValueType::Current, Mode(), StatReferenceType());
 }

@@ -100,7 +100,7 @@ public:
 	 * Gets the read-only FCombatStat by EStatEnum. If you'd like to modify the FStat, use ModifyStat (or similar).
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
-	const FCombatStat& GetStat(const EStatEnum Stat);
+	FCombatStat& GetStat(const EStatEnum Stat);
 
 private:
 
@@ -210,7 +210,9 @@ public:
 	 * Modifies (that is, increases, decreases, or sets) a single Stat in this StatsComponent. Does not call
 	 * FCombatStat::Update because the level hasn't changed.
 	 */
-	void ModifyStat(EStatEnum Stat, const float Value, const EStatValueType ValueType, const EModificationMode Mode);
+	void ModifyStat(EStatEnum Stat, const float Value, const EStatValueType ValueType, const EModificationMode Mode,
+		const EStatReferenceType ReferenceType = EStatReferenceType::Self, const float ReferenceValue = 0
+		);
 	
 	/**
 	 * Modifies (that is, increases, decreases, or sets) the Stats in this StatsComponent. Order is HP, PhA, PhD, SpA, SpD, Hst, Crt.
@@ -260,7 +262,8 @@ private:
 	 * All in-code modifications should pass through here rather than doing Stat->ModifyValue(...). This ensures that 
 	 * the effect delegates are called.
 	 */
-	void ModifyStatInternal(EStatEnum Stat, float Value, EStatValueType ValueType, EModificationMode Mode);
+	void ModifyStatInternal(EStatEnum Stat, float Value, EStatValueType ValueType, EModificationMode Mode,
+		const EStatReferenceType ReferenceType = EStatReferenceType::Self, const float ReferenceValue = 0);
 
 #pragma endregion
 

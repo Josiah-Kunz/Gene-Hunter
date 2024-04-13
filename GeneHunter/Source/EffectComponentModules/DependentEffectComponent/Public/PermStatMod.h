@@ -68,7 +68,7 @@ public:
 
 	virtual FSupportingText GetSupportingText() override;
 
-	virtual void ApplyEffect() override;
+	virtual void AddEffect() override;
 
 	virtual void RemoveEffect() override;
 
