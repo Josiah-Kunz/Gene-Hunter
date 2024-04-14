@@ -36,6 +36,8 @@ public class EffectComponentUnitTests : ModuleRules{
 		"MutationComponent", 
 		"NegativeAuraComponent", 
 		"PositiveAuraComponent", 
+		"TalentEffectComponent",
+		"TraitEffectComponent", 
 		});
 	}
 }

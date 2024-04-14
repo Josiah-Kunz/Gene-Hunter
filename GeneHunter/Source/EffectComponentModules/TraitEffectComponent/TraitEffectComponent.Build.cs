@@ -1,17 +1,17 @@
 ﻿using UnrealBuildTool;
 
-public class TraitComponent : ModuleRules{
+public class TraitEffectComponent : ModuleRules{
 
-	public TraitComponent(ReadOnlyTargetRules Target) : base(Target){
+	public TraitEffectComponent(ReadOnlyTargetRules Target) : base(Target){
 		
 		PrivateIncludePaths.AddRange(new string[]{
-			"EffectComponentModules/TraitComponent/Private",
-			"EffectComponentModules/TraitComponent/Private/Traits",
+			"EffectComponentModules/TraitEffectComponent/Private",
+			"EffectComponentModules/TraitEffectComponent/Private/Traits",
 		});
 
 		PublicIncludePaths.AddRange(new string[]{
-			"EffectComponentModules/TraitComponent/Public",
-			"EffectComponentModules/TraitComponent/Public/Traits",
+			"EffectComponentModules/TraitEffectComponent/Public",
+			"EffectComponentModules/TraitEffectComponent/Public/Traits",
 		});
 		
 		PublicDependencyModuleNames.AddRange(new string[]{

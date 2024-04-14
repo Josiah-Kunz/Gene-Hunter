@@ -17,7 +17,8 @@ public class GeneHunter : ModuleRules
 			"AuraComponent", "BuffComponent", "DebuffComponent", "DependentEffectComponent", "DoTComponent", 
 			"EffectableComponent", "EffectComponent", "EffectComponentUnitTests", 
 			"HoTComponent", "IntrinsicEffectComponent", "MutationComponent",
-			"NegativeAuraComponent", "PositiveAuraComponent", "TimedEffectComponent", "TraitComponent",
+			"NegativeAuraComponent", "PositiveAuraComponent", "TalentEffectComponent", "TimedEffectComponent", 
+			"TraitEffectComponent",
 			
 			// Monster modules
 			"AffinitiesComponent", "AffinitiesComponentUnitTests", "CombatStatsComponent", "LevelComponent",

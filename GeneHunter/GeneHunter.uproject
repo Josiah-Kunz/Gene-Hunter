@@ -108,12 +108,17 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "TalentEffectComponent",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "TimedEffectComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "TraitComponent",
+			"Name": "TraitEffectComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
