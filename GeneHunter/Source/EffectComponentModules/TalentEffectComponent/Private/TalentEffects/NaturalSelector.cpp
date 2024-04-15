@@ -33,6 +33,7 @@ void UNaturalSelector::OnComponentCreated()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No UStatsComponent found!"
 			" This is required for UNaturalSelector."))
+		DestroyComponent();
 		return;
 	}
 

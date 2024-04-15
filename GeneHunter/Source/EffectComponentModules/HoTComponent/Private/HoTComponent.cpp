@@ -25,7 +25,13 @@ void UHoTComponent::OnComponentCreated()
 
 	// No stats component?
 	if (StatsComponent == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No UStatsComponent found!"
+			" This is required for HoTComponent."))
+		DestroyComponent();
+		
 		return;
+	}
 
 	// Must still be alive
 	Super::OnComponentCreated();

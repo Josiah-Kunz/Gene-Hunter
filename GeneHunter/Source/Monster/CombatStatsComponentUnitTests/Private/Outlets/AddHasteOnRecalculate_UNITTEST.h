@@ -34,6 +34,9 @@ public:
 		// Guard
 		if (StatsComponent == nullptr)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("No UStatsComponent found!"
+			" This is required for the Haste unit test."))
+			DestroyComponent();
 			return;
 		}
 

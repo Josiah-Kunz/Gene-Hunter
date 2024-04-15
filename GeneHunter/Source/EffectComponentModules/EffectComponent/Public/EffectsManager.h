@@ -31,5 +31,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void RemoveEffect(UEffectComponent* Effect);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	TArray<UEffectComponent*> GetAttachedEffects();
 	
 };

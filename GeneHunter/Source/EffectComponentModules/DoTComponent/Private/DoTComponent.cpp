@@ -20,7 +20,12 @@ void UDoTComponent::OnComponentCreated()
 
 	// No stats component?
 	if (StatsComponent == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No UStatsComponent found!"
+			" This is required for DoTComponent."))
+		DestroyComponent();
 		return;
+	}
 
 	// Must still be alive
 	Super::OnComponentCreated();

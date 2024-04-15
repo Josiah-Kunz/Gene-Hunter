@@ -35,3 +35,8 @@ void UEffectsManager::RemoveEffect(UEffectComponent* Effect)
 	Effects.Remove(Effect);
 }
 
+TArray<UEffectComponent*> UEffectsManager::GetAttachedEffects()
+{
+	return Effects;
+}
+

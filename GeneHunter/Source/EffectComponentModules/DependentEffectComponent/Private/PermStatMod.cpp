@@ -147,8 +147,10 @@ void UPermStatMod::SetOwner(UEffectComponent* NewOwner)
 		// No stats component?
 		if (StatsComponent == nullptr)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("No UCombatStatsComponent found for PermStatMod!"
+			UE_LOG(LogTemp, Error, TEXT("No UCombatStatsComponent found for PermStatMod!"
 								 "This is required *before* the Owner is set."))
+			NewOwner->DestroyComponent();
+			DestroyComponent();
 			return;
 		}
 	}
