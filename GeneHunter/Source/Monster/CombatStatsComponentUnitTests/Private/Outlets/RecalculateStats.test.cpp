@@ -29,42 +29,43 @@ bool FRecalculateStats::RunTest(const FString& Parameters)
 
 	// It shouldn't do anything yet
 	float CurrentHaste = StatsComponent->GetStat(EStatEnum::Haste).GetValue(EStatValueType::Current);
-	TestEqual(
-			FString::Printf(
-			TEXT("Attached effect, but it shouldn't have done anything yet: Original [%s] | Current [%s]"),
-				*FString::SanitizeFloat(OriginalHaste),
-				*FString::SanitizeFloat(CurrentHaste)
-			),
-			CurrentHaste,
-			OriginalHaste,
-			0.5f);
+	if (!ComponentUtilities::AreTheSame(CurrentHaste, OriginalHaste))
+	{
+		UE_LOG(LogTemp, Warning,
+				TEXT("Attached effect, but it shouldn't have done anything yet: Original [%s] | Current [%s]"),
+					*FString::SanitizeFloat(OriginalHaste),
+					*FString::SanitizeFloat(CurrentHaste)
+		)
+		return false;
+	}
 
-	// Recalulating the stats should only affect Haste
+	// Recalculating the stats should only affect Haste
 	StatsComponent->RecalculateStats();
 	const float CurrentPhA = StatsComponent->GetStat(EStatEnum::PhysicalAttack).GetValue(EStatValueType::Current);
-	TestEqual(
-			FString::Printf(
-			TEXT("Effect shouldn't affect PhA: Original [%s] | Current [%s]"),
-				*FString::SanitizeFloat(OriginalPhA),
-				*FString::SanitizeFloat(CurrentPhA)
-			),
-			CurrentPhA,
-			OriginalPhA,
-			0.5f);
+	if (!ComponentUtilities::AreTheSame(CurrentPhA, OriginalPhA))
+	{
+		UE_LOG(LogTemp, Warning,
+				TEXT("Effect shouldn't affect PhA: Original [%s] | Current [%s]"),
+					*FString::SanitizeFloat(OriginalPhA),
+					*FString::SanitizeFloat(CurrentPhA)
+		)
+		return false;
+	}
 
 	// Check Haste (should be affected)
 	CurrentHaste = StatsComponent->GetStat(EStatEnum::Haste).GetValue(EStatValueType::Current);
-	TestEqual(
-			FString::Printf(
-			TEXT("Haste should be increased by [+%s]: Original [%s] | Expected [%s] | Got [%s]"),
-				*FString::SanitizeFloat(Effect->HasteIncrease),
-				*FString::SanitizeFloat(OriginalHaste),
-				*FString::SanitizeFloat(OriginalHaste + Effect->HasteIncrease),
-				*FString::SanitizeFloat(CurrentHaste)
-			),
-			CurrentHaste,
-			OriginalHaste + Effect->HasteIncrease,
-			0.5f);
+	const float ExpectedHaste = OriginalHaste + Effect->HasteIncrease;
+	if (ComponentUtilities::AreTheSame(CurrentHaste, ExpectedHaste))
+	{
+		UE_LOG(LogTemp, Warning,
+				TEXT("Haste should be increased by [+%s]: Original [%s] | Expected [%s] | Got [%s]"),
+					*FString::SanitizeFloat(Effect->HasteIncrease),
+					*FString::SanitizeFloat(OriginalHaste),
+					*FString::SanitizeFloat(ExpectedHaste),
+					*FString::SanitizeFloat(CurrentHaste)
+		)
+		return false;
+	}
 	
 	// GC
 	ComponentUtilities::DestroyDummyWorld(DummyWorld);

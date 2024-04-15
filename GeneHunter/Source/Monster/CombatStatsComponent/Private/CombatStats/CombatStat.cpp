@@ -63,6 +63,7 @@ void FCombatStat::ModifyValue(const float Modifier, const EStatValueType ModifyT
 	switch(ModifyType)
 	{
 	case EStatValueType::Current:
+		
 		SetCurrentValue(GetModification(GetCurrentValue(), ModifyMode, Modifier,
 			ReferenceType, ReferenceValue));
 		break;
@@ -169,7 +170,7 @@ FLinearColor const FCombatStat::Color() const
 }
 
 float FCombatStat::GetReferenceValue(const float SelfValue, const EStatReferenceType ReferenceType,
-	const float OtherValue)
+	const float OtherValue) const
 {
 	switch(ReferenceType)
 	{
@@ -212,7 +213,7 @@ float FCombatStat::GetModification(const float Original, const EModificationMode
 	case EModificationMode::MultiplyAbsolute:
 		return Original * Modification;
 	case EModificationMode::MultiplyPercentage:
-		return Original * GetReferenceValue(Original, ReferenceType, ReferenceValue)
+		return GetReferenceValue(Original, ReferenceType, ReferenceValue)
 			* Modification/100;
 		
 	// Set directly

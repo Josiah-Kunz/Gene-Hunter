@@ -11,7 +11,7 @@ void UPermStatMod::AfterRecalculateStats(const EStatEnum InStat, const bool bRes
 {
 	
 	// If silenced, do nothing
-	if (IsSilenced())
+	if (!ShouldApplyEffect())
 	{
 		return;
 	}

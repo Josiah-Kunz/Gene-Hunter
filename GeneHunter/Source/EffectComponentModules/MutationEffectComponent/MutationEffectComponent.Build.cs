@@ -1,17 +1,17 @@
 ﻿using UnrealBuildTool;
 
-public class MutationComponent : ModuleRules{
+public class MutationEffectComponent : ModuleRules{
 
-	public MutationComponent(ReadOnlyTargetRules Target) : base(Target){
+	public MutationEffectComponent(ReadOnlyTargetRules Target) : base(Target){
 		
 		PrivateIncludePaths.AddRange(new string[]{
-			"EffectComponentModules/MutationComponent/Private",
-			"EffectComponentModules/MutationComponent/Private/Mutations",
+			"EffectComponentModules/MutationEffectComponent/Private",
+			"EffectComponentModules/MutationEffectComponent/Private/Mutations",
 		});
 
 		PublicIncludePaths.AddRange(new string[]{
-			"EffectComponentModules/MutationComponent/Public",
-			"EffectComponentModules/MutationComponent/Public/Mutations",
+			"EffectComponentModules/MutationEffectComponent/Public",
+			"EffectComponentModules/MutationEffectComponent/Public/Mutations",
 		});
 		
 		PublicDependencyModuleNames.AddRange(new string[]{

@@ -33,7 +33,7 @@ public class EffectComponentUnitTests : ModuleRules{
 		"DebuffComponent",
 		"HoTComponent",
 		"DoTComponent",
-		"MutationComponent", 
+		"MutationEffectComponent", 
 		"NegativeAuraComponent", 
 		"PositiveAuraComponent", 
 		"TalentEffectComponent",

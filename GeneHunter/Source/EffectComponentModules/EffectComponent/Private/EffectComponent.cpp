@@ -1,5 +1,7 @@
 #include "EffectComponent.h"
 
+#include "ComponentUtilities.h"
+
 bool UEffectComponent::IsComponentTickEnabled() const
 {
 	return Super::IsComponentTickEnabled();
@@ -132,12 +134,15 @@ EStackChangeResult UEffectComponent::Purge(const int32 Amount)
 auto UEffectComponent::OnComponentCreated() -> void
 {
 
+	// We'll use this a bunch
+	AActor* ActorOwner = GetOwner();
+
 	// Delegate
 	OnAddEffectOutlet.ExecuteBefore(this);
 	
 	// Search owner for another component of the same name. If we find one, we don't attach---instead, we just up the
 	// stacks.	
-	TArray<UActorComponent*> InstanceComponents = GetOwner()->GetInstanceComponents();
+	TArray<UActorComponent*> InstanceComponents = ActorOwner->GetInstanceComponents();
 	for(UActorComponent* OtherComponent : InstanceComponents)
 	{
 		UEffectComponent* EffectComponent = dynamic_cast<UEffectComponent*>(OtherComponent);
@@ -147,7 +152,7 @@ auto UEffectComponent::OnComponentCreated() -> void
 		if (EffectComponent && EffectComponent->GetDisplayName().EqualTo(GetDisplayName()) && EffectComponent->GetStacks() > 0)
 		{
 			EffectComponent->AddStacks(1);
-			GetOwner()->RemoveOwnedComponent(this);
+			ActorOwner->RemoveOwnedComponent(this);
 			return;
 		}
 	}
@@ -161,15 +166,34 @@ auto UEffectComponent::OnComponentCreated() -> void
 
 	// Delegate
 	OnAddEffectOutlet.ExecuteAfter(this);
+
+	// Manager
+	SEARCH_FOR_COMPONENT(UEffectsManager, Manager, ActorOwner)
+	if (Manager == nullptr)
+	{
+		ADD_COMPONENT(UEffectsManager, Manager, ActorOwner)
+	}
+
+	// Add to list
+	Manager->AddEffect(this);
 }
 
 void UEffectComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
 {
+
+	// Before Outlet
 	if (!bRemoveOutletExecuted)
 	{
 		OnRemoveEffectOutlet.ExecuteBefore(this);
 	}
+
+	// Remove from list
+	Manager->RemoveEffect(this);
+
+	// Super
 	Super::OnComponentDestroyed(bDestroyingHierarchy);
+
+	// After Outlet
 	if (!bRemoveOutletExecuted)
 	{
 		OnRemoveEffectOutlet.ExecuteAfter(this);

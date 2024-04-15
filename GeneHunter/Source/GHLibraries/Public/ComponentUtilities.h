@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MathUtil.h"
 #include "Net/NUTUtilNet.h"
 
 class ComponentUtilities
@@ -8,6 +9,16 @@ class ComponentUtilities
 
 public:
 
+	static float GetTolerance(const float Current, const float Expected, const float TolPercent = 1)
+	{
+		return TolPercent/100 * (Current + Expected)/2;
+	}
+
+	static float AreTheSame(const float F1, const float F2, const float TolPercent = 1)
+	{
+		return FMathf::Abs(F1-F2) < GetTolerance(F1, F2, TolPercent);
+	}
+	
 	/**
 	 * For unit testing. Creates a:
 	 *	- UWorld* called DummyWorld

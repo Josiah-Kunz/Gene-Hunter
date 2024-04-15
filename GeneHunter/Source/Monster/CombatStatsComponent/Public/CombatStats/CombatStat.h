@@ -167,7 +167,7 @@ public:
 
 private:
 
-float GetReferenceValue(const float SelfValue, const EStatReferenceType ReferenceType, const float OtherValue);
+float GetReferenceValue(const float SelfValue, const EStatReferenceType ReferenceType, const float OtherValue) const;
 
 #pragma endregion
 	

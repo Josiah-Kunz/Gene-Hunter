@@ -5,6 +5,7 @@
 #include "CombatStatsComponent.h"
 #include "ComponentUtilities.h"		// For ADD_COMPONENT macro
 #include "CoreMinimal.h"			// Since we're using ADD_COMPONENT
+#include "MathUtil.h"
 #include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FModifyStat,
@@ -40,22 +41,27 @@ bool FModifyStat::RunTest(const FString& Parameters)
 
 	// Test
 	const float CurrentValue = StatsComponent->GetStat(Effect->SoftenStat).GetValue(TargetValueType);
-	TestEqual(
-			FString::Printf(
-			TEXT("Modified all stats by [%s%], except for [%s], which should have gotten modified by [%s%] resulting in [%s], but was [%s] instead."),
+	const bool bSuccess = FMathf::Abs(CurrentValue - ExpectedStatValue) < 0.1f;
+	if (!bSuccess)
+	{
+		
+	}
+	UE_LOG(LogTemp, Warning,
+			
+			TEXT("Modified all stats by [%s%%], except for [%s], which started out as [%s] "
+				"and should have gotten modified by [%s%%] "
+				"resulting in [%s], but was [%s] instead."),
 				*FString::SanitizeFloat(ModValue),
 				*UEnum::GetValueAsString(Effect->SoftenStat),
+				*FString::SanitizeFloat(OriginalStat),
 				*FString::SanitizeFloat(ModValue * Effect->SoftenAmount),
 				*FString::SanitizeFloat(ExpectedStatValue),
 				*FString::SanitizeFloat(CurrentValue)
-			),
-			CurrentValue,
-			ExpectedStatValue,
-			0.5f);
+	)
 	
 	// GC
 	ComponentUtilities::DestroyDummyWorld(DummyWorld);
 	
-	return true;
+	return bSuccess;
 }
 

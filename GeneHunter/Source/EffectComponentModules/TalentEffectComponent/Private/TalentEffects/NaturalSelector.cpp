@@ -5,7 +5,10 @@
 void UNaturalSelector::SetBasePairsMin(const EStatEnum TargetStat, const FStatRandParams OriginalParams,
 	FStatRandParams& ParamsToBeUsed)
 {
-	ParamsToBeUsed.MinBasePairs = MinBasePairs;
+	if (ShouldApplyEffect())
+	{
+		ParamsToBeUsed.MinBasePairs = MinBasePairs;
+	}
 }
 
 FSupportingText UNaturalSelector::GetSupportingText()

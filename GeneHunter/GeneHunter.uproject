@@ -93,7 +93,7 @@
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "MutationComponent",
+			"Name": "MutationEffectComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},

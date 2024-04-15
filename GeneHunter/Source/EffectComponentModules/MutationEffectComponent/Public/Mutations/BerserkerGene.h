@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MutationComponent.h"
+#include "MutationEffectComponent.h"
 #include "PermStatMod.h"
 
 #include "BerserkerGene.generated.h"
@@ -11,7 +11,7 @@
  * A little boring, but sometimes it's best to have at least one boring, tried-and-true option.
  */
 UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
-class MUTATIONCOMPONENT_API UBerserkerGene : public UMutationComponent
+class MUTATIONEFFECTCOMPONENT_API UBerserkerGene : public UMutationEffectComponent
 {
 	GENERATED_BODY()
 

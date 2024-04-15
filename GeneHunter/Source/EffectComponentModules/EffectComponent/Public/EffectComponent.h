@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "EffectableComponent.h"
+#include "EffectsManager.h"
 #include "StackChangeResult.h"
 #include "SupportingText.h"
 #include "Components/ActorComponent.h"
@@ -32,6 +33,9 @@ private:
 	bool bSilenced = false;
 
 	bool bRemoveOutletExecuted;
+
+	UPROPERTY()
+	UEffectsManager* Manager;
 
 protected:
 
