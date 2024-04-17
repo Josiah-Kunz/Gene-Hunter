@@ -42,8 +42,8 @@ bool FSetUnspentPoints::RunTest(const FString& Parameters)
 	AffinitiesComponent->SetUnspentPoints(SetPointsOdd);
 
 	// *Say* that it should fail so user doesn't think this is a bug
-	UE_LOG(LogTemp, Warning, TEXT("The UEffectComponent should complain about evens only."
-							   " This is normal for a unit test."))
+	UE_LOG(LogTemp, Warning, TEXT("The UEffectComponent should complain about \"but only even values are allowed!\"."
+							   " This is controlled by the class, and so is normal for a unit test."))
 
 	// Test that the points are indeed 2
 	CurrentPoints = AffinitiesComponent->GetUnspentPoints();

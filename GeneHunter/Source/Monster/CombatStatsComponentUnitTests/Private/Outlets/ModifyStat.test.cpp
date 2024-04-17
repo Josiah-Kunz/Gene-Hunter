@@ -44,20 +44,19 @@ bool FModifyStat::RunTest(const FString& Parameters)
 	const bool bSuccess = FMathf::Abs(CurrentValue - ExpectedStatValue) < 0.1f;
 	if (!bSuccess)
 	{
-		
-	}
-	UE_LOG(LogTemp, Warning,
+		UE_LOG(LogTemp, Warning,
 			
-			TEXT("Modified all stats by [%s%%], except for [%s], which started out as [%s] "
-				"and should have gotten modified by [%s%%] "
-				"resulting in [%s], but was [%s] instead."),
-				*FString::SanitizeFloat(ModValue),
-				*UEnum::GetValueAsString(Effect->SoftenStat),
-				*FString::SanitizeFloat(OriginalStat),
-				*FString::SanitizeFloat(ModValue * Effect->SoftenAmount),
-				*FString::SanitizeFloat(ExpectedStatValue),
-				*FString::SanitizeFloat(CurrentValue)
-	)
+				TEXT("Modified all stats by [%s%%], except for [%s], which started out as [%s] "
+					"and should have gotten modified by [%s%%] "
+					"resulting in [%s], but was [%s] instead."),
+					*FString::SanitizeFloat(ModValue),
+					*UEnum::GetValueAsString(Effect->SoftenStat),
+					*FString::SanitizeFloat(OriginalStat),
+					*FString::SanitizeFloat(ModValue * Effect->SoftenAmount),
+					*FString::SanitizeFloat(ExpectedStatValue),
+					*FString::SanitizeFloat(CurrentValue)
+		)
+	}
 	
 	// GC
 	ComponentUtilities::DestroyDummyWorld(DummyWorld);
