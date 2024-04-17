@@ -36,15 +36,27 @@ void UNaturalSelector::OnComponentCreated()
 		DestroyComponent();
 		return;
 	}
-
-	// Must still be alive
+	
+	// Trigger when applied for the first time
 	Super::OnComponentCreated();
 	
-	// Add to delegate array
+}
+
+void UNaturalSelector::ApplyEffect()
+{
+
+	// Call super and see if we should return
+	Super::ApplyEffect();
+	if (!ShouldApplyEffect())
+	{
+		return;
+	}
+
+	// Bind the delegate
 	BIND_DELEGATE(BasePairsDelegate, UNaturalSelector::SetBasePairsMin);
 	StatsComponent->RandomizeStatsOutlet.AddBefore(BasePairsDelegate);
 
-	// Trigger when applied for the first time
+	// Set min if need be
 	bool bModifiedBPs = false;
 	OriginalBPValues = {};
 	for(const EStatEnum Stat : StatsComponent->StatsArray)
@@ -66,8 +78,9 @@ void UNaturalSelector::OnComponentCreated()
 	}
 }
 
-void UNaturalSelector::OnComponentDestroyed(bool bDestroyingHierarchy)
+void UNaturalSelector::RemoveEffect()
 {
+	Super::RemoveEffect();
 
 	// Reset original values
 	//	(this prevents players from toggling the Talent on and off to game the system)
@@ -77,5 +90,6 @@ void UNaturalSelector::OnComponentDestroyed(bool bDestroyingHierarchy)
 		StatsComponent->ModifyStat(TPair.Key, TPair.Value, EStatValueType::BasePairs,
 				EModificationMode::SetDirectly);
 	}
-	Super::OnComponentDestroyed(bDestroyingHierarchy);
+
+	StatsComponent->RandomizeStatsOutlet.RemoveBefore(BasePairsDelegate);
 }

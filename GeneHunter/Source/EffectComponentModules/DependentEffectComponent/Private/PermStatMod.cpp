@@ -48,7 +48,7 @@ void UPermStatMod::AddOrRemoveEffectInternal(const bool bAdding)
 		if (bAdding)
 		{
 			BIND_DELEGATE(AfterRecalcStatsDelegate, UPermStatMod::AfterRecalculateStats);
-			Super::AddEffect();
+			Super::ApplyEffect();
 			StatsComponent->RecalculateStatsOutlet.AddAfter(AfterRecalcStatsDelegate);
 		} else
 		{
@@ -169,7 +169,7 @@ FSupportingText UPermStatMod::GetSupportingText()
 	};
 }
 
-void UPermStatMod::AddEffect()
+void UPermStatMod::ApplyEffect()
 {
 	AddOrRemoveEffectInternal(true);
 }

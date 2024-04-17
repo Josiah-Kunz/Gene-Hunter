@@ -10,7 +10,7 @@
 /**
  * +20% max health
  */
-UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup=(Effects, Talents), meta=(BlueprintSpawnableComponent))
 class TALENTEFFECTCOMPONENT_API UNaturalSelector : public UTalentEffectComponent
 {
 	GENERATED_BODY()
@@ -37,14 +37,16 @@ public:
 	/**
 	 * This is the delegate that attaches to UCombatStatComponent's BeforeModifyStat Outlet.
 	 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Outlets", meta = (AllowPrivateAccess = "true"))
 	FBeforeRandomizeStatsDelegate BasePairsDelegate;
 	
 	virtual FSupportingText GetSupportingText() override;
 
 	virtual void OnComponentCreated() override;
 
-	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
+	virtual void ApplyEffect() override;
+
+	virtual void RemoveEffect() override;
 	
 };
 

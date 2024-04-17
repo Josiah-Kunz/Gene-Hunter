@@ -19,11 +19,11 @@ void UDependentEffectComponent::SetOwner(UEffectComponent* NewOwner)
 	bHasOwner = Owner != nullptr;
 	if (bHasOwner)
 	{
-		AddEffect();
+		ApplyEffect();
 	}
 }
 
-void UDependentEffectComponent::AddEffect()
+void UDependentEffectComponent::ApplyEffect()
 {
 	BIND_DELEGATE(OnRemoveDelegate, UDependentEffectComponent::CallRemoveEffect);
 	Owner->OnRemoveEffectOutlet.AddBefore(OnRemoveDelegate);
@@ -41,52 +41,6 @@ void UDependentEffectComponent::RemoveEffect()
 	// being destroyed.
 	
 	DestroyComponent();
-}
-
-void UDependentEffectComponent::ApplyEffect()
-{
-	bDeactivated = false;
-}
-
-void UDependentEffectComponent::SuppressEffect()
-{
-	bDeactivated = true;
-}
-
-void UDependentEffectComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
-{
-	//RemoveEffect();
-	Super::OnComponentDestroyed(bDestroyingHierarchy);
-}
-
-void UDependentEffectComponent::OnRefreshStacks()
-{
-	Super::OnRefreshStacks();
-	AddEffect();
-}
-
-void UDependentEffectComponent::OnReduceStacks()
-{
-	Super::OnReduceStacks();
-	if (GetStacks() > 0)
-	{
-		AddEffect();
-	} else
-	{
-		RemoveEffect();
-	}
-}
-
-void UDependentEffectComponent::Silence()
-{
-	Super::Silence();
-	RemoveEffect();
-}
-
-void UDependentEffectComponent::Unsilence()
-{
-	Super::Unsilence();
-	AddEffect();
 }
 
 float UDependentEffectComponent::GetPriority()

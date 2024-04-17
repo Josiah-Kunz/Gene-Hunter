@@ -62,50 +62,17 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
 	virtual void SetOwner(UEffectComponent* NewOwner);
 
-	/**
-	 * To be inherited. For example, for permanent stat buffs, this should:
-	 *	- Add a delegate to AfterRecalculateStats
-	 *	- Call RecalculateStats
-	 * This is automatically called during, e.g., Silence and SetOwner.
-	 */
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
-	virtual void AddEffect();
-
-	/**
-	 * To be inherited. For example, for permanent stat buffs, this should:
-	 *	- Remove its delegate from AfterRecalculateStats
-	 *	- Call RecalculateStats
-	 */
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
-	virtual void RemoveEffect();
-
-	/**
-	 * Triggered during, e.g., Unsilence.
-	 */
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
-	virtual void ApplyEffect();
-
-	/**
-	 * Triggered during, e.g., Silence.
-	 */
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="EffectComponent")
-	virtual void SuppressEffect();
-
 #pragma endregion
 
 #pragma region Adding and removing
 
 public:
-	
-	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
-	
-	virtual void OnRefreshStacks() override;
 
-	virtual void OnReduceStacks() override;
-	
-	virtual void Silence() override;
+	virtual void ApplyEffect() override;
 
-	virtual void Unsilence() override;
+	virtual void RemoveEffect() override;
+
+
 
 #pragma endregion
 

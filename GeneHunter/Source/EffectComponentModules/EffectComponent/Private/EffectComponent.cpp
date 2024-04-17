@@ -1,7 +1,5 @@
 #include "EffectComponent.h"
 
-#include "ComponentUtilities.h"
-
 bool UEffectComponent::IsComponentTickEnabled() const
 {
 	return Super::IsComponentTickEnabled();
@@ -54,6 +52,7 @@ int32 UEffectComponent::MaxStacks()
 
 void UEffectComponent::OnRefreshStacks()
 {
+	ApplyEffect();
 }
 
 void UEffectComponent::OnReduceStacks()
@@ -94,11 +93,13 @@ bool UEffectComponent::IsSilenced() const
 void UEffectComponent::Silence()
 {
 	bSilenced = true;
+	RemoveEffect();
 }
 
 void UEffectComponent::Unsilence()
 {
 	bSilenced = false;
+	ApplyEffect();
 }
 
 bool UEffectComponent::IsVisibleToUI() const
@@ -166,16 +167,6 @@ auto UEffectComponent::OnComponentCreated() -> void
 
 	// Delegate
 	OnAddEffectOutlet.ExecuteAfter(this);
-
-	// Manager
-	SEARCH_FOR_COMPONENT(UEffectsManager, Manager, ActorOwner)
-	if (Manager == nullptr)
-	{
-		ADD_COMPONENT(UEffectsManager, Manager, ActorOwner)
-	}
-
-	// Add to list
-	Manager->AddEffect(this);
 }
 
 void UEffectComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
@@ -187,10 +178,8 @@ void UEffectComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
 		OnRemoveEffectOutlet.ExecuteBefore(this);
 	}
 
-	// Remove from list
-	Manager->RemoveEffect(this);
-
-	// Super
+	// Regular stuff
+	RemoveEffect();
 	Super::OnComponentDestroyed(bDestroyingHierarchy);
 
 	// After Outlet
@@ -229,4 +218,12 @@ bool UEffectComponent::ShouldApplyEffect()
 	// Check silence state
 	return !IsSilenced();
 	
+}
+
+void UEffectComponent::ApplyEffect()
+{
+}
+
+void UEffectComponent::RemoveEffect()
+{
 }

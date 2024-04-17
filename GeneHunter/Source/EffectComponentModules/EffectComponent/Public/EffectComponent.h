@@ -2,7 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "EffectableComponent.h"
-#include "EffectsManager.h"
 #include "StackChangeResult.h"
 #include "SupportingText.h"
 #include "Components/ActorComponent.h"
@@ -25,6 +24,8 @@ class EFFECTCOMPONENT_API UEffectComponent : public UEffectableComponent
 #pragma region Private and protected vars and functions
 	
 private:
+
+	UPROPERTY(VisibleAnywhere, Category="EffectComponent")
 	uint16 Stacks = 0;
 
 	/**
@@ -33,9 +34,6 @@ private:
 	bool bSilenced = false;
 
 	bool bRemoveOutletExecuted;
-
-	UPROPERTY()
-	UEffectsManager* Manager;
 
 protected:
 
@@ -232,6 +230,18 @@ public:
 	 *		}f
 	 */
 	virtual bool ShouldApplyEffect();
+
+	/**
+	 * Called from the base class at Unsilence and OnRefreshStacks (which is also called during OnComponentCreated).
+	 */
+	UFUNCTION(BlueprintCallable, Category="EffectComponent")
+	virtual void ApplyEffect();
+
+	/**
+	 * Called from the base class at Silence and OnDestroyComponent.
+	 */
+	UFUNCTION(BlueprintCallable, Category="EffectComponent")
+	virtual void RemoveEffect();
 
 /**
  * Properly binds the OutletDelegate (such as FBeforeSetCXPDelegate) to the function (e.g., ULuckyEgg::ModifyCXP).

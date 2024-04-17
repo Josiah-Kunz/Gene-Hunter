@@ -36,6 +36,9 @@ public class DetailsPanelArchitect : ModuleRules
 				"PropertyEditor",	// IDetailLayoutBuilder
 				"Types",			// Type affinities
 				"UI",				// SupportingText
+				"UnrealEd",			// for SListView
+				
+				"InputCore",		// SListView needs FKey
 
 				// Types to customize
 				"AffinitiesComponent",
@@ -55,6 +58,7 @@ public class DetailsPanelArchitect : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
+				"UnrealEd",		// for SListView
 			}
 		);
 		
