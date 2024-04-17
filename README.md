@@ -7,6 +7,7 @@ Cool documents to check out:
  - [Resources Documentation](Documentation/Resources-Documentation/resources-documentation.pdf)
  - [Stats Documentation](Documentation/Stats-Documentation/stats-documentation.pdf)
  - [Types Documentation](Documentation/Types-Documentation/types-documentation.pdf)
+ - [Effects Documentation](Documentation/Effects-Documentation/effects-documentation.pdf)
  
  ### Email AskGeneHunter@gmail.com
 
