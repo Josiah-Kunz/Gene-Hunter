@@ -1,7 +1,12 @@
 \input{../standalone}
 
 \begin{tldr}
-	\todo{}
+	\begin{itemize}
+		\item{\code{EffectableComponents} can have effects.}
+		\item{\code{Outlet}s are places in the code for effects to ``plug into''.}
+		\item{There are a bunch of types of effects, like \code{Aura}s, \code{Trait}s, and \code{HoT}s.}
+		\item{Effects themselves are \code{EffectableComponent}s.}
+	\end{itemize}
 \end{tldr}
 
 %====================================================
@@ -17,13 +22,11 @@
 			\includegraphics[scale=\ScreenshotScale]{recalculate-stats-code}
 		\end{center}
 		}
-	\item{\textbf{\code{Outlet} arrays} are variables inside of \code{EffectableComponent}s. They hold \code{Outlet}s whose delegates execute when needed.
-		\SubItem{\todo{Update this!} Let's use \code{StatsComponent}'s \code{AfterRecalculateStatsArray} in our example. In this case, after stats are recalculated (say, on level-up), the base PhA would increase by 10\% and the base SpA would decrease by 10\% (additively): }
+	\item{\textbf{\code{EffectComponent}s} plug into these \code{Outlet}s. These come in many forms, but an easy example is a \code{Buff}. Take \code{Invulnerable}, which plugs into \code{StatComponent}'s ``before modify stat'' \code{Outlet}:
 		\begin{center}
-			\includegraphics[scale=\ScreenshotScale]{adamant-code}
+			\includegraphics[scale=\ScreenshotScale]{invulnerable}
 		\end{center}
-		}
-	\item{\textbf{\code{EffectComponent}s} are \code{ActorComponent}s that plug into \code{Outlet}s. These come in many forms, but an easy example is a \code{Buff}. \todo{Describe how this happens with pictures!}}
+	}
 \end{itemize}
 
 %====================================================
@@ -45,8 +48,9 @@ The following tables show all implemented \code{EffectableComponent}s and their 
 	\item{a function to execute the arrays, \code{ExecuteBeforeBaseName}; and}
 	\item{\code{AddBeforeBaseName}, a function to add an \code{Outlet} to the private array \code{BeforeDelegates} (which also puts it in the right order based on priority).}
 \end{enumerate}
+See the section on making your own \code{Outlet} for more information on how these layers work together.
 
-\noindent Note that the philosophy applies to what is \textit{probable} rather than what is \textit{possible}. Hence the list meant to be practical rather than exhaustive.
+Note that the philosophy is to create what is \textit{probable} rather than what is \textit{possible}. Hence the list meant to be practical rather than exhaustive.
 
 %====================================================
 
@@ -151,7 +155,7 @@ As an example, let's use \code{GetBaseExpYield}. (You can imagine that this is a
 	}
 \end{enumerate}
 
-\sect{All \code{UEffects}}
+\sect{All \code{Effects}}
 
 \input{effect-tables}
 

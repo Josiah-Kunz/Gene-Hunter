@@ -102,9 +102,9 @@ Some notes:
 
 \begin{itemize}
 	\item{Only the base names have been used. That is, the actual names may be\\ \code{UTimedEffectComponent} instead of simply ``Timed''.}
-	\item{``Purgeable'' means it is possible to reduce the stacks of the \code{UEffectComponent} down to zero (detachment of \code{UEffectComponent}).}
-	\item{All \code{UEffectComponent}s are ``silenceable'', meaning their effects can be nullified (but not detached or reduced in stacks).}
-	\item{``Persistent'' (meaning that the \code{UEffectComponent} is not removed upon switching out) should be set on an effect-by-effect basis and not set by the inherited class. For example, some\\\code{UNegativeAuraComponent}s (such as Pok\'{e}mon's Paralysis) may persist upon switching out and others (such as Pok\'{e}mon's Confusion) may not.}
+	\item{``Purgeable'' means it is possible to reduce the stacks of the \code{EffectComponent} down to zero (detachment of \code{EffectComponent}).}
+	\item{Many \code{EffectComponent}s are ``silenceable'', meaning their effects can be nullified (but not detached or reduced in stacks). Notable exceptions are \code{Talent}s.}
+	\item{``Persistent'' (meaning that the \code{EffectComponent} is not removed upon switching out) should be set on an effect-by-effect basis and not set by the inherited class. For example, some\\\code{NegativeAuraComponent}s (such as Pok\'{e}mon's Paralysis) may persist upon switching out and others (such as Pok\'{e}mon's Confusion) may not.}
 \end{itemize}
 
 
