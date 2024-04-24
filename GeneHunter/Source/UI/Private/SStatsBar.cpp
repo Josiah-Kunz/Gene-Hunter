@@ -4,7 +4,6 @@
 #include "SStatsBar.h"
 
 #include "SlateOptMacros.h"
-#include "Components/SlateWrapperTypes.h"
 #include "Widgets/SCanvas.h"
 #include "Widgets/Colors/SColorBlock.h"
 #include "Widgets/Input/SEditableTextBox.h"
@@ -49,7 +48,11 @@ void SStatsBar::Construct(const FArguments& InArgs)
 					InArgs._IsPercentage.Get() ? *FString("%") : *FString("")
 					)))
 				.ToolTipText(InArgs._TextBoxTooltip)
-				.OnTextCommitted_Lambda(InArgs._OnTextCommitted.Get())
+				//.OnTextCommitted_Lambda(this, &InArgs._OnTextCommitted.Get())
+				.OnTextCommitted_Lambda([&InArgs](const FText& InText, ETextCommit::Type InTextCommit)
+				{
+					InArgs._OnTextCommitted.Get().operator()(InText, InTextCommit);
+				})
 			]
 			.Position(FVector2D{TextBoxX, 0})
 			.Size(FVector2D{InArgs._TextBoxSize.X, InArgs._TextBoxSize.Y})
