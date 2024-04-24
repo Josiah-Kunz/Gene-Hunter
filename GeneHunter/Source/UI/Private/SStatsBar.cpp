@@ -49,9 +49,9 @@ void SStatsBar::Construct(const FArguments& InArgs)
 					)))
 				.ToolTipText(InArgs._TextBoxTooltip)
 				//.OnTextCommitted_Lambda(this, &InArgs._OnTextCommitted.Get())
-				.OnTextCommitted_Lambda([&InArgs](const FText& InText, ETextCommit::Type InTextCommit)
+				.OnTextCommitted_Lambda([InArgs](const FText& InText, ETextCommit::Type InTextCommit)
 				{
-					InArgs._OnTextCommitted.Get().operator()(InText, InTextCommit);
+					return InArgs._OnTextCommitted.Get().operator()(InText, InTextCommit);
 				})
 			]
 			.Position(FVector2D{TextBoxX, 0})
