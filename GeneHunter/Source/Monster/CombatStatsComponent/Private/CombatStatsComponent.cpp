@@ -9,7 +9,7 @@ UCombatStatsComponent::UCombatStatsComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 }
-
+ 
 void UCombatStatsComponent::OnComponentCreated()
 {
 	Super::OnComponentCreated();

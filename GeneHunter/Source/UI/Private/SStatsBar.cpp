@@ -48,7 +48,6 @@ void SStatsBar::Construct(const FArguments& InArgs)
 					InArgs._IsPercentage.Get() ? *FString("%") : *FString("")
 					)))
 				.ToolTipText(InArgs._TextBoxTooltip)
-				//.OnTextCommitted_Lambda(this, &InArgs._OnTextCommitted.Get())
 				.OnTextCommitted_Lambda([InArgs](const FText& InText, ETextCommit::Type InTextCommit)
 				{
 					return InArgs._OnTextCommitted.Get().operator()(InText, InTextCommit);

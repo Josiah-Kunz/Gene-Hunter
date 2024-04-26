@@ -5,3 +5,9 @@ Rider refuses to build and exits with code 6
 	- Clean
 	- Rebuild
 	- gg
+	
+Visual Studio cant find "UnrealBuildTool"
+	- Close VS
+	- Navigate to .uproject
+	- Right click -> generate VS files
+	- Open VS again and rebuild
