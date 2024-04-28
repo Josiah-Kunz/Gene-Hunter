@@ -437,7 +437,7 @@ bool USSTCharacterMovementComponent::GetWallslideFloor(TArray<FHitResult>& Hits)
 	return GetWorld()->LineTraceMultiByProfile(Hits, Start, End, TEXT("BlockAll"), SSTCharacterOwner->GetIgnoreSelfParams());
 }
 
-bool USSTCharacterMovementComponent::CheckWallAtLeastCapsuleHeight(const FHitResult& Hit)
+bool USSTCharacterMovementComponent::CheckWallAtLeastCapsuleHeight(const FHitResult& Hit) const
 {
 	TArray<FHitResult> TopHits;
 	TArray<FHitResult> BottomHits;
@@ -482,7 +482,7 @@ bool USSTCharacterMovementComponent::CheckWallAtLeastCapsuleHeight(const FHitRes
 	return true;
 }
 
-bool USSTCharacterMovementComponent::IsEligibleWallForSliding(FHitResult& Hit)
+bool USSTCharacterMovementComponent::IsEligibleWallForSliding(const FHitResult& Hit) const
 {
 	// Check whether wall angle is within our allowable range
 	if (FVector::DotProduct(Hit.Normal, -1 * SSTCharacterOwner->GetActorForwardVector()) < WallslideAllowableWallAngleStrictness)
@@ -504,7 +504,7 @@ bool USSTCharacterMovementComponent::IsHeadedForwards() const
 	return FVector::DotProduct(SSTCharacterOwner->GetActorForwardVector(), Acceleration.GetSafeNormal()) >= WallslideInputAngleStrictness;
 }
 
-bool USSTCharacterMovementComponent::GetValidFloorBeneath(FHitResult& Hit)
+bool USSTCharacterMovementComponent::GetValidFloorBeneath(FHitResult& Hit) const
 {
 	TArray<FHitResult> HitResultsFloor;
 	if (GetWallslideFloor(HitResultsFloor))
@@ -621,12 +621,12 @@ void USSTCharacterMovementComponent::PhysDash(float DeltaTime, int32 Iterations)
 
 }
 
-void USSTCharacterMovementComponent::PerformDash()
+void USSTCharacterMovementComponent::PerformDash() const
 {
 	PerformDashDelegate.Broadcast();
 }
 
-AOneWayPlatform* USSTCharacterMovementComponent::FindOneWayPlatform()
+AOneWayPlatform* USSTCharacterMovementComponent::FindOneWayPlatform() const
 {
 	FFindFloorResult FloorResult;
 	FindFloor(UpdatedComponent->GetComponentLocation(), FloorResult, false);
@@ -694,7 +694,7 @@ void USSTCharacterMovementComponent::SetFacingRight(bool bFacingRight)
 
 bool USSTCharacterMovementComponent::IsCustomMovementMode(ESSTCharacterMovementMode Mode) const
 {
-	return (MovementMode == MOVE_Custom) && (CustomMovementMode == (uint8)Mode);
+	return (MovementMode == MOVE_Custom) && (CustomMovementMode == static_cast<uint8>(Mode));
 }
 
 bool USSTCharacterMovementComponent::CanWalljump() const

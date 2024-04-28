@@ -46,6 +46,9 @@ void ASSTCharacter::BeginPlay()
 
 	// Inform movement component of our initial orientation
 	SSTCharacterMovementComponent->SetFacingRight(GetActorForwardVector().X > 0);
+
+	// Get Viewport
+	Viewport = GetWorld()->GetGameViewport()->Viewport;
 }
 
 void ASSTCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -84,13 +87,13 @@ void ASSTCharacter::MouseMove(const FInputActionValue& Value)
 {
 	if (Controller && SSTCharacterMovementComponent)
 	{
-		
-		FViewport* Viewport = GetWorld()->GetGameViewport()->Viewport; 
+
+		// Size/pos might have changed
 		const int32 ViewWidth = Viewport->GetSizeXY().X;
 		const int32 MouseX = Viewport->GetMouseX();
 
 
-		float MovementValue = Value.Get<float>() * (MouseX > ViewWidth/2.f ? 1 : -1);
+		const float MovementValue = Value.Get<float>() * (MouseX > ViewWidth/2.f ? 1 : -1);
 		SSTCharacterMovementComponent->AddInputVector(FVector::ForwardVector * MovementValue);
 	}
 }

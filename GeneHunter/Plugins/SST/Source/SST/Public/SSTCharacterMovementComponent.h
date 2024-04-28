@@ -42,9 +42,9 @@ class SST_API USSTCharacterMovementComponent : public UCharacterMovementComponen
 	{
 		typedef FSavedMove_Character Super;
 
-		bool SavedFacingRight;
-		bool SavedWantsToDash;
-		bool SavedWantsToPlatformDrop;
+		bool SavedFacingRight = false;
+		bool SavedWantsToDash = false;
+		bool SavedWantsToPlatformDrop = false;
 
 		virtual bool CanCombineWith(const FSavedMovePtr& NewMove, ACharacter* InCharacter, float MaxDelta) const override;
 		virtual void Clear() override;
@@ -207,7 +207,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode);
+	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 
 	virtual void UpdateCharacterStateBeforeMovement(float DeltaSeconds) override;
 
@@ -240,16 +240,16 @@ private:
 	bool GetWallslideFloor(TArray<FHitResult>& Hits) const;
 
 	/** Check whether a candidate wall object is greater than our capsule height */
-	bool CheckWallAtLeastCapsuleHeight(const FHitResult& Hit);
+	bool CheckWallAtLeastCapsuleHeight(const FHitResult& Hit) const;
 
 	/** Verify whether a given wallslide trace result is appropriate for wallsliding */
-	bool IsEligibleWallForSliding(FHitResult& Hit);
+	bool IsEligibleWallForSliding(const FHitResult& Hit) const;
 
 	/** Returns whether the player is holding in the direction they are facing */
 	bool IsHeadedForwards() const;
 
 	/** Helper function to check whether a wallslide is occurring just above valid floor */
-	bool GetValidFloorBeneath(FHitResult& Hit);
+	bool GetValidFloorBeneath(FHitResult& Hit) const;
 
 	/** Performs wall jump */
 	void PerformWallJump();
@@ -264,10 +264,10 @@ private:
 	void PhysDash(float DeltaTime, int32 Iterations);
 
 	/** Performs the dash */
-	void PerformDash();
+	void PerformDash() const;
 
 	/** Determines whether the player is standing on a OneWayPlatform */
-	class AOneWayPlatform* FindOneWayPlatform();
+	class AOneWayPlatform* FindOneWayPlatform() const;
 
 public:
 	/** Overrides to enable custom movement modes */

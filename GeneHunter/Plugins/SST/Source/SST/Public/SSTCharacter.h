@@ -62,6 +62,8 @@ class SST_API ASSTCharacter : public ACharacter
 private:
 	bool IsJumpStale = false;
 
+	FViewport* Viewport;
+
 public:
 	ASSTCharacter(const FObjectInitializer& ObjectInitializer);
 
@@ -93,7 +95,7 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 	// To add mapping context
-	virtual void BeginPlay();
+	virtual void BeginPlay() override;
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Movement")
