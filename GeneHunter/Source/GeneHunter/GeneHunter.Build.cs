@@ -24,6 +24,9 @@ public class GeneHunter : ModuleRules
 			"AffinitiesComponent", "AffinitiesComponentUnitTests", "CombatStatsComponent", "LevelComponent",
 			"LevelComponentUnitTests",
 			"CombatStatsComponentUnitTests", "Types", "TypesUnitTests", 
+			
+			// Visuals
+			"HUD",
 			  
 			// Utility modules
 			"BPLibraries", "GHLibraries", "UI",

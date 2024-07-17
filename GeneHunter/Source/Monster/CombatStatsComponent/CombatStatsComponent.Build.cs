@@ -15,10 +15,10 @@ public class CombatStatsComponent : ModuleRules{
 		});
 		
 		PublicDependencyModuleNames.AddRange(new string[]{
-			"Engine"	// for MathUtil.h (internal) and ActorComponent.h (external)
-		  , "UI"		// for SupportingText.h
+			"Engine"					// for MathUtil.h (internal) and ActorComponent.h (external)
+		  , "UI"						// for SupportingText.h
 		  , "EffectableComponent"		// for effect delegate macros and UEffectableComponent
-		  , "LevelComponent"	// Stats depend on Level
+		  , "LevelComponent"			// Stats depend on Level
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{

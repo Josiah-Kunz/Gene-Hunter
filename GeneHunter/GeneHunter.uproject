@@ -30,6 +30,11 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "HUD",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "LevelComponent",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
@@ -42,7 +47,10 @@
 		{
 			"Name": "UI",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"UMG"
+			]
 		},
 		{
 			"Name": "AuraComponent",
