@@ -20,7 +20,7 @@
 /**
  * A class to hold, track, and calculate level, current exp, cumulative exp, and exp yield. 
  */
-UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup=(Monster), BlueprintType, meta=(BlueprintSpawnableComponent))
 class LEVELCOMPONENT_API ULevelComponent : public UEffectableComponent
 {
 	

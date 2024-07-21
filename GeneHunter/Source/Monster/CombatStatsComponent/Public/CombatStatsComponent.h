@@ -60,8 +60,6 @@ private:
 	void ChangeStatsOnLevelChange(const uint32 OldCXP, const int32 InputCXP, const int32 AttemptedCXP);
 
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
 
 #pragma endregion
 
@@ -101,6 +99,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	FCombatStat& GetStat(const EStatEnum Stat);
+
+	/**
+	 * Gets the read-only FCombatStat's value by EStatEnum. If you'd like to modify the FStat, use ModifyStat (or similar).
+	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
+	float GetStatValue(const EStatEnum Stat, const EStatValueType ValueType);
 
 private:
 
@@ -203,7 +207,7 @@ public:
 	 *
 	 *	Note: All "Randomize" functions call RandomizeStats, which calls this.
 	 */
-	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Level Outlets")
 	FRandomizeStatsOutlet RandomizeStatsOutlet;
 
 	/**
@@ -232,6 +236,7 @@ public:
 	 *
 	 *	Note: All "Modify" functions call ModifyStatInternal, which calls this.
 	 */
+	
 	FModifyStatOutlet ModifyStatOutlet;
 	
 	/**

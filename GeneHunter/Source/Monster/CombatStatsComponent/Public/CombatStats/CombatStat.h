@@ -11,7 +11,7 @@
 /**
  * 
  */
-USTRUCT(Blueprintable)
+USTRUCT(BlueprintType)
 struct COMBATSTATSCOMPONENT_API FCombatStat
 {
 	GENERATED_BODY()

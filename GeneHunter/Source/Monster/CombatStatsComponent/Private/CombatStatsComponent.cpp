@@ -2,10 +2,8 @@
 #include "ComponentUtilities.h"
 #include "MathUtil.h"
 
-#pragma region Standard stuff
-
 // Sets default values for this component's properties
-UCombatStatsComponent::UCombatStatsComponent()
+UCombatStatsComponent::UCombatStatsComponent(): LevelComponent(nullptr)
 {
 	PrimaryComponentTick.bCanEverTick = false;
 }
@@ -18,9 +16,11 @@ void UCombatStatsComponent::OnComponentCreated()
 
 void UCombatStatsComponent::EnsureLevelComponent(AActor* Owner)
 {
-	if (Owner != nullptr)
+	if (Owner == nullptr)
 	{
-
+		UE_LOG(LogTemp, Error, TEXT("CombatStats created, but no owner found! How did you do this?"))
+	} else {
+		
 		// Cache
 		const ULevelComponent* OldLevelComponent = LevelComponent;
 
@@ -40,6 +40,14 @@ void UCombatStatsComponent::EnsureLevelComponent(AActor* Owner)
 			// Start with random stats
 			RandomizeStatsCustom(FStatRandParams{});
 		}
+
+		// Still null? Print error
+		if (LevelComponent == nullptr)
+		{
+			UE_LOG(LogTemp, Error, TEXT("LevelComponent is required for CombatStatsComponent!"
+							  " Please add a LevelComponent first."))
+			this->DestroyComponent();
+		}
 	}
 }
 
@@ -53,15 +61,14 @@ void UCombatStatsComponent::ChangeStatsOnLevelChange(const uint32 OldCXP, const 
 	}
 }
 
-// Called when the game starts
-void UCombatStatsComponent::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
 FCombatStat& UCombatStatsComponent::GetStat(const EStatEnum Stat)
 {
 	return GetStatMutable(Stat);
+}
+
+float UCombatStatsComponent::GetStatValue(const EStatEnum Stat, const EStatValueType ValueType)
+{
+	return GetStatMutable(Stat).GetValue(ValueType);
 }
 
 FCombatStat& UCombatStatsComponent::GetStatMutable(const EStatEnum Stat)
@@ -127,8 +134,6 @@ void UCombatStatsComponent::RandomizeStat_Internal(const EStatEnum Stat, const F
 
 void UCombatStatsComponent::RandomizeStat(const EStatEnum Stat, const FStatRandParams Params)
 {
-	// Cache original for delegates
-	const FStatRandParams OriginalParams = Params;
 
 	// Call internal
 	RandomizeStat_Internal(Stat, Params, Params);
@@ -219,6 +224,15 @@ void UCombatStatsComponent::ModifyStatsUniformly(const float UniformMod, const E
 
 void UCombatStatsComponent::RecalculateStats(const bool bResetCurrent, const bool bResetHP)
 {
+
+	// Guard
+	if (LevelComponent == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No LevelComponent found on CombatStatsComponent!"))
+		return;
+	}
+
+	// Update stats as usual
 	for(const EStatEnum Stat : StatsArray)
 	{
 
