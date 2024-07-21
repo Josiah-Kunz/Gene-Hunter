@@ -19,6 +19,7 @@ public class CombatStatsComponent : ModuleRules{
 		  , "UI"		// for SupportingText.h
 		  , "EffectableComponent"		// for effect delegate macros and UEffectableComponent
 		  , "LevelComponent"	// Stats depend on Level
+		  , "UMG"				// For health bar uuserwidget
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{

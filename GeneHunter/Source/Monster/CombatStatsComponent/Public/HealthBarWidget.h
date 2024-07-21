@@ -17,13 +17,14 @@ class COMBATSTATSCOMPONENT_API UHealthBarWidget : public UUserWidget
 
 public:
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	UCombatStatsComponent* StatsComponent;
 
 	virtual void NativeConstruct() override;
 
 	// Left blank here so that the BP can fill it in.
-	virtual void UpdateHealth(){};
+	UFUNCTION(Blueprintable, BlueprintCallable, BlueprintType, BlueprintNativeEvent)
+	void UpdateHealth();
 
 private:
 

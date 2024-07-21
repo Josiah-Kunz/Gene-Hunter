@@ -19,8 +19,12 @@ void UHealthBarWidget::NativeConstruct()
 	}
 }
 
+void UHealthBarWidget::UpdateHealth_Implementation()
+{
+}
+
 void UHealthBarWidget::UpdateHealthCall(const EStatEnum Stat, const EStatValueType ValueType,
-	const EModificationMode Mode, const float OGValue, float& AttemptedValue)
+                                        const EModificationMode Mode, const float OGValue, float& AttemptedValue)
 {
 	UpdateHealth();
 }
