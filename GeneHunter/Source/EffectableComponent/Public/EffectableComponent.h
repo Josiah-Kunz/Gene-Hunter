@@ -20,5 +20,10 @@ public:
 	 * An example is UCombatStatsComponent::UpdateStatsAfterLevel. This should always happen regardless of, e.g., buffs.
 	 */
 	inline static constexpr float IntrinsicPriority = -999999999;
+
+	/**
+	 * Priority for UI delegates (for example, a health bar).
+	 */
+	inline static constexpr float UIPriority = 0;
 	
 };
