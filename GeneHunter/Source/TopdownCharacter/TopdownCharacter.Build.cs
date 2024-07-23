@@ -22,8 +22,9 @@ public class TopdownCharacter : ModuleRules{
 		PrivateDependencyModuleNames.AddRange(new string[]{
 			
 			// Basics
-			"Core"			// for FStrings and such
-			, "CoreUObject"	// for UObjects
+			"Core",			// for FStrings and such
+			"CoreUObject",	// for UObjects
+			"GHLibraries",	// for REQUIRE_COMPONENT and such
 			  
 		});
 	}

@@ -16,12 +16,18 @@ class COMBATSTATSCOMPONENT_API UHealthBarWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
-	UCombatStatsComponent* StatsComponent;
 
 	virtual void NativeConstruct() override;
 
+	UFUNCTION(Blueprintable, BlueprintCallable, BlueprintType, BlueprintNativeEvent)
+	/**
+	 *	Set the CombatStatsComponent and updates the UI with the new health.
+	 */
+	void SetCombatStats(UCombatStatsComponent* NewCombatStats);
+
+	UFUNCTION(Blueprintable, BlueprintCallable, BlueprintType, BlueprintNativeEvent, BlueprintPure)
+	UCombatStatsComponent* GetCombatStats();
+	
 	// Left blank here so that the BP can fill it in.
 	UFUNCTION(Blueprintable, BlueprintCallable, BlueprintType, BlueprintNativeEvent)
 	void UpdateHealth();
@@ -34,5 +40,10 @@ private:
 	UFUNCTION()
 	void UpdateHealthCall(const EStatEnum Stat, const EStatValueType ValueType, const EModificationMode Mode,
 		const float OGValue, float& AttemptedValue);
+
+	UPROPERTY(EditAnywhere, Category = "Stats")
+	UCombatStatsComponent* StatsComponent;
+
+	bool bStatsIsValid;
 	
 };
