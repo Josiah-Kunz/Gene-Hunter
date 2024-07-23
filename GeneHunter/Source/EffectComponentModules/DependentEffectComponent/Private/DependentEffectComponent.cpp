@@ -7,7 +7,6 @@ void UDependentEffectComponent::CallRemoveEffect(const UEffectComponent* EffectT
 
 void UDependentEffectComponent::SetOwner(UEffectComponent* NewOwner)
 {
-
 	// Remove from previous
 	if (Owner != nullptr)
 	{

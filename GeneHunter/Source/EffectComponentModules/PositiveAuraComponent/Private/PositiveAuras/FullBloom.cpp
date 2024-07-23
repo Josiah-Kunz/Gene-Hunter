@@ -19,6 +19,12 @@ FSupportingText UFullBloom::GetSupportingText()
 void UFullBloom::OnComponentCreated()
 {
 	Super::OnComponentCreated();
+	
+}
+
+void UFullBloom::OnRegister()
+{
+	Super::OnRegister();
 	ADD_COMPONENT(UPermStatMod, PermStatMod, GetOwner())
 	PermStatMod->StatMods = {
 		{EStatEnum::Health, HealthIncrease, EModificationMode::AddPercentage, EStatValueType::Permanent}

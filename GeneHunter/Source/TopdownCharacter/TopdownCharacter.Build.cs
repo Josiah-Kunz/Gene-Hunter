@@ -5,11 +5,11 @@ public class TopdownCharacter : ModuleRules{
 	public TopdownCharacter(ReadOnlyTargetRules Target) : base(Target){
 
 		PrivateIncludePaths.AddRange(new string[]{
-			"Monster/TopdownCharacter/Private",
+			"TopdownCharacter/Private",
 		});
 
 		PublicIncludePaths.AddRange(new string[]{
-			"Monster/TopdownCharacter/Public",
+			"TopdownCharacter/Public",
 		});
 		
 		PublicDependencyModuleNames.AddRange(new string[]{

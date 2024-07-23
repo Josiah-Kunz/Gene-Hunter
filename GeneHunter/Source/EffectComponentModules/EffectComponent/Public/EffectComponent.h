@@ -202,6 +202,8 @@ public:
 	 */
 	virtual void OnComponentCreated() override;
 
+	virtual void OnRegister() override;
+
 	/**
 	 * Called for Outlet OnComponentRemoved.
 	 */

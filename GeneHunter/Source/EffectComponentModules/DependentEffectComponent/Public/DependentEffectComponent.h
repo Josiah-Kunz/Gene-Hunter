@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EffectComponent.h"
+#include "Outlets/OnRemoveEffectOutlet.h"
 
 #include "DependentEffectComponent.generated.h"
 

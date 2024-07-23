@@ -9,7 +9,6 @@ UPermStatMod::UPermStatMod()
 void UPermStatMod::AfterRecalculateStats(const EStatEnum InStat, const bool bResetCurrent, const float OriginalCurrent,
 		const float OriginalPermanent)
 {
-	
 	// If silenced, do nothing
 	if (!ShouldApplyEffect())
 	{
@@ -34,10 +33,8 @@ void UPermStatMod::ModifyStat(const EStatEnum InStat, const bool bIncrease, cons
 
 void UPermStatMod::AddOrRemoveEffectInternal(const bool bAdding)
 {
-
 	if (bHasOwner)
 	{
-
 		// If it's HP, we should make sure current <= permanent (the others should raise and lower according to their
 		// effects on RecalculateStats)
 		const FCombatStat& HP = StatsComponent->GetStat(EStatEnum::Health);
@@ -82,7 +79,6 @@ void UPermStatMod::AddOrRemoveEffectInternal(const bool bAdding)
 
 FText UPermStatMod::GetDescriptionText()
 {
-
 	FString Description = "";
 
 	//for(const auto [Stat, Modification, Mode, ValueType] : StatMods)
@@ -136,7 +132,6 @@ FText UPermStatMod::GetDescriptionText()
 
 void UPermStatMod::SetOwner(UEffectComponent* NewOwner)
 {
-
 	// Careful! Squirrels everywhere...
 	if (NewOwner != nullptr)
 	{
@@ -161,7 +156,6 @@ void UPermStatMod::SetOwner(UEffectComponent* NewOwner)
 
 FSupportingText UPermStatMod::GetSupportingText()
 {
-	
 	return FSupportingText{
 		FText::FromString("I'm not entirely sure if berserkers should lose defense, gain speed, or have +PhA & +SpA. I was just so mad that the final item in Pokemon Silver was this item that was unique and consumable. I never used it!"),
 		GetDescriptionText(),

@@ -134,7 +134,7 @@ EStackChangeResult UEffectComponent::Purge(const int32 Amount)
 
 auto UEffectComponent::OnComponentCreated() -> void
 {
-
+	
 	// We'll use this a bunch
 	AActor* ActorOwner = GetOwner();
 
@@ -162,11 +162,17 @@ auto UEffectComponent::OnComponentCreated() -> void
 	SetStacks(1);
 	Added = true;
 	
+	
 	// Supah
 	Super::OnComponentCreated();
 
 	// Delegate
-	OnAddEffectOutlet.ExecuteAfter(this);
+	//OnAddEffectOutlet.ExecuteAfter(this);
+}
+
+void UEffectComponent::OnRegister()
+{
+	Super::OnRegister();
 }
 
 void UEffectComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
