@@ -1,0 +1,30 @@
+﻿using UnrealBuildTool;
+
+public class TopdownCharacter : ModuleRules{
+
+	public TopdownCharacter(ReadOnlyTargetRules Target) : base(Target){
+
+		PrivateIncludePaths.AddRange(new string[]{
+			"Monster/TopdownCharacter/Private",
+		});
+
+		PublicIncludePaths.AddRange(new string[]{
+			"Monster/TopdownCharacter/Public",
+		});
+		
+		PublicDependencyModuleNames.AddRange(new string[]{
+			"CombatStatsComponent",
+			"Engine",	// for ActorComponent.h (external)
+			"LevelComponent",
+			"PaperZD",	// it's the base class!
+		}); 
+		
+		PrivateDependencyModuleNames.AddRange(new string[]{
+			
+			// Basics
+			"Core"			// for FStrings and such
+			, "CoreUObject"	// for UObjects
+			  
+		});
+	}
+}

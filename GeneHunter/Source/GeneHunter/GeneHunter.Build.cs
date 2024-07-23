@@ -13,6 +13,9 @@ public class GeneHunter : ModuleRules
 			// Basic
 			"Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay",
 			
+			// Character modules
+			"TopdownCharacter",
+			
 			// Effects modules
 			"AuraComponent", "BuffComponent", "DebuffComponent", "DependentEffectComponent", "DoTComponent", 
 			"EffectableComponent", "EffectComponent", "EffectComponentUnitTests", 
@@ -21,9 +24,10 @@ public class GeneHunter : ModuleRules
 			"TraitEffectComponent",
 			
 			// Monster modules
-			"AffinitiesComponent", "AffinitiesComponentUnitTests", "CombatStatsComponent", "LevelComponent",
-			"LevelComponentUnitTests",
-			"CombatStatsComponentUnitTests", "Types", "TypesUnitTests", 
+			"AffinitiesComponent", "AffinitiesComponentUnitTests", "CombatStatsComponent", "LevelComponent", "Types",
+			
+			// Monster unit tests
+			"CombatStatsComponentUnitTests", "LevelComponentUnitTests",  "TypesUnitTests",
 			  
 			// Utility modules
 			"BPLibraries", "GHLibraries", "UI",

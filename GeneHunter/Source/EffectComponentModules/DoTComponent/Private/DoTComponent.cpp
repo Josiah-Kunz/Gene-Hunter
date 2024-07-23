@@ -29,8 +29,6 @@ void UDoTComponent::OnComponentCreated()
 
 	// Must still be alive
 	Super::OnComponentCreated();
-	
-	Super::OnComponentCreated();
 	NextModTime = StartingDuration();
 }
 
