@@ -5,6 +5,11 @@
 void UHealthBarWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+	
+	// Set up the delegate
+	AfterModifyStat.Delegate.Clear();
+	AfterModifyStat.Priority = UEffectableComponent::UIPriority;
+	AfterModifyStat.Delegate.BindUFunction(this, GET_FUNCTION_NAME_CHECKED(UHealthBarWidget, UpdateHealthCall));
 }
 
 UCombatStatsComponent* UHealthBarWidget::GetCombatStats_Implementation()
@@ -26,10 +31,7 @@ void UHealthBarWidget::SetCombatStats_Implementation(UCombatStatsComponent* NewC
 		StatsComponent = NewCombatStats;
 		bStatsIsValid = true;
 		
-		// Set up the delegate
-		AfterModifyStat.Delegate.Clear();
-		AfterModifyStat.Priority = UEffectableComponent::UIPriority;
-		AfterModifyStat.Delegate.BindUFunction(this, GET_FUNCTION_NAME_CHECKED(UHealthBarWidget, UpdateHealthCall));
+		// Add to outlet array
 		StatsComponent->ModifyStatOutlet.AddAfter(AfterModifyStat);
 
 		// Fire event first time
@@ -49,6 +51,19 @@ void UHealthBarWidget::UpdateHealthCall(const EStatEnum Stat, const EStatValueTy
 	{
 		if (bStatsIsValid)
 		{
+
+			// Ensure bound
+			if (!AfterModifyStat.Delegate.IsBound())
+			{
+				UE_LOG(LogTemp, Error, TEXT("Wasn't bound. Rebinding."))
+				AfterModifyStat.Delegate.BindUFunction(this, GET_FUNCTION_NAME_CHECKED(UHealthBarWidget, UpdateHealthCall));
+			}
+			if (!AfterModifyStat.Delegate.IsBound())
+			{
+				UE_LOG(LogTemp, Error, TEXT("Still not bound. WTF?"))
+			}
+
+			// Execute main call
 			UpdateHealth();
 		} else
 		{
