@@ -39,7 +39,7 @@ private:
 
 	UFUNCTION()
 	void UpdateHealthCall(const EStatEnum Stat, const EStatValueType ValueType, const EModificationMode Mode,
-		const float OGValue, float& AttemptedValue);
+		const float OGValue, const float NewValue);
 
 	UPROPERTY(EditAnywhere, Category = "Stats")
 	UCombatStatsComponent* StatsComponent;
