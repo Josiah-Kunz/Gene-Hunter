@@ -13,6 +13,9 @@ public class GeneHunter : ModuleRules
 			// Basic
 			"Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay",
 			
+			// Battle
+			"BattleEngine",
+			
 			// Character modules
 			"TopdownCharacter",
 			

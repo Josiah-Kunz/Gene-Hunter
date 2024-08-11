@@ -15,6 +15,11 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "BattleEngine",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "BPLibraries",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
