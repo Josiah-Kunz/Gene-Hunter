@@ -9,8 +9,11 @@
 
 #include "MoveData.generated.h"
 
-USTRUCT(Blueprintable)
-struct BATTLEENGINE_API FMoveData
+/**
+ * An asset that holds static data on a Move. Think of it as a Pokedex entry.
+ */
+UCLASS()
+class BATTLEENGINE_API UMoveData : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 
@@ -28,7 +31,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
 	EMoveContact Contact;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data", meta=(Tooltip="If blank, this is the same as the asset name. Really only useful for special characters or a dynamic name."))
 	FText DisplayName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
