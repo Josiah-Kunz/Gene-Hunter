@@ -14,9 +14,11 @@ public class BattleEngine : ModuleRules{
 		
 		PublicDependencyModuleNames.AddRange(new string[]{
 			"CombatStatsComponent",		// ProjectileData carries this
+			"EffectComponent",			// MoveData has EffectsToInflict
 			"Engine",					// for ActorComponent.h (external)
 			"LevelComponent", 			// CombatStats depend on this
-			"Types",
+			"Types", 
+			"UI",						// MoveData uses FSupportingText
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
