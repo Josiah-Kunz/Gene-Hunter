@@ -17,6 +17,8 @@ class BATTLEENGINE_API UMoveData : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 
+#pragma region Variables
+
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data", meta=(EditCondition="bCanCategoryDoDamage()"))
@@ -46,14 +48,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
 	TArray<UType*> Types;
 
+#pragma endregion
+
+#pragma region Functions
+	
 protected:
 	
 	bool bCanCategoryDoDamage() const
 	{
-		return Category == EMoveCategory::Physical || 
-			   Category == EMoveCategory::Special || 
-			   Category == EMoveCategory::Healing;
+		return Category == EMoveCategory::PhysicalDamage || 
+			   Category == EMoveCategory::SpecialDamage || 
+			   Category == EMoveCategory::SpecialHealing;
 	}
 
+#pragma endregion
 	
 };

@@ -18,6 +18,7 @@
 
 // Utilities
 #include "ModificationMode.h"
+#include "MoveData.h"
 #include "StatEnum.h"
 #include "StatRandParams.h"
 #include "StatValueType.h"
@@ -113,6 +114,8 @@ private:
 	 * may be modifying FCombatStat without calling Outlets.
 	 */
 	FCombatStat& GetStatMutable(const EStatEnum Stat);
+
+	static constexpr float CritBaseMultiplier = 1.5f;
 
 #pragma endregion
 
@@ -260,8 +263,23 @@ public:
 	 */
 	UPROPERTY(VisibleAnywhere, Category="Level Outlets")
 	FRecalculateStatsOutlet RecalculateStatsOutlet;
+
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
+	void ApplyMoveData(const UMoveData* MoveData, UCombatStatsComponent* Attacker);
 	
 private:
+	
+	/**
+	 * Call this to randomly generate a True or False that a critical hit has been made.
+	 */
+	bool bIsCrit();
+
+	/**
+	 * For example, if Crit is 120%, this will return 0.20. If Crit is <100, this will return 0.
+	 */
+	float GetCritDamageBonus();
+	
+	void ApplyMoveDataDamage(const UMoveData* MoveData, UCombatStatsComponent* Attacker);
 
 	/**
 	 * All in-code modifications should pass through here rather than doing Stat->ModifyValue(...). This ensures that 
@@ -269,6 +287,8 @@ private:
 	 */
 	void ModifyStatInternal(EStatEnum Stat, float Value, EStatValueType ValueType, EModificationMode Mode,
 		const EStatReferenceType ReferenceType = EStatReferenceType::Self, const float ReferenceValue = 0);
+
+	
 
 #pragma endregion
 

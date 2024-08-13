@@ -36,6 +36,11 @@ public:
 
 	void SetMaxPoints(const uint8 NewMax);
 
+	/**
+	 * If there are >1 current points, the Same Type Attack Bonus is 1.5x. Otherwise, it's 1.0x.
+	 */
+	float GetSTAB() const;
+
 private:
 
 	/**

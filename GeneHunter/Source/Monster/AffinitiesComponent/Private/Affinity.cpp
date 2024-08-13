@@ -39,3 +39,12 @@ void FAffinity::SetMaxPoints(const uint8 NewMax)
 
 	// Set current accordingly
 	SetCurrentPoints(GetCurrentPoints());}
+
+float FAffinity::GetSTAB() const
+{
+	if (GetCurrentPoints() > 0)
+	{
+		return 1.5f;
+	}
+	return 1;
+}
