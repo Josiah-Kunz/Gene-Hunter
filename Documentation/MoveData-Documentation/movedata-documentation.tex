@@ -66,6 +66,23 @@
 
 %====================================================
 
+\sect{Existing \code{MoveData}}
+
+\begin{longtblr}[
+		caption = {All \code{MoveContact}s currently implemented.},
+		label = {move-contact-table},
+	]{
+		colspec={Q[l, wd=0.17\textwidth] Q[l, wd=0.10\textwidth] Q[l, wd=0.08\textwidth] Q[l, wd=0.17\textwidth] Q[l, wd=0.17\textwidth]},
+		hlines,
+		row{1} = {font=\bfseries, fg=ICBlue},
+		colsep = 0.005\textwidth,
+	}
+	Name & Type & Base Power & Effects & Notes \\
+	Blip & Electric & 20 &  & \\
+\end{longtblr}
+
+%====================================================
+
 \sect{Damage Calculation}
 
 The formulas for damage and healing are inspired by Pokemon. Like it or not, that's the gold standard and what most players will expect when judging base powers, stat values, etc.
@@ -96,7 +113,7 @@ Similarly, the healing formula is:
 	\text{Healing} &= \left[\left(0.4\times \text{Level} + 2\right) \times \frac{\text{Base Power}}{50} \times \frac{\text{Attack}}{100} + 2\right]\\
 		& \qquad \times \text{Crit Multiplier} \times \text{Random Fluctuation} \times \text{STAB Multiplier}
 \end{align*}
-Clearly, the Defense of the healee should not inhibit the heal, so a static 100 has been used instead (as 100 is an average stat). Moreover, Type advantages should not play a role in healing. Heals can crit, though.
+Clearly, the Defense of the healee should not inhibit the heal, so a static 100 has been used instead (since 100 is an average stat). Moreover, Type advantages should not play a role in healing. Heals can crit, though.
 
 %====================================================
 
