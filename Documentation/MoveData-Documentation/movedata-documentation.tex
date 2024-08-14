@@ -1,0 +1,103 @@
+\input{../standalone}
+
+\begin{tldr}
+	\begin{itemize}
+		\item{Moves have Categories, which can be seen in Table~\ref{move-cat-table}.}
+		\item{Similarly, Moves can make contact (think Spiky Shield), which can be seen in Table~\ref{move-contact-table}.}
+	\end{itemize}
+\end{tldr}
+
+\localtoc
+
+%====================================================
+
+\sect{What Is \code{MoveData}?}
+
+\code{MoveData} is an asset that contains static data on a Move. Specifically, it contains information on:\\
+
+\newcommand{\bitem}[2]{\item{\textbf{#1}. #2}}
+
+\begin{itemize}
+	\bitem{Base power}{A measure of the relative power of a Move. Starter Moves may only have 10--30 base power, whereas the most powerful moves may tip the scales at 100. The majority of Moves should have low base powers---we don't want the OHKOs of Pokemon, as this isn't a turn-based game.}
+	\bitem{Base cooldown}{The cooldown in seconds. This gets modified by the \code{CombatStatsComponent}'s Haste.}
+	\bitem{Category}{A representation of the kind of Move this is. The \code{MoveCategory}s are:
+	\begin{longtblr}[
+		caption = {All \code{MoveCategory}s currently implemented.},
+		label = {move-cat-table},
+	]{
+		colspec={Q[l, wd=0.17\textwidth] Q[l, wd=0.6\textwidth]},
+		hlines,
+		row{1} = {font=\bfseries, fg=ICBlue},
+		colsep = 0.005\textwidth,
+	}
+	Name 	& Description\\
+	\code{None}	& Default. Don't use this. If you see it, it's an error.\\
+	\code{PhysicalDamage}	& If damaging, the Move relies on the user's physical abilities, like strength.\\
+	\code{SpecialDamage} & If damaging, the Move relies on the user's non-physical abilities, like psychic or spiritual ability.\\
+	\code{PhysicalHealing} & A move that restores health (self, allies, enemies, etc.) by physical means.  For example, an injection, food, a bandage, or acupuncture.\\
+	\code{SpecialHealing} & A move that restores health (self, allies, enemies, etc.) non-physically.  For example, mental healing, emotional support, spiritual peace, or the reversing of time to heal wounds.\\
+	\code{Summoning} & A move that summons an object or creature.\\
+	\code{Utility} & Does no damage to opponent or self. May still attach effects. Pokemon example: Thunder Wave or Pay Day (but without damage).
+	\end{longtblr}
+	}
+	\bitem{Contact}{Determines what kind of contact (if any) occurs when the Move hits a target. The \code{MoveCategory}s are:
+	\begin{longtblr}[
+		caption = {All \code{MoveContact}s currently implemented.},
+		label = {move-contact-table},
+	]{
+		colspec={Q[l, wd=0.17\textwidth] Q[l, wd=0.6\textwidth]},
+		hlines,
+		row{1} = {font=\bfseries, fg=ICBlue},
+		colsep = 0.005\textwidth,
+	}
+	Name 	& Description\\
+	\code{None}	& No contact (e.g., Summoning or damaging from afar).\\
+	\code{PhysicalContact} & The damage or status requires the user to make physical contact with the target. Example: punching something.\\
+	\code{SpecialContact} & The damage or status requires the user to make non-physical contact with the target. Example: direct psychic connection.
+	\end{longtblr}
+	I'll concede that \code{SpecialContact} probably isn't super useful to track, but you never know. It's easier to put it in now rather than later.
+	}
+	\bitem{Display name}{If the field \code{DisplayName} is blank, the asset's name will be used. May be useful for special characters.}
+	\bitem{Effects to inflict}{A \code{TMap} of \code{EffectComponent}s and thier percentages of being applied on a successful Move hit. Pokemon example: a Move having 30\% chance to Burn would have its \code{TPair} be \code{Burn} and \code{30}.}
+	\bitem{Randomness}{A range of values to multiply to calculate the final damage. Normally, any Move's damage is multiplied by a number between 0.85 and 1 (range taken, of course, from Pokemon). This variance makes it a little more exciting.}
+	\bitem{Supporting text}{\code{SupportingText} includes dev notes that doesn't appear in-game, a proper description, and flavor text (e.g., for hovers).}
+	\bitem{Move type(s)}{The incredibly vast majority of moves should only associate with one Type. It gets far too complicated and unpredictably unfun to have multi-type attacks.}
+\end{itemize}
+
+%====================================================
+
+\sect{Damage Calculation}
+
+The formulas for damage and healing are inspired by Pokemon. Like it or not, that's the gold standard and what most players will expect when judging base powers, stat values, etc.
+
+The formulas are implemented in \code{CombatStatsComponent.cpp}:
+\begin{align*}
+	\text{Damage} &= \left[\left(0.4\times \text{Level} + 2\right) \times \frac{\text{Base Power}}{50} \times \frac{\text{Attack}}{\text{Defense}} + 2\right]\\
+		& \qquad \times \text{Crit Multiplier} \times \text{Random Fluctuation} \times \text{STAB Multiplier} \times \text{Type Advantage}
+\end{align*}
+where:
+\begin{itemize}
+	\item{Level is the attacker's Level}
+	\item{Base Power is determined by the \code{MoveData}}
+	\item{Attack and Defense are the appropriate stat values}
+	\item{Crit Multiplier is 1.5$\times$ if a critical hit occurred; 1.0$\times$ otherwise
+		\begin{itemize}
+			\item{As outlined in the Critical Hit section of the Stats documentation, if a crit does occur, this reverts Defense to its un-buffed value (including everything, e.g., Mutations).}
+			\item{If the Critical Hit stat is above 100\%, the critical damage increases accordingly. For example, if Crit is 120\%, the damage bonus is $1.5 + 0.2 = 1.7\times$.}
+			\item{This can be a dangerous game mechanic and will require a lot of balancing. However, it also opens the strategies in an otherwise traditional stat scheme.}
+		\end{itemize}
+	}
+	\item{Random Fluctuation is determined by the ``randomness'' of the \code{MoveData} (in particular, the field \code{MoveData.RandomRange}). Nominally, this is 0.85--1.}
+	\item{\ul{S}ame \ul{T}ype \ul{A}ttack \ul{B}onus (STAB) rewards Monsters for using Moves that share their Types (e.g., a Fire-type Monster using a Fire-type Move). Nominally, this is 1.5$\times$, but can be more or less (e.g., for Typeless Monsters, it's 2$\times$).}
+	\item{Type Advantage is outlined in the Types documentation. Normally, it ranges anywhere from $-1$ (Electric actually heals Electric) to $0.25\times$ (double resisted) to $4\times$ (doubly weak). It follows established Pokemon conventions.}
+\end{itemize}
+Similarly, the healing formula is:
+\begin{align*}
+	\text{Healing} &= \left[\left(0.4\times \text{Level} + 2\right) \times \frac{\text{Base Power}}{50} \times \frac{\text{Attack}}{100} + 2\right]\\
+		& \qquad \times \text{Crit Multiplier} \times \text{Random Fluctuation} \times \text{STAB Multiplier}
+\end{align*}
+Clearly, the Defense of the healee should not inhibit the heal, so a static 100 has been used instead (as 100 is an average stat). Moreover, Type advantages should not play a role in healing. Heals can crit, though.
+
+%====================================================
+
+\postamble{}

@@ -9,6 +9,8 @@
 	\end{itemize}
 \end{tldr}
 
+\localtoc
+
 %====================================================
 
 \sect{Structure}
@@ -19,12 +21,12 @@
 	\item{\textbf{\code{EffectableComponent}s} are \code{ActorComponent}s that allow for delegation (effects). They have predefined places called ``\code{Outlet}s'' that allow for code modification. Think of \code{Outlet}s like electrical outlets waiting to be plugged into.
 		\SubItem{Let's use \code{StatsComponent} as an example. Say we want a Pok\'{e}mon-style ``Adamant'' nature ($+$10\% PhA/$-$10\% SpA). One such place for modification is in the function \code{RecalculateStats}.}
 		\begin{center}
-			\includegraphics[scale=\ScreenshotScale]{recalculate-stats-code}
+			\includegraphics[scale=\ScreenshotScale]{../Effects-Documentation/recalculate-stats-code}
 		\end{center}
 		}
 	\item{\textbf{\code{EffectComponent}s} plug into these \code{Outlet}s. These come in many forms, but an easy example is a \code{Buff}. Take \code{Invulnerable}, which plugs into \code{StatComponent}'s ``before modify stat'' \code{Outlet}:
 		\begin{center}
-			\includegraphics[scale=\ScreenshotScale]{invulnerable}
+			\includegraphics[scale=\ScreenshotScale]{../Effects-Documentation/invulnerable}
 		\end{center}
 	}
 \end{itemize}
@@ -33,7 +35,7 @@
 
 \sect{\code{EffectComponent} Inheritance}
 
-\input{effects-inheritance}
+\input{../Effects-Documentation/effects-inheritance}
 
 %====================================================
 
@@ -54,7 +56,7 @@ Note that the philosophy is to create what is \textit{probable} rather than what
 
 %====================================================
 
-\input{outlets-tables}
+\input{../Effects-Documentation/outlets-tables}
 
 %====================================================
 
@@ -67,25 +69,25 @@ As an example, let's use \code{GetBaseExpYield}. (You can imagine that this is a
 	\item{\textbf{Go to the right directory.} We want to place the \code{Outlet} inside of \code{ULevelComponent}, so we'll start with that directory. If yours doesn't contain an ``Outlets'' directory, create one and place your \code{Outlet}(s) there.}
 	\item{\textbf{Copy + paste file.} The easiest way is to copy + paste pre-existing \code{Outlet}s. In this example, we'll copy + paste \code{SetCXPOutlet.h} and name the new file \code{GetBaseExpYield.h}. \\
 	\begin{center}
-		\includegraphics[scale=\ScreenshotScale]{create-outlet-rename}
+		\includegraphics[scale=\ScreenshotScale]{../Effects-Documentation/create-outlet-rename}
 	\end{center}
 	\noindent \textit{Note: this includes both \code{BeforeGetBaseExpYield} and \code{AfterGetBaseExpYield} functionality. You don't have to make two different files!}
 	}
 	\item{\textbf{Replace old name.} Open the new file and you'll still see the base name ``SetCXP'' everywhere. The easiest way is to do a find+replace ``SetCXP'' $\rightarrow$ ``GetBaseExpYield''. This replaces everything from the \code{.generated} include to the delegate signatures. If you're curious, you can look more in-depth and replace instances one-by-one.}
 	\item{\textbf{Declare delegate signatures.} In this case, we want the \code{Before} delegate signature to take two arguments: the original, unmodified yield and the one that will be returned from the \code{GetBaseExpYield} function.\\
 	\begin{center}
-		\includegraphics[scale=\ScreenshotScale]{create-outlet-signature}
+		\includegraphics[scale=\ScreenshotScale]{../Effects-Documentation/create-outlet-signature}
 	\end{center}
 	You should also set the \code{After} signature in the same manner. \textit{Note: yours might use more than two parameters or different parameter types. Modify accordingly.}
 	}
 	\item{\textbf{Module API.} Make sure your module API is correct. If not, you'll get mysterious errors about your dll.
 	\begin{center}
-		\includegraphics[scale=\ScreenshotScale]{create-outlet-api}
+		\includegraphics[scale=\ScreenshotScale]{../Effects-Documentation/create-outlet-api}
 	\end{center}
 	}
 	\item{\textbf{Declare \code{Outlet} functions.} In order to be able to call \code{ExecuteBefore} on your \code{Outlet}, you need to tell it a few things. The figure below displays a few things in red you should look at:\\
 	\begin{center}
-		\includegraphics[scale=\ScreenshotScale]{create-outlet-functions}
+		\includegraphics[scale=\ScreenshotScale]{../Effects-Documentation/create-outlet-functions}
 	\end{center}
 		\begin{itemize}
 			\item{Whether it's a \code{Before} or \code{After} type \code{Outlet}. This affects execution based on priority:
@@ -136,14 +138,14 @@ As an example, let's use \code{GetBaseExpYield}. (You can imagine that this is a
 	\item{\textbf{Check number of parameters.} I make a point of this because I find it's my most common error. Make sure your declared signature \textit{and} declared \code{Outlet} function macros have the correct number of params (two in our case). Explicitly, you might need to use\\\code{DECLARE\_DYNAMIC\_DELEGATE\_FourParams(...)}.}
 	\item{\textbf{Declare \code{UPROPERTY}.} Inside the \code{UEffectableComponent} (in this example, \code{ULevelComponent}), declare the \code{Outlet} as a variable. Note that it's custom to have this \code{UPROPERTY} as public and in the ``Outlets'' category. It's also a good idea to comment the \code{UPROPERTY} with the parameters.
 	\begin{center}
-		\includegraphics[scale=\ScreenshotScale]{create-outlet-uproperty}
+		\includegraphics[scale=\ScreenshotScale]{../Effects-Documentation/create-outlet-uproperty}
 	\end{center}
 	
 	\textit{Note:} I use Rider, so it imports \code{\#include}s automatically. Make sure yours does, too.
 	}
 	\item{\textbf{Implement.} Now it's time to place your \code{Outlet} in the appropriate place(s). For our example, it's pretty simple: place it inside of \code{GetBaseExpYield} in \code{ULevelComponent}'s \code{.cpp} file.
 	\begin{center}
-		\includegraphics[scale=\ScreenshotScale]{create-outlet-cpp}
+		\includegraphics[scale=\ScreenshotScale]{../Effects-Documentation/create-outlet-cpp}
 	\end{center}
 	Note that you might have to do things like cache original values.
 	}
@@ -157,10 +159,10 @@ As an example, let's use \code{GetBaseExpYield}. (You can imagine that this is a
 
 \sect{All \code{Effects}}
 
-\input{effect-tables}
+\input{../Effects-Documentation/effect-tables}
 
 \sect{Dependent Effects}
 
-\input{dependent-effects}
+\input{../Effects-Documentation/dependent-effects}
 
 \postamble{}

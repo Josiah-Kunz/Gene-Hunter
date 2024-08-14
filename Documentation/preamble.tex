@@ -84,11 +84,49 @@
 % etoc setup
 % ==========
 
-\etocsetstyle{section}{}{}{\etocsavedchaptertocline{\numberline{}\etocname}{\etocpage}}{}
-\etocsetstyle{subsection}{}{}{\etocsavedsectiontocline{\numberline{}\etocname}{\etocpage}}{}
-\etocsetstyle{subsubsection}{}{}{\etocsavedsubsectiontocline{\numberline{}\etocname}{\etocpage}}{}
-\etocsetstyle{paragraph}{}{}{\etocsavedsubsubsectiontocline{\numberline{}\etocname}{\etocpage}}{}
-\etocsetstyle{subparagraph}{}{}{\etocsavedparagraphtocline{\numberline{}\etocname}{\etocpage}}{}
+% ToC bg box
+\usepackage{tcolorbox}
+\newtcolorbox{tocbox}{
+    colback=blue!5!white, % Light blue background color
+    colframe=blue!50!black, % Light blue frame color
+    arc=4mm, % Rounded corners
+    boxrule=0.5mm, % Border thickness
+    left=2mm, % Left padding
+    right=2mm, % Right padding
+    top=2mm, % Top padding
+    bottom=2mm % Bottom padding
+}
+
+% Define local toc to include box
+\newcommand{\localtoc}{%
+    \begin{tocbox}
+    	\textbf{Contents}\\
+        \localtableofcontents
+    \end{tocbox}%
+}
+
+\etocsettocstyle{
+}{
+}
+
+
+%\etocsetstyle{section}{}{}{\etocsavedchaptertocline{\numberline{}\etocname}{\etocpage}}{}
+%\etocsetstyle{subsection}{}{}{\etocsavedsectiontocline{\numberline{}\etocname}{\etocpage}}{}
+%\etocsetstyle{subsubsection}{}{}{\etocsavedsubsectiontocline{\numberline{}\etocname}{\etocpage}}{}
+%\etocsetstyle{paragraph}{}{}{\etocsavedsubsubsectiontocline{\numberline{}\etocname}{\etocpage}}{}
+%\etocsetstyle{subparagraph}{}{}{\etocsavedparagraphtocline{\numberline{}\etocname}{\etocpage}}{}
+
+
+
+% Set the depth of the local ToC to include all levels you need
+\etocsetnexttocdepth{subsection}
+
+% Customize the style for each section level
+\etocsetstyle{section}{}{}{\noindent\etocname\dotfill\etocpage\par}{}
+\etocsetstyle{subsection}{}{}{\noindent\etocname\dotfill\etocpage\par}{}
+\etocsetstyle{subsubsection}{}{}{\noindent\etocname\dotfill\etocpage\par}{}
+\etocsetstyle{paragraph}{}{}{\noindent\etocname\dotfill\etocpage\par}{}
+\etocsetstyle{subparagraph}{}{}{\noindent\etocname\dotfill\etocpage\par}{}
 
 % ==================================
 % Main file declaration (standalone)
@@ -278,10 +316,10 @@
 	\end{center}
 	\vspace*{-36pt}
 	\begin{minipage}[b]{0.5\textwidth}
-		\graphic{filename=\bpPage@baseFilename-overview-1-table, width=\textwidth}
+		\graphic{filename=../Stats-Documentation/\bpPage@baseFilename-overview-1-table, width=\textwidth}
 	\end{minipage}
 	\begin{minipage}[b]{0.5\textwidth}
-		\graphic{filename=\bpPage@baseFilename-overview-1-plot, width=\textwidth}
+		\graphic{filename=../Stats-Documentation/\bpPage@baseFilename-overview-1-plot, width=\textwidth}
 	\end{minipage}
 
 	\begin{center}
@@ -289,10 +327,10 @@
 	\end{center}
 	\vspace*{-36pt}
 	\begin{minipage}[b]{0.5\textwidth}
-		\graphic{filename=\bpPage@baseFilename-overview-50-table, width=\textwidth}
+		\graphic{filename=../Stats-Documentation/\bpPage@baseFilename-overview-50-table, width=\textwidth}
 	\end{minipage}
 	\begin{minipage}[b]{0.5\textwidth}
-		\graphic{filename=\bpPage@baseFilename-overview-50-plot, width=\textwidth}
+		\graphic{filename=../Stats-Documentation/\bpPage@baseFilename-overview-50-plot, width=\textwidth}
 	\end{minipage}
 	
 	\begin{center}
@@ -300,10 +338,10 @@
 	\end{center}
 	\vspace*{-36pt}
 	\begin{minipage}[b]{0.5\textwidth}
-		\graphic{filename=\bpPage@baseFilename-overview-100-table, width=\textwidth}
+		\graphic{filename=../Stats-Documentation/\bpPage@baseFilename-overview-100-table, width=\textwidth}
 	\end{minipage}
 	\begin{minipage}[b]{0.5\textwidth}
-		\graphic{filename=\bpPage@baseFilename-overview-100-plot, width=\textwidth}
+		\graphic{filename=../Stats-Documentation/\bpPage@baseFilename-overview-100-plot, width=\textwidth}
 	\end{minipage}
 
 	\vspace*{-24pt}

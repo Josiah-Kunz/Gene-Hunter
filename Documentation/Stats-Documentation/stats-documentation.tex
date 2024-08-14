@@ -13,6 +13,8 @@
 
 \end{tldr}
 
+\localtoc
+
 
 \sect{Keys}
 
@@ -25,7 +27,7 @@ This chapter contains a bit of basic (Algebra-II--level) math. Most mathematical
 
 There are seven types of stats that affect combat. These may be seen in Table~\ref{tab: stat-key} below. 
 
-\graphic{filename=stat-key,
+\graphic{filename=../Stats-Documentation/stat-key,
 			captionType=table, 
 			caption={The stat types used throughout this document.},
 			label={tab: stat-key},
@@ -42,7 +44,7 @@ There are seven types of stats that affect combat. These may be seen in Table~\r
 
 Table~\ref{tab: color-key} displays the color scheme used throughout this document in regards to stat \textit{quality} rather than type. The quality is also loosely based on Pok\'{e}mon stats \cite{pkmn-stats}.
 
-\graphic{filename=color-key,
+\graphic{filename=../Stats-Documentation/color-key,
 			captionType=table, 
 			caption={The color key used throughout this document. Each color corresponds to a different level of ``goodness''.},
 			label={tab: color-key},
@@ -69,7 +71,7 @@ Table~\ref{tab: color-key} displays the color scheme used throughout this docume
 \newpage
 \sect{Base Pairs}
 
-\graphic{filename=base-pairs-mockup,
+\graphic{filename=../Stats-Documentation/base-pairs-mockup,
 		caption={Mockup of the idea that the stats are linked to genes and that the strength of each stat comes from how many base pairs make up the gene.},
 		label={fig: base-pairs-mockup},
 		width=0.3\textwidth
@@ -84,7 +86,7 @@ In addition to the base stat, there are also ``base pairs,'' which augment the b
 
 An example plot of base pairs vs.\ Physical Attack may be seen below in Figure~\ref{fig: base-pairs-plot}. 
 
-\graphic{filename=base-pairs-vs-attack-plot,
+\graphic{filename=../Stats-Documentation/base-pairs-vs-attack-plot,
 		caption={Base pair count vs.\ the Physical Attack stat for a Monster at level 100 with an average base Physical Attack (100). The ``wiggles'' in the plot are from the way PhA is calculated (via floor function; see Eq.~\eqref{eqn: standard-stat}).},
 		label={fig: base-pairs-plot},
 		width=\textwidth
@@ -101,7 +103,7 @@ Base pairs are generated uniformly by default. That is, every randomly-generated
 \sect{Mutations}
 Similar to a Pok\'{e}mon's Nature \cite{pkmn-stats}, a Monster may have genetic mutations in its stats genome. It may be thought of as additional base pairs in a particular stat or a separate entity altogether; the concept is still in its infancy and will likely grow and change. However, the idea is that there should be another randomizer that may be pseudo-controlled by talents that makes a Monster unique. Below is a table of the current ideas.
 
-\graphic{filename=mutations-table,
+\graphic{filename=../Stats-Documentation/mutations-table,
 		caption={List of current mutation ideas.},
 		label={tab: mutations},
 		width=0.5\textwidth
@@ -152,13 +154,13 @@ The range of level 1--20 are especially important, as it is hoped that the playe
 
 Data for all levels and selected base pairs may be seen in Figure~\ref{fig: standard-stat}, which is also below. In this figure, it is important to note that a good (base stat 120) Monster with the maximum number of base pairs (100 base pairs) is similar to a specialist (base stat 150) with an average number of base pairs (50 base pairs). In practice, this may put an over-emphasis on getting good base pairs, but that data will only come with playtesting. For now, it is assumed that an informed player (i.e., level 30+) will understand this importance and grind accordingly as difficulty dictates.
 
-\graphic{filename=Standard-stat-low-levels-100-plot, 
+\graphic{filename=../Stats-Documentation/Standard-stat-low-levels-100-plot, 
 			caption={The early game plot of a standard stat by level for a base pair value of 100.},
 			label={fig: standard-early-game},
 			width=\textwidth
 }
 			
-\graphic{filename=Standard-stat-low-levels-100-table, 
+\graphic{filename=../Stats-Documentation/Standard-stat-low-levels-100-table, 
 			caption={The early game table of a standard stat by level for a base pair value of 100.},
 			captionType=table,
 			label={tab: standard-early-game},
@@ -231,7 +233,7 @@ With these criteria in mind, the form of Eq.~\eqref{eqn: haste-calculation} was 
 		label={fig: haste-overview}
 }
 
-\graphic{filename=Haste-CD-reduction-table,
+\graphic{filename=../Stats-Documentation/Haste-CD-reduction-table,
 		caption={The new cooldowns (CDs) for an ability that usually has a cooldown of 10~s. The calculation assume that the Monster is at level~100 and has 100~base pairs.},
 		label={tab: haste-cd-reduction},
 		width=\tableWidth
@@ -348,21 +350,21 @@ $\Delta$\texttt{L} rewards the player for ``punching up'' and taking on higher l
 		&= \frac{\texttt{A} + \texttt{B}*\texttt{level} + \texttt{C}*\texttt{level}^3}{\texttt{b} * \Delta\texttt{L}}
 \end{align*}
 
-\graphic{filename=exp-yield-analysis-plot, width=\textwidth, 
+\graphic{filename=../Stats-Documentation/exp-yield-analysis-plot, width=\textwidth, 
 	caption={Number of Monsters of equal level to KO in order to level up. For example, assuming a base yield of 1, a Monster at level~50 must KO 18.2 level-50-Monsters in order to reach level~51.}
 }
 
-\graphic{filename=exp-yield-analysis-table, width=\textwidth,
+\graphic{filename=../Stats-Documentation/exp-yield-analysis-table, width=\textwidth,
 	caption={Number of Monsters of equal level to KO in order to level up. For example, assuming a base yield of 1, a Monster at level~50 must KO 18.2 level-50-Monsters in order to reach level~51.}
 }
 
 \noindent Of course, it's also useful to see the numbers if the player is punching up at a +2 level difference:
 
-\graphic{filename=exp-yield-analysis-enemy-plus2-plot, width=\textwidth, 
+\graphic{filename=../Stats-Documentation/exp-yield-analysis-enemy-plus2-plot, width=\textwidth, 
 	caption={Figure~\ref{fig: exp-yield-analysis-plot}, but with the enemy at +2 levels.}
 }
 
-\graphic{filename=exp-yield-analysis-enemy-plus2-table, width=\textwidth,
+\graphic{filename=../Stats-Documentation/exp-yield-analysis-enemy-plus2-table, width=\textwidth,
 	caption={Figure~\ref{fig: exp-yield-analysis-table}, but with the enemy at +2 levels.}
 }
 

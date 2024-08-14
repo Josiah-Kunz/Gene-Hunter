@@ -262,7 +262,12 @@ void UCombatStatsComponent::ApplyMoveData(const UMoveData* MoveData, UCombatStat
 
 	ApplyMoveDataDamage(MoveData, Attacker);
 	
-	
+	// TODO:
+	/// Apply MoveData effects
+	/// Log?
+	/// Unit test
+	/// Docs
+	/// Get effect outlets!
 	
 	
 }

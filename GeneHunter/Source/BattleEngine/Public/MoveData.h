@@ -36,8 +36,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data", meta=(Tooltip="If blank, this is the same as the asset name. Really only useful for special characters or a dynamic name."))
 	FText DisplayName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
-	TArray<TSubclassOf<UEffectComponent>> EffectsToInflict;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data", meta=(Tooltip="The effects and the percentage to be inflicted. >100 means it's a sure thing."))
+	TMap<TSubclassOf<UEffectComponent>, float> EffectsToInflict;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data", meta=(EditCondition="bCanCategoryDoDamage()"))
 	FFloatRange RandomRange = FFloatRange{0.85f, 1};
