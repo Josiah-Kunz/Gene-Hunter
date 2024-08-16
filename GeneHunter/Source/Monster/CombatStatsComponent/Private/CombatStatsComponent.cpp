@@ -2,6 +2,7 @@
 
 #include "AffinitiesComponent.h"
 #include "ComponentUtilities.h"
+#include "Type.h"
 #include "MathUtil.h"
 
 // Sets default values for this component's properties
@@ -372,6 +373,9 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 		TypeAdvantage = UType::GetNetModifier(AtkTypes, DefTypes, EAttackModifierMode::MultiType);
 	}
 
+	// Stat jump
+	const float StatJump = FCombatStat::StatJump(Level);
+
 	// Guard
 	if (DefValue<=0)
 	{
@@ -394,11 +398,11 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 	{
 	case EMoveCategory::PhysicalDamage: case EMoveCategory::SpecialDamage:
 		HealthChange = (((2*Level/5.0f + 2) * MoveData->BasePower * AtkValue/DefValue)/50.0f + 2)
-			* CritMultiplier * RandomFluct * Stab * TypeAdvantage;
+			* CritMultiplier * RandomFluct * Stab * TypeAdvantage * StatJump;
 		break;
 	case EMoveCategory::PhysicalHealing: case EMoveCategory::SpecialHealing:
 		HealthChange = (((2*Level/5.0f + 2) * MoveData->BasePower * AtkValue/100.0f)/50.0f + 2)
-			* CritMultiplier * RandomFluct * Stab;
+			* CritMultiplier * RandomFluct * Stab * StatJump;
 		break;
 	default:
 		return;

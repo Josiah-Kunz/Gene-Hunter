@@ -2,11 +2,6 @@
 
 #include "MathUtil.h"				// For inherited classes using, e.g., FMathf::Floor
 
-float FCombatStat::StatJump(const uint16 Level)
-{
-	return FMathf::Pow(3.0f, FMathf::Floor(Level/10.0f));
-}
-
 #pragma region Public functions for setters/getters
 
 float FCombatStat::GetCurrentValue() const
@@ -131,7 +126,6 @@ void FCombatStat::RandomizeBasePairs(const int32 Min, const int32 Max)
 	BasePairs = FMath::RandRange(Min, Max);
 }
 
-
 #pragma endregion
 
 #pragma region Things that should be overridden!
@@ -227,5 +221,9 @@ float FCombatStat::GetModification(const float Original, const EModificationMode
 	}
 }
 
+float FCombatStat::StatJump(const uint16 Level)
+{
+	return FMathf::Pow(3.0f, FMathf::Floor(Level/10.0f));
+}
 
 #pragma endregion

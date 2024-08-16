@@ -53,7 +53,7 @@
 	Name 	& Description\\
 	\code{None}	& No contact (e.g., Summoning or damaging from afar).\\
 	\code{PhysicalContact} & The damage or status requires the user to make physical contact with the target. Example: punching something.\\
-	\code{SpecialContact} & The damage or status requires the user to make non-physical contact with the target. Example: direct psychic connection.
+	\code{SpecialContact} & The damage or status requires the user to make non-physical contact with the target. Examples: direct psychic connection, a sustained electrical current from the user to the target, or a ``drain life'' effect.
 	\end{longtblr}
 	I'll concede that \code{SpecialContact} probably isn't super useful to track, but you never know. It's easier to put it in now rather than later.
 	}
@@ -83,14 +83,15 @@
 
 %====================================================
 
-\sect{Damage Calculation}
+\sect{Damage Calculation Formula}
 
 The formulas for damage and healing are inspired by Pokemon. Like it or not, that's the gold standard and what most players will expect when judging base powers, stat values, etc.
 
 The formulas are implemented in \code{CombatStatsComponent.cpp}:
 \begin{align*}
 	\text{Damage} &= \left[\left(0.4\times \text{Level} + 2\right) \times \frac{\text{Base Power}}{50} \times \frac{\text{Attack}}{\text{Defense}} + 2\right]\\
-		& \qquad \times \text{Crit Multiplier} \times \text{Random Fluctuation} \times \text{STAB Multiplier} \times \text{Type Advantage}
+		& \qquad \times \text{Crit Multiplier} \times \text{Random Fluctuation} \times \text{STAB Multiplier} \times \text{Type Advantage}\\
+		& \qquad \times 3^{\floor{\frac{\text{Level}}{10}}}
 \end{align*}
 where:
 \begin{itemize}
@@ -111,9 +112,56 @@ where:
 Similarly, the healing formula is:
 \begin{align*}
 	\text{Healing} &= \left[\left(0.4\times \text{Level} + 2\right) \times \frac{\text{Base Power}}{50} \times \frac{\text{Attack}}{100} + 2\right]\\
-		& \qquad \times \text{Crit Multiplier} \times \text{Random Fluctuation} \times \text{STAB Multiplier}
+		& \qquad \times \text{Crit Multiplier} \times \text{Random Fluctuation} \times \text{STAB Multiplier}\\
+		& \qquad \times 3^{\floor{\frac{\text{Level}}{10}}}
 \end{align*}
 Clearly, the Defense of the healee should not inhibit the heal, so a static 100 has been used instead (since 100 is an average stat). Moreover, Type advantages should not play a role in healing. Heals can crit, though.
+
+%====================================================
+
+\sect{Damage Calculation Case Studies}
+
+Here, we analyze an attacking Monster versus a defending Monster. For simplicity:\\
+\begin{itemize}
+	\item{Both Monsters had perfect Base Pairs in all stats}
+	\item{Both Monsters Levels are equal (so a Level~52 attacker goes against a Level~52 defender)}
+	\item{Crit chance was 0\%}
+	\item{Random fluctuations were 1.0}
+	\item{STAB and type advantage multipliers were 1.0}
+\end{itemize}
+
+\begin{multicols}{2}
+
+\graphic{filename=../MoveData-Documentation/base-attack-variation,
+	caption={Damage calculation at various Levels and Base Attack stats. Defender had 100~Base Defense and the Move had a base power of 50.},
+	width=\columnwidth
+	}
+	
+\graphic{filename=../MoveData-Documentation/base-defense-variation,
+	caption={Damage calculation at various Levels and Base Defense stats. Attacker had 100~Base Attack and the Move had a base power of 50. Not surprisingly, this was the inverse of the previous plot.},
+	width=\columnwidth
+	}
+
+\end{multicols}
+
+\noindent Okay, so at Level 100, they're dealing, like, 5~million damage. More interestingly, let's vary the base power, leaving the base stats alone:
+\graphic{filename=../MoveData-Documentation/base-power-variation,
+	caption={Raw damage calculation at various Levels and base powers. Both attacker and defender are at the same level. Remember: we want a ``good'' endgame Move to have 50 base power.},
+	width=\columnwidth
+	}
+\graphic{filename=../MoveData-Documentation/base-power-variation-normed,
+	caption={This time, damage is represented as the percentage of the defender's HP. Both attacker and defender are at the same level. Initially, we have fast games, but as the player gets into it, the games slow down and the player has to think harder about choices like Type matchups. Remember: we want a ``good'' endgame Move to have 50 base power.},
+	width=\columnwidth
+	}
+	
+\newpage
+
+\noindent Lastly, let's look at an underleveled team in the endgame:
+
+\graphic{filename=../MoveData-Documentation/endgame-damage-plot,
+	caption={Attacker at various Levels versus a Lv.~100 defender. I think it adds to the sense of accomplishment once a Monster reaches Lv.~100 and you \textit{really} start seeing those big damage numbers. It also makes for a way for grind to make up for lack of skill.},
+	width=\columnwidth
+	}
 
 %====================================================
 

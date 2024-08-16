@@ -303,7 +303,7 @@ public:
 	bool IsEqual(UCombatStatsComponent* Other, const EStatValueType ValueType, const float Tolerance = 0.1f);
 
 	/**
-	 * Gets the raw sum of all BaseStats. (In Pokemon, the BST seems to be important, although I've never thought so. Are personal feelings allowed in comments?)
+	 * Gets the raw sum of all BaseStats. (In Pokémon, the BST seems to be important, although I've never thought so. Are personal feelings allowed in comments?)
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float BaseStatTotal();
@@ -343,6 +343,8 @@ public:
 		 */
 	bool IsHarmful(const EStatEnum Stat, const float Value, const EStatValueType ValueType,
 		const EModificationMode Mode);
+
+	
 
 #pragma endregion
 	

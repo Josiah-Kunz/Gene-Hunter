@@ -17,9 +17,9 @@ public:
 	constexpr static bool DEBUG = false;
 
 	/**
-		 * A macro to get "dummy" Types. These are special, independent of
-		 *	in-game data (and hence are good for unit tests).
-		 */
+	 * A macro to get "dummy" Types. These are special, independent of
+	 *	in-game data (and hence are good for unit tests).
+	 */
 	#define GET_DUMMY_TYPES() \
 		TArray<UType*> AllDummyTypes; \
 		UType::GetAllTypes(AllDummyTypes, {}, true, true); \

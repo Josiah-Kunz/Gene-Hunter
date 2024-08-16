@@ -26,6 +26,7 @@ public class BattleEngine : ModuleRules{
 			// Basics
 			"Core",			// for FStrings and such
 			"CoreUObject",	// for UObjects
+			"BPLibraries",	// for UAssetFunctionLibrary::SortAssetsAlphabetically
 			"GHLibraries",	// for REQUIRE_COMPONENT and such
 			  
 		});

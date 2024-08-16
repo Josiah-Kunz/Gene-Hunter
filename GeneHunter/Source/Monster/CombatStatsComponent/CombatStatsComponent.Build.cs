@@ -33,6 +33,7 @@ public class CombatStatsComponent : ModuleRules{
 			"AffinitiesComponent",	// For damage calculation
 			"BPLibraries",			// for Stats using RoundToDecimal
 			"GHLibraries",			// for REQUIRE_COMPONENT macro (since UCombatStatsComponent depends on ULevelComponent)
+			"Types",				// for the damage formula calculation
 		});
 	}
 }

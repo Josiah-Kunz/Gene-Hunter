@@ -21,5 +21,24 @@ public:
 
 #define BASESTATS_GC \
 	DummyWorld->DestroyWorld(false);
+
+/**
+ * A macro to get "dummy" MoveData. These are special, independent of
+ *	in-game data (and hence are good for unit tests).
+ */
+#define GET_DUMMY_MOVEDATA() \
+	TArray<UMoveData*> AllDummyMoveData; \
+	UMoveData::GetAllMoveData(AllDummyMoveData, {}, true, true);  \
+	/* Damage */ \
+	UMoveData* Fighting10	= UMoveData::GetMoveDataByName(AllDummyMoveData, FName(TEXT("Dummy-Fighting10"))); \
+	UMoveData* Flying50		= UMoveData::GetMoveDataByName(AllDummyMoveData, FName(TEXT("Dummy-Flying50"))); \
+	UMoveData* Electric100	= UMoveData::GetMoveDataByName(AllDummyMoveData, FName(TEXT("Dummy-Electric100"))); \
+	/* Heal */ \
+	UMoveData* FireHeal10	= UMoveData::GetMoveDataByName(AllDummyMoveData, FName(TEXT("Dummy-FireHeal10"))); \
+	UMoveData* GrassHoT50	= UMoveData::GetMoveDataByName(AllDummyMoveData, FName(TEXT("Dummy-GrassHoT50"))); \
+	UMoveData* IceHeal100	= UMoveData::GetMoveDataByName(AllDummyMoveData, FName(TEXT("Dummy-IceHeal100"))); \
+	/* Status */ \
+	UMoveData* TypelessBrokenSoul = UMoveData::GetMoveDataByName(AllDummyMoveData, FName(TEXT("Dummy-TypelessBrokenSoul"))); \
+
 	
 };

@@ -12,15 +12,19 @@ public class CombatStatsComponentUnitTests : ModuleRules{
 		PrivateIncludePaths.Add("Monster/CombatStatsComponentUnitTests/Private");
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
-			"Core"					// for FString
-		  , "CoreUObject"			// for UObjects (and their initializations)
-		  , "Engine"				// for UBlueprintFuncitonLibrary in StatUnitTestUtilities.h
-		  , "CombatStatsComponent"	// for the type that we're testing
-		  , "LevelComponent"		// goes with StatsComponent
-		  , "GHLibraries",			// to create dummy worlds
-		    "EffectComponent",		// we'll be testing Outlets too 
-		    "UnrealEd"				// to get dummy unit test UWorlds
-		  , "NetcodeUnitTest"
+		  "AffinitiesComponent",	// damage formula testing needs type advantages
+		  "BattleEngine",			// cuz we do some damage formula testing
+		  "Core",					// for FString
+		  "CoreUObject",			// for UObjects (and their initializations)
+		  "EffectComponent",		// we'll be testing Outlets too 
+		  "Engine",					// for UBlueprintFuncitonLibrary in StatUnitTestUtilities.h
+		  "CombatStatsComponent",	// for the type that we're testing
+		  "GHLibraries",			// to create dummy worlds
+		  "LevelComponent",			// goes with StatsComponent
+		  "Types",					// to get dummy UTypes
+		  "TypesUnitTests",			// to get dummy UTypes
+		  "UnrealEd",				// to get dummy unit test UWorlds
+		  "NetcodeUnitTest",
 		});
 	}
 }

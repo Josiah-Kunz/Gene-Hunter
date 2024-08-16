@@ -52,8 +52,6 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Level")
 	float PermanentValue = 1;
 
-	virtual float StatJump(const uint16 Level);
-
 #pragma endregion
 
 #pragma region Public functions for setters/getters
@@ -128,6 +126,9 @@ public:
 	 */
 	float GetModification(const float Original, const EModificationMode Mode, const float Modification,
 		const EStatReferenceType ReferenceType = EStatReferenceType::Self, const float ReferenceValue = 0);
+
+	
+	static float StatJump(const uint16 Level);
 
 #pragma endregion
 
