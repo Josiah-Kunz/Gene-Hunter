@@ -273,29 +273,9 @@ void UCombatStatsComponent::ApplyMoveData(const UMoveData* MoveData, UCombatStat
 	
 }
 
-bool UCombatStatsComponent::bIsCrit()
+float UCombatStatsComponent::CalculateDamage(const UMoveData* MoveData, UCombatStatsComponent* Attacker)
 {
-	const float Crit = GetStatValue(EStatEnum::CriticalHit, EStatValueType::Current);
-	if (Crit>=100)
-	{
-		return true;
-	}
-	return FMath::RandRange(0.0f, 100.0f) < Crit;
-}
-
-float UCombatStatsComponent::GetCritDamageBonus()
-{
-	const float Crit = GetStatValue(EStatEnum::CriticalHit, EStatValueType::Current);
-	if (Crit <= 100)
-	{
-		return 0;
-	}
-	return (Crit-100)/100.0f;
-}
-
-void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UCombatStatsComponent* Attacker)
-{
-
+	
 	// Can this MoveData even do damage?
 	const bool bDamageCategory =
 		MoveData->Category == EMoveCategory::PhysicalDamage ||
@@ -305,7 +285,7 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 	const bool bIsPositive = MoveData->BasePower > 0;
 	if (!(bDamageCategory && bIsPositive))
 	{
-		return;
+		return 0;
 	}
 
 	// Get stat types
@@ -321,11 +301,12 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 		DefendingStat = EStatEnum::SpecialDefense;
 		break;
 	default:
-		return;
+		return 0;
 	}
 
-	// This will be useful---trust me!
-	const int32 Level = LevelComponent->GetLevel();
+	// These will be useful---trust me!
+	const int32 AttackingLevel = Attacker->LevelComponent->GetLevel();
+	const int32 DefendingLevel = LevelComponent->GetLevel();
 
 	// Get stat values
 	const float AtkValue = Attacker->GetStatValue(AttackingStat, EStatValueType::Current);
@@ -333,15 +314,15 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 
 	// Apply critical hit?
 	float CritMultiplier = 1;
-	const bool bCrit = bIsCrit();
+	const bool bCrit = Attacker->bIsCrit();
 	if (bCrit)
 	{
 
 		// Update the multiplier
-		CritMultiplier = CritBaseMultiplier + GetCritDamageBonus();
+		CritMultiplier = Attacker->GetCritMultiplier();
 
 		// Strip this defender of its bonuses
-		DefValue = GetStat(DefendingStat).CalculateValue(Level);
+		DefValue = GetStatMutable(DefendingStat).CalculateValue(DefendingLevel);
 	}
 
 	// Get random fluctuation (based on MoveData)
@@ -355,10 +336,18 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 	// Note here that the attacker doesn't *need* an AffinitiesComponent
 	if (AtkAffinities)
 	{
-		for(const FAffinity Affinity : AtkAffinities->Affinities)
+		for(const UType* Type : MoveData->Types)
 		{
-			// STABs stack multiplicatively
-			Stab *= Affinity.GetSTAB();
+			for(const FAffinity Affinity : AtkAffinities->Affinities)
+			{
+
+				// Check if we have affinity
+				if (Type == Affinity.Type)
+				{
+					// STABs stack multiplicatively
+					Stab *= Affinity.GetSTAB();
+				}
+			}
 		}
 	}
 
@@ -367,14 +356,16 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 	UAffinitiesComponent* DefAffinities = GetOwner()->GetComponentByClass<UAffinitiesComponent>();
 	if (AtkAffinities && DefAffinities)
 	{
-		TArray<UType*> AtkTypes, DefTypes;
-		AtkAffinities->GetTypes(AtkTypes);
+
+		// Get defensive Typing
+		TArray<UType*> DefTypes;
 		DefAffinities->GetTypes(DefTypes);
-		TypeAdvantage = UType::GetNetModifier(AtkTypes, DefTypes, EAttackModifierMode::MultiType);
+		
+		TypeAdvantage = UType::GetNetModifier(MoveData->Types, DefTypes, EAttackModifierMode::MultiType);
 	}
 
 	// Stat jump
-	const float StatJump = FCombatStat::StatJump(Level);
+	const float StatJump = FCombatStat::StatJump(AttackingLevel);
 
 	// Guard
 	if (DefValue<=0)
@@ -382,14 +373,14 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 		const FString DefenderName = GetName();
 		const FString DefString = FString::SanitizeFloat(DefValue);
 		UE_LOG(LogTemp, Error, TEXT("Defense value of [%s] is [%s]! This is not allowed!"), *DefenderName, *DefString);
-		return;
+		return 0;
 	}
 	if (AtkValue<=0)
 	{
 		const FString AtkName = Attacker->GetName();
 		const FString AtkString = FString::SanitizeFloat(AtkValue);
 		UE_LOG(LogTemp, Error, TEXT("Defense value of [%s] is [%s]! This is not allowed!"), *AtkName, *AtkString);
-		return;
+		return 0;
 	}
 
 	// Calculate health change (damage or healing)
@@ -397,19 +388,41 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 	switch(MoveData->Category)
 	{
 	case EMoveCategory::PhysicalDamage: case EMoveCategory::SpecialDamage:
-		HealthChange = (((2*Level/5.0f + 2) * MoveData->BasePower * AtkValue/DefValue)/50.0f + 2)
+		HealthChange = (((2*AttackingLevel/5.0f + 2) * MoveData->BasePower * AtkValue/DefValue)/50.0f + 2)
 			* CritMultiplier * RandomFluct * Stab * TypeAdvantage * StatJump;
 		break;
 	case EMoveCategory::PhysicalHealing: case EMoveCategory::SpecialHealing:
-		HealthChange = (((2*Level/5.0f + 2) * MoveData->BasePower * AtkValue/100.0f)/50.0f + 2)
-			* CritMultiplier * RandomFluct * Stab * StatJump;
-		break;
+		{
+			FStandardStat RefStat = {};
+			RefStat.BaseStat = 100;
+			RefStat.BasePairs = 100;
+			const float RefValue = RefStat.CalculateValue(DefendingLevel);
+			HealthChange = (((2*AttackingLevel/5.0f + 2) * MoveData->BasePower * AtkValue/RefValue)/50.0f + 2)
+				* CritMultiplier * RandomFluct * Stab * StatJump;
+			break;
+		}
 	default:
-		return;
+		break;
 	}
+	
+	UE_LOG(LogTemp, Warning, TEXT("Level: [%i] | Base Power: [%s] | Attack: [%s] | Defense: [%s]"
+							   " | Crit Mult.: [%s] | Rand Fluct: [%s] | STAB: [%s] | Type Adv: [%s] | StatJump: [%s]"
+							   ),
+							   AttackingLevel, *FString::SanitizeFloat(MoveData->BasePower), *FString::SanitizeFloat(AtkValue),
+							   *FString::SanitizeFloat(DefValue), *FString::SanitizeFloat(CritMultiplier),
+							   *FString::SanitizeFloat(RandomFluct), *FString::SanitizeFloat(Stab),
+							   *FString::SanitizeFloat(TypeAdvantage), *FString::SanitizeFloat(StatJump)
+			) 
 
-	// Dewet
-	ModifyStat(EStatEnum::Health, HealthChange, EStatValueType::Current, EModificationMode::AddAbsolute);
+	// Ret
+	return HealthChange;
+}
+
+void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UCombatStatsComponent* Attacker)
+{
+
+	// Juss doot
+	ModifyStat(EStatEnum::Health, CalculateDamage(MoveData, Attacker), EStatValueType::Current, EModificationMode::AddAbsolute);
 		
 }
 
@@ -445,6 +458,26 @@ auto UCombatStatsComponent::ModifyStatInternal(const EStatEnum Stat, const float
 			);
 }
 
+bool UCombatStatsComponent::bIsCrit()
+{
+	const float Crit = GetStatValue(EStatEnum::CriticalHit, EStatValueType::Current);
+	if (Crit>=100)
+	{
+		return true;
+	}
+	return FMath::RandRange(0.0f, 100.0f) < Crit;
+}
+
+float UCombatStatsComponent::GetCritMultiplier()
+{
+	float CritMultiplier = CritBaseMultiplier;
+	float Crit = GetStatValue(EStatEnum::CriticalHit, EStatValueType::Current);
+	if (Crit > 100)
+	{
+		CritMultiplier += (Crit-100)/100.f;
+	}
+	return CritMultiplier;
+}
 
 
 bool UCombatStatsComponent::IsEqual(UCombatStatsComponent* Other, const EStatValueType ValueType, const float Tolerance)

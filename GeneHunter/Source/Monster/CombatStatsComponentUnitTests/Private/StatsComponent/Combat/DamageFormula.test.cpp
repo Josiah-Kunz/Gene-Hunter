@@ -4,6 +4,7 @@
 #include "ComponentUtilities.h"
 #include "CombatStatsComponent.h"
 #include "CombatStatUnitTestUtilities.h"
+#include "EditorDirectories.h"
 #include "MoveData.h"
 #include "Misc/AutomationTest.h"
 #include "Type.h"
@@ -32,8 +33,9 @@ bool FUStat_DamageFormula::RunTest(const FString& Parameters)
 	
 	// Attacking stats
 	DUMMY_BASE_STATS_BLOCK
-	BaseStats = { 100, 120, 100, 100, 100, 100, 100}; \
-	StatsComponent->ModifyStats(BaseStats, EStatValueType::BaseStat, EModificationMode::SetDirectly); 
+	BaseStats = { 100, 100, 100, 100, 100, 100, 100}; \
+	StatsComponent->ModifyStats(BaseStats, EStatValueType::BaseStat, EModificationMode::SetDirectly);
+	StatsComponent->ModifyStatsUniformly(100, EStatValueType::BasePairs, EModificationMode::SetDirectly);
 	StatsComponent->RecalculateStats(true);
 	
 	// Attacking affinities
@@ -55,8 +57,9 @@ bool FUStat_DamageFormula::RunTest(const FString& Parameters)
 
 	// Defending stats
 	ADD_NEW_COMPONENT(UCombatStatsComponent, DefendingStats, DefenderActor);
-	DefendingStats->ModifyStatsUniformly(120, EStatValueType::BaseStat, EModificationMode::SetDirectly);
-	StatsComponent->RecalculateStats(true);
+	DefendingStats->ModifyStatsUniformly(100, EStatValueType::BaseStat, EModificationMode::SetDirectly);
+	DefendingStats->ModifyStatsUniformly(100, EStatValueType::BasePairs, EModificationMode::SetDirectly);
+	DefendingStats->RecalculateStats(true);
 
 	// Defending affinities
 	ADD_NEW_COMPONENT(UAffinitiesComponent, DefendingAffinities, DefenderActor);
@@ -72,27 +75,43 @@ bool FUStat_DamageFormula::RunTest(const FString& Parameters)
 	TArray<float> CritValues = {0, 100, 130};
 	TArray<int32> Levels = {1, 50, 100};
 	TArray<UMoveData*> MoveDatas = {Fighting10, Flying50, Electric100};
-	TArray<float> ExpectedValues = {2.48f, 108.f, 154.8f};
+	TArray<float> ExpectedValues = {2.48f, 26244.0f, 9140785.2f};
 
 	// Execute tests
-	
+	bool bSuccess = true;
+	for(uint8 i=0; i<Levels.Num(); i++)
+	{
 
-	/*
-	
-	
-	// Do the tests
-	FString Desc = "";
-	const bool bPass = UTypeUnitTestUtilities::TestCombatAnalysis(AllDummyTypes, {Flying, Ground}, 1,
-		UType::Effective, true, EAttackModifierMode::MultiType, Expected, Desc, false);
-	TestEqual(
-	"Flying/Ground multi-Type effective attack vs singly-Typed defenders " + Desc,
-	bPass, true
-	);
-	*/
+		// Get iterative data
+		const float CritValue = CritValues[i];
+		const int32 Level = Levels[i];
+		const UMoveData* MoveData = MoveDatas[i];
+		const float ExpectedValue = ExpectedValues[i];
+		
+		// Set levels equal
+		StatsComponent->LevelComponent->SetLevel(Level);
+		DefendingStats->LevelComponent->SetLevel(Level);
+
+		// Set crit
+		StatsComponent->ModifyStat(EStatEnum::CriticalHit, CritValue, EStatValueType::Current,
+			EModificationMode::SetDirectly);
+
+		// Calculate damage
+		const float Damage = DefendingStats->CalculateDamage(MoveData, StatsComponent);
+
+		// Compare
+		bSuccess &= TestEqual(
+			FString::Printf(TEXT("Move [%s] with [%s] Base Power"),
+				*MoveData->GetName(),
+				*FString::SanitizeFloat(MoveData->BasePower)
+			),
+			Damage, ExpectedValue, 1e-3f);
+		
+	}
 	
 	// Destroy the world
 	BASESTATS_GC
 
-	return true;
+	return bSuccess;
 	
 }

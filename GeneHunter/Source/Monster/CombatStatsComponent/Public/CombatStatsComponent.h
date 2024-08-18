@@ -115,8 +115,6 @@ private:
 	 */
 	FCombatStat& GetStatMutable(const EStatEnum Stat);
 
-	static constexpr float CritBaseMultiplier = 1.5f;
-
 #pragma endregion
 
 #pragma region Stat arrays
@@ -266,18 +264,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	void ApplyMoveData(const UMoveData* MoveData, UCombatStatsComponent* Attacker);
+
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
+	float CalculateDamage(const UMoveData* MoveData, UCombatStatsComponent* Attacker);
 	
 private:
-	
-	/**
-	 * Call this to randomly generate a True or False that a critical hit has been made.
-	 */
-	bool bIsCrit();
-
-	/**
-	 * For example, if Crit is 120%, this will return 0.20. If Crit is <100, this will return 0.
-	 */
-	float GetCritDamageBonus();
 	
 	void ApplyMoveDataDamage(const UMoveData* MoveData, UCombatStatsComponent* Attacker);
 
@@ -290,6 +281,28 @@ private:
 
 	
 
+#pragma endregion
+
+#pragma region Critical hits
+
+public:
+
+	/**
+	 * Gets the critical hit multiplier for when a critical hit lands. This is normally 1.5x, but changes either due to
+	 * >100% crit chance or effects like talents.
+	 */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
+	float GetCritMultiplier();
+
+private:
+	
+	/**
+	 * Call this to randomly generate a True or False that a critical hit has been made.
+	 */
+	bool bIsCrit();
+
+	constexpr static float CritBaseMultiplier = 1.5f;
+	
 #pragma endregion
 
 #pragma region Utilities

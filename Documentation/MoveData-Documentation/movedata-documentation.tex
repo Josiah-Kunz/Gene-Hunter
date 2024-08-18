@@ -111,11 +111,16 @@ where:
 \end{itemize}
 Similarly, the healing formula is:
 \begin{align*}
-	\text{Healing} &= \left[\left(0.4\times \text{Level} + 2\right) \times \frac{\text{Base Power}}{50} \times \frac{\text{Attack}}{100} + 2\right]\\
+	\text{Healing} &= \left[\left(0.4\times \text{Level} + 2\right) \times \frac{\text{Base Power}}{50} \times \frac{\text{Attack}}{\text{Reference Stat}} + 2\right]\\
 		& \qquad \times \text{Crit Multiplier} \times \text{Random Fluctuation} \times \text{STAB Multiplier}\\
 		& \qquad \times 3^{\floor{\frac{\text{Level}}{10}}}
 \end{align*}
-Clearly, the Defense of the healee should not inhibit the heal, so a static 100 has been used instead (since 100 is an average stat). Moreover, Type advantages should not play a role in healing. Heals can crit, though.
+Here, Reference~Value is a dummy \code{StandardStat} (like Physical Defense, for example) with:
+\begin{itemize}
+	\item{Base Stat set to 100}
+	\item{Base Pairs set to 100}
+	\item{Level set to the defending Monster's Level}
+\end{itemize}
 
 %====================================================
 

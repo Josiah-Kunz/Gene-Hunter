@@ -40,5 +40,61 @@ public:
 	/* Status */ \
 	UMoveData* TypelessBrokenSoul = UMoveData::GetMoveDataByName(AllDummyMoveData, FName(TEXT("Dummy-TypelessBrokenSoul"))); \
 
+/**
+ * Creates:
+ *	- DummyWorld
+ *	- AtkActor
+ *	- AtkStats
+ *		= Base stats uniformly set to 100
+ *		= Base pairs uniformly set to 100
+ *	- AtkAffinities (Flying/Grass)
+ *	- Same for Defender except Fighting/Fire
+ */
+#define DUMMY_COMBATANTS() \
+	/* Get static data */ \
+	GET_DUMMY_MOVEDATA() \
+	GET_DUMMY_TYPES() \
+	UWorld* DummyWorld; \
+	DummyWorld = NUTNet::CreateUnitTestWorld(true); \
+	\
+	/* Attacker */ \
+	/* -------- */ \
+	\
+	/* Attacking stats */ \
+	AActor* AtkActor = DummyWorld->SpawnActor(AActor::StaticClass()); \
+	ADD_NEW_COMPONENT(UCombatStatsComponent, AtkStats, AtkActor); \
+	AtkStats->ModifyStatsUniformly(100, EStatValueType::BaseStat, EModificationMode::SetDirectly); \
+	AtkStats->ModifyStatsUniformly(100, EStatValueType::BasePairs, EModificationMode::SetDirectly); \
+	AtkStats->RecalculateStats(true); \
+	\
+	/* Attacking affinities */ \
+	ADD_NEW_COMPONENT(UAffinitiesComponent, AtkAffinities, AtkActor); \
+	FAffinity FlyingAffinity = {}; \
+	FlyingAffinity.Type = Flying; \
+	FlyingAffinity.SetCurrentPoints(1); \
+	FAffinity GrassAffinity = {}; \
+	GrassAffinity.Type = Grass; \
+	GrassAffinity.SetCurrentPoints(2); \
+	AtkAffinities->Affinities = {FlyingAffinity, GrassAffinity}; \
+	\
+	/* Defender */ \
+	/* -------- */ \
+	\
+	/* Defending stats */ \
+	AActor* DefActor = DummyWorld->SpawnActor(AActor::StaticClass()); \
+	ADD_NEW_COMPONENT(UCombatStatsComponent, DefStats, DefActor); \
+	DefStats->ModifyStatsUniformly(100, EStatValueType::BaseStat, EModificationMode::SetDirectly); \
+	DefStats->ModifyStatsUniformly(100, EStatValueType::BasePairs, EModificationMode::SetDirectly); \
+	DefStats->RecalculateStats(true); \
+	\
+	/* Defending affinities */ \
+	ADD_NEW_COMPONENT(UAffinitiesComponent, DefAffinities, DefActor); \
+	FAffinity FightingAffinity = {}; \
+	FightingAffinity.Type = Fighting; \
+	FightingAffinity.SetCurrentPoints(1); \
+	FAffinity FireAffinity = {}; \
+	FireAffinity.Type = Fire; \
+	FireAffinity.SetCurrentPoints(2); \
+	DefAffinities->Affinities = {FightingAffinity, FireAffinity};
 	
 };
