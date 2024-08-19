@@ -37,11 +37,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
 	EMoveContact Contact;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data", meta=(Tooltip="If blank, this is the same as the asset name. Really only useful for special characters or a dynamic name."))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data",
+		meta=(Tooltip="If blank, this is the same as the asset name. Really only useful for special characters or a dynamic name."))
 	FText DisplayName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data", meta=(Tooltip="The effects to be inflicted on a collision."))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data",
+		meta=(Tooltip="The effects to be inflicted on a collision."))
 	TArray<FEffectToImplement> EffectsToImplement;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data",
+		meta=(Tooltip="If true, only up to one Effect in EffectsToImplement may be attached. If false, each Effect's probability is checked individually, resulting in (possibly) multiple Effects being attached."))
+	bool bMutualEffects;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data", meta=(EditCondition="bCanCategoryDoDamage()"))
 	FFloatRange RandomRange = FFloatRange{0.85f, 1};

@@ -58,7 +58,8 @@
 	I'll concede that \code{SpecialContact} probably isn't super useful to track, but you never know. It's easier to put it in now rather than later.
 	}
 	\bitem{Display name}{If the field \code{DisplayName} is blank, the asset's name will be used. May be useful for special characters.}
-	\bitem{Effects to inflict}{A \code{TMap} of \code{EffectComponent}s and thier percentages of being applied on a successful Move hit. Pokemon example: a Move having 30\% chance to Burn would have its \code{TPair} be \code{Burn} and \code{30}.}
+	\bitem{Effects to inflict}{A \code{TArray} of \code{EffectsToImplement}s. This includes the Effect and its percentage of being applied on a successful Move hit. Pok\'{e}mon example: a Move having 30\% chance to Burn would have its \code{TPair} be \code{Burn} and \code{30}.}
+	\bitem{Mutual Effects}{If true, only up to one Effect in EffectsToImplement may be attached. If false, each Effect's probability is checked individually, resulting in (possibly) multiple Effects being attached.}
 	\bitem{Randomness}{A range of values to multiply to calculate the final damage. Normally, any Move's damage is multiplied by a number between 0.85 and 1 (range taken, of course, from Pokemon). This variance makes it a little more exciting.}
 	\bitem{Supporting text}{\code{SupportingText} includes dev notes that doesn't appear in-game, a proper description, and flavor text (e.g., for hovers).}
 	\bitem{Move type(s)}{The incredibly vast majority of moves should only associate with one Type. It gets far too complicated and unpredictably unfun to have multi-type attacks.}

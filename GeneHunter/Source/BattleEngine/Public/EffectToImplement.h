@@ -18,7 +18,8 @@ public:
 	TSubclassOf<UEffectComponent> EffectType;
 
 	/**
-	 * Percent (not fraction) that the Effect will attach to the target.
+	 * Percent (not fraction) that the Effect will attach to the target. Note that this is *not* normalized and is
+	 * actually out of 100%. This is because we could have multiple Effects hit or not.
 	 */
 	UPROPERTY(EditAnywhere, Category="Effect to Implement")
 	float PercentToImplement = 100;

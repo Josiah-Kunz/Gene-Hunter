@@ -260,17 +260,8 @@ void UCombatStatsComponent::RecalculateStats(const bool bResetCurrent, const boo
 
 void UCombatStatsComponent::ApplyMoveData(const UMoveData* MoveData, UCombatStatsComponent* Attacker)
 {
-
 	ApplyMoveDataDamage(MoveData, Attacker);
-	
-	// TODO:
-	/// Apply MoveData effects
-	/// Log?
-	/// Unit test
-	/// Docs
-	/// Get effect outlets!
-	
-	
+	ApplyMoveDataEffects(MoveData, Attacker);
 }
 
 float UCombatStatsComponent::CalculateDamage(const UMoveData* MoveData, UCombatStatsComponent* Attacker)
@@ -424,6 +415,22 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 	// Juss doot
 	ModifyStat(EStatEnum::Health, CalculateDamage(MoveData, Attacker), EStatValueType::Current, EModificationMode::AddAbsolute);
 		
+}
+
+void UCombatStatsComponent::ApplyMoveDataEffects(const UMoveData* MoveData, UCombatStatsComponent* Attacker) const
+{
+	const bool bMutual = MoveData->bMutualEffects;
+	AActor* Owner = GetOwner();
+	for(FEffectToImplement EffectToImplement : MoveData->EffectsToImplement)
+	{
+		uint32 NumStacks = EffectToImplement.TryToImplementEffect(Owner);
+
+		// If mutual and something attached, we're donezo bunzo
+		if (NumStacks > 0 && bMutual)
+		{
+			break;
+		}
+	}
 }
 
 auto UCombatStatsComponent::ModifyStatInternal(const EStatEnum Stat, const float Value,

@@ -272,6 +272,8 @@ private:
 	
 	void ApplyMoveDataDamage(const UMoveData* MoveData, UCombatStatsComponent* Attacker);
 
+	void ApplyMoveDataEffects(const UMoveData* MoveData, UCombatStatsComponent* Attacker) const;
+
 	/**
 	 * All in-code modifications should pass through here rather than doing Stat->ModifyValue(...). This ensures that 
 	 * the effect delegates are called.
