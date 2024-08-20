@@ -395,7 +395,9 @@ float UCombatStatsComponent::CalculateDamage(const UMoveData* MoveData, UCombatS
 	default:
 		break;
 	}
-	
+
+	// Debug
+	/*
 	UE_LOG(LogTemp, Warning, TEXT("Level: [%i] | Base Power: [%s] | Attack: [%s] | Defense: [%s]"
 							   " | Crit Mult.: [%s] | Rand Fluct: [%s] | STAB: [%s] | Type Adv: [%s] | StatJump: [%s]"
 							   ),
@@ -403,7 +405,8 @@ float UCombatStatsComponent::CalculateDamage(const UMoveData* MoveData, UCombatS
 							   *FString::SanitizeFloat(DefValue), *FString::SanitizeFloat(CritMultiplier),
 							   *FString::SanitizeFloat(RandomFluct), *FString::SanitizeFloat(Stab),
 							   *FString::SanitizeFloat(TypeAdvantage), *FString::SanitizeFloat(StatJump)
-			) 
+			)
+	*/
 
 	// Ret
 	return HealthChange;
@@ -477,12 +480,23 @@ bool UCombatStatsComponent::bIsCrit()
 
 float UCombatStatsComponent::GetCritMultiplier()
 {
+
+	// Vars
 	float CritMultiplier = CritBaseMultiplier;
+	float CritBonus = 0;
 	float Crit = GetStatValue(EStatEnum::CriticalHit, EStatValueType::Current);
+
+	// Bonus calculation
 	if (Crit > 100)
 	{
-		CritMultiplier += (Crit-100)/100.f;
+		CritBonus = (Crit-100)/100.f;
 	}
+
+	// Outlets
+	GetCritMultOutlet.ExecuteBefore(CritMultiplier, CritBonus, this);
+	GetCritMultOutlet.ExecuteAfter(CritMultiplier, CritBonus, this);
+
+	// Return
 	return CritMultiplier;
 }
 

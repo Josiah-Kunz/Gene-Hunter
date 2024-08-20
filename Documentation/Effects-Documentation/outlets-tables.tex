@@ -162,7 +162,7 @@
 							\code{const int32 InputCXP},\\
 							\code{const uint32 NewCXP}},
 				afterNote={\code{StatsComponent} subscribes to this in order to change stats on level change.\\
-							$\triangleright$ \code{OldCXP} is the cumulatie experience points prior to calling \code{SetCXP},\\
+							$\triangleright$ \code{OldCXP} is the cumulative experience points prior to calling \code{SetCXP},\\
 							$\triangleright$ \code{InputCXP} is the original, unmodified input to \code{SetCXP},\\
 							$\triangleright$ \code{AttemptedCXP} is the modified value that will be used to set the cumulative experience points.		
 					}
@@ -176,6 +176,71 @@
 \gap{}
 
 \begin{OutletTable}{StatsComponent}
+
+	% ----------------------------------------		
+						
+	\OutletCell{title=ApplyDamage, 
+				beforeParams={
+							\code{float\& BasePower},\\
+							\code{float\& CritMultiplier},\\
+							\code{float\& RandFluct},\\
+							\code{float\& Stab},\\
+							\code{float\& TypeAdvantage},\\
+							\code{UCombatStatsComponent* Attacker},\\
+							\code{UCombatStatsComponent* OwningStats}
+							},
+				beforeNote={Other quantities, such as the Attacker's attacking Stat, may be calculated from the given quantities.},
+				afterParams={
+							\code{const float BasePower},\\
+							\code{const float CritMultiplier},\\
+							\code{const float RandFluct},\\
+							\code{const float\& Stab},\\
+							\code{const float\& TypeAdvantage},\\
+							\code{UCombatStatsComponent* Attacker},\\
+							\code{UCombatStatsComponent* OwningStats}
+							}
+				}
+				\\
+
+	% ----------------------------------------		
+						
+	\OutletCell{title=CalculateDamage, 
+				beforeParams={
+							\code{float\& BasePower},\\
+							\code{float\& CritMultiplier},\\
+							\code{float\& RandFluct},\\
+							\code{float\& Stab},\\
+							\code{float\& TypeAdvantage},\\
+							\code{UCombatStatsComponent* Attacker},\\
+							\code{UCombatStatsComponent* OwningStats}
+							},
+				afterParams={
+							\code{const float BasePower},\\
+							\code{const float CritMultiplier},\\
+							\code{const float RandFluct},\\
+							\code{const float\& Stab},\\
+							\code{const float\& TypeAdvantage},\\
+							\code{UCombatStatsComponent* Attacker},\\
+							\code{UCombatStatsComponent* OwningStats}
+							},
+				afterNote={The difference between calculating damage and applying damage is theoretical. For example, low-level AI might use \code{CalculateDamage} to make decisions. On the other hand, applying the damage might invoke some kind of reaction, like raising Physical Attack if hit by a move it's weak to.}
+				}
+				\\
+
+	% ----------------------------------------		
+						
+	\OutletCell{title=GetCritMult, 
+				beforeParams={\code{float\& BaseMultiplier},\\
+							\code{float\& CritBonus},\\
+							\code{UCombatStatsComponent* OwningStats}
+							},
+				beforeNote={Total crit bonus is \code{BaseMultiplier} + \code{CritBonus}; for example, 1.5 + 0.2.},
+				afterParams={\code{const float BaseMultiplier},\\
+							\code{const float CritBonus},\\
+							\code{UCombatStatsComponent* OwningStats}
+							}
+				}
+				\\
 
 	% ----------------------------------------		
 						

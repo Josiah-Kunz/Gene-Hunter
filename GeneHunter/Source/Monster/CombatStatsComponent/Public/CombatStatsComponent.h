@@ -22,6 +22,7 @@
 #include "StatEnum.h"
 #include "StatRandParams.h"
 #include "StatValueType.h"
+#include "Outlets/GetCritMultOutlet.h"
 #include "Outlets/ModifyStatOutlet.h"
 #include "Outlets/RandomizeStatsOutlet.h"
 #include "Outlets/RecalculateStatsOutlet.h"
@@ -295,6 +296,21 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	float GetCritMultiplier();
+
+	/**
+	 * Before parameters:
+	 *  - [float&] the attempted base multiplier (e.g., 1.5).
+	 *	- [float&] the attempted crit bonus (e.g., 0.2). Total crit is base + bonus.
+	 *	- [UCombatStatsComponent*] the owner of the crit stat.
+	 *
+	 *	After parameters:
+	 *  - [const float] the base multiplier that was used (e.g., 1.5).
+	 *	- [const float] the crit bonus that was used (e.g., 0.2). Total crit is base + bonus.
+	 *	- [UCombatStatsComponent*] the owner of the crit stat.
+	 *
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Level Outlets")
+	FGetCritMultOutlet GetCritMultOutlet;
 
 private:
 	
