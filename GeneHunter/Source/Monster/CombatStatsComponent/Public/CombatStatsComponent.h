@@ -22,6 +22,7 @@
 #include "StatEnum.h"
 #include "StatRandParams.h"
 #include "StatValueType.h"
+#include "Outlets/DamageMathOutlet.h"
 #include "Outlets/GetCritMultOutlet.h"
 #include "Outlets/ModifyStatOutlet.h"
 #include "Outlets/RandomizeStatsOutlet.h"
@@ -268,8 +269,57 @@ public:
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	float CalculateDamage(const UMoveData* MoveData, UCombatStatsComponent* Attacker);
+
+	/**
+	 * To be triggered when applying damage from a MoveData
+	 *
+	 * Before parameters:
+	 *  - [float&] the MoveData's base power
+	 *  - [float&] the calculated critical hit multiplier
+	 *  - [float&] the randomized fluctuation value (nominally 0.85--1)
+	 *  - [float&] the Same Type Attack Bonus
+	 *  - [float&] the Type advantage multiplier
+	 *  - [UCombatStatsComponent*] the attacker's stats
+	 *	- [UCombatStatsComponent*] the owner of these stats (the defender)
+	 *
+	 *	After parameters:
+	 *  - Same, except const float instead of float&
+	 *
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat Outlets")
+	FDamageMathOutlet ApplyDamageOutlet;
+	
+	/**
+	 * To be triggered when calculating damage (but not applying damage). This only triggers when the MoveData's base
+	 *	power is > 0 and when the MoveData's Category is one of the four: [Physical/Special] [Damage/Healing].
+	 *
+	 * If you want an Outlet that triggers when the function is called (e.g., to make a non-damaging move do damage),
+	 *	please follow the guide in the Effects documentation.
+	 *
+	 * If you want an Outlet that affects non-damaging Moves, see the ApplyEffect Outlet (also documented in the Effects
+	 *	documentation).
+	 *
+	 * Before parameters:
+	 *  - [float&] the MoveData's base power
+	 *  - [float&] the calculated critical hit multiplier
+	 *  - [float&] the randomized fluctuation value (nominally 0.85--1)
+	 *  - [float&] the Same Type Attack Bonus
+	 *  - [float&] the Type advantage multiplier
+	 *  - [UCombatStatsComponent*] the attacker's stats
+	 *	- [UCombatStatsComponent*] the owner of these stats (the defender)
+	 *
+	 *	After parameters:
+	 *  - Same, except const float instead of float&
+	 *
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat Outlets")
+	FDamageMathOutlet CalculateDamageOutlet;
 	
 private:
+	/**
+	 * For internal use only. Calls Outlets depending on whether we're getting ready to deal damage or not.
+	 */
+	float CalculateDamageInternal(const UMoveData* MoveData, UCombatStatsComponent* Attacker, const bool bIsDoingDamage);
 	
 	void ApplyMoveDataDamage(const UMoveData* MoveData, UCombatStatsComponent* Attacker);
 

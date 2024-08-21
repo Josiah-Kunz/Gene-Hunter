@@ -183,6 +183,67 @@ public: \
 		} \
 	} \
 	\
-	DECLARE_ADD_FUNCTION( ##BeforeOrAfter , DelegateType, DelegateArray);
+	DECLARE_ADD_FUNCTION( ##BeforeOrAfter , DelegateType, DelegateArray)
+
+/**
+ * Creates two functions:
+ *	- Execute, which called ExecuteIfBound on every Delegate in the array
+ *	- Add, which adds a Delegate to the array
+ */
+#define DECLARE_OUTLET_FUNCTIONS_SixParams(BeforeOrAfter, DelegateType, DelegateArray, DelegateVariable, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type, Param6Type ) \
+public: \
+void Execute##BeforeOrAfter##( Param1Type DelegateArray##__P1, Param2Type DelegateArray##__P2, Param3Type DelegateArray##__P3, Param4Type DelegateArray##__P4, Param5Type DelegateArray##__P5, Param6Type DelegateArray##__P6) \
+{ \
+for ( DelegateType##& Delegate : DelegateArray ) \
+{ \
+if (!Delegate.##DelegateVariable##.ExecuteIfBound( DelegateArray##__P1, DelegateArray##__P2, DelegateArray##__P3, DelegateArray##__P4 , DelegateArray##__P5 , DelegateArray##__P6 ))\
+{ \
+UE_LOG(LogTemp, Warning, TEXT("Outlet no longer bound! Surely this is an error.")); \
+} \
+} \
+} \
+\
+DECLARE_ADD_FUNCTION( ##BeforeOrAfter , DelegateType, DelegateArray);
+
+
+/**
+ * Creates two functions:
+ *	- Execute, which called ExecuteIfBound on every Delegate in the array
+ *	- Add, which adds a Delegate to the array
+ */
+#define DECLARE_OUTLET_FUNCTIONS_SevenParams(BeforeOrAfter, DelegateType, DelegateArray, DelegateVariable, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type, Param6Type, Param7Type ) \
+public: \
+void Execute##BeforeOrAfter##( Param1Type DelegateArray##__P1, Param2Type DelegateArray##__P2, Param3Type DelegateArray##__P3, Param4Type DelegateArray##__P4, Param5Type DelegateArray##__P5 , Param6Type DelegateArray##__P6 , Param7Type DelegateArray##__P7 ) \
+{ \
+for ( DelegateType##& Delegate : DelegateArray ) \
+{ \
+if (!Delegate.##DelegateVariable##.ExecuteIfBound( DelegateArray##__P1, DelegateArray##__P2, DelegateArray##__P3, DelegateArray##__P4 , DelegateArray##__P5 , DelegateArray##__P6 , DelegateArray##__P7 ))\
+{ \
+UE_LOG(LogTemp, Warning, TEXT("Outlet no longer bound! Surely this is an error.")); \
+} \
+} \
+} \
+\
+DECLARE_ADD_FUNCTION( ##BeforeOrAfter , DelegateType, DelegateArray);
+
+/**
+ * Creates two functions:
+ *	- Execute, which called ExecuteIfBound on every Delegate in the array
+ *	- Add, which adds a Delegate to the array
+ */
+#define DECLARE_OUTLET_FUNCTIONS_EightParams(BeforeOrAfter, DelegateType, DelegateArray, DelegateVariable, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type, Param6Type, Param7Type , Param8Type ) \
+public: \
+void Execute##BeforeOrAfter##( Param1Type DelegateArray##__P1, Param2Type DelegateArray##__P2, Param3Type DelegateArray##__P3, Param4Type DelegateArray##__P4, Param5Type DelegateArray##__P5 , Param6Type DelegateArray##__P6 , Param7Type DelegateArray##__P7 , Param8Type DelegateArray##__P8 ) \
+{ \
+for ( DelegateType##& Delegate : DelegateArray ) \
+{ \
+if (!Delegate.##DelegateVariable##.ExecuteIfBound( DelegateArray##__P1, DelegateArray##__P2, DelegateArray##__P3, DelegateArray##__P4 , DelegateArray##__P5 , DelegateArray##__P6 , DelegateArray##__P7 , DelegateArray##__P8 ))\
+{ \
+UE_LOG(LogTemp, Warning, TEXT("Outlet no longer bound! Surely this is an error.")); \
+} \
+} \
+} \
+\
+DECLARE_ADD_FUNCTION( ##BeforeOrAfter , DelegateType, DelegateArray);
 
 };

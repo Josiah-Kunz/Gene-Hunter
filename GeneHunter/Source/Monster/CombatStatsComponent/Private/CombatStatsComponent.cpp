@@ -266,7 +266,13 @@ void UCombatStatsComponent::ApplyMoveData(const UMoveData* MoveData, UCombatStat
 
 float UCombatStatsComponent::CalculateDamage(const UMoveData* MoveData, UCombatStatsComponent* Attacker)
 {
-	
+	return CalculateDamageInternal(MoveData, Attacker, false);
+}
+
+float UCombatStatsComponent::CalculateDamageInternal(const UMoveData* MoveData, UCombatStatsComponent* Attacker,
+	const bool bIsDoingDamage)
+{
+
 	// Can this MoveData even do damage?
 	const bool bDamageCategory =
 		MoveData->Category == EMoveCategory::PhysicalDamage ||
@@ -278,6 +284,9 @@ float UCombatStatsComponent::CalculateDamage(const UMoveData* MoveData, UCombatS
 	{
 		return 0;
 	}
+
+	// Base power (EZ; required for Outlets)
+	float BasePower = MoveData->BasePower;
 
 	// Get stat types
 	EStatEnum AttackingStat, DefendingStat;
@@ -319,7 +328,7 @@ float UCombatStatsComponent::CalculateDamage(const UMoveData* MoveData, UCombatS
 	// Get random fluctuation (based on MoveData)
 	const float MinRand = MoveData->RandomRange.GetLowerBoundValue();
 	const float MaxRand = MoveData->RandomRange.GetUpperBoundValue();
-	const float RandomFluct = FMath::RandRange(MinRand, MaxRand);
+	float RandomFluct = FMath::RandRange(MinRand, MaxRand);
 
 	// Get STAB
 	float Stab = 1;
@@ -374,12 +383,18 @@ float UCombatStatsComponent::CalculateDamage(const UMoveData* MoveData, UCombatS
 		return 0;
 	}
 
+	// "Before" Outlets
+	CalculateDamageOutlet.ExecuteBefore(BasePower, CritMultiplier, RandomFluct, Stab, TypeAdvantage,
+		Attacker, this);
+	ApplyDamageOutlet.ExecuteBefore(BasePower, CritMultiplier, RandomFluct, Stab, TypeAdvantage,
+		Attacker, this);
+
 	// Calculate health change (damage or healing)
 	float HealthChange = 0;
 	switch(MoveData->Category)
 	{
 	case EMoveCategory::PhysicalDamage: case EMoveCategory::SpecialDamage:
-		HealthChange = (((2*AttackingLevel/5.0f + 2) * MoveData->BasePower * AtkValue/DefValue)/50.0f + 2)
+		HealthChange = (((2*AttackingLevel/5.0f + 2) * BasePower * AtkValue/DefValue)/50.0f + 2)
 			* CritMultiplier * RandomFluct * Stab * TypeAdvantage * StatJump;
 		break;
 	case EMoveCategory::PhysicalHealing: case EMoveCategory::SpecialHealing:
@@ -388,7 +403,7 @@ float UCombatStatsComponent::CalculateDamage(const UMoveData* MoveData, UCombatS
 			RefStat.BaseStat = 100;
 			RefStat.BasePairs = 100;
 			const float RefValue = RefStat.CalculateValue(DefendingLevel);
-			HealthChange = (((2*AttackingLevel/5.0f + 2) * MoveData->BasePower * AtkValue/RefValue)/50.0f + 2)
+			HealthChange = (((2*AttackingLevel/5.0f + 2) * BasePower * AtkValue/RefValue)/50.0f + 2)
 				* CritMultiplier * RandomFluct * Stab * StatJump;
 			break;
 		}
@@ -401,12 +416,16 @@ float UCombatStatsComponent::CalculateDamage(const UMoveData* MoveData, UCombatS
 	UE_LOG(LogTemp, Warning, TEXT("Level: [%i] | Base Power: [%s] | Attack: [%s] | Defense: [%s]"
 							   " | Crit Mult.: [%s] | Rand Fluct: [%s] | STAB: [%s] | Type Adv: [%s] | StatJump: [%s]"
 							   ),
-							   AttackingLevel, *FString::SanitizeFloat(MoveData->BasePower), *FString::SanitizeFloat(AtkValue),
+							   AttackingLevel, *FString::SanitizeFloat(BasePower), *FString::SanitizeFloat(AtkValue),
 							   *FString::SanitizeFloat(DefValue), *FString::SanitizeFloat(CritMultiplier),
 							   *FString::SanitizeFloat(RandomFluct), *FString::SanitizeFloat(Stab),
 							   *FString::SanitizeFloat(TypeAdvantage), *FString::SanitizeFloat(StatJump)
 			)
 	*/
+
+	// "After" Outlet
+	CalculateDamageOutlet.ExecuteAfter(BasePower, CritMultiplier, RandomFluct, Stab, TypeAdvantage, Attacker, this);
+	ApplyDamageOutlet.ExecuteAfter(BasePower, CritMultiplier, RandomFluct, Stab, TypeAdvantage, Attacker, this);
 
 	// Ret
 	return HealthChange;
@@ -416,7 +435,8 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 {
 
 	// Juss doot
-	ModifyStat(EStatEnum::Health, CalculateDamage(MoveData, Attacker), EStatValueType::Current, EModificationMode::AddAbsolute);
+	ModifyStat(EStatEnum::Health, CalculateDamageInternal(MoveData, Attacker, true),
+		EStatValueType::Current, EModificationMode::AddAbsolute);
 		
 }
 
