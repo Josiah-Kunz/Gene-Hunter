@@ -22,6 +22,7 @@
 #include "StatEnum.h"
 #include "StatRandParams.h"
 #include "StatValueType.h"
+#include "Outlets/ApplyEffectsOutlet.h"
 #include "Outlets/DamageMathOutlet.h"
 #include "Outlets/GetCritMultOutlet.h"
 #include "Outlets/ModifyStatOutlet.h"
@@ -265,7 +266,7 @@ public:
 	FRecalculateStatsOutlet RecalculateStatsOutlet;
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
-	void ApplyMoveData(const UMoveData* MoveData, UCombatStatsComponent* Attacker);
+	void ApplyMoveData(UMoveData* MoveData, UCombatStatsComponent* Attacker);
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	float CalculateDamage(const UMoveData* MoveData, UCombatStatsComponent* Attacker);
@@ -315,6 +316,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat Outlets")
 	FDamageMathOutlet CalculateDamageOutlet;
 	
+	/**
+	 * To be triggered when attempting to attach an effect from MoveData.
+	 *
+	 * Before parameters:
+	 *  - [uint16&] the number of stacks that were attempted to be attached. May be zero (failed attachment)
+	 *  - [bool&] determines if the Effects are mutual (if one attaches, stop trying to attach the others)
+	 *  - [UMoveData*] the MoveData that's trying to attach Effects
+	 *  - [UCombatStatsComponent*] the attacker's stats
+	 *	- [UCombatStatsComponent*] the owner of these stats (the defender)
+	 *
+	 *	After parameters:
+	 *  - Same, except const float instead of float&
+	 *
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat Outlets")
+	FApplyEffectsOutlet ApplyEffectsOutlet;
+	
 private:
 	/**
 	 * For internal use only. Calls Outlets depending on whether we're getting ready to deal damage or not.
@@ -323,7 +341,7 @@ private:
 	
 	void ApplyMoveDataDamage(const UMoveData* MoveData, UCombatStatsComponent* Attacker);
 
-	void ApplyMoveDataEffects(const UMoveData* MoveData, UCombatStatsComponent* Attacker) const;
+	void ApplyMoveDataEffects(UMoveData* MoveData, UCombatStatsComponent* Attacker);
 
 	/**
 	 * All in-code modifications should pass through here rather than doing Stat->ModifyValue(...). This ensures that 

@@ -258,7 +258,7 @@ void UCombatStatsComponent::RecalculateStats(const bool bResetCurrent, const boo
 	}
 }
 
-void UCombatStatsComponent::ApplyMoveData(const UMoveData* MoveData, UCombatStatsComponent* Attacker)
+void UCombatStatsComponent::ApplyMoveData(UMoveData* MoveData, UCombatStatsComponent* Attacker)
 {
 	ApplyMoveDataDamage(MoveData, Attacker);
 	ApplyMoveDataEffects(MoveData, Attacker);
@@ -440,18 +440,34 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 		
 }
 
-void UCombatStatsComponent::ApplyMoveDataEffects(const UMoveData* MoveData, UCombatStatsComponent* Attacker) const
+void UCombatStatsComponent::ApplyMoveDataEffects(UMoveData* MoveData, UCombatStatsComponent* Attacker)
 {
-	const bool bMutual = MoveData->bMutualEffects;
+	bool bMutual = MoveData->bMutualEffects;
 	AActor* Owner = GetOwner();
 	for(FEffectToImplement EffectToImplement : MoveData->EffectsToImplement)
 	{
-		uint32 NumStacks = EffectToImplement.TryToImplementEffect(Owner);
 
-		// If mutual and something attached, we're donezo bunzo
-		if (NumStacks > 0 && bMutual)
+		// Calcualte number of stacks
+		uint16 NumStacks = EffectToImplement.CalculateNumStacks();
+
+		// "Before" Outlet
+		ApplyEffectsOutlet.ExecuteBefore(NumStacks, bMutual, MoveData, Attacker, this);
+
+		// Attach it
+		if (NumStacks > 0)
 		{
-			break;
+
+			// Implement effect
+			EffectToImplement.ImplementEffect(NumStacks, Owner);
+
+			// "After" Outlet
+			ApplyEffectsOutlet.ExecuteAfter(NumStacks, bMutual, MoveData, Attacker, this);
+			
+			// If mutual and something attached, we're donezo bunzo
+			if (bMutual)
+			{
+				return;
+			}
 		}
 	}
 }

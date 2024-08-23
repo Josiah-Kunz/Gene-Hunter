@@ -201,6 +201,27 @@
 							}
 				}
 				\\
+				
+	% ----------------------------------------		
+						
+	\OutletCell{title=ApplyEffects, 
+				beforeParams={
+							\code{uint16\& NumStacks},\\
+							\code{bool\& bMutual},\\
+							\code{UMoveData* MoveData},\\
+							\code{UCombatStatsComponent* Attacker},\\
+							\code{UCombatStatsComponent* OwningStats}
+							},
+				beforeNote={\code{bMutual} determines whether or not multiple Effects can attach.},
+				afterParams={
+							\code{const uint16 NumStacks},\\
+							\code{const bool bMutual},\\
+							\code{UMoveData* MoveData},\\
+							\code{UCombatStatsComponent* Attacker},\\
+							\code{UCombatStatsComponent* OwningStats}
+							}
+				}
+				\\
 
 	% ----------------------------------------		
 						

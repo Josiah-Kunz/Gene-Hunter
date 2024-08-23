@@ -35,10 +35,13 @@ public:
 	};
 
 	/**
-	 * Attempts to inflict the Effect onto the Target.
-	 * @param Target 
-	 * @return The number of stacks inflicted upon the Target. 0 = fail.
+	 * Calculates the number of stack to inflict upon a target. 0 = fail.
 	 */
-	int32 TryToImplementEffect(AActor* Target);
+	uint16 CalculateNumStacks();
+
+	/**
+	 * Attaches the Effect of EffectType to the Target.
+	 */
+	void ImplementEffect(const uint16 NumStacks, AActor* Target);
 	
 };

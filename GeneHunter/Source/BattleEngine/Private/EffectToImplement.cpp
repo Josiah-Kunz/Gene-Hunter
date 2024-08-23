@@ -1,22 +1,12 @@
 #include "EffectToImplement.h"
 
-#include "ComponentUtilities.h"
-
-int32 FEffectToImplement::TryToImplementEffect(AActor* Target)
+uint16 FEffectToImplement::CalculateNumStacks()
 {
 
 	// Check attachment
 	if (FMath::RandRange(0.f, 100.f) > PercentToImplement)
 	{
 		return 0;
-	}
-
-	// Attach!
-	UEffectComponent* EffectInstance = NewObject<UEffectComponent>(Target, EffectType->StaticClass());
-	if ( EffectInstance )
-	{
-		Target->AddInstanceComponent(EffectInstance); \
-		EffectInstance->RegisterComponent();
 	}
 
 	// Normalize stack probabilities
@@ -27,7 +17,7 @@ int32 FEffectToImplement::TryToImplementEffect(AActor* Target)
 	}
 
 	// Check cumulative probability that N stacks will be spawned
-	uint32 NumStacks = 1;
+	uint16 NumStacks = 1;
 	bool bStacksSet = false;
 	const float Threshold = FMath::RandRange(0.f, Total);
 	float Cumulative = 0;
@@ -45,20 +35,31 @@ int32 FEffectToImplement::TryToImplementEffect(AActor* Target)
 		}
 	}
 
-	// Guard - if there's a typpo, clearly it attached, so there should be at least one stack intended
+	// Guard - if there's a typpo, clearly it should be attached, so there should be at least one stack intended
 	if (bStacksSet)
 	{
 		UE_LOG(LogTemp, Warning,
-			TEXT("Number of stacks of [%s] were never set on target [%s]. Surely this is incorrect!"),
-			*EffectType->GetFullName(),
-			*Target->GetFullName()
+			TEXT("Number of stacks of [%s] were never set on target. Surely this is incorrect!"),
+			*EffectType->GetFullName()
 			)
 	}
-
-	// Set stacks
-	EffectInstance->SetStacks(NumStacks);
 
 	// Return that value
 	return NumStacks;
 	
+}
+
+void FEffectToImplement::ImplementEffect(const uint16 NumStacks, AActor* Target)
+{
+
+	// Attach
+	UEffectComponent* EffectInstance = NewObject<UEffectComponent>(Target, EffectType->StaticClass());
+	if (EffectInstance)
+	{
+		Target->AddInstanceComponent(EffectInstance); 
+		EffectInstance->RegisterComponent();
+	}
+
+	// Set stacks
+	EffectInstance->SetStacks(NumStacks);
 }
