@@ -14,17 +14,18 @@ public class CombatStatsComponentUnitTests : ModuleRules{
 		PrivateDependencyModuleNames.AddRange(new string[]{
 		  "AffinitiesComponent",	// damage formula testing needs type advantages
 		  "BattleEngine",			// cuz we do some damage formula testing
+		  "CombatStatsComponent",	// for the type that we're testing
 		  "Core",					// for FString
 		  "CoreUObject",			// for UObjects (and their initializations)
 		  "EffectComponent",		// we'll be testing Outlets too 
 		  "Engine",					// for UBlueprintFuncitonLibrary in StatUnitTestUtilities.h
-		  "CombatStatsComponent",	// for the type that we're testing
 		  "GHLibraries",			// to create dummy worlds
+		  "HoTComponent",			// used to test EffectAttachment
 		  "LevelComponent",			// goes with StatsComponent
+		  "NetcodeUnitTest",		// needed for unit tests
 		  "Types",					// to get dummy UTypes
 		  "TypesUnitTests",			// to get dummy UTypes
 		  "UnrealEd",				// to get dummy unit test UWorlds
-		  "NetcodeUnitTest",
 		});
 	}
 }

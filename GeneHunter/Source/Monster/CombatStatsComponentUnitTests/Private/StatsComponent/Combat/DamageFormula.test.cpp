@@ -4,7 +4,6 @@
 #include "ComponentUtilities.h"
 #include "CombatStatsComponent.h"
 #include "CombatStatUnitTestUtilities.h"
-#include "EditorDirectories.h"
 #include "MoveData.h"
 #include "Misc/AutomationTest.h"
 #include "Type.h"
@@ -72,10 +71,10 @@ bool FUStat_DamageFormula::RunTest(const FString& Parameters)
 	DefendingAffinities->Affinities = {FightingAffinity, FireAffinity};
 
 	// Set up conditions
-	TArray<float> CritValues = {0, 100, 130};
-	TArray<int32> Levels = {1, 50, 100};
-	TArray<UMoveData*> MoveDatas = {Fighting10, Flying50, Electric100};
-	TArray<float> ExpectedValues = {2.48f, 26244.0f, 9140785.2f};
+	const TArray<float> CritValues = {0, 100, 130};
+	const TArray<int32> Levels = {1, 50, 100};
+	const TArray<UMoveData*> MoveDatas = {Fighting10, Flying50, Electric100};
+	const TArray<float> ExpectedValues = {2.48f, 26244.0f, 9140785.2f};
 
 	// Execute tests
 	bool bSuccess = true;

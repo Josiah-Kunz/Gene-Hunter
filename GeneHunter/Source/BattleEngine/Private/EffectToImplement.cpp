@@ -36,7 +36,7 @@ uint16 FEffectToImplement::CalculateNumStacks()
 	}
 
 	// Guard - if there's a typpo, clearly it should be attached, so there should be at least one stack intended
-	if (bStacksSet)
+	if (!bStacksSet)
 	{
 		UE_LOG(LogTemp, Warning,
 			TEXT("Number of stacks of [%s] were never set on target. Surely this is incorrect!"),
@@ -53,7 +53,7 @@ void FEffectToImplement::ImplementEffect(const uint16 NumStacks, AActor* Target)
 {
 
 	// Attach
-	UEffectComponent* EffectInstance = NewObject<UEffectComponent>(Target, EffectType->StaticClass());
+	UEffectComponent* EffectInstance = NewObject<UEffectComponent>(Target, EffectType);
 	if (EffectInstance)
 	{
 		Target->AddInstanceComponent(EffectInstance); 
