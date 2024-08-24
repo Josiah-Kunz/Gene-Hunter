@@ -58,7 +58,7 @@
 	I'll concede that \code{SpecialContact} probably isn't super useful to track, but you never know. It's easier to put it in now rather than later.
 	}
 	\bitem{Display name}{If the field \code{DisplayName} is blank, the asset's name will be used. May be useful for special characters.}
-	\bitem{Effects to inflict}{A \code{TArray} of \code{EffectsToImplement}s. This includes the Effect and its percentage of being applied on a successful Move hit. Pok\'{e}mon example: a Move having 30\% chance to Burn would have its \code{TPair} be \code{Burn} and \code{30}.}
+	\bitem{Effects to inflict}{A \code{TArray} of \code{EffectsToImplement}s. This includes the Effect, its percentage of being applied on a successful Move hit, and percentages of how many stacks to apply. For example, upon successful hit, a Move may have a 50\% chance to inflict 1~stack of a Debuff, a 25\% chance to inflict 2~stacks of the Debuff, and a 25\% chance to inflict nothing at all.}
 	\bitem{Mutual Effects}{If true, only up to one Effect in EffectsToImplement may be attached. If false, each Effect's probability is checked individually, resulting in (possibly) multiple Effects being attached.}
 	\bitem{Randomness}{A range of values to multiply to calculate the final damage. Normally, any Move's damage is multiplied by a number between 0.85 and 1 (range taken, of course, from Pokemon). This variance makes it a little more exciting.}
 	\bitem{Supporting text}{\code{SupportingText} includes dev notes that doesn't appear in-game, a proper description, and flavor text (e.g., for hovers).}
@@ -70,7 +70,7 @@
 \sect{Existing \code{MoveData}}
 
 \begin{longtblr}[
-		caption = {All \code{MoveContact}s currently implemented.},
+		caption = {All (non-dummy) \code{MoveData}s currently implemented. (Recall that dummy assets are only used for unit tests and do not show up in-game at all.)},
 		label = {move-contact-table},
 	]{
 		colspec={Q[l, wd=0.17\textwidth] Q[l, wd=0.10\textwidth] Q[l, wd=0.08\textwidth] Q[l, wd=0.17\textwidth] Q[l, wd=0.17\textwidth]},
@@ -86,7 +86,7 @@
 
 \sect{Damage Calculation Formula}
 
-The formulas for damage and healing are inspired by Pokemon. Like it or not, that's the gold standard and what most players will expect when judging base powers, stat values, etc.
+The formulas for damage and healing are inspired by Pok\'{e}mon. Like it or not, that's the gold standard and what most players will expect when judging base powers, stat values, etc.
 
 The formulas are implemented in \code{CombatStatsComponent.cpp}:
 \begin{align*}
@@ -98,12 +98,12 @@ where:
 \begin{itemize}
 	\item{Level is the attacker's Level}
 	\item{Base Power is determined by the \code{MoveData}}
-	\item{Attack and Defense are the appropriate stat values}
+	\item{Attack and Defense are the appropriate stat values. Note that these are the calculated stat values, not base values.}
 	\item{Crit Multiplier is 1.5$\times$ if a critical hit occurred; 1.0$\times$ otherwise
 		\begin{itemize}
 			\item{As outlined in the Critical Hit section of the Stats documentation, if a crit does occur, this reverts Defense to its un-buffed value (including everything, e.g., Mutations).}
 			\item{If the Critical Hit stat is above 100\%, the critical damage increases accordingly. For example, if Crit is 120\%, the damage bonus is $1.5 + 0.2 = 1.7\times$.}
-			\item{This can be a dangerous game mechanic and will require a lot of balancing. However, it also opens the strategies in an otherwise traditional stat scheme.}
+			\item{This can be a dangerous game mechanic and will require a lot of balancing. However, it also opens strategies in an otherwise traditional stat scheme.}
 		\end{itemize}
 	}
 	\item{Random Fluctuation is determined by the ``randomness'' of the \code{MoveData} (in particular, the field \code{MoveData.RandomRange}). Nominally, this is 0.85--1.}
