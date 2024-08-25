@@ -25,8 +25,7 @@ bool FUStat_DamageFormula::RunTest(const FString& Parameters)
 	// Get static data
 	GET_DUMMY_MOVEDATA()
 	GET_DUMMY_TYPES()
-
-
+	
 	// "DummyActor" is the attacker
 	// ----------------------------
 	

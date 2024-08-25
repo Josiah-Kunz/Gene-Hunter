@@ -1,5 +1,7 @@
 #include "EffectToImplement.h"
 
+#include "ComponentUtilities.h"
+
 uint16 FEffectToImplement::CalculateNumStacks()
 {
 
@@ -53,13 +55,8 @@ void FEffectToImplement::ImplementEffect(const uint16 NumStacks, AActor* Target)
 {
 
 	// Attach
-	UEffectComponent* EffectInstance = NewObject<UEffectComponent>(Target, EffectType);
-	if (EffectInstance)
-	{
-		Target->AddInstanceComponent(EffectInstance); 
-		EffectInstance->RegisterComponent();
-	}
-
+	ADD_NEW_COMPONENT_OF_SUBCLASS(UEffectComponent, EffectInstance, Target, EffectType);
+	
 	// Set stacks
 	EffectInstance->SetStacks(NumStacks);
 }

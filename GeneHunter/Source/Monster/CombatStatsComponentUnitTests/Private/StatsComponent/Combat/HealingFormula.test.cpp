@@ -17,7 +17,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStat_HealingFormula,
  * Tests moves from a Flying/Grass attacker to a Fighting/Fire defender with 120 base stats across the board:
  *	 [Lv. 1]	10 base power Fire with 0% chance to crit
  *	 [Lv. 50]	50 base power Grass (STAB) with 100% chance to crit
- *	 [Lv. 100]	100 base power Ice with 130% chance to crit
+ *	 [Lv. 100]	50 base power Ice with 130% chance to crit
  */
 bool FUStat_HealingFormula::RunTest(const FString& Parameters)
 {
@@ -28,7 +28,7 @@ bool FUStat_HealingFormula::RunTest(const FString& Parameters)
 	const TArray<float> CritValues = {0, 100, 130};
 	const TArray<int32> Levels = {1, 50, 100};
 	const TArray<UMoveData*> MoveDatas = {FireHeal10, GrassHoT50, IceHeal100};
-	const TArray<float> ExpectedValues = {2.48f, 13122.0f, 9140785.2f};
+	const TArray<float> ExpectedValues = {2.48f, 13122.0f, 4676680.8f};
 
 	// Execute tests
 	bool bSuccess = true;
@@ -58,7 +58,7 @@ bool FUStat_HealingFormula::RunTest(const FString& Parameters)
 				*MoveData->GetName(),
 				*FString::SanitizeFloat(MoveData->BasePower)
 			),
-			Damage, ExpectedValue, 1e-3f);
+			Damage, ExpectedValue, ExpectedValue*1e-6f);
 		
 	}
 	

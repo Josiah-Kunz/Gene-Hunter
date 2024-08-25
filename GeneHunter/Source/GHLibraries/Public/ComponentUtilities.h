@@ -63,6 +63,18 @@ public:
 	ADD_COMPONENT( ComponentType, NewVariableName, Owner)
 
 /**
+ * Creates a new variable as the Component and then adds + registers it to Owner. SubclassVar should be something like
+ * TSubclassOf<UEffectComponent>.
+ */
+#define ADD_NEW_COMPONENT_OF_SUBCLASS(ComponentType, NewVariableName, Owner, SubclassVar) \
+	ComponentType * NewVariableName = NewObject< ComponentType >( Owner , SubclassVar ); \
+	if ( NewVariableName ) \
+	{ \
+		Owner ->AddInstanceComponent( NewVariableName ); \
+		NewVariableName ->RegisterComponent(); \
+	}
+
+/**
  * Creates and assigns the Component from an existing variable and then adds + registers it to Owner.
  */
 #define ADD_COMPONENT(ComponentType, Component, Owner) \

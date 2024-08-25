@@ -386,15 +386,18 @@ float UCombatStatsComponent::CalculateDamageInternal(const UMoveData* MoveData, 
 	// "Before" Outlets
 	CalculateDamageOutlet.ExecuteBefore(BasePower, CritMultiplier, RandomFluct, Stab, TypeAdvantage,
 		Attacker, this);
-	ApplyDamageOutlet.ExecuteBefore(BasePower, CritMultiplier, RandomFluct, Stab, TypeAdvantage,
-		Attacker, this);
+	if (bIsDoingDamage)
+	{
+		ApplyDamageOutlet.ExecuteBefore(BasePower, CritMultiplier, RandomFluct, Stab, TypeAdvantage,
+			Attacker, this);
+	}
 
 	// Calculate health change (damage or healing)
 	float HealthChange = 0;
 	switch(MoveData->Category)
 	{
 	case EMoveCategory::PhysicalDamage: case EMoveCategory::SpecialDamage:
-		HealthChange = (((2*AttackingLevel/5.0f + 2) * BasePower * AtkValue/DefValue)/50.0f + 2)
+		HealthChange = (((0.4f*AttackingLevel + 2) * BasePower * AtkValue/DefValue)/50.0f + 2)
 			* CritMultiplier * RandomFluct * Stab * TypeAdvantage * StatJump;
 		break;
 	case EMoveCategory::PhysicalHealing: case EMoveCategory::SpecialHealing:
@@ -403,7 +406,7 @@ float UCombatStatsComponent::CalculateDamageInternal(const UMoveData* MoveData, 
 			RefStat.BaseStat = 100;
 			RefStat.BasePairs = 100;
 			const float RefValue = RefStat.CalculateValue(DefendingLevel);
-			HealthChange = (((2*AttackingLevel/5.0f + 2) * BasePower * AtkValue/RefValue)/50.0f + 2)
+			HealthChange = (((0.4f*AttackingLevel + 2) * BasePower * AtkValue/RefValue)/50.0f + 2)
 				* CritMultiplier * RandomFluct * Stab * StatJump;
 			break;
 		}
@@ -425,7 +428,10 @@ float UCombatStatsComponent::CalculateDamageInternal(const UMoveData* MoveData, 
 
 	// "After" Outlet
 	CalculateDamageOutlet.ExecuteAfter(BasePower, CritMultiplier, RandomFluct, Stab, TypeAdvantage, Attacker, this);
-	ApplyDamageOutlet.ExecuteAfter(BasePower, CritMultiplier, RandomFluct, Stab, TypeAdvantage, Attacker, this);
+	if(bIsDoingDamage)
+	{
+		ApplyDamageOutlet.ExecuteAfter(BasePower, CritMultiplier, RandomFluct, Stab, TypeAdvantage, Attacker, this);
+	}
 
 	// Ret
 	return HealthChange;
@@ -533,7 +539,7 @@ float UCombatStatsComponent::GetCritMultiplier()
 	GetCritMultOutlet.ExecuteAfter(CritMultiplier, CritBonus, this);
 
 	// Return
-	return CritMultiplier;
+	return CritMultiplier + CritBonus;
 }
 
 
