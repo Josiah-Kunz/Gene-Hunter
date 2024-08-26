@@ -14,5 +14,5 @@ class BATTLEENGINE_API UProjectileVectorNone : public UProjectileDirection
 
 public:
 
-	virtual FVector GetTargetDirection() override;
+	virtual FVector GetDirection() override;
 };

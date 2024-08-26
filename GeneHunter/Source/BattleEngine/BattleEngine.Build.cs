@@ -16,6 +16,7 @@ public class BattleEngine : ModuleRules{
 			"CombatStatsComponent",		// ProjectileData carries this
 			"EffectComponent",			// MoveData has EffectsToInflict
 			"Engine",					// for ActorComponent.h (external)
+			"GameplayTasks",			// for UProjectileMovementComponent
 			"LevelComponent", 			// CombatStats depend on this
 			"Types", 
 			"UI",						// MoveData uses FSupportingText

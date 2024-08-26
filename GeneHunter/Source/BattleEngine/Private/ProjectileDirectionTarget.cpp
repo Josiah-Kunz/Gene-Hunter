@@ -1,8 +1,9 @@
 #include "ProjectileDirectionTarget.h"
 
-FVector UProjectileDirectionActor::GetTargetDirection()
+FVector UProjectileDirectionTarget::GetDirection()
 {
 	const FVector TargetLoc = Target->GetActorLocation();
-	const FVector ThisLoc = Get
+	const FVector ThisLoc = GetOwner()->GetActorLocation();
+	return TargetLoc - ThisLoc;
 }
 

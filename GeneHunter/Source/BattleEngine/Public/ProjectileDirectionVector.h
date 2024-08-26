@@ -5,7 +5,7 @@
 #include "ProjectileDirectionVector.generated.h"
 
 /**
- * The Projectile's direction is set to the given FVector.
+ * The Projectile's direction is set to the given FVector the first frame.
  */
 UCLASS(Blueprintable)
 class BATTLEENGINE_API UProjectileDirectionVector : public UProjectileDirection
@@ -17,5 +17,5 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	FVector Direction;
 
-	virtual FVector GetTargetDirection() override;
+	virtual FVector GetDirection() override;
 };

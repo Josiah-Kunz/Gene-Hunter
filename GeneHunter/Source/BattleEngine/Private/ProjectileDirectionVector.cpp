@@ -1,6 +1,6 @@
 #include "ProjectileDirectionVector.h"
 
-FVector UProjectileDirectionVector::GetTargetDirection()
+FVector UProjectileDirectionVector::GetDirection()
 {
 	return Direction;
 }

@@ -1,6 +1,6 @@
 #include "ProjectileVectorNone.h"
 
-FVector UProjectileVectorNone::GetTargetDirection()
+FVector UProjectileVectorNone::GetDirection()
 {
 	return FVector::ZeroVector;
 }
