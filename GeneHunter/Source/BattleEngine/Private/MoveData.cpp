@@ -2,8 +2,27 @@
 
 #include "AssetFunctionLibrary.h"
 
+TArray<AActor*> UMoveData::SpawnObjects()
+{
+	// Setup
+	TArray<AActor*> SpawnedObjects = {};
+	UWorld* World = GetWorld();
+
+	// Spawn based on the data rules
+	for(USpawnActor* SpawnActor : ActorsToSpawn)
+	{
+		TArray<AActor*> FreshActors = SpawnActor->Spawn(World);
+		for(AActor* Actor : FreshActors)
+		{
+			SpawnedObjects.Add(Actor);
+		}
+	}
+	
+	return SpawnedObjects;
+}
+
 void UMoveData::GetAllMoveDataAssets(TArray<FAssetData>& MoveDataAssets, const bool bSortABC,
-	const bool bIncludeDummy, const bool bIncludeReal)
+                                     const bool bIncludeDummy, const bool bIncludeReal)
 {
 
 	// Get the assets

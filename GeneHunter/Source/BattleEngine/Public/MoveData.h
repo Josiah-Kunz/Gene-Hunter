@@ -5,6 +5,7 @@
 #include "EffectToImplement.h"
 #include "MoveCategory.h"
 #include "MoveContact.h"
+#include "SpawnActor.h"
 #include "SupportingText.h"
 #include "Type.h"
 
@@ -24,38 +25,48 @@ public:
 
 	// Okay, not a variable, a constant =)
 	inline static const FString DUMMY_IDENTIFIER = "Dummy";
+	
+	/**
+	 * Possible Actors and how they spawn. For example, maybe this MoveData spawns 2--4 bees to attack your enemy.
+	 * You can create your own class that inherits from USpawnActor* to customize spawning. For example:
+	 *	- Position (spawn 1 bee right on top of the enemy and 2 bees close to me)
+	 *	- Conditions (if <50% health, spawn more bees)
+	 *	- And so forth
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
+	TArray<USpawnActor*> ActorsToSpawn;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data", meta=(EditCondition="bCanCategoryDoDamage()"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData", meta=(EditCondition="bCanCategoryDoDamage()"))
 	float BasePower;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
 	float BaseCooldown = 1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
 	EMoveCategory Category;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
 	EMoveContact Contact;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data",
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData",
 		meta=(Tooltip="If blank, this is the same as the asset name. Really only useful for special characters or a dynamic name."))
 	FText DisplayName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data",
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData",
 		meta=(Tooltip="The effects to be inflicted on a collision."))
 	TArray<FEffectToImplement> EffectsToImplement;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data",
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData",
 		meta=(Tooltip="If true, only up to one Effect in EffectsToImplement may be attached. If false, each Effect's probability is checked individually, resulting in (possibly) multiple Effects being attached."))
 	bool bMutualEffects;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data", meta=(EditCondition="bCanCategoryDoDamage()"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData", meta=(EditCondition="bCanCategoryDoDamage()"))
 	FFloatRange RandomRange = FFloatRange{0.85f, 1};
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
 	FSupportingText SupportingText;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
 	TArray<UType*> Types;
 
 #pragma endregion
@@ -63,6 +74,12 @@ public:
 #pragma region Functions
 
 public:
+	/**
+	 * 
+	 * @return The Actors that spawned.
+	 */
+	UFUNCTION(BlueprintCallable, Category="MoveData")
+	TArray<AActor*> SpawnObjects();
 
 	/**
 	 * Gets the MoveData Assets (not the UMoveData themselves). Includes both real and "dummy" MoveData.
@@ -70,7 +87,7 @@ public:
 	 * @param bIncludeDummy if true, include "dummy" MoveData (for unit testing only!).
 	 * @param bIncludeReal if true, include "real" (in-game) MoveData. You always want this unless you're unit testing.
 	 */
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="MoveData")
 	static void GetAllMoveDataAssets(TArray<FAssetData>& MoveDataAssets, const bool bSortABC = false,
 		const bool bIncludeDummy = false, const bool bIncludeReal = true);
 
@@ -88,11 +105,11 @@ public:
 	 * @param bSortABC If true, sorts the Types alphabetically. Make false to improve performance.
 	 * @param bDummyOnly If true, exclusively retrieves "dummy" MoveData (for unit testing). If false, exclusively retrieves real, in-game MoveData.
 	 */
-	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "Exclude"))
+	UFUNCTION(BlueprintCallable, Category="MoveData", meta = (AutoCreateRefTerm = "Exclude"))
 	static void GetAllMoveData(TArray<UMoveData*>& MoveDataArray, UPARAM(ref) const TArray<UMoveData*>& Exclude,
 		const bool bSortABC = true, const bool bDummyOnly = false);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="MoveData")
 	static UMoveData* GetMoveDataByName(UPARAM(ref) const TArray<UMoveData*>& Pool, const FName Name);
 	
 protected:
