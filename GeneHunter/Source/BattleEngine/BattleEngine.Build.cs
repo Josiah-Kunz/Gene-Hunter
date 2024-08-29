@@ -15,6 +15,8 @@ public class BattleEngine : ModuleRules{
 		PublicDependencyModuleNames.AddRange(new string[]{
 			"CombatStatsComponent",		// ProjectileData carries this
 			"EffectComponent",			// MoveData has EffectsToInflict
+			"Core",
+			"CoreUObject",
 			"Engine",					// for ActorComponent.h (external)
 			"GameplayTasks",			// for UProjectileMovementComponent
 			"LevelComponent", 			// CombatStats depend on this
@@ -27,6 +29,7 @@ public class BattleEngine : ModuleRules{
 			// Basics
 			"Core",			// for FStrings and such
 			"CoreUObject",	// for UObjects
+			"Engine",
 			"BPLibraries",	// for UAssetFunctionLibrary::SortAssetsAlphabetically
 			"GHLibraries",	// for REQUIRE_COMPONENT and such
 			  

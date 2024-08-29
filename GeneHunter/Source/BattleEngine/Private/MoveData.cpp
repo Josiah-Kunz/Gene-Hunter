@@ -2,11 +2,10 @@
 
 #include "AssetFunctionLibrary.h"
 
-TArray<AActor*> UMoveData::SpawnObjects()
+TArray<AActor*> UMoveData::SpawnObjects(UWorld* World)
 {
 	// Setup
 	TArray<AActor*> SpawnedObjects = {};
-	UWorld* World = GetWorld();
 
 	// Spawn based on the data rules
 	for(USpawnActor* SpawnActor : ActorsToSpawn)

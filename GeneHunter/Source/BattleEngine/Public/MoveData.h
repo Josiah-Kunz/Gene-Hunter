@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EffectComponent.h"
 #include "EffectToImplement.h"
 #include "MoveCategory.h"
 #include "MoveContact.h"
@@ -79,7 +78,7 @@ public:
 	 * @return The Actors that spawned.
 	 */
 	UFUNCTION(BlueprintCallable, Category="MoveData")
-	TArray<AActor*> SpawnObjects();
+	TArray<AActor*> SpawnObjects(UWorld* World);
 
 	/**
 	 * Gets the MoveData Assets (not the UMoveData themselves). Includes both real and "dummy" MoveData.

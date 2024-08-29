@@ -1,7 +1,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/Object.h"
+#include "Engine/World.h"
+
+//#include "GameFramework/Actor.h"
+//#include "UObject/Object.h"
+
 #include "SpawnActor.generated.h"
 
 /**

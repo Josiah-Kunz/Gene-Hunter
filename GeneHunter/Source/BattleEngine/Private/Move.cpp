@@ -2,7 +2,7 @@
 
 void UMove::Execute()
 {
-	MoveData->SpawnObjects();
+	MoveData->SpawnObjects(GetWorld());
 	ResetCD();
 }
 
