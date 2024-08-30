@@ -8,15 +8,23 @@ TArray<AActor*> UMoveData::SpawnObjects(UWorld* World)
 	TArray<AActor*> SpawnedObjects = {};
 
 	// Spawn based on the data rules
-	for(USpawnActor* SpawnActor : ActorsToSpawn)
+	for(TSubclassOf<USpawnActor> SpawnActorClass : ActorsToSpawn)
 	{
-		TArray<AActor*> FreshActors = SpawnActor->Spawn(World);
-		for(AActor* Actor : FreshActors)
+		// Shouldn't be null, but you never know!
+		if (SpawnActorClass)
 		{
-			SpawnedObjects.Add(Actor);
+
+			// Get an actual instance of the class
+			USpawnActor* SpawnActorInstance = NewObject<USpawnActor>(this, SpawnActorClass);
+			TArray<AActor*> FreshActors = SpawnActorInstance->Spawn(World);
+			for(AActor* Actor : FreshActors)
+			{
+				SpawnedObjects.Add(Actor);
+			}
 		}
 	}
-	
+
+	// Ret
 	return SpawnedObjects;
 }
 

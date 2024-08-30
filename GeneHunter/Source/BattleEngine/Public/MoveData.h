@@ -33,7 +33,7 @@ public:
 	 *	- And so forth
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
-	TArray<USpawnActor*> ActorsToSpawn;
+	TArray<TSubclassOf<USpawnActor>> ActorsToSpawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData", meta=(EditCondition="bCanCategoryDoDamage()"))
 	float BasePower;
@@ -74,7 +74,10 @@ public:
 
 public:
 	/**
-	 * 
+	 * This could be optimized. It's spawning not only instances of USpawnActor, but it's also spawning actors
+	 * themselves. My issue with object pooling is that this method may very well be used to randomly spawn 1, 2, or 3
+	 * objects. Should we just create 1, 2, or 3 objects and de/activate them when we need them? Probably. But let's
+	 * make sure we have the need.
 	 * @return The Actors that spawned.
 	 */
 	UFUNCTION(BlueprintCallable, Category="MoveData")
@@ -82,6 +85,7 @@ public:
 
 	/**
 	 * Gets the MoveData Assets (not the UMoveData themselves). Includes both real and "dummy" MoveData.
+	 * @param MoveDataAssets Set this to empty or I will!
 	 * @param bSortABC If true, sorts alphabetically. Make false to improve performance.
 	 * @param bIncludeDummy if true, include "dummy" MoveData (for unit testing only!).
 	 * @param bIncludeReal if true, include "real" (in-game) MoveData. You always want this unless you're unit testing.
@@ -119,7 +123,7 @@ protected:
 			   Category == EMoveCategory::SpecialDamage || 
 			   Category == EMoveCategory::SpecialHealing;
 	}
-
+	
 #pragma endregion
 	
 };
