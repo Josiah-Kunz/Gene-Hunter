@@ -14,6 +14,7 @@ public class BattleEngine : ModuleRules{
 		
 		PublicDependencyModuleNames.AddRange(new string[]{
 			"CombatStatsComponent",		// ProjectileData carries this
+			"EffectableComponent",		// Moveset is effectable
 			"EffectComponent",			// MoveData has EffectsToInflict
 			"Core",
 			"CoreUObject",

@@ -1,14 +1,19 @@
 Cow-like beast:
 	- Aleph (semitic word for ox; how we and the greeks get "alpha" in "alphabet")
+		= Could also do something like "Yox"
 	- Binox
+		= Two horns or maybe two heads?
 	- Aurox
+		= aurum is latin for gold, so maybe do a golden bull thing?
+		= steel/??? ground? grass?
 	
-Wasp/butterfly hybrid that's really pretty but also can sting you
+Wasp/butterfly hybrid
+	- Lures its prey with its beautiful stinger
 	- Nature [locked]
 	- Fire (that's how it feels when it stings you)
 	- Air (its wings are prominent features)
 	- Poison
-	- Could this be only obtainable as a "fourth" stage via gene splicing from two other Monsters?
+	- Could this be only obtainable as a "fourth" stage via gene splicing from two other Monsters? Would be a neat example of an evolution line that converges. Kinda the opposite of Nincada.
 	- Acquire via small egg/s from a gift/found in special area
 	- Signature move: Second Metamorphosis (requires 3/4 affinities points in Nature?)
 	
