@@ -35,12 +35,22 @@ bool UMoveset::SetMoveByIndex(const uint8 Index, FMoveInstance& NewMove)
 bool UMoveset::UseMoveByIndex(const uint8 Index)
 {
 	// Guard
-	if (!IsValidIndex(Index))
+	const bool bIsRealMove = IsValidIndex(Index) && Moves[Index].IsValid();
+	if (!bIsRealMove)
 	{
+		const bool bIsValidIndex = IsValidIndex(Index);
+		if (bIsValidIndex)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Move has no MoveData!"))
+		} else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Move isn't at a valid index [%i]"), Index)
+		}
 		return false;
 	}
 
 	// Dewet
+	UE_LOG(LogTemp, Warning, TEXT("Using Move at index [%i] named [%s]"), Index, *Moves[Index].MoveData->GetName())
 	Moves[Index].Execute(GetWorld());
 	return true;
 }

@@ -23,9 +23,8 @@ void UProjectileMove::BeginPlay()
 
 		if (Component == nullptr)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("ProjectileMove [%s] is missing component [%s]! Even if none is desired, you must attach a None type."),
-				*this->GetPathName(),
-				*Component->GetName()
+			UE_LOG(LogTemp, Warning, TEXT("ProjectileMove [%s] is missing component(s)! Could be: [Direction]. Even if none is desired, you must attach a None type."),
+				*this->GetPathName()
 			);
 
 		

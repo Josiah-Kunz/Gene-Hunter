@@ -114,6 +114,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="MoveData")
 	static UMoveData* GetMoveDataByName(UPARAM(ref) const TArray<UMoveData*>& Pool, const FName Name);
+
+	/**
+	 * Gets the name that should be displayed in-game. If DisplayName is blank, returns the asset name.
+	 */
+	UFUNCTION(BlueprintCallable, Category="MoveData")
+	FText GetDisplayName();
 	
 protected:
 	

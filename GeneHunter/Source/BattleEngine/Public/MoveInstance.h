@@ -35,7 +35,7 @@ public:
 	 * used.
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data", meta=(EditCondition="bCanCategoryDoDamage()"))
-	float RemainingCD;
+	float RemainingCD = 0;
 
 	/**
 	 * Starts the MoveData by calling MoveData->SpawnObjects() and sets the RemainingCD appropriately.

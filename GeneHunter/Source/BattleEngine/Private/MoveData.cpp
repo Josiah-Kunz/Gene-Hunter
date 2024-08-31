@@ -104,3 +104,12 @@ UMoveData* UMoveData::GetMoveDataByName(const TArray<UMoveData*>& Pool, const FN
 		}
 	return nullptr;
 }
+
+FText UMoveData::GetDisplayName()
+{
+	if (DisplayName.IsEmptyOrWhitespace())
+	{
+		return FText::FromString(GetName());
+	}
+	return DisplayName;
+}
