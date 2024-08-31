@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "EffectableComponent.h"
-#include "Move.h"
+#include "MoveInstance.h"
 
 #include "Moveset.generated.h"
 
@@ -16,10 +16,10 @@ class BATTLEENGINE_API UMoveset : public UEffectableComponent
 
 #pragma region Variables
 
-private:
+public:
 
-	UPROPERTY()
-	TArray<UMove*> Moves;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Moveset")
+	TArray<FMoveInstance> Moves;
 
 #pragma endregion
 
@@ -41,26 +41,12 @@ public:
 
 	/**
 	 * 
-	 * @return The current Moves known in this set. The set returned is not alterable. To alter the Moves in the set,
-	 * use the appropriate setter functions.
-	 */
-	UFUNCTION(BlueprintCallable, Category="Moveset")
-	const TArray<UMove*> GetMoves() const;
-
-	/**
-	 * Sets new Moves.
-	 */
-	UFUNCTION(BlueprintCallable, Category="Moveset")
-	void SetMoves(const TArray<UMove*> NewMoves);
-
-	/**
-	 * 
 	 * @param Index Position of the new Move (starting at zero).
 	 * @param NewMove New Move to set. Will override the old move at Index (if any).
 	 * @return true if the new Move was successfully set.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Moveset")
-	bool SetMoveByIndex(const uint8 Index, UMove* NewMove);
+	bool SetMoveByIndex(const uint8 Index, FMoveInstance& NewMove);
 
 	/**
 	 * Executes the Move at the given index.
@@ -76,7 +62,7 @@ public:
 	 * @return false if the Move was null or not part of the moveset.
 	 */
 	UFUNCTION(BlueprintCallable, Category="Moveset")
-	bool UseExistingMove(const UMove* Move);
+	bool UseExistingMove(const FMoveInstance& Move);
 
 	/**
 	 * 
@@ -85,6 +71,20 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category="Moveset")
 	bool IsValidIndex(const uint8 Index) const;
+
+	UFUNCTION(BlueprintCallable, Category="Moveset")
+	void SetCombatStats(UCombatStatsComponent* CombatStats);
+
+protected:
+	
+	/**
+	 * Ensures our array only has MaxMoves (4 by default) entries.
+	 */
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+
+private:
+
+	void ValidateMoves();
 
 };
 

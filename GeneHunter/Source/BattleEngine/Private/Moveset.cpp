@@ -1,5 +1,7 @@
 #include "Moveset.h"
 
+#include "MoveInstance.h"
+
 UMoveset::UMoveset()
 {
 	PrimaryComponentTick.bCanEverTick = false;
@@ -11,21 +13,7 @@ uint8 UMoveset::MaxMoves() const
 	return 4;
 }
 
-const TArray<UMove*> UMoveset::GetMoves() const
-{
-	return Moves;
-}
-
-void UMoveset::SetMoves(const TArray<UMove*> NewMoves)
-{
-	Moves = {};
-	for(uint8 i=0; i<NewMoves.Num(); i++)
-	{
-		SetMoveByIndex(i, NewMoves[i]);
-	}
-}
-
-bool UMoveset::SetMoveByIndex(const uint8 Index, UMove* NewMove)
+bool UMoveset::SetMoveByIndex(const uint8 Index, FMoveInstance& NewMove)
 {
 
 	// Guard
@@ -37,8 +25,8 @@ bool UMoveset::SetMoveByIndex(const uint8 Index, UMove* NewMove)
 	// Set 'er done!
 	while (Index > Moves.Num())
 	{
-		Moves.Add(nullptr);
-	}
+		Moves.Add({});
+	} 
 	Moves[Index] = NewMove;
 	return true;
 	
@@ -53,15 +41,15 @@ bool UMoveset::UseMoveByIndex(const uint8 Index)
 	}
 
 	// Dewet
-	Moves[Index]->Execute();
+	Moves[Index].Execute(GetWorld());
 	return true;
 }
 
-bool UMoveset::UseExistingMove(const UMove* Move)
+bool UMoveset::UseExistingMove(const FMoveInstance& Move)
 {
 	for(uint8 i=0; i<Moves.Num(); i++)
 	{
-		if (Move == Moves[i])
+		if (Move.MoveData == Moves[i].MoveData)
 		{
 			return UseMoveByIndex(i);
 		}
@@ -72,5 +60,40 @@ bool UMoveset::UseExistingMove(const UMove* Move)
 bool UMoveset::IsValidIndex(const uint8 Index) const
 {
 	return Index < MaxMoves();
+}
+
+void UMoveset::SetCombatStats(UCombatStatsComponent* CombatStats)
+{
+	for(FMoveInstance& MoveInstance : Moves)
+	{
+		if (MoveInstance.IsValid())
+		{
+			MoveInstance.Stats = CombatStats;
+		}
+	}
+}
+
+void UMoveset::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+
+	const FName PropertyName = (PropertyChangedEvent.Property != nullptr) 
+		                           ? PropertyChangedEvent.Property->GetFName() 
+		                           : NAME_None;
+
+	if (PropertyName == GET_MEMBER_NAME_CHECKED(UMoveset, Moves))
+	{
+		ValidateMoves();
+	}
+}
+
+void UMoveset::ValidateMoves()
+{
+	const uint8 MaxArraySize = MaxMoves();
+	if (Moves.Num() != MaxArraySize)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Moves array must have exactly [%i] elements. Setting it as such."), MaxArraySize);
+		Moves.SetNum(MaxArraySize);
+	}
 }
 

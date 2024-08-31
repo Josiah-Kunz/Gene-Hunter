@@ -3,13 +3,13 @@
 #include "CoreMinimal.h"
 #include "CombatStatsComponent.h"
 #include "UObject/Object.h"
-#include "Move.generated.h"
+#include "MoveInstance.generated.h"
 
 /**
  * Implements the static asset MoveData into something usable (e.g., with a cooldown). Collected by UMoveset.
  */
-UCLASS()
-class BATTLEENGINE_API UMove : public UObject
+USTRUCT(BlueprintType)
+struct BATTLEENGINE_API FMoveInstance
 {
 	GENERATED_BODY()
 
@@ -23,7 +23,8 @@ public:
 	UCombatStatsComponent* Stats;
 
 	/**
-	 * The MoveData to keep track of. When the Move is executed, it calls functions from this.
+	 * The MoveData to keep track of. When the Move is executed, it calls functions from this. Anything spawned by
+	 * the MoveData gets called by a MoveData function.
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
 	UMoveData* MoveData;
@@ -41,13 +42,16 @@ public:
 	 *
 	 * Does not check if RemainingCD should let this happen or not. That's up to another script (e.g., UMoveset).
 	 */
-	UFUNCTION(BlueprintCallable, Category="SpawnActor")
-	void Execute();
+	void Execute(UWorld* World);
 
 	/**
 	 * Calculates the cooldown based on MoveData and Stats and sets RemainingCD to this value.
 	 */
-	UFUNCTION(BlueprintCallable, Category="SpawnActor")
 	void ResetCD();
+
+	/**
+	 * Determines if this MoveInstance is valid (true) or null (false).
+	 */
+	bool IsValid() const;
 	
 };
