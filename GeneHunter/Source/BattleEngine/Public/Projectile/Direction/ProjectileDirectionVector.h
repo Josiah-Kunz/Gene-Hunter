@@ -7,7 +7,8 @@
 /**
  * The Projectile's direction is set to the given FVector the first frame.
  */
-UCLASS(Blueprintable)
+UCLASS(ClassGroup=(Projectile), BlueprintType, meta=(BlueprintSpawnableComponent,
+	ShortTooltip = "Projectile direction by vector."))
 class BATTLEENGINE_API UProjectileDirectionVector : public UProjectileDirection
 {
 	GENERATED_BODY()

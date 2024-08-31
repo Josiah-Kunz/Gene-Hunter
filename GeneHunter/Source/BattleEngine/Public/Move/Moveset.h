@@ -76,12 +76,14 @@ public:
 	void SetCombatStats(UCombatStatsComponent* CombatStats);
 
 protected:
-	
+
+#if WITH_EDITOR
 	/**
 	 * Ensures our array only has MaxMoves (4 by default) entries.
 	 */
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
-
+#endif
+	
 private:
 
 	void ValidateMoves();

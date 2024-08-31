@@ -2,13 +2,13 @@
 
 #include "CoreMinimal.h"
 #include "ProjectileDirection.h"
-#include "ProjectileVectorNone.generated.h"
+#include "ProjectileDirectionNone.generated.h"
 
 /**
  * The Projectile has a zero direction. This causes the Projectile to have zero velocity on creation.
  */
 UCLASS(Blueprintable)
-class BATTLEENGINE_API UProjectileVectorNone : public UProjectileDirection
+class BATTLEENGINE_API UProjectileDirectionNone : public UProjectileDirection
 {
 	GENERATED_BODY()
 

@@ -2,20 +2,25 @@
 
 #include "AssetFunctionLibrary.h"
 
+UMoveData::UMoveData()
+{
+	SetCanDoDamage();
+}
+
 TArray<AActor*> UMoveData::SpawnObjects(UWorld* World)
 {
 	// Setup
 	TArray<AActor*> SpawnedObjects = {};
 
 	// Spawn based on the data rules
-	for(TSubclassOf<USpawnActor> SpawnActorClass : ActorsToSpawn)
+	for(TSubclassOf<UActorSpawnScheme> SpawnActorClass : ActorsToSpawn)
 	{
 		// Shouldn't be null, but you never know!
 		if (SpawnActorClass)
 		{
 
 			// Get an actual instance of the class
-			USpawnActor* SpawnActorInstance = NewObject<USpawnActor>(this, SpawnActorClass);
+			UActorSpawnScheme* SpawnActorInstance = NewObject<UActorSpawnScheme>(this, SpawnActorClass);
 			TArray<AActor*> FreshActors = SpawnActorInstance->Spawn(World);
 			for(AActor* Actor : FreshActors)
 			{
@@ -113,3 +118,25 @@ FText UMoveData::GetDisplayName()
 	}
 	return DisplayName;
 }
+
+#if WITH_EDITOR
+
+void UMoveData::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+	const FName PropertyName = (PropertyChangedEvent.Property != nullptr) ? PropertyChangedEvent.Property->GetFName() : NAME_None;
+
+	if (PropertyName == GET_MEMBER_NAME_CHECKED(UMoveData, Category))
+	{
+		SetCanDoDamage();
+	}
+}
+
+void UMoveData::SetCanDoDamage()
+{
+	bCanDoDamage = (Category == EMoveCategory::PhysicalDamage || 
+				   Category == EMoveCategory::SpecialDamage || 
+				   Category == EMoveCategory::SpecialHealing);
+}
+
+#endif

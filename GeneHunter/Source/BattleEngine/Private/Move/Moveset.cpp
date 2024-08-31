@@ -83,6 +83,7 @@ void UMoveset::SetCombatStats(UCombatStatsComponent* CombatStats)
 	}
 }
 
+#if WITH_EDITOR
 void UMoveset::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
@@ -96,6 +97,7 @@ void UMoveset::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEven
 		ValidateMoves();
 	}
 }
+#endif
 
 void UMoveset::ValidateMoves()
 {

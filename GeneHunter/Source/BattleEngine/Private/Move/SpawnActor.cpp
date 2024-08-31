@@ -1,6 +1,6 @@
-#include "SpawnActor.h"
+#include "ActorSpawnScheme.h"
 
-TArray<AActor*> USpawnActor::Spawn(UWorld* World)
+TArray<AActor*> UActorSpawnScheme::Spawn(UWorld* World)
 {
 	TArray<AActor*> SpawnedActors = {};
 	for(TSubclassOf<AActor> ActorClass : Actors)

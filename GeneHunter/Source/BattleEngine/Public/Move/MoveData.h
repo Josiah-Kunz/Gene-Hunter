@@ -4,14 +4,14 @@
 #include "EffectToImplement.h"
 #include "MoveCategory.h"
 #include "MoveContact.h"
-#include "SpawnActor.h"
+#include "ActorSpawnScheme.h"
 #include "SupportingText.h"
 #include "Type.h"
 
 #include "MoveData.generated.h"
 
 /**
- * An asset that holds static data on a Move. Think of it as a Pokedex entry.
+ * An asset that holds static data on a Move. Think of it as a Pokédex entry.
  */
 UCLASS()
 class BATTLEENGINE_API UMoveData : public UPrimaryDataAsset
@@ -27,13 +27,13 @@ public:
 	
 	/**
 	 * Possible Actors and how they spawn. For example, maybe this MoveData spawns 2--4 bees to attack your enemy.
-	 * You can create your own class that inherits from USpawnActor* to customize spawning. For example:
+	 * You can create your own class that inherits from UActorSpawnScheme* to customize spawning. For example:
 	 *	- Position (spawn 1 bee right on top of the enemy and 2 bees close to me)
 	 *	- Conditions (if <50% health, spawn more bees)
 	 *	- And so forth
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
-	TArray<TSubclassOf<USpawnActor>> ActorsToSpawn;
+	TArray<TSubclassOf<UActorSpawnScheme>> ActorsToSpawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData", meta=(EditCondition="bCanCategoryDoDamage()"))
 	float BasePower;
@@ -68,13 +68,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
 	TArray<UType*> Types;
 
+private:
+
+	bool bCanDoDamage;
+	
 #pragma endregion
 
 #pragma region Functions
 
 public:
+
+	UMoveData();
+	
 	/**
-	 * This could be optimized. It's spawning not only instances of USpawnActor, but it's also spawning actors
+	 * This could be optimized. It's spawning not only instances of UActorSpawnScheme, but it's also spawning actors
 	 * themselves. My issue with object pooling is that this method may very well be used to randomly spawn 1, 2, or 3
 	 * objects. Should we just create 1, 2, or 3 objects and de/activate them when we need them? Probably. But let's
 	 * make sure we have the need.
@@ -98,6 +105,7 @@ public:
 	 * Gets all MoveData.
 	 * @param MoveDataArray The returned array filled with Types found in the assets (see GetAllTypeAssets).
 	 * @param bSortABC If true, sorts the Types alphabetically. Make false to improve performance.
+	 * @param bDummyOnly If true, gets the "dummy" MoveData that should only be used in unit tests (not in-game).
 	 */
 	static void GetAllMoveData(TArray<UMoveData*>& MoveDataArray, const bool bSortABC = true, const bool bDummyOnly = false);
 	
@@ -122,13 +130,16 @@ public:
 	FText GetDisplayName();
 	
 protected:
+
+#if WITH_EDITOR
+
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 	
-	bool bCanCategoryDoDamage() const
-	{
-		return Category == EMoveCategory::PhysicalDamage || 
-			   Category == EMoveCategory::SpecialDamage || 
-			   Category == EMoveCategory::SpecialHealing;
-	}
+#endif
+
+private:
+
+	void SetCanDoDamage();
 	
 #pragma endregion
 	
