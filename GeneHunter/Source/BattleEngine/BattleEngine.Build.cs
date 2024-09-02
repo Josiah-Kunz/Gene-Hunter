@@ -7,6 +7,7 @@ public class BattleEngine : ModuleRules{
 		PrivateIncludePaths.AddRange(new string[]{
 			"BattleEngine/Private",
 			"BattleEngine/Private/Move",
+			"BattleEngine/Private/Move/SpawnSchemes",
 			"BattleEngine/Private/Projectile",
 			"BattleEngine/Private/Projectile/Damage",
 			"BattleEngine/Private/Projectile/Direction",
@@ -19,6 +20,7 @@ public class BattleEngine : ModuleRules{
 		PublicIncludePaths.AddRange(new string[]{
 			"BattleEngine/Public",
 			"BattleEngine/Public/Move",
+			"BattleEngine/Public/Move/SpawnSchemes",
 			"BattleEngine/Public/Projectile",
 			"BattleEngine/Public/Projectile/Damage",
 			"BattleEngine/Public/Projectile/Direction",

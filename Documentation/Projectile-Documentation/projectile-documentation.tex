@@ -1,0 +1,36 @@
+\input{../standalone}
+
+\begin{tldr}
+	\begin{itemize}
+		\item{\todo{???}}
+	\end{itemize}
+\end{tldr}
+
+\localtoc
+
+%====================================================
+
+\sect{What Is a Projectile?}
+
+A Projectile is a Actor Blueprint. It contains:
+\begin{itemize}
+	\item{A \code{UProjectileMove} that marries the physical Projectile with \code{MoveData}. This has required\\\code{UActorComponent}s:
+		\begin{itemize}
+			\item{\code{UProjectileDirection} to set the Projectile's direction (either initially or over time)}
+			\item{\code{UProjectileSpeed} to set the Projectile's speed (either initially or over time)}
+			\item{\code{UProjectilePhysics} to control things like bounciness}
+			\item{\code{UProjectileDamage} to control how the damage is doled out (e.g., single use vs multiple use)}
+			\item{\code{UProjectileEndBehavior} to control what happens when the Projectile's use comes to an end}
+		\end{itemize}
+		These components are elaborated upon in upcoming sections.
+	}
+	\item{A \code{UProjectileMovementComponent} that controls how it moves. This should not normally be altered since its settings are more flexibly set by the aforementioned components.}
+	\item{The Projectile's visuals}
+	\item{The Projectile's collider}
+\end{itemize}
+\noindent Of course, there might be other things there too for custom purposes. An additional note is that the \code{MoveData} is what decides the spawn location (via \code{UActorSpawnScheme}s).
+
+
+%====================================================
+
+\postamble{}

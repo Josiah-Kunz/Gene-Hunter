@@ -1,8 +1,8 @@
 #include "MoveInstance.h"
 
-void FMoveInstance::Execute(UWorld* World)
+void FMoveInstance::Execute(AActor* Owner)
 {
-	MoveData->SpawnObjects(World);
+	MoveData->SpawnObjects(Owner);
 	ResetCD();
 }
 

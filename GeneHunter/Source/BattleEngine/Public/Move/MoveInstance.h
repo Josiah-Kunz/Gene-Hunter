@@ -42,7 +42,7 @@ public:
 	 *
 	 * Does not check if RemainingCD should let this happen or not. That's up to another script (e.g., UMoveset).
 	 */
-	void Execute(UWorld* World);
+	void Execute(AActor* Owner);
 
 	/**
 	 * Calculates the cooldown based on MoveData and Stats and sets RemainingCD to this value.

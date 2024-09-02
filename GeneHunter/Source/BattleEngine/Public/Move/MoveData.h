@@ -88,7 +88,7 @@ public:
 	 * @return The Actors that spawned.
 	 */
 	UFUNCTION(BlueprintCallable, Category="MoveData")
-	TArray<AActor*> SpawnObjects(UWorld* World);
+	TArray<AActor*> SpawnObjects(AActor* Owner);
 
 	/**
 	 * Gets the MoveData Assets (not the UMoveData themselves). Includes both real and "dummy" MoveData.

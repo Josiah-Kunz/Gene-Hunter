@@ -2,6 +2,9 @@
 
 \begin{tldr}
 	\begin{itemize}
+		\item{\code{MoveData} holds static data about a Move. You can think of it like a Bulbapedia page on the Move.}
+		\item{\code{MoveData} should not be confused with \code{MoveInstance} (which tracks things like cooldown).}
+		\item{How Move damage and healing are calculated can be seen on page~\pageref{sec:damage-calc-formula}.}
 		\item{Moves have Categories, which can be seen in Table~\ref{move-cat-table}.}
 		\item{Similarly, Moves can make contact (think Spiky Shield), which can be seen in Table~\ref{move-contact-table}.}
 	\end{itemize}
@@ -84,7 +87,7 @@
 
 %====================================================
 
-\sect{Damage Calculation Formula}
+\sect{Damage Calculation Formula}\label{sec:damage-calc-formula}
 
 The formulas for damage and healing are inspired by Pok\'{e}mon. Like it or not, that's the gold standard and what most players will expect when judging base powers, stat values, etc.
 

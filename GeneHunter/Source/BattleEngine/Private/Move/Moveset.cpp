@@ -51,7 +51,7 @@ bool UMoveset::UseMoveByIndex(const uint8 Index)
 
 	// Dewet
 	UE_LOG(LogTemp, Warning, TEXT("Using Move at index [%i] named [%s]"), Index, *Moves[Index].MoveData->GetName())
-	Moves[Index].Execute(GetWorld());
+	Moves[Index].Execute(GetOwner());
 	return true;
 }
 

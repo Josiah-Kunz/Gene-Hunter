@@ -7,7 +7,7 @@ UMoveData::UMoveData()
 	SetCanDoDamage();
 }
 
-TArray<AActor*> UMoveData::SpawnObjects(UWorld* World)
+TArray<AActor*> UMoveData::SpawnObjects(AActor* Owner)
 {
 	// Setup
 	TArray<AActor*> SpawnedObjects = {};
@@ -21,7 +21,7 @@ TArray<AActor*> UMoveData::SpawnObjects(UWorld* World)
 
 			// Get an actual instance of the class
 			UActorSpawnScheme* SpawnActorInstance = NewObject<UActorSpawnScheme>(this, SpawnActorClass);
-			TArray<AActor*> FreshActors = SpawnActorInstance->Spawn(World);
+			TArray<AActor*> FreshActors = SpawnActorInstance->Spawn(Owner);
 			for(AActor* Actor : FreshActors)
 			{
 				SpawnedObjects.Add(Actor);
