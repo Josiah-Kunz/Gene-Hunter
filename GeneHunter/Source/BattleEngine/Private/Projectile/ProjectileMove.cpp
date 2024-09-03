@@ -27,15 +27,15 @@
 			Variable ->Projectile = Projectile; \
 		} \
 		/* Initialize */ \
-		Variable ->InitializeProjectile( Owner ); \
+		Variable ->InitializeProjectile( Caster ); \
 	}
 
 #pragma endregion
 
 // Called when the game starts
-void UProjectileMove::BeginPlay()
+void UProjectileMove::InitializeProjectile(AActor* MoveCaster)
 {
-	Super::BeginPlay();
+	Super::InitializeProjectile(MoveCaster);
 	AActor* Owner = GetOwner();
 
 	// Make sure we have all dependents. If not, search for them.

@@ -30,9 +30,8 @@ public:
 	UProjectileDirection* Direction;
 
 #pragma endregion
+public:
 
-protected:
-	
-	virtual void BeginPlay() override;
+	virtual void InitializeProjectile(AActor* MoveCaster) override;
 
 };

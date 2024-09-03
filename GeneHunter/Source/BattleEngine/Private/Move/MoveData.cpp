@@ -1,6 +1,7 @@
 #include "MoveData.h"
 
 #include "AssetFunctionLibrary.h"
+#include "ProjectileMove.h"
 
 UMoveData::UMoveData()
 {
@@ -24,7 +25,22 @@ TArray<AActor*> UMoveData::SpawnObjects(AActor* Owner)
 			TArray<AActor*> FreshActors = SpawnActorInstance->Spawn(Owner);
 			for(AActor* Actor : FreshActors)
 			{
+
+				// Add to the whole collection
 				SpawnedObjects.Add(Actor);
+
+				// See if there's any projectiles to initialize
+				TArray<UProjectileMove*> ProjectileMoveComponents;
+				Actor->GetComponents(ProjectileMoveComponents);
+
+				for (UProjectileMove* ProjectileMove : ProjectileMoveComponents)
+				{
+					if (ProjectileMove)
+					{
+						ProjectileMove->InitializeProjectile(Owner);
+					}
+				}
+				
 			}
 		}
 	}

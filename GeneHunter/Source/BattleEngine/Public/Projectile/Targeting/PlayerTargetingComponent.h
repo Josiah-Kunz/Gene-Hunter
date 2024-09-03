@@ -7,15 +7,15 @@
 #include "PlayerTargetingComponent.generated.h"
 
 
-UCLASS()
+UCLASS(Blueprintable, meta=(BlueprintSpawnableComponent))
 class BATTLEENGINE_API UPlayerTargetingComponent : public UCombatTargetingComponent
 {
 	GENERATED_BODY()
 
 public:
 
-	UPlayerTargetingComponent();
-
+	virtual void BeginPlay() override;
+	
 	virtual FVector GetAttackVector() override;
 
 private:
