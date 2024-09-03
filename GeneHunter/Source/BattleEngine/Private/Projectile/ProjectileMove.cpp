@@ -27,7 +27,7 @@
 			Variable ->Projectile = Projectile; \
 		} \
 		/* Initialize */ \
-		Variable ->InitializeProjectile(); \
+		Variable ->InitializeProjectile( Owner ); \
 	}
 
 #pragma endregion
@@ -36,7 +36,7 @@
 void UProjectileMove::BeginPlay()
 {
 	Super::BeginPlay();
-	const AActor* Owner = GetOwner();
+	AActor* Owner = GetOwner();
 
 	// Make sure we have all dependents. If not, search for them.
 	ENSURE_DEPENDENT(UProjectileMovementComponent, Projectile, Owner)

@@ -7,7 +7,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Abstract, Blueprintable)
 class BATTLEENGINE_API USpawnOnSelf : public UActorSpawnScheme
 {
 	GENERATED_BODY()

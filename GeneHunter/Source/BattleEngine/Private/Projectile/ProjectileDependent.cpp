@@ -10,6 +10,7 @@ void UProjectileDependent::InitializeComponent()
 	}
 }
 
-void UProjectileDependent::InitializeProjectile()
+void UProjectileDependent::InitializeProjectile(AActor* MoveCaster)
 {
+	Caster = MoveCaster;
 }

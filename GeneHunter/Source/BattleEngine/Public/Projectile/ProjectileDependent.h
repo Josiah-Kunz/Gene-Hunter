@@ -23,8 +23,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	UProjectileMovementComponent* Projectile;
 
+	/**
+	 * The one who uses the Move (that in turn spawns the Projectile).
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	AActor* Caster;
+
+	/**
+	 * Called automatically when the component is first activated on an Actor.
+	 */
 	virtual void InitializeComponent() override;
 
-	virtual void InitializeProjectile();
+	/**
+	 * Called manually when initialized.
+	 */
+	virtual void InitializeProjectile(AActor* MoveCaster);
 
 };

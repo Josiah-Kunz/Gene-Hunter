@@ -30,5 +30,5 @@ public:
 	/**
 	 * Calls SetDirection for the first frame. Called by ProjectileMove.
 	 */
-	virtual void InitializeProjectile() override;
+	virtual void InitializeProjectile(AActor* MoveCaster) override;
 };

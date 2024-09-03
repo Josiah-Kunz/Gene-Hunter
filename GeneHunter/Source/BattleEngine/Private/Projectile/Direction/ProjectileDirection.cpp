@@ -6,8 +6,8 @@ void UProjectileDirection::ApplyDirection()
 	Projectile->Velocity = Speed * GetDirection().GetSafeNormal();
 }
 
-void UProjectileDirection::InitializeProjectile()
+void UProjectileDirection::InitializeProjectile(AActor* MoveCaster)
 {
-	Super::InitializeProjectile();
+	Super::InitializeProjectile(MoveCaster);
 	ApplyDirection();
 }
