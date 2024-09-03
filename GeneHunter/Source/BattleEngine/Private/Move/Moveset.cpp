@@ -4,7 +4,19 @@
 
 UMoveset::UMoveset()
 {
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
+}
+
+void UMoveset::TickComponent(const float DeltaTime, const ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	for(FMoveInstance& MoveInstance : Moves)
+	{
+		if (MoveInstance.IsValid() && MoveInstance.RemainingCD > 0)
+		{
+			MoveInstance.RemainingCD -= DeltaTime;
+		}
+	}
 }
 
 uint8 UMoveset::MaxMoves() const
@@ -50,7 +62,7 @@ bool UMoveset::UseMoveByIndex(const uint8 Index)
 	}
 
 	// Dewet
-	Moves[Index].Execute(GetOwner());
+	UseMoveInternal(Index);
 	return true;
 }
 
@@ -106,5 +118,16 @@ void UMoveset::ValidateMoves()
 		UE_LOG(LogTemp, Warning, TEXT("Moves array must have exactly [%i] elements. Setting it as such."), MaxArraySize);
 		Moves.SetNum(MaxArraySize);
 	}
+}
+
+bool UMoveset::UseMoveInternal(uint8 Index)
+{
+	// Check cooldown
+	if (Moves[Index].RemainingCD <= 0)
+	{
+		Moves[Index].Execute(GetOwner());
+		return true;
+	}
+	return false;
 }
 

@@ -28,9 +28,17 @@ public:
 public:
 	
 	/**
-	 * Ensures we cannot tick.
+	 * Ensures we can tick.
 	 */
 	UMoveset();
+
+	/**
+	 * Keeps track of cooldowns. 
+	 * @param DeltaTime 
+	 * @param TickType 
+	 * @param ThisTickFunction 
+	 */
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	/**
 	 * 
@@ -87,6 +95,13 @@ protected:
 private:
 
 	void ValidateMoves();
+
+	/**
+	 * Attempts to use a Move at the given index provided it's off cooldown.
+	 * @param Index The index of the Moves array to use.
+	 * @return True if the Move was successfully executed.
+	 */
+	bool UseMoveInternal(uint8 Index);
 
 };
 
