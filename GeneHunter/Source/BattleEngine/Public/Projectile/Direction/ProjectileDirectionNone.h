@@ -7,7 +7,7 @@
 /**
  * The Projectile has a zero direction. This causes the Projectile to have zero velocity on creation.
  */
-UCLASS(Blueprintable)
+UCLASS()
 class BATTLEENGINE_API UProjectileDirectionNone : public UProjectileDirection
 {
 	GENERATED_BODY()

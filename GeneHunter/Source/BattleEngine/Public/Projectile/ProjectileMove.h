@@ -5,6 +5,7 @@
 #include "ProjectileDependent.h"
 #include "ProjectileDirection.h"
 #include "Components/ActorComponent.h"
+#include "ProjectileSpeed.h"
 
 #include "ProjectileMove.generated.h"
 
@@ -28,6 +29,12 @@ public:
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	UProjectileDirection* Direction;
+	
+	/**
+	 * This controls the speed of the Projectile.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	UProjectileSpeed* Speed;
 
 #pragma endregion
 public:

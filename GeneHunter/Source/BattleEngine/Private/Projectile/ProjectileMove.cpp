@@ -41,5 +41,6 @@ void UProjectileMove::InitializeProjectile(AActor* MoveCaster)
 	// Make sure we have all dependents. If not, search for them.
 	ENSURE_DEPENDENT(UProjectileMovementComponent, Projectile, Owner)
 	ENSURE_PROJECTILEDEPENDENT(UProjectileDirection, Direction, Owner)
+	ENSURE_PROJECTILEDEPENDENT(UProjectileSpeed, Speed, Owner)
 	
 }

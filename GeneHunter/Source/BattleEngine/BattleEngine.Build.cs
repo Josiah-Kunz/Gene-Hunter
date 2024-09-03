@@ -13,6 +13,7 @@ public class BattleEngine : ModuleRules{
 			"BattleEngine/Private/Projectile/EndBehavior",
 			"BattleEngine/Private/Projectile/PhysicsInteraction",
 			"BattleEngine/Private/Projectile/SpawnSchemes",
+			"BattleEngine/Private/Projectile/Speed",
 			"BattleEngine/Private/Projectile/Targeting",
 			
 		});
@@ -26,6 +27,7 @@ public class BattleEngine : ModuleRules{
 			"BattleEngine/Public/Projectile/EndBehavior",
 			"BattleEngine/Public/Projectile/PhysicsInteraction",
 			"BattleEngine/Public/Projectile/SpawnSchemes",
+			"BattleEngine/Public/Projectile/Speed",
 			"BattleEngine/Public/Projectile/Targeting",
 		});
 		
