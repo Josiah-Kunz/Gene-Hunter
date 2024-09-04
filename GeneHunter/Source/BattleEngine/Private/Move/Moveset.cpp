@@ -120,13 +120,24 @@ void UMoveset::ValidateMoves()
 	}
 }
 
-bool UMoveset::UseMoveInternal(uint8 Index)
+bool UMoveset::UseMoveInternal(const uint8 Index)
 {
 	// Check cooldown
 	if (Moves[Index].RemainingCD <= 0)
 	{
-		Moves[Index].Execute(GetOwner());
-		return true;
+
+		// Check usability. I know I could have just one condition, but with all the fetching, it's a little quicker
+		// to do it serially.
+		AActor* Owner = GetOwner();
+		UMoveUsabilityScheme* UsabilityScheme = Moves[Index].MoveData->UsabilityScheme;
+		const bool bIsUsable = UsabilityScheme == nullptr || UsabilityScheme->IsUsable(Owner);
+
+		// Execute (maybe)
+		if (bIsUsable)
+		{
+			Moves[Index].Execute(Owner);
+		}
+		return bIsUsable;
 	}
 	return false;
 }

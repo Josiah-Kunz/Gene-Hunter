@@ -5,6 +5,7 @@
 #include "MoveCategory.h"
 #include "MoveContact.h"
 #include "ActorSpawnScheme.h"
+#include "MoveUsabilityScheme.h"
 #include "SupportingText.h"
 #include "Type.h"
 
@@ -67,6 +68,12 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
 	TArray<UType*> Types;
+
+	/**
+	 * If null, the Move can be used all the time (but still respects cooldowns).
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
+	UMoveUsabilityScheme* UsabilityScheme;
 
 private:
 
