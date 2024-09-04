@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "MoveData.h"
+#include "ProjectileDamage.h"
 #include "ProjectileDependent.h"
 #include "ProjectileDirection.h"
 #include "Components/ActorComponent.h"
@@ -35,10 +36,19 @@ public:
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	UProjectileSpeed* Speed;
+	
+	/**
+	 * How the Projectile handles dealing damage.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	UProjectileDamage* Damage;
 
 #pragma endregion
 public:
 
 	virtual void InitializeProjectile(AActor* MoveCaster) override;
+
+	UFUNCTION(BlueprintCallable)
+	virtual void OnProjectileCollision(const AActor* OtherActor, const FHitResult HitResult);
 
 };

@@ -49,7 +49,7 @@ public class BattleEngine : ModuleRules{
 			// Basics
 			"Core",			// for FStrings and such
 			"CoreUObject",	// for UObjects
-			"Engine",
+			"Engine",		// for FHitResult (if nothing else?)
 			"BPLibraries",	// for UAssetFunctionLibrary::SortAssetsAlphabetically
 			"GHLibraries",	// for REQUIRE_COMPONENT and such
 			  

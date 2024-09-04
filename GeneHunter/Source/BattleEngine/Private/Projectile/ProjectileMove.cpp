@@ -36,11 +36,16 @@
 void UProjectileMove::InitializeProjectile(AActor* MoveCaster)
 {
 	Super::InitializeProjectile(MoveCaster);
-	AActor* Owner = GetOwner();
+	const AActor* Owner = GetOwner();
 
 	// Make sure we have all dependents. If not, search for them.
 	ENSURE_DEPENDENT(UProjectileMovementComponent, Projectile, Owner)
 	ENSURE_PROJECTILEDEPENDENT(UProjectileDirection, Direction, Owner)
 	ENSURE_PROJECTILEDEPENDENT(UProjectileSpeed, Speed, Owner)
+	ENSURE_PROJECTILEDEPENDENT(UProjectileDamage, Damage, Owner)
 	
+}
+
+void UProjectileMove::OnProjectileCollision(const AActor* OtherActor, const FHitResult HitResult)
+{
 }

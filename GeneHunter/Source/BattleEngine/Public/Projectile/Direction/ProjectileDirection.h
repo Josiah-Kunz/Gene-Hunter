@@ -2,7 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "ProjectileDependent.h"
-#include "UObject/Object.h"
 #include "ProjectileDirection.generated.h"
 
 /**
