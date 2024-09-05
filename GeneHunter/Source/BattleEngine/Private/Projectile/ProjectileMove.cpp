@@ -46,6 +46,22 @@ void UProjectileMove::InitializeProjectile(AActor* MoveCaster)
 	
 }
 
-void UProjectileMove::OnProjectileCollision(const AActor* OtherActor, const FHitResult HitResult)
+void UProjectileMove::OnProjectileCollision(const AActor* OtherActor, UCombatStatsComponent* EnemyStats)
 {
+
+	// Are we ready?
+	if (Damage->Caster == nullptr)
+	{
+		return;
+	}
+	
+	// Make sure this isn't the caster
+	if (OtherActor != Damage->Caster)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s is attacking %s!"),
+			*Damage->Caster->GetName(),
+			*OtherActor->GetName()
+			)
+		//Damage->OnProjectileCollision(OtherActor, EnemyStats);
+	}
 }

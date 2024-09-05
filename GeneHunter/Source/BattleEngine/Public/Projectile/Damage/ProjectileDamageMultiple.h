@@ -21,7 +21,7 @@ public:
 
 	virtual void InitializeProjectile(AActor* MoveCaster) override;
 	
-	virtual void OnProjectileCollision(const AActor* OtherActor, const FHitResult HitResult) override;
+	virtual void OnProjectileCollision(const AActor* OtherActor, UCombatStatsComponent* EnemyStats) override;
 
 private:
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CombatStatsComponent.h"
 #include "MoveData.h"
 #include "ProjectileDamage.h"
 #include "ProjectileDependent.h"
@@ -49,6 +50,6 @@ public:
 	virtual void InitializeProjectile(AActor* MoveCaster) override;
 
 	UFUNCTION(BlueprintCallable)
-	virtual void OnProjectileCollision(const AActor* OtherActor, const FHitResult HitResult);
+	virtual void OnProjectileCollision(const AActor* OtherActor, UCombatStatsComponent* EnemyStats);
 
 };

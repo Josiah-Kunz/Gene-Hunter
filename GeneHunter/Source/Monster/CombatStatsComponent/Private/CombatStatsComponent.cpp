@@ -260,6 +260,12 @@ void UCombatStatsComponent::RecalculateStats(const bool bResetCurrent, const boo
 
 void UCombatStatsComponent::ApplyMoveData(UMoveData* MoveData, UCombatStatsComponent* Attacker)
 {
+	if (MoveData == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Trying to apply MoveData to %s, but it's null! Surely this is an error."),
+				*this->GetName()
+			)
+	}
 	ApplyMoveDataDamage(MoveData, Attacker);
 	ApplyMoveDataEffects(MoveData, Attacker);
 }
@@ -272,7 +278,7 @@ float UCombatStatsComponent::CalculateDamage(const UMoveData* MoveData, UCombatS
 float UCombatStatsComponent::CalculateDamageInternal(const UMoveData* MoveData, UCombatStatsComponent* Attacker,
 	const bool bIsDoingDamage)
 {
-
+	
 	// Can this MoveData even do damage?
 	const bool bDamageCategory =
 		MoveData->Category == EMoveCategory::PhysicalDamage ||

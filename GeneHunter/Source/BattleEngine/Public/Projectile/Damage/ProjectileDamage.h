@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CombatStatsComponent.h"
 #include "ProjectileDependent.h"
 #include "ProjectileDamage.generated.h"
 
@@ -24,6 +25,6 @@ public:
 
 	virtual void InitializeProjectile(AActor* MoveCaster) override;
 
-	virtual void OnProjectileCollision(const AActor* OtherActor, const FHitResult HitResult);
+	virtual void OnProjectileCollision(const AActor* OtherActor, UCombatStatsComponent* EnemyStats);
 
 };

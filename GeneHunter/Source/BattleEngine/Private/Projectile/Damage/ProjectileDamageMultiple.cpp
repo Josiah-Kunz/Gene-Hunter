@@ -50,22 +50,15 @@ void UProjectileDamageMultiple::InitializeProjectile(AActor* MoveCaster)
 	}
 }
 
-void UProjectileDamageMultiple::OnProjectileCollision(const AActor* OtherActor, const FHitResult HitResult)
+void UProjectileDamageMultiple::OnProjectileCollision(const AActor* OtherActor, UCombatStatsComponent* EnemyStats)
 {
 	// Supah
-	Super::OnProjectileCollision(OtherActor, HitResult);
+	Super::OnProjectileCollision(OtherActor, EnemyStats);
 
 	// Can we still damage or have we been spent?
 	if (!bCanStillDamage)
 	{
-		return;
-	}
-
-	// Look for other actor's stats
-	UCombatStatsComponent* EnemyStats = nullptr;
-	SEARCH_FOR_COMPONENT(UCombatStatsComponent, EnemyStats, OtherActor)
-	if (!EnemyStats)
-	{
+		UE_LOG(LogTemp, Warning, TEXT("Can't damage anymore!"))
 		return;
 	}
 
