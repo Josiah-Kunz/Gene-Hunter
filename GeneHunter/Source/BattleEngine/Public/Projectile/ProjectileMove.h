@@ -44,6 +44,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	UProjectileDamage* Damage;
 
+private:
+
+	UPROPERTY()
+	bool bInitialized;
+
 #pragma endregion
 public:
 

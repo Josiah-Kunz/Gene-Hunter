@@ -2,6 +2,8 @@
 
 #include "HealthBarWidget.h"
 
+#include "Components/WidgetComponent.h"
+
 void UHealthBarWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -12,27 +14,36 @@ void UHealthBarWidget::NativeConstruct()
 	AfterModifyStat.Delegate.BindDynamic(this, &UHealthBarWidget::UpdateHealthCall);
 
 	// Check for stats component already attached
-	if (const AActor* OwningActor = GetOwningPlayerPawn())
+	if (const UWidgetComponent* WidgetComponent = GetTypedOuter<UWidgetComponent>())
 	{
-		StatsComponent = OwningActor->FindComponentByClass<UCombatStatsComponent>();
-
-		if (StatsComponent)
+		if (const AActor* OwningActor = WidgetComponent->GetOwner())
 		{
+			StatsComponent = OwningActor->FindComponentByClass<UCombatStatsComponent>();
+
+			if (StatsComponent)
+			{
 			
-			// This way we don't have to check against null anymore
-			bStatsIsValid = true;
+				// This way we don't have to check against null anymore
+				bStatsIsValid = true;
 		
-			// Add to outlet array
-			StatsComponent->ModifyStatOutlet.AddAfter(AfterModifyStat);
+				// Add to outlet array
+				StatsComponent->ModifyStatOutlet.AddAfter(AfterModifyStat);
 
-			// Fire event first time
-			UpdateHealth();
+				// Fire event first time
+				UpdateHealth();
 			
-		} else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("No CombatStats found! This is required for a HealthBarWidget."))
-			bStatsIsValid = false;
+			} else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("No CombatStats found! This is required for a HealthBarWidget."))
+				bStatsIsValid = false;
+			}
 		}
+	} else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s should be implemented with a %s!"),
+			*UHealthBarWidget::StaticClass()->GetName(),
+			*UWidgetComponent::StaticClass()->GetName()
+			)
 	}
 }
 
@@ -44,18 +55,18 @@ UCombatStatsComponent* UHealthBarWidget::GetCombatStats_Implementation()
 void UHealthBarWidget::SetCombatStats_Implementation(UCombatStatsComponent* NewCombatStats)
 {
 	
-	// Null?
-	bStatsIsValid = NewCombatStats == nullptr;
-
+	// Set bools
+	bStatsIsValid = NewCombatStats != nullptr;
+	const bool bChangedStats = StatsComponent != NewCombatStats;
+	
+	// Assign 
+	StatsComponent = NewCombatStats;
+	
 	// New?
-	if (StatsComponent != NewCombatStats && bStatsIsValid)
+	if (bChangedStats && bStatsIsValid)
 	{
 		UpdateHealth();
 	}
-
-	// Assign either way
-	StatsComponent = NewCombatStats;
-
 }
 
 void UHealthBarWidget::UpdateHealth_Implementation()

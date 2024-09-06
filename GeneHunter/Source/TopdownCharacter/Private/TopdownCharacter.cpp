@@ -9,6 +9,8 @@ ATopdownCharacter::ATopdownCharacter()
 {
 	Level = CreateDefaultSubobject<ULevelComponent>(TEXT("Level"));
 	CombatStats = CreateDefaultSubobject<UCombatStatsComponent>(TEXT("Combat Stats"));
+	CombatStats->LevelComponent = Level;
+	CombatStats->RandomizeStats();
 }
 
 void ATopdownCharacter::PostInitializeComponents()
@@ -18,7 +20,14 @@ void ATopdownCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	// Stats
-	CombatStats->LevelComponent = Level;
-	CombatStats->RandomizeStats();
+	if (CombatStats->LevelComponent == nullptr)
+	{
+		CombatStats->DestroyComponent();
+		Level->DestroyComponent();
+		Level = CreateDefaultSubobject<ULevelComponent>(TEXT("Level"));
+		CombatStats = CreateDefaultSubobject<UCombatStatsComponent>(TEXT("Combat Stats"));
+		CombatStats->LevelComponent = Level;
+		CombatStats->RandomizeStats();
+	}
 }
 

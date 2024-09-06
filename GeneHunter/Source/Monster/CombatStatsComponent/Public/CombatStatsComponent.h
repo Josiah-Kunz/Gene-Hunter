@@ -268,6 +268,14 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	void ApplyMoveData(UMoveData* MoveData, UCombatStatsComponent* Attacker);
 
+	/**
+	 * Calculates damage, but doesn't actually apply the damage. Useful for hypothetical (e.g., AI decisions).
+	 *
+	 * Note that this returns a positive number for damage and a negative number for healing.
+	 * @param MoveData 
+	 * @param Attacker 
+	 * @return 
+	 */
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="CombatStats")
 	float CalculateDamage(const UMoveData* MoveData, UCombatStatsComponent* Attacker);
 
@@ -336,6 +344,8 @@ public:
 private:
 	/**
 	 * For internal use only. Calls Outlets depending on whether we're getting ready to deal damage or not.
+	 *
+	 * Note that this returns a positive value for damage and a negative value for healing.
 	 */
 	float CalculateDamageInternal(const UMoveData* MoveData, UCombatStatsComponent* Attacker, const bool bIsDoingDamage);
 	

@@ -36,7 +36,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
 	TArray<TSubclassOf<UActorSpawnScheme>> ActorsToSpawn;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData", meta=(EditCondition="bCanCategoryDoDamage()"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData", meta=(EditCondition="bCanDoDamage"))
 	float BasePower;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
@@ -60,7 +60,7 @@ public:
 		meta=(Tooltip="If true, only up to one Effect in EffectsToImplement may be attached. If false, each Effect's probability is checked individually, resulting in (possibly) multiple Effects being attached."))
 	bool bMutualEffects;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData", meta=(EditCondition="bCanCategoryDoDamage()"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData", meta=(EditCondition="bCanDoDamage"))
 	FFloatRange RandomRange = FFloatRange{0.85f, 1};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")

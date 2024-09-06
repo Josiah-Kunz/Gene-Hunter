@@ -265,6 +265,7 @@ void UCombatStatsComponent::ApplyMoveData(UMoveData* MoveData, UCombatStatsCompo
 		UE_LOG(LogTemp, Warning, TEXT("Trying to apply MoveData to %s, but it's null! Surely this is an error."),
 				*this->GetName()
 			)
+		return;
 	}
 	ApplyMoveDataDamage(MoveData, Attacker);
 	ApplyMoveDataEffects(MoveData, Attacker);
@@ -412,7 +413,7 @@ float UCombatStatsComponent::CalculateDamageInternal(const UMoveData* MoveData, 
 			RefStat.BaseStat = 100;
 			RefStat.BasePairs = 100;
 			const float RefValue = RefStat.CalculateValue(DefendingLevel);
-			HealthChange = (((0.4f*AttackingLevel + 2) * BasePower * AtkValue/RefValue)/50.0f + 2)
+			HealthChange = -(((0.4f*AttackingLevel + 2) * BasePower * AtkValue/RefValue)/50.0f + 2)
 				* CritMultiplier * RandomFluct * Stab * StatJump;
 			break;
 		}
@@ -447,9 +448,13 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 {
 
 	// Juss doot
-	ModifyStat(EStatEnum::Health, CalculateDamageInternal(MoveData, Attacker, true),
+	const float HPDiff = -CalculateDamageInternal(MoveData, Attacker, true);
+	ModifyStat(EStatEnum::Health, HPDiff,
 		EStatValueType::Current, EModificationMode::AddAbsolute);
-		
+	UE_LOG(LogTemp, Warning, TEXT("%s's health changed by %s!"),
+			*GetOwner()->GetName(),
+			*FString::SanitizeFloat(HPDiff)
+		)
 }
 
 void UCombatStatsComponent::ApplyMoveDataEffects(UMoveData* MoveData, UCombatStatsComponent* Attacker)

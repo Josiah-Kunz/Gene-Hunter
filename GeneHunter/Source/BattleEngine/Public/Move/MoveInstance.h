@@ -34,7 +34,7 @@ public:
 	 * doesn't tick, so it's up to another script (e.g., UMoveset) to keep track of when the Move can and cannot be
 	 * used.
 	 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data", meta=(EditCondition="bCanCategoryDoDamage()"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
 	float RemainingCD = 0;
 
 	/**

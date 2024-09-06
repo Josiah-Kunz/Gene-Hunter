@@ -35,22 +35,35 @@
 // Called when the game starts
 void UProjectileMove::InitializeProjectile(AActor* MoveCaster)
 {
+
+	// Basics
 	Super::InitializeProjectile(MoveCaster);
 	const AActor* Owner = GetOwner();
+
+	// Check that MoveData is null (user error, but hey, it happens)
+	if (MoveData == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Oh, no. This is embarassing. You've forgotten to assign a MoveData to the Projectile %s!"),
+				*this->GetOwner()->GetName()
+			)
+		return;
+	}
 
 	// Make sure we have all dependents. If not, search for them.
 	ENSURE_DEPENDENT(UProjectileMovementComponent, Projectile, Owner)
 	ENSURE_PROJECTILEDEPENDENT(UProjectileDirection, Direction, Owner)
 	ENSURE_PROJECTILEDEPENDENT(UProjectileSpeed, Speed, Owner)
 	ENSURE_PROJECTILEDEPENDENT(UProjectileDamage, Damage, Owner)
-	
+
+	// Done!
+	bInitialized = true;
 }
 
 void UProjectileMove::OnProjectileCollision(const AActor* OtherActor, UCombatStatsComponent* EnemyStats)
 {
 
 	// Are we ready?
-	if (Damage->Caster == nullptr)
+	if (!bInitialized)
 	{
 		return;
 	}
@@ -58,10 +71,6 @@ void UProjectileMove::OnProjectileCollision(const AActor* OtherActor, UCombatSta
 	// Make sure this isn't the caster
 	if (OtherActor != Damage->Caster)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s is attacking %s!"),
-			*Damage->Caster->GetName(),
-			*OtherActor->GetName()
-			)
-		//Damage->OnProjectileCollision(OtherActor, EnemyStats);
+		Damage->OnProjectileCollision(OtherActor, EnemyStats);
 	}
 }
