@@ -4,6 +4,7 @@
 #include "CombatStatsComponent.h"
 #include "Engine/HitResult.h"
 #include "ProjectileDamage.h"
+#include "ProjectileMove.h"
 #include "ProjectileDamageMultiple.generated.h"
 
 
@@ -13,9 +14,18 @@ class BATTLEENGINE_API UProjectileDamageMultiple : public UProjectileDamage
 	GENERATED_BODY()
 
 public:
-
+	
+	/**
+	 * Maximum number of times we can damage something. 
+	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Projectile")
 	int32 NumDamageTimes = 1;
+
+	/**
+	 * If true, kill the Projectile Actor after we've damaged NumDamageTimes.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Projectile")
+	bool KillAfterSpent = true;
 	
 	UProjectileDamageMultiple();
 
@@ -48,5 +58,8 @@ private:
 	 */
 	UPROPERTY()
 	bool bCanStillDamage = true;
+
+	UPROPERTY()
+	UProjectileMove* ProjectileMove;
 
 };

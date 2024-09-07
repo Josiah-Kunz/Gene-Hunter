@@ -13,6 +13,14 @@ class BATTLEENGINE_API UProjectileDirection : public UProjectileDependent
 	GENERATED_BODY()
 
 public:
+	
+	/**
+	 * If true, whenever ApplyDirection is called, this also rotates the Projectile to point in the direction of
+	 * GetDirection. 
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Projectile")
+	bool bRotateToDirection = true;
+	
 	/**
 	 * The direction that the projectile goes. Override this!
 	 */

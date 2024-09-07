@@ -11,6 +11,9 @@
 
 #include "ProjectileMove.generated.h"
 
+// Delegates
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnProjectileEnd);
+
 /**
  * A class to marry MoveData to a Projectile.
  */
@@ -44,6 +47,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	UProjectileDamage* Damage;
 
+	/**
+	 * Called just before the Projectile is deleted.
+	 */
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnProjectileEnd OnProjectileEnd;
+
 private:
 
 	UPROPERTY()
@@ -56,5 +65,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void OnProjectileCollision(const AActor* OtherActor, UCombatStatsComponent* EnemyStats);
+
+	UFUNCTION(BlueprintCallable)
+	virtual void EndProjectile();
 
 };

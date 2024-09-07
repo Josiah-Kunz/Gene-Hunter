@@ -24,7 +24,7 @@ void UProjectileDamageMultiple::InitializeProjectile(AActor* MoveCaster)
 	Super::InitializeProjectile(MoveCaster);
 
 	// Get MoveData from the local ProjectileMove
-	UProjectileMove* ProjectileMove = nullptr;
+	//UProjectileMove* ProjectileMove = nullptr;
 	const AActor* ProjectileActor = Projectile->GetOwner();
 	SEARCH_FOR_COMPONENT(UProjectileMove, ProjectileMove, ProjectileActor)
 	if (!ProjectileMove)
@@ -58,7 +58,6 @@ void UProjectileDamageMultiple::OnProjectileCollision(const AActor* OtherActor, 
 	// Can we still damage or have we been spent?
 	if (!bCanStillDamage)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Can't damage anymore!"))
 		return;
 	}
 
@@ -68,6 +67,10 @@ void UProjectileDamageMultiple::OnProjectileCollision(const AActor* OtherActor, 
 	if (NumTimesDamaged >= NumDamageTimes)
 	{
 		bCanStillDamage = false; // I know I can do the fancy schmancy "bCan = NumTimesDamaged < NumDamageTimes"
+		if (KillAfterSpent)
+		{
+			ProjectileMove->EndProjectile();
+		}
 	}
 	
 }

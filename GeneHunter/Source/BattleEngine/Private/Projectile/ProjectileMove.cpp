@@ -74,3 +74,15 @@ void UProjectileMove::OnProjectileCollision(const AActor* OtherActor, UCombatSta
 		Damage->OnProjectileCollision(OtherActor, EnemyStats);
 	}
 }
+
+void UProjectileMove::EndProjectile()
+{
+	if (AActor* Owner = GetOwner())
+	{
+		// Event
+		OnProjectileEnd.Broadcast();
+        
+		// Killem
+		Owner->Destroy();
+	}
+}

@@ -451,10 +451,6 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 	const float HPDiff = -CalculateDamageInternal(MoveData, Attacker, true);
 	ModifyStat(EStatEnum::Health, HPDiff,
 		EStatValueType::Current, EModificationMode::AddAbsolute);
-	UE_LOG(LogTemp, Warning, TEXT("%s's health changed by %s!"),
-			*GetOwner()->GetName(),
-			*FString::SanitizeFloat(HPDiff)
-		)
 }
 
 void UCombatStatsComponent::ApplyMoveDataEffects(UMoveData* MoveData, UCombatStatsComponent* Attacker)
