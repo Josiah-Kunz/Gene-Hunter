@@ -8,7 +8,8 @@
 #include "HealthBarWidget.generated.h"
 
 /**
- * 
+ * A way to link the WB_Healthbar to C++. Please remember to set the CombatStatsComponent via Blueprints! I've tried to
+ * autofind it in NativeInitialize, etc., but it initializes too early (having GameInstance as the outer object).
  */
 UCLASS()
 class COMBATSTATSCOMPONENT_API UHealthBarWidget : public UUserWidget
@@ -17,7 +18,7 @@ class COMBATSTATSCOMPONENT_API UHealthBarWidget : public UUserWidget
 
 public:
 
-	virtual void NativeConstruct() override;
+	virtual void InitializeStats();
 
 	UFUNCTION(Blueprintable, BlueprintCallable, BlueprintType, BlueprintNativeEvent)
 	/**
@@ -44,6 +45,6 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Stats")
 	UCombatStatsComponent* StatsComponent;
 
-	bool bStatsIsValid;
+	bool bStatsIsValid, bStatsInitialized;
 	
 };
