@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "CombatStatsComponent.h"
+#include "ExpirationComponent.h"
 #include "MoveData.h"
 #include "ProjectileDamage.h"
 #include "ProjectileDependent.h"
@@ -46,6 +47,13 @@ public:
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	UProjectileDamage* Damage;
+	
+	/**
+	 * Necessary if the Projectile is to naturally expire. This could be handled elsewhere (e.g., after the damage
+	 * occurs), but it's still necessary to consider.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	UExpirationComponent* Expiration;
 
 	/**
 	 * Called just before the Projectile is deleted.
