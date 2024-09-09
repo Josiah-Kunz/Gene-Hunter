@@ -2,7 +2,8 @@
 
 \begin{tldr}
 	\begin{itemize}
-		\item{\todo{???}}
+		\item{Projectiles carry \code{MoveData} from a caster to a target.}
+		\item{How Projectiles do this can be customized by writing your own scripts or Blueprints.}
 	\end{itemize}
 \end{tldr}
 
@@ -18,18 +19,42 @@ A Projectile is a Actor Blueprint. It contains:
 		\begin{itemize}
 			\item{\code{UProjectileDirection} to set the Projectile's direction (either initially or over time)}
 			\item{\code{UProjectileSpeed} to set the Projectile's speed (either initially or over time)}
-			\item{\code{UProjectilePhysics} to control things like bounciness}
 			\item{\code{UProjectileDamage} to control how the damage is doled out (e.g., single use vs multiple use)}
-			\item{\code{UProjectileEndBehavior} to control what happens when the Projectile's use comes to an end}
+			\item{\code{UExpriationComponent} to control what happens when the Projectile's use comes to an end}
 		\end{itemize}
-		These components are elaborated upon in upcoming sections.
 	}
 	\item{A \code{UProjectileMovementComponent} that controls how it moves. This should not normally be altered since its settings are more flexibly set by the aforementioned components.}
-	\item{The Projectile's visuals}
-	\item{The Projectile's collider}
+	\item{The Projectile's visuals, such as a static mesh or particle effects.}
+	\item{The Projectile's collider, which includes shape, collision settings (like what the Projectile interacts with), and physics settings (like if the Projectile bounces).}
 \end{itemize}
-\noindent Of course, there might be other things there too for custom purposes. An additional note is that the \code{MoveData} is what decides the spawn location (via \code{UActorSpawnScheme}s).
+\noindent Of course, there might be other things there too for custom purposes. An additional note is that the \code{MoveData} is what decides the spawn location (via \code{UActorSpawnScheme}s).\\
 
+While many of these are self-evident, a couple require explanation.
+
+%====================================================
+
+\sect{\code{UProjectileDirection}}
+
+By default, the Projectile's direction is set immediately when spawned. This optionally includes the Projectile's rotation.
+
+Usually, the direction is retrieved from \code{UCombatTargetingComponent}. This could be from the player; for example, mouse position gets a vector direction or mouseover gets an Actor to inflict a status on. \todo{While not implemented yet,} for non-players, this includes getting vectors or Actor targets via AI. 
+
+By default, a \code{UProjectileDirection} does not tick, but it might be a good idea to make a derived class that does. Examples are seeking Projectiles or a Projectile that changes behavior (e.g., explodes) after a certain time or distance.
+
+%====================================================
+
+\sect{\code{UProjectileSpeed}}
+
+This is incredibly similar to \code{UProjectileDirection}. You may want to tick it, for example, to have a Projectile that speeds up as it gets closer to its target.
+
+%====================================================
+
+\sect{\code{UExpirationComponent}}
+
+\code{UExpirationComponent}s can be used on a variety of Actors, not just Projectiles. They delete an Actor after a set time or distance traveled. This could be used on not only Projectiles, but also limited-time events or objects that only appear in certain areas (and taking them outside that area deletes them).
+
+
+Notably, they have one Outlet: \code{GetExpirationDistanceOutlet}. This may be useful for talents that make Projectiles last longer (for example, Junkrat's frag grenade launcher from Overwatch).
 
 %====================================================
 

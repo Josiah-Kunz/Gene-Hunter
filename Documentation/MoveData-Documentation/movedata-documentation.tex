@@ -21,6 +21,7 @@
 \newcommand{\bitem}[2]{\item{\textbf{#1}. #2}}
 
 \begin{itemize}
+	\bitem{Actors to spawn}{An array of \code{UActorSpawnScheme}s, which are \code{UObjects}. Like most \code{UObject}s, you can create one in-editor by making \code{UActorSpawnScheme} (or a derived class) the base class. Minimally, this includes an array of Actors to spawn. However, you can inherit and customize to suit your needs. For example, maybe you want a chance to spawn 1 apple (50\%), 2 bananas (30\%), or nothing (20\%).}
 	\bitem{Base power}{A measure of the relative power of a Move. Starter Moves may only have 10--30 base power, whereas the most powerful moves may tip the scales at 100. The majority of Moves should have low base powers---we don't want the OHKOs of Pokemon, as this isn't a turn-based game.}
 	\bitem{Base cooldown}{The cooldown in seconds. This gets modified by the \code{CombatStatsComponent}'s Haste.}
 	\bitem{Category}{A representation of the kind of Move this is. The \code{MoveCategory}s are:
