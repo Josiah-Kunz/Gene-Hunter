@@ -1,7 +1,8 @@
 #include "ActorSpawnScheme.h"
 
-TArray<AActor*> UActorSpawnScheme::Spawn(AActor* Owner)
+TArray<AActor*> UActorSpawnScheme::Spawn(AActor* NewOwner)
 {
+	Owner = NewOwner;
 	UWorld* World = Owner->GetWorld();
 	TArray<AActor*> SpawnedActors = {};
 	for(TSubclassOf<AActor> ActorClass : Actors)

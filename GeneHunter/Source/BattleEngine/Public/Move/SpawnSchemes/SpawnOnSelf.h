@@ -14,6 +14,6 @@ class BATTLEENGINE_API USpawnOnSelf : public UActorSpawnScheme
 
 public:
 
-	virtual TArray<AActor*> Spawn(AActor* Owner) override;
+	virtual TArray<AActor*> Spawn(AActor* NewOwner) override;
 	
 };

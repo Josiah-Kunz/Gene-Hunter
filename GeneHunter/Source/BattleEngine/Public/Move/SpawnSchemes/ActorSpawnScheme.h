@@ -27,6 +27,11 @@ public:
 	 * @return The Actors that spawned.
 	 */
 	UFUNCTION(BlueprintCallable, Category="SpawnActor")
-	virtual TArray<AActor*> Spawn(AActor* Owner);
+	virtual TArray<AActor*> Spawn(AActor* NewOwner);
+
+protected:
+
+	UPROPERTY()
+	AActor* Owner;
 	
 };
