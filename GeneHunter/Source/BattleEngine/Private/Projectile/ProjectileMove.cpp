@@ -55,6 +55,9 @@ void UProjectileMove::InitializeProjectile(AActor* MoveCaster)
 	ENSURE_PROJECTILEDEPENDENT(UProjectileSpeed, Speed, Owner)
 	ENSURE_PROJECTILEDEPENDENT(UProjectileDamage, Damage, Owner)
 	ENSURE_DEPENDENT(UExpirationComponent, Expiration, Owner)
+	
+	// Special initialization(s)
+	Expiration->Reset();
 
 	// Done!
 	bInitialized = true;

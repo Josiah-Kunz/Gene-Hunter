@@ -3,6 +3,13 @@
 
 #include "ExpirationComponent.h"
 
+void UExpirationComponent::Reset()
+{
+	Actor = GetOwner();
+	OGLocation = Actor->GetActorLocation();
+	CurrentTime = 0;
+}
+
 UExpirationComponent::UExpirationComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -12,8 +19,7 @@ UExpirationComponent::UExpirationComponent()
 void UExpirationComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	Actor = GetOwner();
-	OGLocation = Actor->GetActorLocation();
+	Reset();
 }
 
 

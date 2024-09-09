@@ -51,6 +51,13 @@ public:
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Expiration")
 	float Seconds = -1;
+
+	/**
+	 * Re-registers the owning Actor, sets the current distance to zero, and sets the current time to zero.
+	 * This is done automatically in BeginPlay.
+	 */
+	UFUNCTION(BlueprintCallable)
+	void Reset();
 	
 	UExpirationComponent();
 
