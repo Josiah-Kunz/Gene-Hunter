@@ -14,3 +14,14 @@ void UProjectileDependent::InitializeProjectile(AActor* MoveCaster)
 {
 	Caster = MoveCaster;
 }
+
+void UProjectileDependent::Enable()
+{
+	SetComponentTickEnabled(true);
+	InitializeProjectile(Caster);
+}
+
+void UProjectileDependent::Disable()
+{
+	SetComponentTickEnabled(false);
+}

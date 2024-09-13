@@ -52,9 +52,14 @@ private:
 	UPROPERTY()
 	uint16 CurrentIndex = 0;
 
+	UPROPERTY()
+	TArray<AActor*> SpawnedActors;
+
 	/**
 	 * This handles ticking.
 	 */
 	FTimerHandle TickTimerHandle;
+
+	static void SetActive(AActor* Actor, const bool bIsActive);
 	
 };

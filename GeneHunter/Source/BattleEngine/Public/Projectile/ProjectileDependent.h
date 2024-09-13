@@ -37,6 +37,13 @@ public:
 	/**
 	 * Called manually when initialized.
 	 */
+	UFUNCTION(Blueprintable)
 	virtual void InitializeProjectile(AActor* MoveCaster);
+
+	UFUNCTION(Blueprintable)
+	virtual void Enable();
+
+	UFUNCTION(Blueprintable)
+	virtual void Disable();
 
 };

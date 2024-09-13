@@ -1,5 +1,6 @@
 #include "SpawnOnSelfInSuccession.h"
 
+#include "ProjectileDependent.h"
 #include "TimerManager.h"
 
 USpawnOnSelfInSuccession::USpawnOnSelfInSuccession()
@@ -10,10 +11,11 @@ USpawnOnSelfInSuccession::USpawnOnSelfInSuccession()
 AActor* USpawnOnSelfInSuccession::SpawnSingle()
 {
 
-	// Spawn the Actor
-	UWorld* World = Owner->GetWorld();
-	AActor* NewActor = World->SpawnActor(Actors[CurrentIndex]);
-	NewActor->SetActorLocation(Owner->GetActorLocation());
+	// "Spawn" the next one
+	AActor* NewSpawn = SpawnedActors[CurrentIndex];
+	SetActive(NewSpawn, true);
+	const FVector OwnerLocation = Owner->GetActorLocation();
+	NewSpawn->SetActorLocation(OwnerLocation);
 
 	// Keep track!
 	CurrentIndex++;
@@ -23,11 +25,12 @@ AActor* USpawnOnSelfInSuccession::SpawnSingle()
 	}
 
 	// Return
-	return NewActor;
+	return NewSpawn;
 }
 
 TArray<AActor*> USpawnOnSelfInSuccession::Spawn(AActor* NewOwner)
 {
+	
 	// Guard
 	if (CurrentIndex != 0)
 	{
@@ -37,14 +40,23 @@ TArray<AActor*> USpawnOnSelfInSuccession::Spawn(AActor* NewOwner)
 	// Assign owner
 	Owner = NewOwner;
 
-	// Spawn an Actor
-	AActor* SpawnedActor = SpawnSingle();
+	// Spawn (initializes + adds to list)
+	SpawnedActors = Super::Spawn(NewOwner);
+
+	// Turn off all
+	for(AActor* SpawnedActor : SpawnedActors)
+	{
+		SetActive(SpawnedActor, false);
+	}
+
+	// Set the first to active
+	SpawnSingle();
 
 	// Time
 	StartTick();
 
 	// Return
-	return {SpawnedActor};
+	return SpawnedActors;
 }
 
 void USpawnOnSelfInSuccession::Tick(float DeltaTime)
@@ -54,22 +66,62 @@ void USpawnOnSelfInSuccession::Tick(float DeltaTime)
 
 void USpawnOnSelfInSuccession::StartTick()
 {
-	if (GWorld) 
+	const UWorld* World = GetWorld();
+	if (World) 
 	{
-		GWorld->GetTimerManager().SetTimer(TickTimerHandle, this, &USpawnOnSelfInSuccession::HandleTick,
+		World->GetTimerManager().SetTimer(TickTimerHandle, this, &USpawnOnSelfInSuccession::HandleTick,
 			TimeBetweenSpawns, true);
 	}
 }
 
 void USpawnOnSelfInSuccession::StopTick()
 {
-	if (GWorld)
+	const UWorld* World = GetWorld();
+	if (World)
 	{
-		GWorld->GetTimerManager().ClearTimer(TickTimerHandle);
+		World->GetTimerManager().ClearTimer(TickTimerHandle);
 	}
 }
 
 void USpawnOnSelfInSuccession::HandleTick()
 {
 	Tick(TimeBetweenSpawns);
+}
+
+void USpawnOnSelfInSuccession::SetActive(AActor* Actor, const bool bIsActive)
+{
+
+	// The actor itself
+	Actor->SetActorHiddenInGame(!bIsActive);
+	Actor->SetActorEnableCollision(bIsActive);
+	Actor->SetActorTickEnabled(bIsActive);
+
+	// Components
+	TArray<UActorComponent*> Components;
+	Actor->GetComponents(Components);
+	for (UActorComponent* Component : Components)
+	{
+		if (Component->IsRegistered())
+		{
+
+			// Special for UProjectileDependents
+			if (Component->IsA(UProjectileDependent::StaticClass()))
+			{
+				UProjectileDependent* ProjectileDependent = Cast<UProjectileDependent>(Component);
+				if (bIsActive)
+				{
+					ProjectileDependent->Enable();
+				} else
+				{
+					ProjectileDependent->Disable();
+				}
+
+			// All other components
+			} else
+			{
+				Component->SetComponentTickEnabled(bIsActive);
+			}
+		}
+	}
+
 }
