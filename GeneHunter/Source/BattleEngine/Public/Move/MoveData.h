@@ -76,7 +76,8 @@ public:
 	UMoveUsabilityScheme* UsabilityScheme;
 
 private:
-
+	
+	UPROPERTY()
 	bool bCanDoDamage;
 	
 #pragma endregion

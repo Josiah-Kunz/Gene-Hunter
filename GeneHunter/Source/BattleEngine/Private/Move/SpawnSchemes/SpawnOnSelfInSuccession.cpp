@@ -1,5 +1,6 @@
 #include "SpawnOnSelfInSuccession.h"
 
+#include "ExpirationComponent.h"
 #include "ProjectileDependent.h"
 #include "TimerManager.h"
 
@@ -13,9 +14,10 @@ AActor* USpawnOnSelfInSuccession::SpawnSingle()
 
 	// "Spawn" the next one
 	AActor* NewSpawn = SpawnedActors[CurrentIndex];
-	SetActive(NewSpawn, true);
 	const FVector OwnerLocation = Owner->GetActorLocation();
 	NewSpawn->SetActorLocation(OwnerLocation);
+	SetActive(NewSpawn, true);
+	
 
 	// Keep track!
 	CurrentIndex++;
@@ -67,9 +69,9 @@ void USpawnOnSelfInSuccession::Tick(float DeltaTime)
 void USpawnOnSelfInSuccession::StartTick()
 {
 	const UWorld* World = GetWorld();
-	if (World) 
+	if (GWorld) 
 	{
-		World->GetTimerManager().SetTimer(TickTimerHandle, this, &USpawnOnSelfInSuccession::HandleTick,
+		GWorld->GetTimerManager().SetTimer(TickTimerHandle, this, &USpawnOnSelfInSuccession::HandleTick,
 			TimeBetweenSpawns, true);
 	}
 }
@@ -77,9 +79,9 @@ void USpawnOnSelfInSuccession::StartTick()
 void USpawnOnSelfInSuccession::StopTick()
 {
 	const UWorld* World = GetWorld();
-	if (World)
+	if (GWorld)
 	{
-		World->GetTimerManager().ClearTimer(TickTimerHandle);
+		GWorld->GetTimerManager().ClearTimer(TickTimerHandle);
 	}
 }
 
@@ -88,7 +90,7 @@ void USpawnOnSelfInSuccession::HandleTick()
 	Tick(TimeBetweenSpawns);
 }
 
-void USpawnOnSelfInSuccession::SetActive(AActor* Actor, const bool bIsActive)
+void USpawnOnSelfInSuccession::SetActive(AActor* Actor, const bool bIsActive) const
 {
 
 	// The actor itself
@@ -110,12 +112,21 @@ void USpawnOnSelfInSuccession::SetActive(AActor* Actor, const bool bIsActive)
 				UProjectileDependent* ProjectileDependent = Cast<UProjectileDependent>(Component);
 				if (bIsActive)
 				{
+					ProjectileDependent->Caster = Owner;
 					ProjectileDependent->Enable();
 				} else
 				{
 					ProjectileDependent->Disable();
 				}
 
+			// Expiration component
+				/*
+			} else if (bIsActive && Component->IsA(UExpirationComponent::StaticClass()))
+			{
+				UExpirationComponent* ExpirationComponent = Cast<UExpirationComponent>(Component);
+				UE_LOG(LogTemp, Warning, TEXT("Resetting!"))
+				ExpirationComponent->Reset();
+				*/
 			// All other components
 			} else
 			{

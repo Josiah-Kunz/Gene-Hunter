@@ -8,6 +8,11 @@ void UExpirationComponent::Reset()
 	Actor = GetOwner();
 	OGLocation = Actor->GetActorLocation();
 	CurrentTime = 0;
+	UE_LOG(LogTemp, Warning, TEXT("Resetting %s [%s]"),
+			*GetName(),
+			*GetPathName()
+		)
+		
 }
 
 UExpirationComponent::UExpirationComponent()

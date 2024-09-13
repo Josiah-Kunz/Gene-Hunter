@@ -60,6 +60,6 @@ private:
 	 */
 	FTimerHandle TickTimerHandle;
 
-	static void SetActive(AActor* Actor, const bool bIsActive);
+	void SetActive(AActor* Actor, const bool bIsActive) const;
 	
 };

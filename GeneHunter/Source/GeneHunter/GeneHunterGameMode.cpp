@@ -6,10 +6,12 @@
 
 AGeneHunterGameMode::AGeneHunterGameMode()
 {
-	// set default pawn class to our Blueprinted character
+	// Leave the default pawn class to the project settings
+	/*
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"));
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+	*/
 }

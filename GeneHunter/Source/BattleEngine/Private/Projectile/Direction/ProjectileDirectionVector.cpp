@@ -8,7 +8,7 @@ FVector UProjectileDirectionVector::GetDirection()
 	// Guard no caster
 	if (!Caster)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s [%s] is has no Caster! Make sure to assign one on initialization."),
+		UE_LOG(LogTemp, Warning, TEXT("%s [%s] has no Caster! Make sure to assign one on initialization."),
 				*UProjectileDirectionVector::StaticClass()->GetName(),
 				*this->GetPathName()
 				);
