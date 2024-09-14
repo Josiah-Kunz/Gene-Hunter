@@ -27,7 +27,7 @@ public:
 	 * This is the delegate that attaches to UCombatStatComponent's BeforeModifyStat Outlet.
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Outlets", meta = (AllowPrivateAccess = "true"))
-	FBeforeModifyStatDelegate ModifyStatOutlet;
+	FBeforeModifyStatDelegate ModifyStatDelegate;
 	
 	virtual FSupportingText GetSupportingText() override;
 

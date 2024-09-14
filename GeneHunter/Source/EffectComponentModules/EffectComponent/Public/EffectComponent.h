@@ -200,7 +200,7 @@ public:
 	/**
 	 * Sets stacks to 1. It is here that you should bind your delegate by using macros like SEARCH_FOR_COMPONENT.
 	 */
-	virtual void OnComponentCreated() override;
+	virtual void BeginPlay() override;
 
 	virtual void OnRegister() override;
 

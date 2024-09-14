@@ -132,9 +132,8 @@ EStackChangeResult UEffectComponent::Purge(const int32 Amount)
 	return Result;
 }
 
-auto UEffectComponent::OnComponentCreated() -> void
+void UEffectComponent::BeginPlay()
 {
-	
 	// We'll use this a bunch
 	AActor* ActorOwner = GetOwner();
 
@@ -161,10 +160,10 @@ auto UEffectComponent::OnComponentCreated() -> void
 	// Didn't find any w/this name; must be new
 	SetStacks(1);
 	Added = true;
-	
+	UE_LOG(LogTemp, Warning, TEXT("OnComponentCreated"))
 	
 	// Supah
-	Super::OnComponentCreated();
+	Super::BeginPlay();
 
 	// Delegate
 	//OnAddEffectOutlet.ExecuteAfter(this);

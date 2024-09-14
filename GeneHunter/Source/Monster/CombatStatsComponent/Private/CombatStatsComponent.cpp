@@ -449,6 +449,7 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 
 	// Juss doot
 	const float HPDiff = -CalculateDamageInternal(MoveData, Attacker, true);
+	UE_LOG(LogTemp, Warning, TEXT("Applying damage"))
 	ModifyStat(EStatEnum::Health, HPDiff,
 		EStatValueType::Current, EModificationMode::AddAbsolute);
 }

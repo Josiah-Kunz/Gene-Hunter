@@ -7,7 +7,7 @@ void UExpirationComponent::Reset()
 {
 	Actor = GetOwner();
 	OGLocation = Actor->GetActorLocation();
-	CurrentTime = 0
+	CurrentTime = 0;
 }
 
 UExpirationComponent::UExpirationComponent(): Actor(GetOwner()), CurrentTime(0)
