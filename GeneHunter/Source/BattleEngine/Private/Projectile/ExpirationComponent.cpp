@@ -15,7 +15,7 @@ void UExpirationComponent::Reset()
 		
 }
 
-UExpirationComponent::UExpirationComponent()
+UExpirationComponent::UExpirationComponent(): Actor(GetOwner()), CurrentTime(0)
 {
 	PrimaryComponentTick.bCanEverTick = true;
 }
@@ -79,6 +79,7 @@ float UExpirationComponent::GetExpirationTime()
 
 void UExpirationComponent::Expire()
 {
+	UActorSpawnScheme::SpawnActors(Actor, SpawnOnExpire);
 	Actor->Destroy();
 	DestroyComponent();
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActorSpawnScheme.h"
 #include "EffectableComponent.h"
 #include "GetExpirationDistanceOutlet.h"
 #include "GetExpirationTimeOutlet.h"
@@ -51,6 +52,12 @@ public:
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Expiration")
 	float Seconds = -1;
+	
+	/**
+	 * Possible Actors to spawn when expiring.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Expiration")
+	TArray<TSubclassOf<UActorSpawnScheme>> SpawnOnExpire;
 
 	/**
 	 * Re-registers the owning Actor, sets the current distance to zero, and sets the current time to zero.

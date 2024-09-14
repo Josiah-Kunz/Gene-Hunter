@@ -14,5 +14,6 @@ void UProjectileDamage::InitializeProjectile(AActor* MoveCaster)
 
 void UProjectileDamage::OnProjectileCollision(const AActor* OtherActor,	UCombatStatsComponent* EnemyStats)
 {
+	UActorSpawnScheme::SpawnActors(GetOwner(), SpawnOnHit);
 }
 

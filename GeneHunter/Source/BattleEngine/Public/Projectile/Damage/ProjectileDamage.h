@@ -20,6 +20,12 @@ class BATTLEENGINE_API UProjectileDamage : public UProjectileDependent
 
 public:
 	
+	/**
+	 * Possible Actors to spawn when the Move hits.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Projectile")
+	TArray<TSubclassOf<UActorSpawnScheme>> SpawnOnHit;
+	
 	// Sets default values for this component's properties
 	UProjectileDamage();
 

@@ -1,8 +1,29 @@
 #include "MoveInstance.h"
 
+#include "ProjectileMove.h"
+
 void FMoveInstance::Execute(AActor* Owner)
 {
-	MoveData->SpawnObjects(Owner);
+
+	// Spawn some Actors
+	TArray<AActor*> SpawnedObjects = UActorSpawnScheme::SpawnActors(Owner, MoveData->SpawnOnCast);
+
+	// See if there's any projectiles to initialize
+	for(AActor* Actor : SpawnedObjects)
+	{
+		
+		TArray<UProjectileMove*> ProjectileMoveComponents;
+		Actor->GetComponents(ProjectileMoveComponents);
+		for (UProjectileMove* ProjectileMove : ProjectileMoveComponents)
+		{
+			if (ProjectileMove)
+			{
+				ProjectileMove->InitializeProjectile(Owner);
+			}
+		}
+	}
+
+	// Reset cooldown
 	ResetCD();
 }
 

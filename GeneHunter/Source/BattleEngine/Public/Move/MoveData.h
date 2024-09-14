@@ -25,16 +25,6 @@ public:
 
 	// Okay, not a variable, a constant =)
 	inline static const FString DUMMY_IDENTIFIER = "Dummy";
-	
-	/**
-	 * Possible Actors and how they spawn. For example, maybe this MoveData spawns 2--4 bees to attack your enemy.
-	 * You can create your own class that inherits from UActorSpawnScheme* to customize spawning. For example:
-	 *	- Position (spawn 1 bee right on top of the enemy and 2 bees close to me)
-	 *	- Conditions (if <50% health, spawn more bees)
-	 *	- And so forth
-	 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
-	TArray<TSubclassOf<UActorSpawnScheme>> ActorsToSpawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData", meta=(EditCondition="bCanDoDamage"))
 	float BasePower;
@@ -70,10 +60,24 @@ public:
 	TArray<UType*> Types;
 
 	/**
+	 * Possible Actors and how they spawn when the Move is cast.
+	 * For example, maybe this MoveData spawns 2--4 bees to attack your enemy.
+	 * You can create your own class that inherits from UActorSpawnScheme* to customize spawning. For example:
+	 *	- Position (spawn 1 bee right on top of the enemy and 2 bees close to me)
+	 *	- Conditions (if <50% health, spawn more bees)
+	 *	- And so forth
+	 * If you want to spawn something when the Move hits or expires, do it in the Projectile (e.g., ProjectileDamage.h).
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
+	TArray<TSubclassOf<UActorSpawnScheme>> SpawnOnCast;
+	
+	/**
 	 * If null, the Move can be used all the time (but still respects cooldowns).
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
 	UMoveUsabilityScheme* UsabilityScheme;
+
+	
 
 private:
 	
@@ -87,16 +91,6 @@ private:
 public:
 
 	UMoveData();
-	
-	/**
-	 * This could be optimized. It's spawning not only instances of UActorSpawnScheme, but it's also spawning actors
-	 * themselves. My issue with object pooling is that this method may very well be used to randomly spawn 1, 2, or 3
-	 * objects. Should we just create 1, 2, or 3 objects and de/activate them when we need them? Probably. But let's
-	 * make sure we have the need.
-	 * @return The Actors that spawned.
-	 */
-	UFUNCTION(BlueprintCallable, Category="MoveData")
-	TArray<AActor*> SpawnObjects(AActor* Owner);
 
 	/**
 	 * Gets the MoveData Assets (not the UMoveData themselves). Includes both real and "dummy" MoveData.

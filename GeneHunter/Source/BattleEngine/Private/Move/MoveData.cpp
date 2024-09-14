@@ -8,47 +8,6 @@ UMoveData::UMoveData()
 	SetCanDoDamage();
 }
 
-TArray<AActor*> UMoveData::SpawnObjects(AActor* Owner)
-{
-	// Setup
-	TArray<AActor*> SpawnedObjects = {};
-
-	// Spawn based on the data rules
-	for(TSubclassOf<UActorSpawnScheme> SpawnActorClass : ActorsToSpawn)
-	{
-		// Shouldn't be null, but you never know!
-		if (SpawnActorClass)
-		{
-
-			// Get an actual instance of the class
-			UActorSpawnScheme* SpawnActorInstance = NewObject<UActorSpawnScheme>(this, SpawnActorClass);
-			TArray<AActor*> FreshActors = SpawnActorInstance->Spawn(Owner);
-			for(AActor* Actor : FreshActors)
-			{
-
-				// Add to the whole collection
-				SpawnedObjects.Add(Actor);
-
-				// See if there's any projectiles to initialize
-				TArray<UProjectileMove*> ProjectileMoveComponents;
-				Actor->GetComponents(ProjectileMoveComponents);
-
-				for (UProjectileMove* ProjectileMove : ProjectileMoveComponents)
-				{
-					if (ProjectileMove)
-					{
-						ProjectileMove->InitializeProjectile(Owner);
-					}
-				}
-				
-			}
-		}
-	}
-
-	// Ret
-	return SpawnedObjects;
-}
-
 void UMoveData::GetAllMoveDataAssets(TArray<FAssetData>& MoveDataAssets, const bool bSortABC,
                                      const bool bIncludeDummy, const bool bIncludeReal)
 {

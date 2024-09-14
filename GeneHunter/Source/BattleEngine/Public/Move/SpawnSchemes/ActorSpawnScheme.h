@@ -29,6 +29,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category="SpawnActor")
 	virtual TArray<AActor*> Spawn(AActor* NewOwner);
 
+	/**
+	 * This could be optimized. It's spawning not only instances of UActorSpawnScheme and then deleting them, but it's 
+	 * also spawning actors themselves. My issue with object pooling is that this method may very well be used to
+	 * randomly spawn 1, 2, or 3 objects. Should we just create 1, 2, or 3 objects and de/activate them when we need
+	 * them? Probably. But let's make sure we have the need.
+	 * @return The Actors that spawned.
+	 */
+	static TArray<AActor*> SpawnActors(AActor* Owner, const TArray<TSubclassOf<UActorSpawnScheme>>& ActorsToSpawn);
+
 protected:
 
 	UPROPERTY()
