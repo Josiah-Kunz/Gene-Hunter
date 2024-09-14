@@ -46,7 +46,6 @@ protected:
 	UFUNCTION(Blueprintable)
 	void HandleTick();
 
-
 private:
 
 	UPROPERTY()
