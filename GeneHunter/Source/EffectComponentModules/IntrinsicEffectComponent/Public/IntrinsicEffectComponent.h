@@ -7,7 +7,7 @@
 /**
  * A UEffectComponent that is neither visible to UI nor purgeable. Think of Pokemon Abilities or Natures.
  */
-UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
+UCLASS(Abstract, ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class INTRINSICEFFECTCOMPONENT_API UIntrinsicEffectComponent : public UEffectComponent
 {
 	GENERATED_BODY()

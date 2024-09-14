@@ -7,7 +7,7 @@
 /**
  * A UEffectComponent that is visible and purgeable, but not timed.
  */
-UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
+UCLASS(Abstract, ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class AURACOMPONENT_API UAuraComponent : public UEffectComponent
 {
 	GENERATED_BODY()

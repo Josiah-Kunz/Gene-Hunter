@@ -10,7 +10,7 @@
  * Suitable for both static effects (such as +50% PhA for 5 seconds) and dynamic effects (such as healing 1% per second
  * for 5 seconds).
  */
-UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
+UCLASS(Abstract, ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class TIMEDEFFECTCOMPONENT_API UTimedEffectComponent : public UEffectComponent
 {
 	GENERATED_BODY()

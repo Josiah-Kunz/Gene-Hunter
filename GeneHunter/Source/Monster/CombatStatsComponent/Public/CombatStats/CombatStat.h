@@ -119,7 +119,8 @@ public:
 	void RandomizeBasePairs(const int32 Min = 1, const int32 Max = 100);
 
 	/**
-	 * Gets the modification based on the Mode.
+	 * Gets the modification based on the Mode. Note that this does not actually modify the value, but tells you what
+	 * the new value would be (i.e., returns Original + Modification).
 	 *
 	 * @param ReferenceType only useful when using percentage or fractional values.
 	 * @param ReferenceValue should only be used when ReferenceType is SpecifiedValue.

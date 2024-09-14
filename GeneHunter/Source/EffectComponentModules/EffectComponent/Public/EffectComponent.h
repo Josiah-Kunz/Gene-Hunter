@@ -16,7 +16,7 @@
  * data (e.g., Priority) and code (how effects are actually implemented). Look at the documentation for implementation
  * steps.
  */
-UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
+UCLASS(Abstract, ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class EFFECTCOMPONENT_API UEffectComponent : public UEffectableComponent
 {
 	GENERATED_BODY()

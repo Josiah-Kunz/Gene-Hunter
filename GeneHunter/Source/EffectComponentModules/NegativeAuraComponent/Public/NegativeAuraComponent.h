@@ -7,7 +7,7 @@
 /**
  * A "bad" UAura.
  */
-UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
+UCLASS(Abstract, ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class NEGATIVEAURACOMPONENT_API UNegativeAuraComponent : public UAuraComponent
 {
 	GENERATED_BODY()

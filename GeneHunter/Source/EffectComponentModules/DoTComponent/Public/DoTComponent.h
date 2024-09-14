@@ -9,7 +9,7 @@
 /**
  * A subclass of UDebuff that [D]amages [o]ver [T]ime.
  */
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(Abstract, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class DOTCOMPONENT_API UDoTComponent : public UBuffComponent
 {
 	GENERATED_BODY()

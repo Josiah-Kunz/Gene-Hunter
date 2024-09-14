@@ -7,7 +7,7 @@
 /**
  * A UTimedEffectComponent that is "bad".
  */
-UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
+UCLASS(Abstract, ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class DEBUFFCOMPONENT_API UDebuffComponent : public UTimedEffectComponent
 {
 	GENERATED_BODY()

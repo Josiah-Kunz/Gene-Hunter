@@ -7,7 +7,7 @@
 /**
  * A UTimedEffectComponent that is "good".
  */
-UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
+UCLASS(Abstract, ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class BUFFCOMPONENT_API UBuffComponent : public UTimedEffectComponent
 {
 	GENERATED_BODY()

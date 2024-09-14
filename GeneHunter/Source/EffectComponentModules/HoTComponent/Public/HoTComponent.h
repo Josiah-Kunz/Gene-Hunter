@@ -9,7 +9,7 @@
 /**
  * A subclass of UBuff that [H]eals [o]ver [T]ime.
  */
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(Abstract, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class HOTCOMPONENT_API UHoTComponent : public UBuffComponent
 {
 	GENERATED_BODY()

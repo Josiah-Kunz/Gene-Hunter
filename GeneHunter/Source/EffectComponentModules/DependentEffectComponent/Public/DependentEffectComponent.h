@@ -21,7 +21,7 @@
  *		- Dependent->SetOwner(this);
  *		- # Do some customization here, such as setting Dependent variables
  */
-UCLASS(ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
+UCLASS(Abstract, ClassGroup=(Monster), meta=(BlueprintSpawnableComponent))
 class DEPENDENTEFFECTCOMPONENT_API UDependentEffectComponent : public UEffectComponent
 {
 	GENERATED_BODY()
