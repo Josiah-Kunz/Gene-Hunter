@@ -16,7 +16,7 @@ FVector UPlayerTargetingComponent::GetAttackVector()
 {
 	FVector MouseLocation, MouseDirection;
 	GetPlayerToMouseVector(MouseLocation, MouseDirection);
-	return MouseDirection;
+	return FVector{MouseDirection.X, MouseDirection.Y, 0};
 }
 
 UCombatStatsComponent* UPlayerTargetingComponent::GetTarget()
@@ -38,25 +38,33 @@ UCombatStatsComponent* UPlayerTargetingComponent::GetTarget()
 	// Get how far we want to raycast
 	float TraceDistance = 10000;
 	APawn* PlayerPawn = PlayerController->GetPawn();
+	FVector CameraLocation;
 	if (PlayerPawn)
 	{
 		UCameraComponent* CameraComponent = PlayerPawn->FindComponentByClass<UCameraComponent>();
 		if (CameraComponent)
 		{
-			FVector CameraLocation = CameraComponent->GetComponentLocation();
+			CameraLocation = CameraComponent->GetComponentLocation();
             TraceDistance = CameraLocation.Z;
 		}
 	}
 	
 	// Set up raycast vars
-	FVector End = MouseLocation + MouseDirection.GetSafeNormal() * TraceDistance; 
+	//FVector End = MouseLocation + MouseDirection.GetSafeNormal() * TraceDistance;
+	const FVector Start = FVector{MouseLocation.X, MouseLocation.Y, -TraceDistance};
+	const FVector End = FVector{MouseLocation.X, MouseLocation.Y, TraceDistance};
 	FCollisionQueryParams TraceParams(FName(TEXT("")), false, GetOwner());
 	TArray<FHitResult> OutHits;
 
 	// Dewet
 	bool bHit = GetWorld()->LineTraceMultiByChannel(
-		OutHits, MouseLocation, End, ECC_Visibility, TraceParams
+		OutHits, Start, End, ECC_Visibility, TraceParams
 	);
+	UE_LOG(LogTemp, Warning, TEXT("[%s]--[%s]: [%i] hits"),
+			*Start.ToString(),
+			*End.ToString(),
+			OutHits.Num()
+		)
 	if (bHit)
 	{
 		for (const FHitResult& Hit : OutHits)
@@ -76,9 +84,9 @@ UCombatStatsComponent* UPlayerTargetingComponent::GetTarget()
 	}
 
 	// Optional: Draw the debug line
-	if (bHit)
+	if (bHit && TargetStats)
 	{
-		DrawDebugLine(GetWorld(), MouseLocation, End, FColor::Green, false, 3.0f, 0, 1.0f);
+		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 3.0f, 0, 1.0f);
 		DrawDebugPoint(GetWorld(), TargetStats->GetOwner()->GetActorLocation(), 10.0f, FColor::Red, false, 3.0f);
 	}
 
