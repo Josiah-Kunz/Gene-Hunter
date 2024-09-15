@@ -29,7 +29,7 @@ public:
 	 */
 	virtual float DPS();
 
-	virtual void OnComponentCreated() override;
+	virtual void BeginPlay() override;
 
 	virtual void DoEffect() override;
 };

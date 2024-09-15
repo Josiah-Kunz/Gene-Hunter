@@ -21,7 +21,9 @@ void UCombatStatsComponent::EnsureLevelComponent(AActor* Owner)
 {
 	if (Owner == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("CombatStats created, but no owner found! How did you do this?"))
+		UE_LOG(LogTemp, Error, TEXT("%s created, but no owner found! How did you do this?"),
+			*UCombatStatsComponent::StaticClass()->GetName()
+			)
 	} else {
 		
 		// Cache
@@ -47,8 +49,12 @@ void UCombatStatsComponent::EnsureLevelComponent(AActor* Owner)
 		// Still null? Print error
 		if (LevelComponent == nullptr)
 		{
-			UE_LOG(LogTemp, Error, TEXT("LevelComponent is required for CombatStatsComponent!"
-							  " Please add a LevelComponent first."))
+			UE_LOG(LogTemp, Error, TEXT("%s is required for %s!"
+							  " Please add a %s first."),
+							  *ULevelComponent::StaticClass()->GetName(),
+							  *UCombatStatsComponent::StaticClass()->GetName(),
+							  *ULevelComponent::StaticClass()->GetName()
+							  )
 			this->DestroyComponent();
 		}
 	}
@@ -93,8 +99,10 @@ FCombatStat& UCombatStatsComponent::GetStatMutable(const EStatEnum Stat)
 	case EStatEnum::CriticalHit:
 		return CriticalHit;
 	default:
-		UE_LOG(LogTemp, Error, TEXT("%s::GetStat(EStatEnum::%s) not coded! Please update the source files."),
+		UE_LOG(LogTemp, Error, TEXT("%s::%s(%s::%s) not coded! Please update the source files."),
 			*UCombatStatsComponent::StaticClass()->GetName(),
+			*GET_FUNCTION_NAME_CHECKED(UCombatStatsComponent, GetStat).ToString(),
+			*StaticEnum<EStatEnum>()->GetName(),
 			*(UEnum::GetValueAsString(Stat))
 		)
 		return Health;
@@ -231,7 +239,10 @@ void UCombatStatsComponent::RecalculateStats(const bool bResetCurrent, const boo
 	// Guard
 	if (LevelComponent == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("No LevelComponent found on CombatStatsComponent!"))
+		UE_LOG(LogTemp, Warning, TEXT("No %s found on %s!"),
+			*ULevelComponent::StaticClass()->GetName(),
+			*UCombatStatsComponent::StaticClass()->GetName()
+			)
 		return;
 	}
 
@@ -262,7 +273,8 @@ void UCombatStatsComponent::ApplyMoveData(UMoveData* MoveData, UCombatStatsCompo
 {
 	if (MoveData == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Trying to apply MoveData to %s, but it's null! Surely this is an error."),
+		UE_LOG(LogTemp, Warning, TEXT("Trying to apply %s to %s, but it's null! Surely this is an error."),
+				*UMoveData::StaticClass()->GetName(),
 				*this->GetName()
 			)
 		return;
@@ -449,7 +461,6 @@ void UCombatStatsComponent::ApplyMoveDataDamage(const UMoveData* MoveData, UComb
 
 	// Juss doot
 	const float HPDiff = -CalculateDamageInternal(MoveData, Attacker, true);
-	UE_LOG(LogTemp, Warning, TEXT("Applying damage"))
 	ModifyStat(EStatEnum::Health, HPDiff,
 		EStatValueType::Current, EModificationMode::AddAbsolute);
 }
@@ -566,7 +577,11 @@ bool UCombatStatsComponent::IsEqual(UCombatStatsComponent* Other, const EStatVal
 				return false;
 			break;
 		default:
-			UE_LOG(LogTemp, Error, TEXT("EStatValueType not coded for in UCombatStatsComponent::IsEqual! Fix ASAP!"));
+			UE_LOG(LogTemp, Error, TEXT("%s not coded for in %s::%s! Fix ASAP!"),
+					*StaticEnum<EStatValueType>()->GetName(),
+					*UCombatStatsComponent::StaticClass()->GetName(),
+					*GET_FUNCTION_NAME_CHECKED(UCombatStatsComponent, IsEqual).ToString()
+				);
 			return false;
 		}
 		
@@ -645,7 +660,11 @@ void UCombatStatsComponent::AvertReduction(const EStatEnum Stat, float& Value, c
 		return;
 	}
 
-	UE_LOG(LogTemp, Error, TEXT("AvertReduction cannot handle specified Mode [%s]!"), *UEnum::GetValueAsString(Mode));
+	UE_LOG(LogTemp, Error, TEXT("%s cannot handle specified %s [%s]!"),
+			*GET_FUNCTION_NAME_CHECKED(UCombatStatsComponent, AvertReduction).ToString(),
+			*StaticEnum<EModificationMode>()->GetName(),
+			*UEnum::GetValueAsString(Mode)
+		);
 
 }
 

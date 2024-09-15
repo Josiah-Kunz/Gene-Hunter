@@ -16,9 +16,9 @@ FSupportingText UFullBloom::GetSupportingText()
 	};
 }
 
-void UFullBloom::OnComponentCreated()
+void UFullBloom::BeginPlay()
 {
-	Super::OnComponentCreated();
+	Super::BeginPlay();
 	
 }
 

@@ -42,7 +42,7 @@ protected:
 	 *	- Not added because it has been stacked instead
 	 *	- Not added for another, mysterious reason
 	 *
-	 * This should be implemented in inherited classes during OnComponentCreated. See CXPLuckyEgg_UNITTEST.h for such
+	 * This should be implemented in inherited classes during BeginPlay. See CXPLuckyEgg_UNITTEST.h for such
 	 * an implementation.
 	 */
 	bool Added = false;
@@ -99,7 +99,7 @@ public:
 	virtual int32 MaxStacks();
 
 	/**
-	 * Called whenever stacks are added or the same (but not subtraced), including during OnComponentCreated. For
+	 * Called whenever stacks are added or the same (but not subtraced), including during BeginPlay. For
 	 * example, if we're at MaxStacks and another stack is added, the number of stacks doesn't change (we're already at
 	 * max), but this is still called.
 	 *
@@ -234,7 +234,7 @@ public:
 	virtual bool ShouldApplyEffect();
 
 	/**
-	 * Called from the base class at Unsilence and OnRefreshStacks (which is also called during OnComponentCreated).
+	 * Called from the base class at Unsilence and OnRefreshStacks (which is also called during BeginPlay).
 	 */
 	UFUNCTION(BlueprintCallable, Category="EffectComponent")
 	virtual void ApplyEffect();
@@ -249,7 +249,7 @@ public:
  * Properly binds the OutletDelegate (such as FBeforeSetCXPDelegate) to the function (e.g., ULuckyEgg::ModifyCXP).
  * However, first it checks that stacks > 0.
  *
- * This is to be used inside OnComponentCreated right after the Super::OnComponentCreated call. The Super call needs to
+ * This is to be used inside BeginPlay right after the Super::BeginPlay call. The Super call needs to
  * be first so that stacks > 0.
  */
 #define BIND_DELEGATE(OutletDelegate, FuncName) \

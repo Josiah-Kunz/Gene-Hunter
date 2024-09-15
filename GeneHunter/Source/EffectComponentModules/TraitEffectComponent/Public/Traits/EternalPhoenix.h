@@ -31,7 +31,7 @@ public:
 	
 	virtual FSupportingText GetSupportingText() override;
 
-	virtual void OnComponentCreated() override;
+	virtual void BeginPlay() override;
 
 	virtual void ApplyEffect() override;
 

@@ -53,7 +53,7 @@ public:
 	/**
 	 * Sets RemainingTime to StartingDuration.
 	 */
-	virtual void OnComponentCreated() override;
+	virtual void BeginPlay() override;
 
 	/**
 	 * Ticks RemainingTime down.

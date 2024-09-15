@@ -36,7 +36,7 @@ public:
 
 #pragma region Overrides
 
-	virtual void OnComponentCreated() override;
+	virtual void BeginPlay() override;
 
 	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
 

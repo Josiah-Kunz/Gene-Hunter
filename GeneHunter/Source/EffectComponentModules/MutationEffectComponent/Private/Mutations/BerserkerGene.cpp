@@ -7,10 +7,10 @@ UBerserkerGene::UBerserkerGene()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UBerserkerGene::OnComponentCreated()
+void UBerserkerGene::BeginPlay()
 {
 
-	Super::OnComponentCreated();
+	Super::BeginPlay();
 	ADD_COMPONENT(UPermStatMod, PermStatMod, GetOwner())
 	PermStatMod->StatMods = {
 		{EStatEnum::PhysicalAttack, 15, EModificationMode::AddPercentage, EStatValueType::Permanent},

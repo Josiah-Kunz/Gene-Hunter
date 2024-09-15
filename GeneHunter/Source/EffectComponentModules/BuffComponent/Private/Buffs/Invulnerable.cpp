@@ -2,14 +2,14 @@
 
 #include "ComponentUtilities.h"
 
-void UInvulnerable::OnComponentCreated()
+void UInvulnerable::BeginPlay()
 {
 
 	// Assign stats
 	SEARCH_FOR_COMPONENT_OR_DESTROY(UCombatStatsComponent, Stats, GetOwner(), true);
 
 	// Super it
-	Super::OnComponentCreated();
+	Super::BeginPlay();
 
 	// Bind
 	BIND_DELEGATE(Delegate, UInvulnerable::DontTakeDamage)

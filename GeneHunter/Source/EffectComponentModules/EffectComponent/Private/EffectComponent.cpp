@@ -160,7 +160,6 @@ void UEffectComponent::BeginPlay()
 	// Didn't find any w/this name; must be new
 	SetStacks(1);
 	Added = true;
-	UE_LOG(LogTemp, Warning, TEXT("OnComponentCreated"))
 	
 	// Supah
 	Super::BeginPlay();

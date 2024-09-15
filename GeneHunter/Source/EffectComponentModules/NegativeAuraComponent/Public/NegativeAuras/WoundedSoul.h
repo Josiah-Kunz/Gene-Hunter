@@ -56,7 +56,7 @@ public:
 
 public:
 
-	virtual void OnComponentCreated() override;
+	virtual void BeginPlay() override;
 
 	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
 

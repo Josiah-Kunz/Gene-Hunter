@@ -16,7 +16,7 @@ class EFFECTCOMPONENTUNITTESTS_API UDoublePoints_Low_UNITTEST : public UEffectCo
 
 public:
 
-	virtual void OnComponentCreated() override
+	virtual void BeginPlay() override
 	{
 		// Get AffinitiesComponent
 		SEARCH_FOR_COMPONENT_OR_DESTROY(UAffinitiesComponent, AffinitiesComponent, GetOwner(), true)
@@ -28,7 +28,7 @@ public:
 		}
 
 		// Soopah doopah
-		Super::OnComponentCreated();
+		Super::BeginPlay();
 
 		// Bind the delegate
 		BIND_DELEGATE(Delegate, UDoublePoints_Low_UNITTEST::DoublePoints);

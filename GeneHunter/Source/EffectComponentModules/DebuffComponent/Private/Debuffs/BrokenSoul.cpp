@@ -2,7 +2,7 @@
 
 #include "ComponentUtilities.h"
 
-void UBrokenSoul::OnComponentCreated()
+void UBrokenSoul::BeginPlay()
 {
 
 	// Assign stats
@@ -17,7 +17,7 @@ void UBrokenSoul::OnComponentCreated()
 	}
 	
 	// Super it
-	Super::OnComponentCreated();
+	Super::BeginPlay();
 
 	// Bind
 	BIND_DELEGATE(Delegate, UBrokenSoul::ReduceHealing)

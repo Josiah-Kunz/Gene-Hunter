@@ -11,7 +11,7 @@ FSupportingText UEternalPhoenix::GetSupportingText()
 	};
 }
 
-void UEternalPhoenix::OnComponentCreated()
+void UEternalPhoenix::BeginPlay()
 {
 	
 	// Get StatsComponent
@@ -30,7 +30,7 @@ void UEternalPhoenix::OnComponentCreated()
 	}
 	
 	// Trigger when applied for the first time
-	Super::OnComponentCreated();
+	Super::BeginPlay();
 	
 }
 
@@ -47,16 +47,12 @@ void UEternalPhoenix::ApplyEffect()
 	// Bind the delegate
 	BIND_DELEGATE(ModifyStatDelegate, UEternalPhoenix::HealToFull);
 	StatsComponent->ModifyStatOutlet.AddBefore(ModifyStatDelegate);
-	UE_LOG(LogTemp, Warning, TEXT("Applying the effect to StatsComponent [%s]"),
-		*StatsComponent->GetPathName()
-		)
 }
 
 void UEternalPhoenix::RemoveEffect()
 {
 	Super::RemoveEffect();
 	StatsComponent->ModifyStatOutlet.RemoveBefore(ModifyStatDelegate);
-	UE_LOG(LogTemp, Warning, TEXT("Removing the effect"))
 }
 
 float UEternalPhoenix::GetPriority()
@@ -68,13 +64,13 @@ float UEternalPhoenix::GetPriority()
 void UEternalPhoenix::HealToFull(const EStatEnum TargetStat, const EStatValueType ValueType,
 	const EModificationMode Mode, const float OriginalValue, float& AttemptedValue)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Healing to full 1"))
+
 	// Are we modifying current health?
 	if (!(TargetStat == EStatEnum::Health && ValueType == EStatValueType::Current))
 	{
 		return;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Healing to full 2"))
+
 	// Are we about to die?
 	const float CurrentHealth = StatsComponent->GetStatValue(TargetStat, ValueType);
 	FCombatStat HealthStat = StatsComponent->GetStat(TargetStat);
@@ -83,7 +79,7 @@ void UEternalPhoenix::HealToFull(const EStatEnum TargetStat, const EStatValueTyp
 	{
 		return;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Healing to full 3"))
+	
 	// Set the attempted value to heal to full
 	const float FullHealth = StatsComponent->GetStatValue(TargetStat, EStatValueType::Permanent);
 	switch(Mode)
@@ -132,7 +128,4 @@ void UEternalPhoenix::HealToFull(const EStatEnum TargetStat, const EStatValueTyp
 		}
 		break;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Attempted value is [%s]"),
-		*FString::SanitizeFloat(AttemptedValue)
-		)
 }
