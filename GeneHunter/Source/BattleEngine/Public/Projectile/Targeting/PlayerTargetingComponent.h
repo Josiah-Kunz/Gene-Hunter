@@ -18,11 +18,26 @@ public:
 	
 	virtual FVector GetAttackVector() override;
 
+	virtual UCombatStatsComponent* GetTarget() override;
+
 private:
 
 	UPROPERTY()
 	APlayerController* PlayerController;
 
-	FVector2D GetPlayerToMouseVector() const;
+	/**
+	 * 
+	 * @param WorldLocation The position of the mouse in world space.
+	 * @param WorldDirection The (unnormalized) vector from the player to the mouse.
+	 */
+	void GetPlayerToMouseVector(FVector& WorldLocation, FVector& WorldDirection) const;
+
+	/**
+	 * Determines whether or not the PlayerController exists. If not, it gives a warning message.
+	 * @return 
+	 */
+	bool DoesPCExist() const;
+
+	const FVector2D DefaultVector = FVector2D::ZeroVector;
 	
 };

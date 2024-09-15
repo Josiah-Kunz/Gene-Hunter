@@ -10,3 +10,8 @@ FVector UCombatTargetingComponent::GetAttackVector()
 	return FVector{0, 0, 0};
 }
 
+UCombatStatsComponent* UCombatTargetingComponent::GetTarget()
+{
+	return nullptr;
+}
+
