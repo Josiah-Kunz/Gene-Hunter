@@ -56,7 +56,7 @@ public:
 
 public:
 
-	virtual void BeginPlay() override;
+	virtual void InitializeEffect() override;
 
 	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
 

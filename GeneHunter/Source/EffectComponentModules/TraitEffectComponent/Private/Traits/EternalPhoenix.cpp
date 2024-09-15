@@ -11,7 +11,7 @@ FSupportingText UEternalPhoenix::GetSupportingText()
 	};
 }
 
-void UEternalPhoenix::BeginPlay()
+void UEternalPhoenix::InitializeEffect()
 {
 	
 	// Get StatsComponent
@@ -30,7 +30,7 @@ void UEternalPhoenix::BeginPlay()
 	}
 	
 	// Trigger when applied for the first time
-	Super::BeginPlay();
+	Super::InitializeEffect();
 	
 }
 

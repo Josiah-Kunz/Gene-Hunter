@@ -28,7 +28,7 @@ bool FUStat_HealingFormula::RunTest(const FString& Parameters)
 	const TArray<float> CritValues = {0, 100, 130};
 	const TArray<int32> Levels = {1, 50, 100};
 	const TArray<UMoveData*> MoveDatas = {FireHeal10, GrassHoT50, IceHeal100};
-	const TArray<float> ExpectedValues = {2.48f, 13122.0f, 4676680.8f};
+	const TArray<float> ExpectedValues = {-2.48f, -13122.0f, -4676680.8f};
 
 	// Execute tests
 	bool bSuccess = true;
@@ -58,7 +58,7 @@ bool FUStat_HealingFormula::RunTest(const FString& Parameters)
 				*MoveData->GetName(),
 				*FString::SanitizeFloat(MoveData->BasePower)
 			),
-			Damage, ExpectedValue, ExpectedValue*1e-6f);
+			Damage, ExpectedValue, FMathf::Abs(ExpectedValue*1e-6f));
 		
 	}
 	

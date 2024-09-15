@@ -19,19 +19,28 @@ bool UEffectComponent_Components_Attachment::RunTest(const FString& Parameters)
 	
 	// Get dummy
 	DUMMY_BASE_STATS_BLOCK
-
+	
 	// Attach BerserkerGene, which also attaches PermStatMod
 	ADD_NEW_COMPONENT(UBerserkerGene, BerserkerGene, DummyActor)
+	//BerserkerGene->InitializeEffect();	// Need to do this manually in this environment
 	const UPermStatMod* PermStatMod = DummyActor->FindComponentByClass<UPermStatMod>();
 	
 	//UPermStatMod* PermStatMod = nullptr;
 	//REQUIRE_COMPONENT(UPermStatMod, PermStatMod, DummyActor)
 
+	// Test that PermStatMod exists at all
+	const bool bPermStatModExists = PermStatMod != nullptr;
+	TestTrue(FString::Printf(TEXT("PermStatMod doesn't exist =(")),
+	bPermStatModExists);
+
 	// Test that it auto recognized StatsComponent
-	TestTrue(FString::Printf(TEXT("PermStatMod was added automatically?")),
-	PermStatMod->StatsComponent != nullptr);
+	if (bPermStatModExists)
+	{
+		TestTrue(FString::Printf(TEXT("PermStatMod was added automatically?")),
+		PermStatMod->StatsComponent != nullptr);
+	}
 	
 	// Return
-	BASESTATS_GC
+	BASESTATS_GC 
 	return true;
 }

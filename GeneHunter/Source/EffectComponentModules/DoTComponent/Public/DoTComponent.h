@@ -29,7 +29,7 @@ public:
 	 */
 	virtual float DPS();
 
-	virtual void BeginPlay() override;
+	virtual void InitializeEffect() override;
 
 	virtual void DoEffect() override;
 };

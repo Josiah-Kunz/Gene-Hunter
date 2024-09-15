@@ -1,5 +1,7 @@
 #include "EffectComponent.h"
 
+#include "ComponentUtilities.h"
+
 bool UEffectComponent::IsComponentTickEnabled() const
 {
 	return Super::IsComponentTickEnabled();
@@ -132,7 +134,7 @@ EStackChangeResult UEffectComponent::Purge(const int32 Amount)
 	return Result;
 }
 
-void UEffectComponent::BeginPlay()
+void UEffectComponent::InitializeEffect()
 {
 	// We'll use this a bunch
 	AActor* ActorOwner = GetOwner();
@@ -160,12 +162,27 @@ void UEffectComponent::BeginPlay()
 	// Didn't find any w/this name; must be new
 	SetStacks(1);
 	Added = true;
-	
-	// Supah
-	Super::BeginPlay();
 
 	// Delegate
 	//OnAddEffectOutlet.ExecuteAfter(this);
+}
+
+void UEffectComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	if (!ComponentUtilities::bInUnitTestMode)
+	{
+		InitializeEffect();
+	}
+}
+
+void UEffectComponent::OnComponentCreated()
+{
+	Super::OnComponentCreated();
+	if (ComponentUtilities::bInUnitTestMode)
+	{
+		InitializeEffect();
+	}
 }
 
 void UEffectComponent::OnRegister()

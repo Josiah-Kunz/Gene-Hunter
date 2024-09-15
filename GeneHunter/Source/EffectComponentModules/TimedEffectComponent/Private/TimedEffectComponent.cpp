@@ -43,10 +43,10 @@ float UTimedEffectComponent::StartingDuration()
 	return 1;
 }
 
-void UTimedEffectComponent::BeginPlay()
+void UTimedEffectComponent::InitializeEffect()
 {
 	
-	Super::BeginPlay();
+	Super::InitializeEffect();
 
 	// Set mod time. This will also set the first tick.
 	RemainingTime = StartingDuration();

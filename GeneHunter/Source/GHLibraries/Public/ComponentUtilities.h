@@ -9,6 +9,8 @@ class ComponentUtilities
 
 public:
 
+	static inline bool bInUnitTestMode = true;
+
 	static float GetTolerance(const float Current, const float Expected, const float TolPercent = 1)
 	{
 		return TolPercent/100 * (Current + Expected)/2;
@@ -28,6 +30,7 @@ public:
 	 */
 	static void DummyTestWorldAndActor(UWorld*& DummyWorld, AActor*& DummyActor)
 	{
+		bInUnitTestMode = true;
 		DummyWorld = NUTNet::CreateUnitTestWorld(true); 
 		DummyActor = DummyWorld->SpawnActor(AActor::StaticClass());
 	};

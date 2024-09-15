@@ -17,7 +17,7 @@ float UHoTComponent::HPS()
 	return 1;
 }
 
-void UHoTComponent::BeginPlay()
+void UHoTComponent::InitializeEffect()
 {
 
 	// Get StatsComponent
@@ -34,7 +34,7 @@ void UHoTComponent::BeginPlay()
 	}
 
 	// Must still be alive
-	Super::BeginPlay();
+	Super::InitializeEffect();
 }
 
 void UHoTComponent::DoEffect()

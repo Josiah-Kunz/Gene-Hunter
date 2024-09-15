@@ -34,7 +34,7 @@ public:
 	 */
 	virtual float HPS();
 
-	virtual void BeginPlay() override;
+	virtual void InitializeEffect() override;
 
 	virtual void DoEffect() override;
 

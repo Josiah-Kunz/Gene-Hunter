@@ -27,7 +27,7 @@ public:
 	
 	virtual FSupportingText GetSupportingText() override;
 
-	virtual void BeginPlay() override;
+	virtual void InitializeEffect() override;
 
 	virtual void OnRegister() override;
 

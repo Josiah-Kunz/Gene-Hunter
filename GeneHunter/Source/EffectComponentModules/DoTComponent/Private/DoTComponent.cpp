@@ -12,7 +12,7 @@ float UDoTComponent::DPS()
 	return 1;
 }
 
-void UDoTComponent::BeginPlay()
+void UDoTComponent::InitializeEffect()
 {
 
 	// Get StatsComponent
@@ -28,7 +28,7 @@ void UDoTComponent::BeginPlay()
 	}
 
 	// Must still be alive
-	Super::BeginPlay();
+	Super::InitializeEffect();
 	NextModTime = StartingDuration();
 }
 

@@ -37,7 +37,7 @@ void UWoundedSoul::BeforeModifyStats(const EStatEnum TargetStat, const EStatValu
 	
 }
 
-void UWoundedSoul::BeginPlay()
+void UWoundedSoul::InitializeEffect()
 {
 
 	// Get StatsComponent
@@ -53,7 +53,7 @@ void UWoundedSoul::BeginPlay()
 	}
 
 	// Must still be alive
-	Super::BeginPlay();
+	Super::InitializeEffect();
 	
 	// Add to delegate array
 	BIND_DELEGATE(Delegate, UWoundedSoul::BeforeModifyStats);

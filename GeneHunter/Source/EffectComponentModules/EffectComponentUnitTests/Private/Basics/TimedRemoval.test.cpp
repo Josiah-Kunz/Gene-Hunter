@@ -6,8 +6,8 @@
 
 #include "ComponentUtilities.h"
 #include "MathUtil.h"
+#include "TimedComponent_UNITTEST.h"
 #include "Misc/AutomationTest.h"
-#include "TimedEffectComponent.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UEffectComponent_Components_TimedRemoval,
                                  "__GeneHunter.Effects.Basics.Timed Removal",
@@ -22,7 +22,7 @@ bool UEffectComponent_Components_TimedRemoval::RunTest(const FString& Parameters
 	ComponentUtilities::DummyTestWorldAndActor(DummyWorld, DummyActor); 
 
 	// Attach an effect that will remove itself after a time
-	ADD_NEW_COMPONENT(UTimedEffectComponent, TimedEffect, DummyActor);
+	ADD_NEW_COMPONENT(UTimedComponent_UNITTEST, TimedEffect, DummyActor);
 
 	// Set the kill timer
 	constexpr float Lifetime = 2.5f;

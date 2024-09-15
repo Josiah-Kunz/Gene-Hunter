@@ -22,7 +22,7 @@ FSupportingText UNaturalSelector::GetSupportingText()
 	};
 }
 
-void UNaturalSelector::BeginPlay()
+void UNaturalSelector::InitializeEffect()
 {
 	
 	// Get StatsComponent
@@ -38,7 +38,7 @@ void UNaturalSelector::BeginPlay()
 	}
 	
 	// Trigger when applied for the first time
-	Super::BeginPlay();
+	Super::InitializeEffect();
 	
 }
 

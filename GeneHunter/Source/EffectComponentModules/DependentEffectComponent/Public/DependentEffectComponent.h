@@ -16,7 +16,7 @@
  *
  * Critical functionality:
  *	- When inheriting, make sure ApplyEffect and RemoveEffect do something.
- *	- On the Owner's BeginPlay, use:
+ *	- On the Owner's InitializeEffect, use:
  *		- ADD_COMPONENT(UDependentEffectComponent, Dependent, GetOwner())
  *		- Dependent->SetOwner(this);
  *		- # Do some customization here, such as setting Dependent variables

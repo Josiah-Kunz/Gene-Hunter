@@ -27,6 +27,7 @@ public class EffectComponent : ModuleRules{
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
+			"GHLibraries",	// for ComponentUtilities::bIsInUnitTestMode
 		});
 	}
 }

@@ -53,7 +53,7 @@ public:
 	/**
 	 * Sets RemainingTime to StartingDuration.
 	 */
-	virtual void BeginPlay() override;
+	virtual void InitializeEffect() override;
 
 	/**
 	 * Ticks RemainingTime down.

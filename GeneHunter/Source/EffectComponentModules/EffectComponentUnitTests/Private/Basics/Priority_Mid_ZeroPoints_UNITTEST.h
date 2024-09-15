@@ -16,7 +16,7 @@ class EFFECTCOMPONENTUNITTESTS_API UZeroPoints_Mid_UNITTEST : public UEffectComp
 
 public:
 
-	virtual void BeginPlay() override
+	virtual void InitializeEffect() override
 	{
 		// Get AffinitiesComponent
 		SEARCH_FOR_COMPONENT_OR_DESTROY(UAffinitiesComponent, AffinitiesComponent, GetOwner(), true)
@@ -28,7 +28,7 @@ public:
 		}
 
 		// Soopah doopah
-		Super::BeginPlay();
+		Super::InitializeEffect();
 
 		// Bind the delegate
 		BIND_DELEGATE(Delegate, UZeroPoints_Mid_UNITTEST::ZeroPoints);

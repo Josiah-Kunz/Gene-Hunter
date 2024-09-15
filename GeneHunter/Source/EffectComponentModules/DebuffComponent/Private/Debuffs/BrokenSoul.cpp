@@ -2,7 +2,7 @@
 
 #include "ComponentUtilities.h"
 
-void UBrokenSoul::BeginPlay()
+void UBrokenSoul::InitializeEffect()
 {
 
 	// Assign stats
@@ -17,7 +17,7 @@ void UBrokenSoul::BeginPlay()
 	}
 	
 	// Super it
-	Super::BeginPlay();
+	Super::InitializeEffect();
 
 	// Bind
 	BIND_DELEGATE(Delegate, UBrokenSoul::ReduceHealing)

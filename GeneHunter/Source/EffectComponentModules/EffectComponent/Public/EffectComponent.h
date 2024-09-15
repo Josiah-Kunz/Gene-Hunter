@@ -42,7 +42,7 @@ protected:
 	 *	- Not added because it has been stacked instead
 	 *	- Not added for another, mysterious reason
 	 *
-	 * This should be implemented in inherited classes during BeginPlay. See CXPLuckyEgg_UNITTEST.h for such
+	 * This should be implemented in inherited classes during InitializeEffect. See CXPLuckyEgg_UNITTEST.h for such
 	 * an implementation.
 	 */
 	bool Added = false;
@@ -67,7 +67,6 @@ public:
 #pragma region Public functions
 	
 public:
-	
 	virtual bool IsComponentTickEnabled() const override;
 	
 	/**
@@ -99,7 +98,7 @@ public:
 	virtual int32 MaxStacks();
 
 	/**
-	 * Called whenever stacks are added or the same (but not subtraced), including during BeginPlay. For
+	 * Called whenever stacks are added or the same (but not subtraced), including during InitializeEffect. For
 	 * example, if we're at MaxStacks and another stack is added, the number of stacks doesn't change (we're already at
 	 * max), but this is still called.
 	 *
@@ -198,10 +197,10 @@ public:
 	virtual EStackChangeResult Purge(const int32 Amount = 1);
 
 	/**
-	 * Sets stacks to 1. It is here that you should bind your delegate by using macros like SEARCH_FOR_COMPONENT.
+	 * Sets stacks to 1. It is here that you should bind your delegate by using macros like SEARCH_FOR_COMPONENT. This is called automatically by BeginPlay unless we're unit testing (checked via ComponentUtilities::bIsInUnitTestMode), in which case it's called automatically via OnComponentCreated.
 	 */
-	virtual void BeginPlay() override;
-
+	virtual void InitializeEffect();
+    virtual void BeginPlay() override; virtual void OnComponentCreated() override;
 	virtual void OnRegister() override;
 
 	/**
@@ -234,7 +233,7 @@ public:
 	virtual bool ShouldApplyEffect();
 
 	/**
-	 * Called from the base class at Unsilence and OnRefreshStacks (which is also called during BeginPlay).
+	 * Called from the base class at Unsilence and OnRefreshStacks (which is also called during InitializeEffect).
 	 */
 	UFUNCTION(BlueprintCallable, Category="EffectComponent")
 	virtual void ApplyEffect();
@@ -249,7 +248,7 @@ public:
  * Properly binds the OutletDelegate (such as FBeforeSetCXPDelegate) to the function (e.g., ULuckyEgg::ModifyCXP).
  * However, first it checks that stacks > 0.
  *
- * This is to be used inside BeginPlay right after the Super::BeginPlay call. The Super call needs to
+ * This is to be used inside InitializeEffect right after the Super::InitializeEffect call. The Super call needs to
  * be first so that stacks > 0.
  */
 #define BIND_DELEGATE(OutletDelegate, FuncName) \
