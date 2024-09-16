@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CombatTargetingComponent.h"
+#include "WorldHUD.h"
 #include "PlayerTargetingComponent.generated.h"
 
 
@@ -23,20 +24,13 @@ public:
 private:
 
 	UPROPERTY()
-	APlayerController* PlayerController;
+	AWorldHUD* HUD;
 
 	/**
-	 * 
-	 * @param WorldLocation The position of the mouse in world space.
-	 * @param WorldDirection The (unnormalized) vector from the player to the mouse.
-	 */
-	void GetPlayerToMouseVector(FVector& WorldLocation, FVector& WorldDirection) const;
-
-	/**
-	 * Determines whether or not the PlayerController exists. If not, it gives a warning message.
+	 * Determines whether or not the HUD exists. If not, it gives a warning message.
 	 * @return 
 	 */
-	bool DoesPCExist() const;
+	bool DoesHUDExist() const;
 
 	const FVector2D DefaultVector = FVector2D::ZeroVector;
 	

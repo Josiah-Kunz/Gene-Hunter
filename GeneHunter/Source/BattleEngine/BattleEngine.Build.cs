@@ -37,8 +37,9 @@ public class BattleEngine : ModuleRules{
 			"Engine",					// for ActorComponent.h (external)
 			"GameplayTasks",			// for UProjectileMovementComponent
 			"LevelComponent", 			// CombatStats depend on this
+			"TopdownCharacter",			// Need access to the HUD
 			"Types", 
-			"UI",						// MoveData uses FSupportingText
+			"UI", 						// MoveData uses FSupportingText
 		}); 
 		
 		PrivateDependencyModuleNames.AddRange(new string[]{
