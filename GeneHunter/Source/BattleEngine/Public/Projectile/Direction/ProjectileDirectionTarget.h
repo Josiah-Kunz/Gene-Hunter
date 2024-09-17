@@ -17,10 +17,17 @@ class BATTLEENGINE_API UProjectileDirectionTarget : public UProjectileDirection
 
 public:
 
-	virtual FVector GetDirection() override;
+	virtual void InitializeProjectile(AActor* MoveCaster) override;
 
-private:
+	virtual FVector GetDirection() override;
+	
+protected:
 
 	UPROPERTY()
 	UCombatTargetingComponent* TargetingComponent;
+
+private:
+
+	void AssignTargetingComponent();
+	
 };
