@@ -14,7 +14,13 @@ class BATTLEENGINE_API UMoveUsabilityScheme : public UObject
 	GENERATED_BODY()
 
 public:
+
+	UPROPERTY()
+	AActor* Owner;
+
+	UFUNCTION(BlueprintNativeEvent, Category="MoveData")
+	void Initialize(AActor* NewOwner);
 	
-	UFUNCTION(BlueprintCallable, Category="MoveData")
-	virtual bool IsUsable(AActor* MoveOwner);
+	UFUNCTION(BlueprintNativeEvent, Category="MoveData")
+	bool IsUsable(AActor* MoveOwner);
 };

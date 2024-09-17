@@ -6,7 +6,12 @@
 #include "MoveInstance.generated.h"
 
 /**
- * Implements the static asset MoveData into something usable (e.g., with a cooldown). Collected by UMoveset.
+ * Implements the static asset MoveData into something instanceable (e.g., with a cooldown). Instances of things like
+ *	- Cooldown
+ *	- UsabilityScheme
+ *	- ActorSpawnSchemes
+ *
+ * Collected by UMoveset.
  */
 USTRUCT(BlueprintType)
 struct BATTLEENGINE_API FMoveInstance
@@ -36,6 +41,14 @@ public:
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
 	float RemainingCD = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
+	UMoveUsabilityScheme* UsabilityScheme;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
+	TArray<UActorSpawnScheme*> SpawnSchemesOnCast;
+
+	void Initialize(AActor* Owner);
 
 	/**
 	 * Starts the MoveData by calling MoveData->SpawnObjects() and sets the RemainingCD appropriately.

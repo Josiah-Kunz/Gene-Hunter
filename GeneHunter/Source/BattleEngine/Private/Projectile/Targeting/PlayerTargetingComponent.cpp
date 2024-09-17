@@ -36,13 +36,12 @@ UCombatStatsComponent* UPlayerTargetingComponent::GetTarget()
 	// Set default
 	UCombatStatsComponent* TargetStats = Super::GetTarget();
 
-	// Loop over actors and get the first one with some stats
-	for (AActor* Mouseover : HUD->MouseoverActors)
+	// Get the first (non-null) Stats
+	for (UCombatStatsComponent* Mouseover : HUD->MouseoverCombatStats)
 	{
-		UCombatStatsComponent* CombatStats = Mouseover->FindComponentByClass<UCombatStatsComponent>();
-		if (CombatStats)
+		if (Mouseover)
 		{
-			TargetStats = CombatStats;
+			TargetStats = Mouseover;
 			break;
 		}
 	}

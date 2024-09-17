@@ -20,6 +20,11 @@ void UExpirationComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Reset();
+	for(TSubclassOf<UActorSpawnScheme> SpawnClass : SpawnOnExpire){
+		UActorSpawnScheme* NewSpawnScheme = NewObject<UActorSpawnScheme>(Actor, SpawnClass);
+		SpawnOnExpireInstances.Add(NewSpawnScheme);
+	}
+	
 }
 
 
@@ -74,7 +79,11 @@ float UExpirationComponent::GetExpirationTime()
 
 void UExpirationComponent::Expire()
 {
-	UActorSpawnScheme::SpawnActors(Actor, SpawnOnExpire);
+	for(UActorSpawnScheme* SpawnScheme : SpawnOnExpireInstances)
+	{
+		TArray<AActor*> SpawnedActors = {};
+		SpawnScheme->Spawn(Actor, SpawnedActors);
+	}
 	Actor->Destroy();
 	DestroyComponent();
 }

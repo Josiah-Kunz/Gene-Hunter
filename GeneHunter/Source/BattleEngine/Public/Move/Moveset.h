@@ -32,6 +32,8 @@ public:
 	 */
 	UMoveset();
 
+	virtual void BeginPlay() override;
+
 	/**
 	 * Keeps track of cooldowns. 
 	 * @param DeltaTime 

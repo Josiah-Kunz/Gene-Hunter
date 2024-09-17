@@ -81,6 +81,9 @@ private:
 
 	UPROPERTY()
 	float CurrentTime;
+
+	UPROPERTY()
+	TArray<UActorSpawnScheme*> SpawnOnExpireInstances;
 	
 	virtual void BeginPlay() override;
 

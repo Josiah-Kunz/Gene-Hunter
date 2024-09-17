@@ -7,13 +7,12 @@
  * If we ever add body parts, we need to search the Owner for a body part designator and act accordingly.
  */
 
-TArray<AActor*> USpawnOnSelf::Spawn(AActor* NewOwner)
+void USpawnOnSelf::Spawn(AActor* NewOwner, TArray<AActor*>& SpawnedActors)
 {
-	TArray<AActor*> SpawnedActors = Super::Spawn(NewOwner);
+	Super::Spawn(NewOwner, SpawnedActors);
 	const FVector OwnerLocation = Owner->GetActorLocation();
 	for(AActor* SpawnedActor : SpawnedActors)
 	{
 		SpawnedActor->SetActorLocation(OwnerLocation);
 	}
-	return SpawnedActors;
 }

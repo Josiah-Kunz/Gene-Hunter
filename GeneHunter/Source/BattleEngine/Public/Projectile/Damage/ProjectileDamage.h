@@ -33,4 +33,9 @@ public:
 
 	virtual void OnProjectileCollision(const AActor* OtherActor, UCombatStatsComponent* EnemyStats);
 
+private:
+	
+	UPROPERTY()
+	TArray<UActorSpawnScheme*> SpawnOnHitInstances;
+
 };

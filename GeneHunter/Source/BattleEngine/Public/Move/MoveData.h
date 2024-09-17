@@ -75,9 +75,7 @@ public:
 	 * If null, the Move can be used all the time (but still respects cooldowns).
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MoveData")
-	UMoveUsabilityScheme* UsabilityScheme;
-
-	
+	TSubclassOf<UMoveUsabilityScheme> UsabilityScheme;
 
 private:
 	

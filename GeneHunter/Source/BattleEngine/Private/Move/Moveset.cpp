@@ -7,6 +7,19 @@ UMoveset::UMoveset()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
+void UMoveset::BeginPlay()
+{
+	Super::BeginPlay();
+	AActor* Owner = GetOwner();
+	for(FMoveInstance& MoveInstance : Moves)
+	{
+		if (MoveInstance.MoveData != nullptr)
+		{
+			MoveInstance.Initialize(Owner);
+		}
+	}
+}
+
 void UMoveset::TickComponent(const float DeltaTime, const ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -34,12 +47,16 @@ bool UMoveset::SetMoveByIndex(const uint8 Index, FMoveInstance& NewMove)
 		return false;
 	}
 
-	// Set 'er done!
+	// Example: we want this in slot 3 but there are no moves in slots 1 or 2
 	while (Index > Moves.Num())
 	{
 		Moves.Add({});
 	} 
 	Moves[Index] = NewMove;
+
+	// Initialize
+	Moves[Index].Initialize(GetOwner());
+	
 	return true;
 	
 }
@@ -129,7 +146,7 @@ bool UMoveset::UseMoveInternal(const uint8 Index)
 		// Check usability. I know I could have just one condition, but with all the fetching, it's a little quicker
 		// to do it serially.
 		AActor* Owner = GetOwner();
-		UMoveUsabilityScheme* UsabilityScheme = Moves[Index].MoveData->UsabilityScheme;
+		UMoveUsabilityScheme* UsabilityScheme = Moves[Index].UsabilityScheme;
 		const bool bIsUsable = UsabilityScheme == nullptr || UsabilityScheme->IsUsable(Owner);
 
 		// Execute (maybe)

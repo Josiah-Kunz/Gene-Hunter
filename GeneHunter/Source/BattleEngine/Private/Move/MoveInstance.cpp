@@ -2,23 +2,49 @@
 
 #include "ProjectileMove.h"
 
+void FMoveInstance::Initialize(AActor* Owner)
+{
+
+	// Usability
+	if (MoveData->UsabilityScheme)
+	{
+		UsabilityScheme = NewObject<UMoveUsabilityScheme>(Owner, MoveData->UsabilityScheme);
+		UsabilityScheme->Initialize(Owner);
+	}
+
+	// Spawn schemes
+	for(TSubclassOf<UActorSpawnScheme> SpawnClass : MoveData->SpawnOnCast)
+	{
+		SpawnSchemesOnCast.Add(NewObject<UActorSpawnScheme>(Owner, SpawnClass));
+	}
+}
+
 void FMoveInstance::Execute(AActor* Owner)
 {
 
 	// Spawn some Actors
-	TArray<AActor*> SpawnedObjects = UActorSpawnScheme::SpawnActors(Owner, MoveData->SpawnOnCast);
-
-	// See if there's any projectiles to initialize
-	for(AActor* Actor : SpawnedObjects)
+	for(UActorSpawnScheme* SpawnScheme : SpawnSchemesOnCast)
 	{
-		
-		TArray<UProjectileMove*> ProjectileMoveComponents;
-		Actor->GetComponents(ProjectileMoveComponents);
-		for (UProjectileMove* ProjectileMove : ProjectileMoveComponents)
+		// Shouldn't be null, but you never know!
+		if (SpawnScheme)
 		{
-			if (ProjectileMove)
+
+			// Do the spawning
+			TArray<AActor*> FreshActors = {};
+			SpawnScheme->Spawn(Owner, FreshActors);
+
+			// Initialize projectiles
+			for(AActor* Actor : FreshActors)
 			{
-				ProjectileMove->InitializeProjectile(Owner);
+				TArray<UProjectileMove*> ProjectileMoveComponents;
+				Actor->GetComponents(ProjectileMoveComponents);
+				for (UProjectileMove* ProjectileMove : ProjectileMoveComponents)
+				{
+					if (ProjectileMove)
+					{
+						ProjectileMove->InitializeProjectile(Owner);
+					}
+				}
 			}
 		}
 	}

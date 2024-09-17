@@ -26,7 +26,7 @@ public:
 	UFUNCTION(Blueprintable)
 	AActor* SpawnSingle();
 
-	virtual TArray<AActor*> Spawn(AActor* NewOwner) override;
+	virtual void Spawn(AActor* NewOwner, TArray<AActor*>& SpawnedActors) override;
 
 	/**
 	 * UObjects can't normally tick, but we have our ways of making them!
@@ -52,7 +52,7 @@ private:
 	uint16 CurrentIndex = 0;
 
 	UPROPERTY()
-	TArray<AActor*> SpawnedActors;
+	TArray<AActor*> ActorsToSpawn;
 
 	/**
 	 * This handles ticking.

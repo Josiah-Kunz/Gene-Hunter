@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CombatStatsComponent.h"
 #include "GameFramework/HUD.h"
 #include "WorldHUD.generated.h"
 
@@ -15,11 +16,18 @@ class TOPDOWNCHARACTER_API AWorldHUD : public AHUD
 	GENERATED_BODY()
 
 public:
+	
 	/**
 	 * A running list of which Actors are underneath the mouse (as determined by collider overlap).
 	 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="World Interaction")
 	TArray<AActor*> MouseoverActors;
+	
+	/**
+	 * A running list of which UCombatStatsComponents are underneath the mouse (as determined by collider overlap).
+	 */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="World Interaction")
+	TArray<UCombatStatsComponent*> MouseoverCombatStats;
 
 	/**
 	 * The world location of the mouse (discounting the z).

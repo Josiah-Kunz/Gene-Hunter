@@ -13,7 +13,7 @@ AActor* USpawnOnSelfInSuccession::SpawnSingle()
 {
 
 	// "Spawn" the next one
-	AActor* NewSpawn = SpawnedActors[CurrentIndex];
+	AActor* NewSpawn = ActorsToSpawn[CurrentIndex];
 	const FVector OwnerLocation = Owner->GetActorLocation();
 	NewSpawn->SetActorLocation(OwnerLocation);
 	SetActive(NewSpawn, true);
@@ -30,20 +30,17 @@ AActor* USpawnOnSelfInSuccession::SpawnSingle()
 	return NewSpawn;
 }
 
-TArray<AActor*> USpawnOnSelfInSuccession::Spawn(AActor* NewOwner)
+void USpawnOnSelfInSuccession::Spawn(AActor* NewOwner, TArray<AActor*>& SpawnedActors)
 {
 	
 	// Guard
-	if (CurrentIndex != 0)
-	{
-		return {};
-	}
+	CurrentIndex = 0;
 
 	// Assign owner
 	Owner = NewOwner;
 
 	// Spawn (initializes + adds to list)
-	SpawnedActors = Super::Spawn(NewOwner);
+	 Super::Spawn(NewOwner, SpawnedActors);
 
 	// Turn off all
 	for(AActor* SpawnedActor : SpawnedActors)
@@ -51,14 +48,14 @@ TArray<AActor*> USpawnOnSelfInSuccession::Spawn(AActor* NewOwner)
 		SetActive(SpawnedActor, false);
 	}
 
+	// Assign
+	ActorsToSpawn = SpawnedActors;
+
 	// Set the first to active
 	SpawnSingle();
 
 	// Time
 	StartTick();
-
-	// Return
-	return SpawnedActors;
 }
 
 void USpawnOnSelfInSuccession::Tick(float DeltaTime)
