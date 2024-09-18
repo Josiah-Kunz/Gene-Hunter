@@ -9,7 +9,7 @@ class ComponentUtilities
 
 public:
 
-	static inline bool bInUnitTestMode = true;
+	static inline bool bInUnitTestMode = false;
 
 	static float GetTolerance(const float Current, const float Expected, const float TolPercent = 1)
 	{

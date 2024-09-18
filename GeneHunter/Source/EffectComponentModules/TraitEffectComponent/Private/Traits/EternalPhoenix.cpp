@@ -41,6 +41,7 @@ void UEternalPhoenix::ApplyEffect()
 	Super::ApplyEffect();
 	if (!ShouldApplyEffect())
 	{
+
 		return;
 	}
 
@@ -52,7 +53,10 @@ void UEternalPhoenix::ApplyEffect()
 void UEternalPhoenix::RemoveEffect()
 {
 	Super::RemoveEffect();
-	StatsComponent->ModifyStatOutlet.RemoveBefore(ModifyStatDelegate);
+	if (StatsComponent)
+	{
+		StatsComponent->ModifyStatOutlet.RemoveBefore(ModifyStatDelegate);
+	}
 }
 
 float UEternalPhoenix::GetPriority()
