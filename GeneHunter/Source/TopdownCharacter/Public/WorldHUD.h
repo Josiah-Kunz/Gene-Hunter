@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CombatStatsComponent.h"
+#include "OverlapTracker.h"
 #include "GameFramework/HUD.h"
 #include "WorldHUD.generated.h"
 
@@ -22,12 +23,12 @@ public:
 	 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="World Interaction")
 	TArray<AActor*> MouseoverActors;
-	
+
 	/**
-	 * A running list of which UCombatStatsComponents are underneath the mouse (as determined by collider overlap).
+	 * Tracks Actors and ActorComponents that are currently being overlapped.
 	 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="World Interaction")
-	TArray<UCombatStatsComponent*> MouseoverCombatStats;
+	UOverlapTracker* OverlapTracker;
 
 	/**
 	 * The world location of the mouse (discounting the z).
@@ -40,5 +41,15 @@ public:
 	 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="World Interaction")
 	FVector MouseWorldDirection;
+
+	/**
+	 * Used to get the currently overlapped UActorComponents (e.g., UCombatStatsComponents). 
+	 * @param ComponentType 
+	 * @param Components 
+	 */
+	UFUNCTION(Blueprintable, Category="World Interaction")
+	void GetOverlappedComponents(const TSubclassOf<UActorComponent> ComponentType, TArray<UActorComponent*>& Components) const;
+	
+	virtual void BeginPlay() override;
 	
 };

@@ -37,12 +37,18 @@ UCombatStatsComponent* UPlayerTargetingComponent::GetTarget()
 	UCombatStatsComponent* TargetStats = Super::GetTarget();
 
 	// Get the first (non-null) Stats
-	for (UCombatStatsComponent* Mouseover : HUD->MouseoverCombatStats)
+	TArray<UActorComponent*> StatComponents;
+	HUD->GetOverlappedComponents(UCombatStatsComponent::StaticClass(), StatComponents);
+	for (UActorComponent* Mouseover : StatComponents)
 	{
 		if (Mouseover)
 		{
-			TargetStats = Mouseover;
-			break;
+			UCombatStatsComponent* StatsComponent = Cast<UCombatStatsComponent>(Mouseover);
+			if (StatsComponent)
+			{
+				TargetStats = StatsComponent;
+				break;
+			}
 		}
 	}
 
