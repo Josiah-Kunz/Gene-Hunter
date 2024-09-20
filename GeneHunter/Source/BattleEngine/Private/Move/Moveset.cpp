@@ -146,8 +146,11 @@ bool UMoveset::UseMoveInternal(const uint8 Index)
 		// Check usability. I know I could have just one condition, but with all the fetching, it's a little quicker
 		// to do it serially.
 		AActor* Owner = GetOwner();
-		UMoveUsabilityScheme* UsabilityScheme = Moves[Index].UsabilityScheme;
-		const bool bIsUsable = UsabilityScheme == nullptr || UsabilityScheme->IsUsable(Owner);
+		bool bIsUsable = true;
+		for(AMoveUsabilityScheme* UsabilityScheme : Moves[Index].UsabilitySchemes)
+		{
+			bIsUsable &= UsabilityScheme == nullptr || UsabilityScheme->IsUsable();
+		}
 
 		// Execute (maybe)
 		if (bIsUsable)

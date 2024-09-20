@@ -11,7 +11,7 @@
  * Returns true when the nearby CombatTargetingComponent returns GetTarget that is non-null.
  */
 UCLASS()
-class BATTLEENGINE_API UUsableWithTarget : public UMoveUsabilityScheme
+class BATTLEENGINE_API AUsableWithTarget : public AMoveUsabilityScheme
 {
 	GENERATED_BODY()
 
@@ -22,6 +22,6 @@ public:
 
 	void Initialize_Implementation(AActor* NewOwner) override;
 
-	bool IsUsable_Implementation(AActor* MoveOwner) override;
+	bool IsUsable_Implementation() override;
 	
 };

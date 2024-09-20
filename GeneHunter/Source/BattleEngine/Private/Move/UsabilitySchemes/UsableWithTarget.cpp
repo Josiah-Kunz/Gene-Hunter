@@ -3,14 +3,14 @@
 
 #include "UsabilitySchemes/UsableWithTarget.h"
 
-void UUsableWithTarget::Initialize_Implementation(AActor* NewOwner)
+void AUsableWithTarget::Initialize_Implementation(AActor* NewOwner)
 {
 	Super::Initialize_Implementation(NewOwner);
 	TargetingComponent = NewOwner->FindComponentByClass<UCombatTargetingComponent>();
 }
 
-bool UUsableWithTarget::IsUsable_Implementation(AActor* MoveOwner)
+bool AUsableWithTarget::IsUsable_Implementation()
 {
-	const bool bIsUsable = Super::IsUsable_Implementation(MoveOwner);
+	const bool bIsUsable = Super::IsUsable_Implementation();
 	return bIsUsable && TargetingComponent->GetTarget() != nullptr;
 }

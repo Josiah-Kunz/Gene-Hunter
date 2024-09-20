@@ -30,14 +30,6 @@ void UOverlapTracker::BeginPlay()
     BindOverlapEvents();
 }
 
-void UOverlapTracker::OnComponentCreated()
-{
-    Super::OnComponentCreated();
-
-    // Bind overlap events if the component is set in the editor
-    BindOverlapEvents();
-}
-
 void UOverlapTracker::OnComponentDestroyed(bool bDestroyingHierarchy)
 {
     Super::OnComponentDestroyed(bDestroyingHierarchy);

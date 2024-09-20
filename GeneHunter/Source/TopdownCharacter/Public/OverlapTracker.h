@@ -25,12 +25,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Overlap")
 	void GetOverlappingComponents(const TSubclassOf<UActorComponent> ComponentType, TArray<UActorComponent*>& Components);
 
-protected:
-
 	// User-selectable collider
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Overlap")
 	UShapeComponent* CollisionComponent;
 
+protected:
+	
 	// Array to hold actors currently overlapping
 	UPROPERTY(VisibleAnywhere, Category = "Overlap")
 	TArray<AActor*> OverlappingActors;
@@ -41,7 +41,6 @@ protected:
 	TMap<TSubclassOf<UActorComponent>, TArray<UActorComponent*>> TrackedComponentInstances;
 	
 	virtual void BeginPlay() override;
-	virtual void OnComponentCreated() override;
 	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
 
 

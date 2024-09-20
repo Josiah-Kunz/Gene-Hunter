@@ -1,7 +1,6 @@
 #include "MoveData.h"
 
 #include "AssetFunctionLibrary.h"
-#include "ProjectileMove.h"
 
 UMoveData::UMoveData()
 {

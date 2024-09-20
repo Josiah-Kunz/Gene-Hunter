@@ -3,12 +3,13 @@
 
 #include "MoveUsabilityScheme.h"
 
-void UMoveUsabilityScheme::Initialize_Implementation(AActor* NewOwner)
+void AMoveUsabilityScheme::Initialize_Implementation(AActor* NewCaster)
 {
-	Owner = NewOwner;
+	Caster = NewCaster;
+	AttachToActor(Caster, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }
 
-bool UMoveUsabilityScheme::IsUsable_Implementation(AActor* MoveOwner)
+bool AMoveUsabilityScheme::IsUsable_Implementation()
 {
 	return true;
 }

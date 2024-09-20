@@ -5,17 +5,30 @@
 void FMoveInstance::Initialize(AActor* Owner)
 {
 
-	// Usability
-	if (MoveData->UsabilityScheme)
+	// Setup variables
+	UWorld* World = Owner->GetWorld();
+	const FVector SpawnLocation = Owner->GetActorLocation();
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = Owner;
+
+	// Create instanced schemes and initialize them
+	for(TSubclassOf<AMoveUsabilityScheme> UsabilityClass : MoveData->UsabilitySchemes)
 	{
-		UsabilityScheme = NewObject<UMoveUsabilityScheme>(Owner, MoveData->UsabilityScheme);
-		UsabilityScheme->Initialize(Owner);
+		if (UsabilityClass)
+		{
+			AMoveUsabilityScheme* NewUsabilityScheme = World->SpawnActor<AMoveUsabilityScheme>(
+				UsabilityClass, SpawnLocation, FRotator::ZeroRotator, SpawnParams
+			);
+			NewUsabilityScheme->Initialize(Owner);
+			UsabilitySchemes.Add(NewUsabilityScheme);
+		}
 	}
 
-	// Spawn schemes
+	// SpawnOnCast
 	for(TSubclassOf<UActorSpawnScheme> SpawnClass : MoveData->SpawnOnCast)
 	{
-		SpawnSchemesOnCast.Add(NewObject<UActorSpawnScheme>(Owner, SpawnClass));
+		UActorSpawnScheme* NewSpawnScheme = NewObject<UActorSpawnScheme>(Owner, SpawnClass);
+		SpawnSchemesOnCast.Add(NewSpawnScheme);
 	}
 }
 
@@ -34,7 +47,7 @@ void FMoveInstance::Execute(AActor* Owner)
 			SpawnScheme->Spawn(Owner, FreshActors);
 
 			// Initialize projectiles
-			for(AActor* Actor : FreshActors)
+			for(const AActor* Actor : FreshActors)
 			{
 				TArray<UProjectileMove*> ProjectileMoveComponents;
 				Actor->GetComponents(ProjectileMoveComponents);

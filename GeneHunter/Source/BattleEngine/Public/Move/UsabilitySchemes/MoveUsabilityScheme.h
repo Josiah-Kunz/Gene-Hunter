@@ -9,18 +9,18 @@
  * For example, an "Execution" Move might only be usable when the target has <20% health.
  */
 UCLASS(Abstract, Blueprintable)
-class BATTLEENGINE_API UMoveUsabilityScheme : public UObject
+class BATTLEENGINE_API AMoveUsabilityScheme : public AActor
 {
 	GENERATED_BODY()
 
 public:
 
 	UPROPERTY()
-	AActor* Owner;
+	AActor* Caster;
 
 	UFUNCTION(BlueprintNativeEvent, Category="MoveData")
-	void Initialize(AActor* NewOwner);
+	void Initialize(AActor* NewCaster);
 	
 	UFUNCTION(BlueprintNativeEvent, Category="MoveData")
-	bool IsUsable(AActor* MoveOwner);
+	bool IsUsable();
 };

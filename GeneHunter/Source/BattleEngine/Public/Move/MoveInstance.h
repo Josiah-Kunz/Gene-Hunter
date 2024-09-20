@@ -43,7 +43,7 @@ public:
 	float RemainingCD = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
-	UMoveUsabilityScheme* UsabilityScheme;
+	TArray<AMoveUsabilityScheme*> UsabilitySchemes;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Move Data")
 	TArray<UActorSpawnScheme*> SpawnSchemesOnCast;
