@@ -111,6 +111,30 @@ public:
 	if ( Component == nullptr) { \
 		Component = Owner ->FindComponentByClass< ComponentType >(); \
 	}
+
+/**
+ * If the input Component is null, searches Owner for the ComponentType. If one is found, it is assigned as Component.
+ */
+#define SEARCH_FOR_COMPONENT_OR_LOG(ComponentType, Component, Owner) \
+	SEARCH_FOR_COMPONENT( ComponentType , Component , Owner ) \
+	if ( Component == nullptr){ \
+		UE_LOG(LogTemp, Warning, TEXT("%s does not have an attached %s, which is required!"), \
+			*##Owner##->GetPathName(), \
+			*##ComponentType##::StaticClass()->GetName() \
+		)\
+	}
+
+#define SEARCH_FOR_COMPONENTS(ComponentType, ComponentsArray, Owner) \
+	 Owner ->GetComponents< ComponentType >( ComponentsArray );
+
+#define SEARCH_FOR_COMPONENTS_OR_LOG(ComponentType, ComponentsArray, Owner) \
+	SEARCH_FOR_COMPONENTS( ComponentType , ComponentsArray , Owner ) \
+	if ( ComponentsArray##.Num() == 0){ \
+		UE_LOG(LogTemp, Warning, TEXT("%s does not have any attached %s, which are required!"), \
+			*##Owner##->GetPathName(), \
+			*##ComponentType##::StaticClass()->GetName() \
+		)\
+	} 
 	
 /**
  * If the input Component is null, searches Owner for the ComponentType. If one is found, it is assigned as Component.

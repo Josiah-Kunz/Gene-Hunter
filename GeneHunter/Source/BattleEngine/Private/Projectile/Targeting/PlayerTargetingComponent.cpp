@@ -3,20 +3,37 @@
 
 #include "PlayerTargetingComponent.h"
 
+#include "ComponentUtilities.h"
+#include "Components/ShapeComponent.h"
 #include "Kismet/GameplayStatics.h"
+
+UPlayerTargetingComponent::UPlayerTargetingComponent(): HUD(nullptr)
+{
+	PrimaryComponentTick.bCanEverTick = true;
+}
 
 void UPlayerTargetingComponent::BeginPlay()
 {
+
+	// Supah
 	Super::BeginPlay();
+
+	// Get HUD
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 	if (PlayerController){
 		HUD = Cast<AWorldHUD>(PlayerController->GetHUD());
+	}
+
+	// Get OverlapTracker
+	if (!OverlapTracker)
+	{
+		SEARCH_FOR_COMPONENT_OR_LOG(UOverlapTracker, OverlapTracker, GetOwner())
 	}
 }
 
 FVector UPlayerTargetingComponent::GetAttackVector()
 {
-	if (!DoesHUDExist())
+	if (!DoesHUDExist() || OverlapTracker == nullptr)
 	{
 		return FVector::ZeroVector;
 	}
@@ -28,7 +45,7 @@ UCombatStatsComponent* UPlayerTargetingComponent::GetTarget()
 {
 
 	// Guard
-	if (!DoesHUDExist())
+	if (!OverlapTracker)
 	{
 		return nullptr;
 	}
@@ -38,7 +55,7 @@ UCombatStatsComponent* UPlayerTargetingComponent::GetTarget()
 
 	// Get the first (non-null) Stats
 	TArray<UActorComponent*> StatComponents;
-	HUD->GetOverlappedComponents(UCombatStatsComponent::StaticClass(), StatComponents);
+	OverlapTracker->GetOverlappingComponents(UCombatStatsComponent::StaticClass(), StatComponents);
 	for (UActorComponent* Mouseover : StatComponents)
 	{
 		if (Mouseover)
@@ -54,6 +71,21 @@ UCombatStatsComponent* UPlayerTargetingComponent::GetTarget()
 
 	// Return
 	return TargetStats;
+}
+
+void UPlayerTargetingComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+	FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	if (HUD)
+	{
+		const FVector MouseWorld = HUD->MouseWorldLocation;
+		OverlapTracker->SetCollisionLocation(MouseWorld);
+		
+	} else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HUD missing!"))
+	}
 }
 
 bool UPlayerTargetingComponent::DoesHUDExist() const

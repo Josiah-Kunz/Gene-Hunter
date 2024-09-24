@@ -1,35 +1,44 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
+#include "CombatStatsComponent.h"
 #include "OverlapTracker.generated.h"
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class TOPDOWNCHARACTER_API UOverlapTracker : public UActorComponent
+UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+class TOPDOWNCHARACTER_API UOverlapTracker : public USceneComponent
 {
 	GENERATED_BODY()
 
 public:
-	UOverlapTracker();
 
 	/**
 	 * Let's say you want to also track overlapping UCombatStatsComponents. You would make sure this array contains
 	 * "UCombatStatsComponent".
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Overlap")
-	TArray<TSubclassOf<UActorComponent>> TrackedComponents;
+	TArray<TSubclassOf<UActorComponent>> TrackedComponents = {UCombatStatsComponent::StaticClass()};
+	
+	UOverlapTracker();
 	
 	UFUNCTION(BlueprintCallable, Category="Overlap")
 	const TArray<AActor*>& GetOverlappingActors() const;
 
 	UFUNCTION(BlueprintCallable, Category="Overlap")
 	void GetOverlappingComponents(const TSubclassOf<UActorComponent> ComponentType, TArray<UActorComponent*>& Components);
+	
+	UFUNCTION(BlueprintCallable, Category="Overlap")
+	void SetCollisionComponent(UShapeComponent* NewCollider);
 
-	// User-selectable collider
+	UFUNCTION(BlueprintCallable, Category="Overlap")
+	void SetCollisionLocation(const FVector WorldLocation);
+	
+protected:
+
+	/**
+	 * This should be assigned in the Blueprint. If it's not part of the RootComponent, it won't follow the Actor around.
+	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Overlap")
 	UShapeComponent* CollisionComponent;
-
-protected:
 	
 	// Array to hold actors currently overlapping
 	UPROPERTY(VisibleAnywhere, Category = "Overlap")
@@ -61,8 +70,4 @@ protected:
 	// Function to unbind overlap events
 	void UnbindOverlapEvents() const;
 
-#if WITH_EDITOR
-	// To respond to property changes in the editor (like changing the CollisionComponent)
-	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
-#endif
 };

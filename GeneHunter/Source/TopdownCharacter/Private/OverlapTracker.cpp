@@ -1,8 +1,9 @@
 #include "OverlapTracker.h"
+
 #include "Components/ShapeComponent.h"
 #include "GameFramework/Actor.h"
 
-UOverlapTracker::UOverlapTracker(): CollisionComponent(nullptr)
+UOverlapTracker::UOverlapTracker()
 {
     PrimaryComponentTick.bCanEverTick = false;
 }
@@ -22,12 +23,24 @@ void UOverlapTracker::GetOverlappingComponents(const TSubclassOf<UActorComponent
     }
 }
 
+void UOverlapTracker::SetCollisionComponent(UShapeComponent* NewCollider)
+{
+    CollisionComponent = NewCollider;
+    BindOverlapEvents();
+}
+
+void UOverlapTracker::SetCollisionLocation(const FVector WorldLocation)
+{
+    CollisionComponent->SetWorldLocation(WorldLocation);
+}
+
 void UOverlapTracker::BeginPlay()
 {
     Super::BeginPlay();
 
-    // Bind the overlap events for the selected collision component
+    // Bind the collider's events
     BindOverlapEvents();
+    
 }
 
 void UOverlapTracker::OnComponentDestroyed(bool bDestroyingHierarchy)
@@ -43,9 +56,7 @@ void UOverlapTracker::BindOverlapEvents()
     if (CollisionComponent)
     {
         // Ensure overlap events are enabled on the selected component
-        CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-        CollisionComponent->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
-        CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+        //CollisionComponent->InitializeComponent();
 
         // Bind overlap callbacks
         CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &UOverlapTracker::OnBeginOverlap);
@@ -105,20 +116,3 @@ void UOverlapTracker::OnEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
         OverlappingActors.Remove(OtherActor);
     }
 }
-
-#if WITH_EDITOR
-void UOverlapTracker::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
-{
-    Super::PostEditChangeProperty(PropertyChangedEvent);
-
-    // Check if the CollisionComponent was changed in the editor
-    const FName PropertyName = (PropertyChangedEvent.Property != nullptr) ? PropertyChangedEvent.Property->GetFName() : NAME_None;
-
-    if (PropertyName == GET_MEMBER_NAME_CHECKED(UOverlapTracker, CollisionComponent))
-    {
-        // Unbind events from the old component and bind to the new one
-        UnbindOverlapEvents();
-        BindOverlapEvents();
-    }
-}
-#endif

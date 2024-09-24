@@ -19,18 +19,6 @@ class TOPDOWNCHARACTER_API AWorldHUD : public AHUD
 public:
 	
 	/**
-	 * A running list of which Actors are underneath the mouse (as determined by collider overlap).
-	 */
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="World Interaction")
-	TArray<AActor*> MouseoverActors;
-
-	/**
-	 * Tracks Actors and ActorComponents that are currently being overlapped.
-	 */
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="World Interaction")
-	UOverlapTracker* OverlapTracker;
-
-	/**
 	 * The world location of the mouse (discounting the z).
 	 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="World Interaction")
@@ -41,15 +29,5 @@ public:
 	 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="World Interaction")
 	FVector MouseWorldDirection;
-
-	/**
-	 * Used to get the currently overlapped UActorComponents (e.g., UCombatStatsComponents). 
-	 * @param ComponentType 
-	 * @param Components 
-	 */
-	UFUNCTION(Blueprintable, Category="World Interaction")
-	void GetOverlappedComponents(const TSubclassOf<UActorComponent> ComponentType, TArray<UActorComponent*>& Components) const;
-	
-	virtual void BeginPlay() override;
 	
 };
