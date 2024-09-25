@@ -4,7 +4,14 @@ public class UI : ModuleRules{
 
 	public UI(ReadOnlyTargetRules Target) : base(Target){
 		
-		PublicDependencyModuleNames.AddRange(new string[]{ "UMG", "Slate", "SlateCore" });
+		PublicDependencyModuleNames.AddRange(new string[]{
+			"UMG", 
+			"Slate", 
+			"SlateCore",
+			"Core",
+			"CoreUObject",	// For BlueprintFunctionLibrary
+			"Engine", "Kismet"
+		});
 
 		PrivateIncludePaths.Add("UI/Private");
 		
