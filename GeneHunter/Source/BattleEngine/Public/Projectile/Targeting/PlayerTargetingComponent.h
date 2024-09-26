@@ -15,11 +15,11 @@ class BATTLEENGINE_API UPlayerTargetingComponent : public UCombatTargetingCompon
 
 public:
 
-	/**
-	 * This needs to be attached to the Owner. It follows the mouse's position.
-	 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Targeting")
-	UOverlapTracker* OverlapTracker;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Targeting")
+	TArray<AActor*> MouseoverActors;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Targeting")
+	TArray<UCombatStatsComponent*> MouseoverStats;
 	
 	UPlayerTargetingComponent();
 	
@@ -28,8 +28,6 @@ public:
 	virtual FVector GetAttackVector() override;
 
 	virtual UCombatStatsComponent* GetTarget() override;
-
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
 	

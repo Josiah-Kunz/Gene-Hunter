@@ -2,14 +2,11 @@
 
 
 #include "PlayerTargetingComponent.h"
-
-#include "ComponentUtilities.h"
-#include "Components/ShapeComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 UPlayerTargetingComponent::UPlayerTargetingComponent(): HUD(nullptr)
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void UPlayerTargetingComponent::BeginPlay()
@@ -23,17 +20,11 @@ void UPlayerTargetingComponent::BeginPlay()
 	if (PlayerController){
 		HUD = Cast<AWorldHUD>(PlayerController->GetHUD());
 	}
-
-	// Get OverlapTracker
-	if (!OverlapTracker)
-	{
-		SEARCH_FOR_COMPONENT_OR_LOG(UOverlapTracker, OverlapTracker, GetOwner())
-	}
 }
 
 FVector UPlayerTargetingComponent::GetAttackVector()
 {
-	if (!DoesHUDExist() || OverlapTracker == nullptr)
+	if (!DoesHUDExist())
 	{
 		return FVector::ZeroVector;
 	}
@@ -45,7 +36,7 @@ UCombatStatsComponent* UPlayerTargetingComponent::GetTarget()
 {
 
 	// Guard
-	if (!OverlapTracker)
+	if (!MouseoverStats.Num() == 0)
 	{
 		return nullptr;
 	}
@@ -54,38 +45,16 @@ UCombatStatsComponent* UPlayerTargetingComponent::GetTarget()
 	UCombatStatsComponent* TargetStats = Super::GetTarget();
 
 	// Get the first (non-null) Stats
-	TArray<UActorComponent*> StatComponents;
-	OverlapTracker->GetOverlappingComponents(UCombatStatsComponent::StaticClass(), StatComponents);
-	for (UActorComponent* Mouseover : StatComponents)
+	for(UCombatStatsComponent* Stats : MouseoverStats)
 	{
-		if (Mouseover)
+		if (Stats)
 		{
-			UCombatStatsComponent* StatsComponent = Cast<UCombatStatsComponent>(Mouseover);
-			if (StatsComponent)
-			{
-				TargetStats = StatsComponent;
-				break;
-			}
+			return Stats;
 		}
 	}
 
 	// Return
 	return TargetStats;
-}
-
-void UPlayerTargetingComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-	FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	if (HUD)
-	{
-		const FVector MouseWorld = HUD->MouseWorldLocation;
-		OverlapTracker->SetCollisionLocation(MouseWorld);
-		
-	} else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("HUD missing!"))
-	}
 }
 
 bool UPlayerTargetingComponent::DoesHUDExist() const
