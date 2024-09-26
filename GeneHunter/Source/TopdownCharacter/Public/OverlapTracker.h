@@ -4,12 +4,34 @@
 #include "CombatStatsComponent.h"
 #include "OverlapTracker.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FBeginOverlapEvent,
+	UPrimitiveComponent*, OverlappedComp,
+	AActor*, OtherActor, 
+	UPrimitiveComponent*, OtherComp,
+	int32, OtherBodyIndex, 
+	bool, bFromSweep,
+	const FHitResult&, SweepResult
+);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FEndOverlapEvent,
+	UPrimitiveComponent*, OverlappedComp,
+	AActor*, OtherActor, 
+	UPrimitiveComponent*, OtherComp,
+	int32, OtherBodyIndex
+);
+
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class TOPDOWNCHARACTER_API UOverlapTracker : public USceneComponent
 {
 	GENERATED_BODY()
 
 public:
+
+	UPROPERTY(BlueprintAssignable, Category="Events")
+	FBeginOverlapEvent BeginOverlap;
+
+	UPROPERTY(BlueprintAssignable, Category="Events")
+	FEndOverlapEvent EndOverlap;
 
 	/**
 	 * Let's say you want to also track overlapping UCombatStatsComponents. You would make sure this array contains
@@ -35,7 +57,7 @@ public:
 protected:
 
 	/**
-	 * This should be assigned in the Blueprint. If it's not part of the RootComponent, it won't follow the Actor around.
+	 * This can be assigned in the Blueprint. If it's not part of the RootComponent, it won't follow the Actor around.
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Overlap")
 	UShapeComponent* CollisionComponent;

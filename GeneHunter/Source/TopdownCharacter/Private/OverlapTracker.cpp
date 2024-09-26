@@ -75,8 +75,8 @@ void UOverlapTracker::UnbindOverlapEvents() const
 }
 
 void UOverlapTracker::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, 
-                                     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
-                                     bool bFromSweep, const FHitResult& SweepResult)
+                                     UPrimitiveComponent* OtherComp, const int32 OtherBodyIndex,
+                                     const bool bFromSweep, const FHitResult& SweepResult)
 {
     if (OtherActor && OtherActor != GetOwner())
     {
@@ -93,11 +93,15 @@ void UOverlapTracker::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor
                 TrackedComponentInstances.FindOrAdd(ComponentClass).Add(Component);
             }
         }
+
+        // Fire events
+        BeginOverlap.Broadcast(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+        
     }
 }
 
 void UOverlapTracker::OnEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, 
-                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+                                   UPrimitiveComponent* OtherComp, const int32 OtherBodyIndex)
 {
     if (OtherActor && OtherActor != GetOwner())
     {
@@ -115,4 +119,7 @@ void UOverlapTracker::OnEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
         // Remove actor
         OverlappingActors.Remove(OtherActor);
     }
+
+    // Fire events
+    EndOverlap.Broadcast(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex);
 }
