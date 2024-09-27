@@ -24,7 +24,7 @@ void AUsableTargetInRange::Initialize_Implementation(AActor* NewOwner)
 								*AMoveUsabilityScheme::StaticClass()->GetName(),
 								*AUsableTargetInRange::StaticClass()->GetName(),
 								*AActor::StaticClass()->GetName(),
-								*NewOwner->GetPathName()
+								*this->GetPathName()
 								)
 	}
 }
@@ -38,7 +38,7 @@ bool AUsableTargetInRange::IsUsable_Implementation()
 	{
 		// This is the Stats we're mousing over
 		const UCombatStatsComponent* Target = TargetingComponent->GetTarget();
-
+		UE_LOG(LogTemp, Warning, TEXT("===================\nFound target [%s]"), *Target->GetOwner()->GetName())
 		// Go through the trackers' overlapping CombatStats and see if it's the one we're mousing over
 		for(UOverlapTracker* Tracker : Trackers)
 		{
@@ -49,8 +49,13 @@ bool AUsableTargetInRange::IsUsable_Implementation()
 				if (ActorComponent)
 				{
 					const UCombatStatsComponent* TrackedStats = Cast<UCombatStatsComponent>(ActorComponent);
+					if (TrackedStats)
+					{
+						UE_LOG(LogTemp, Warning, TEXT("Tracking [%s]"), *TrackedStats->GetOwner()->GetName())
+					}
 					if (TrackedStats && TrackedStats == Target)
 					{
+						UE_LOG(LogTemp, Warning, TEXT("SUCCESS!"))
 						return true;
 					}
 				}
