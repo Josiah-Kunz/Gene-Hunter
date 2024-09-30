@@ -12,6 +12,8 @@ class BATTLEENGINE_API AUsableTargetInRange : public AUsableWithTarget
 
 public:
 
+	UFUNCTION(BlueprintCallable, Category = "Overlap")
+	const TArray<UOverlapTracker*>& GetTrackers();
 
 	virtual void Initialize_Implementation(AActor* NewOwner) override;
 

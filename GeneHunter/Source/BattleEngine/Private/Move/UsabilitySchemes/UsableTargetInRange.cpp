@@ -3,6 +3,11 @@
 
 #include "UsableTargetInRange.h"
 
+const TArray<UOverlapTracker*>& AUsableTargetInRange::GetTrackers()
+{
+	return Trackers;
+}
+
 void AUsableTargetInRange::Initialize_Implementation(AActor* NewOwner)
 {
 	Super::Initialize_Implementation(NewOwner);

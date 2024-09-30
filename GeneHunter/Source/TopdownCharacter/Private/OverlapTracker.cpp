@@ -112,7 +112,11 @@ void UOverlapTracker::OnEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
             UClass* ComponentClass = Component->GetClass();
             if (TrackedComponents.Contains(ComponentClass))
             {
-                TrackedComponentInstances.Find(ComponentClass)->Remove(Component);
+                TArray<UActorComponent*>* Components = TrackedComponentInstances.Find(ComponentClass);
+                if (Components && Components->Contains(Component))
+                {
+                    Components->Remove(Component);
+                }
             }
         }
 
